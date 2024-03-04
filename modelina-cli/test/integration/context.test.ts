@@ -56,7 +56,7 @@ describe('config:context, positive scenario', () => {
       .command(['config:context:add', 'test', './test/integration/specification.yml'])
       .it('should add new context called "test"', (ctx, done) => {
         expect(ctx.stdout).to.equals(
-          'Added context "test".\n\nYou can set it as your current context: asyncapi config context use test\nYou can use this context when needed by passing test as a parameter: asyncapi validate test\n'
+          'Added context "test".\n\nYou can set it as your current context: modelina config context use test\nYou can use this context when needed by passing test as a parameter: modelina validate test\n'
         );
         expect(ctx.stderr).to.equals('');
         done();

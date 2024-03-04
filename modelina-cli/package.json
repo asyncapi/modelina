@@ -86,6 +86,7 @@
     "generate:readme:toc": "markdown-toc -i README.md",
     "lint": "eslint --max-warnings 0 --config .eslintrc .",
     "lint:fix": "eslint --max-warnings 5 --config .eslintrc . --fix",
+    "pack:all": "npm run pack:macos && npm run pack:linux && npm run pack:tarballs && npm run pack:windows",
     "pack:macos": "oclif pack macos && npm run pack:rename",
     "pack:linux": "oclif pack deb && npm run pack:rename",
     "pack:tarballs": "oclif pack tarballs -t linux-x64 && npm run pack:rename",
@@ -94,8 +95,7 @@
     "prepublishOnly": "npm run build",
     "pretest": "npm run build",
     "pretest:coverage": "npm run build",
-    "test": "npm run test:unit",
-    "test:unit": "cross-env NODE_ENV=development CUSTOM_CONTEXT_FILENAME=\"test.asyncapi-modelina\" CUSTOM_CONTEXT_FILE_LOCATION=\"\" nyc --extension .ts mocha --require ts-node/register --require test/helpers/init.js --reporter spec --timeout 100000 \"test/**/*.test.ts\"",
+    "test": "cross-env NODE_ENV=development CUSTOM_CONTEXT_FILENAME=\"test.asyncapi-modelina\" CUSTOM_CONTEXT_FILE_LOCATION=\"\" nyc --extension .ts mocha --require ts-node/register --require test/helpers/init.js --reporter spec --timeout 100000 \"test/**/*.test.ts\"",
     "get-version": "echo $npm_package_version",
     "createhook": "oclif generate hook myhook --event=command_not_found",
     "createhookinit": "oclif generate hook inithook --event=init"
