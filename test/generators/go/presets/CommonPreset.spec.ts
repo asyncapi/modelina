@@ -20,7 +20,8 @@ describe('GO_COMMON_PRESET', () => {
         stringProp: { type: 'string' },
         numberProp: { type: 'number' },
         booleanProp: { type: 'boolean' }
-      }
+      },
+      additionalProperties: false
     };
 
     const models = await generator.generate(doc);

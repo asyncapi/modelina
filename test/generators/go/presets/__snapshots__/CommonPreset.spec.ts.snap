@@ -3,10 +3,9 @@
 exports[`GO_COMMON_PRESET should render json tags for structs 1`] = `
 "// Root represents a Root model.
 type Root struct {
-  StringProp string \`json:"stringProp"\`
-  NumberProp float64 \`json:"numberProp"\`
-  BooleanProp bool \`json:"booleanProp"\`
-  AdditionalProperties map[string]interface{} \`json:"-"\`
+  StringProp string \`json:\\"stringProp\\"\`
+  NumberProp float64 \`json:\\"numberProp\\"\`
+  BooleanProp bool \`json:\\"booleanProp\\"\`
 }"
 `;
 
@@ -26,7 +25,7 @@ func (op Root) Value() any {
 	return RootValues[op]
 }
 
-var RootValues = []any{"2.6.0"}
+var RootValues = []any{\\"2.6.0\\"}
 var ValuesToRoot = map[any]Root{
   RootValues[RootNumber_2Dot_6Dot_0]: RootNumber_2Dot_6Dot_0,
 }
