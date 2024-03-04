@@ -2,11 +2,11 @@
 
 exports[`PythonGenerator Class should not render reserved keyword 1`] = `
 "class Address: 
-  def __init__(self, input: dict):
-    if hasattr(input, \\"reservedReservedDel\\"):
-    	self._reservedReservedDel: str = input[\\"reservedReservedDel\\"]
-    if hasattr(input, \\"reservedDel\\"):
-    	self._reservedDel: str = input[\\"reservedDel\\"]
+  def __init__(self, input):
+    if hasattr(input, 'reservedReservedDel'):
+    	self._reservedReservedDel = input.reservedReservedDel
+    if hasattr(input, 'reservedDel'):
+    	self._reservedDel = input.reservedDel
 
   @property
   def reservedReservedDel(self):
@@ -26,18 +26,18 @@ exports[`PythonGenerator Class should not render reserved keyword 1`] = `
 
 exports[`PythonGenerator Class should render \`class\` type 1`] = `
 "class Address: 
-  def __init__(self, input: dict):
-    self._streetName: str = input[\\"streetName\\"]
-    self._city: str = input[\\"city\\"]
-    self._state: str = input[\\"state\\"]
-    self._houseNumber: float = input[\\"houseNumber\\"]
-    if hasattr(input, \\"marriage\\"):
-    	self._marriage: bool = input[\\"marriage\\"]
-    if hasattr(input, \\"members\\"):
-    	self._members: str | float | bool = input[\\"members\\"]
-    self._arrayType: list[str | float | Any] = input[\\"arrayType\\"]
-    if hasattr(input, \\"additionalProperties\\"):
-    	self._additionalProperties: dict[Any | str, Any | str] = input[\\"additionalProperties\\"]
+  def __init__(self, input):
+    self._streetName = input.streetName
+    self._city = input.city
+    self._state = input.state
+    self._houseNumber = input.houseNumber
+    if hasattr(input, 'marriage'):
+    	self._marriage = input.marriage
+    if hasattr(input, 'members'):
+    	self._members = input.members
+    self._arrayType = input.arrayType
+    if hasattr(input, 'additionalProperties'):
+    	self._additionalProperties = input.additionalProperties
 
   @property
   def streetName(self):
@@ -104,11 +104,11 @@ exports[`PythonGenerator Class should work with custom preset for \`class\` type
   test1
 
 
-  def __init__(self, input: dict):
-    if hasattr(input, \\"property\\"):
-    	self._property: str = input[\\"property\\"]
-    if hasattr(input, \\"additionalProperties\\"):
-    	self._additionalProperties: dict[Any, Any] = input[\\"additionalProperties\\"]
+  def __init__(self, input):
+    if hasattr(input, 'property'):
+    	self._property = input.property
+    if hasattr(input, 'additionalProperties'):
+    	self._additionalProperties = input.additionalProperties
 
   test2
   @property
@@ -132,7 +132,7 @@ exports[`PythonGenerator Class should work with custom preset for \`class\` type
 
 exports[`PythonGenerator Class should work with empty objects 1`] = `
 "class CustomClass: 
-  def __init__(self, input: dict):
+  def __init__(self, input):
     \\"\\"\\"
     No properties
     \\"\\"\\"
