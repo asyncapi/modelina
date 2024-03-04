@@ -1,7 +1,8 @@
 import { PythonRenderer } from '../PythonRenderer';
 import {
   ConstrainedObjectModel,
-  ConstrainedObjectPropertyModel
+  ConstrainedObjectPropertyModel,
+  ConstrainedReferenceModel
 } from '../../../models';
 import { PythonOptions } from '../PythonGenerator';
 import { ClassPresetType } from '../PythonPreset';
@@ -81,19 +82,25 @@ export const PYTHON_DEFAULT_CLASS_PRESET: ClassPresetType<PythonOptions> = {
     const properties = model.properties || {};
     let body = '';
     if (Object.keys(properties).length > 0) {
-      const assigments = Object.values(properties).map((property) => {
-        if (!property.required) {
-          return `if hasattr(input, '${property.propertyName}'):\n\tself._${property.propertyName} = input.${property.propertyName}`;
+      const assignments = Object.values(properties).map((property) => {
+        let assignment: string;
+        if (property.property instanceof ConstrainedReferenceModel) {
+          assignment = `self._${property.propertyName}: ${property.property.type} = ${property.property.type}(input["${property.propertyName}"])`;
+        } else {
+          assignment = `self._${property.propertyName}: ${property.property.type} = input["${property.propertyName}"]`;
         }
-        return `self._${property.propertyName} = input.${property.propertyName}`;
+        if (!property.required) {
+          return `if hasattr(input, "${property.propertyName}"):\n\t${assignment}`;
+        }
+        return assignment;
       });
-      body = renderer.renderBlock(assigments);
+      body = renderer.renderBlock(assignments);
     } else {
       body = `"""
 No properties
 """`;
     }
-    return `def __init__(self, input):
+    return `def __init__(self, input: dict):
 ${renderer.indent(body)}`;
   },
   getter({ property }) {
@@ -101,6 +108,11 @@ ${renderer.indent(body)}`;
 def ${property.propertyName}(self):\n\treturn self._${property.propertyName}`;
   },
   setter({ property }) {
+    // if const value exists we should not render a setter
+    if (property.property.options.const?.value) {
+      return '';
+    }
+
     return `@${property.propertyName}.setter
 def ${property.propertyName}(self, ${property.propertyName}):\n\tself._${property.propertyName} = ${property.propertyName}`;
   }
