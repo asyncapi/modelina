@@ -33,15 +33,15 @@ const PYTHON_PYDANTIC_CLASS_PRESET: ClassPresetType<PythonOptions> = {
       type = `Optional[${type}]`;
     }
 
-    const alias = params.property.property.originalInput['description']
-      ? `alias='''${params.property.property.originalInput['description']}'''`
+    const description = params.property.property.originalInput['description']
+      ? `description='''${params.property.property.originalInput['description']}'''`
       : '';
     const defaultValue = params.property.required ? '' : 'default=None';
 
-    if (alias && defaultValue) {
-      return `${propertyName}: ${type} = Field(${alias}, ${defaultValue})`;
-    } else if (alias) {
-      return `${propertyName}: ${type} = Field(${alias})`;
+    if (description && defaultValue) {
+      return `${propertyName}: ${type} = Field(${description}, ${defaultValue})`;
+    } else if (description) {
+      return `${propertyName}: ${type} = Field(${description})`;
     }
     return `${propertyName}: ${type} = Field(${defaultValue})`;
   },
