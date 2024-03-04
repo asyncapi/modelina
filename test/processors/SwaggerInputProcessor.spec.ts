@@ -2,6 +2,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { AnyModel, CommonModel } from '../../src/models';
 import { SwaggerInputProcessor } from '../../src/processors/SwaggerInputProcessor';
+import { JsonSchemaInputProcessor } from '../../src';
 const basicDoc = JSON.parse(
   fs.readFileSync(
     path.resolve(__dirname, './SwaggerInputProcessor/basic.json'),
@@ -11,14 +12,8 @@ const basicDoc = JSON.parse(
 jest.mock('../../src/utils/LoggingInterface');
 jest.spyOn(SwaggerInputProcessor, 'convertToInternalSchema');
 const mockedReturnModels = [new CommonModel()];
-const mockedMetaModel = new AnyModel('', undefined);
-jest.mock('../../src/helpers/CommonModelToMetaModel', () => {
-  return {
-    convertToMetaModel: jest.fn().mockImplementation(() => {
-      return mockedMetaModel;
-    })
-  };
-});
+const mockedMetaModel = new AnyModel('', undefined, {});
+
 jest.mock('../../src/interpreter/Interpreter', () => {
   return {
     Interpreter: jest.fn().mockImplementation(() => {
@@ -68,6 +63,11 @@ describe('SwaggerInputProcessor', () => {
       );
     });
     test('should process the swagger document accurately', async () => {
+      JsonSchemaInputProcessor.convertSchemaToMetaModel = jest
+        .fn()
+        .mockImplementation(() => {
+          return mockedMetaModel;
+        });
       const processor = new SwaggerInputProcessor();
       const commonInputModel = await processor.process(basicDoc);
       expect(commonInputModel).toMatchSnapshot();

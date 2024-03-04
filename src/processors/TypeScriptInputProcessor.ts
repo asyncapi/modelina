@@ -4,7 +4,6 @@ import ts from 'typescript';
 import * as TJS from 'typescript-json-schema';
 import { JsonSchemaInputProcessor } from './JsonSchemaInputProcessor';
 import { AbstractInputProcessor } from './AbstractInputProcessor';
-import { convertToMetaModel } from '../helpers';
 import { Logger } from '../utils';
 
 /** Class for processing Typescript code inputs to Common module*/
@@ -99,23 +98,17 @@ export class TypeScriptInputProcessor extends AbstractInputProcessor {
     );
     if (generatedSchemas) {
       for (const schema of generatedSchemas) {
-        const newCommonModel =
-          JsonSchemaInputProcessor.convertSchemaToCommonModel(
-            schema as any,
-            options
+        const newMetaModel = JsonSchemaInputProcessor.convertSchemaToMetaModel(
+          schema as any,
+          options
+        );
+        if (inputModel.models[newMetaModel.name] !== undefined) {
+          Logger.warn(
+            `Overwriting existing model with name ${newMetaModel.name}, are there two models with the same name present? Overwriting the old model.`,
+            newMetaModel.name
           );
-        if (newCommonModel.$id !== undefined) {
-          if (inputModel.models[newCommonModel.$id] !== undefined) {
-            Logger.warn(
-              `Overwriting existing model with $id ${newCommonModel.$id}, are there two models with the same id present?`,
-              newCommonModel
-            );
-          }
-          const metaModel = convertToMetaModel(newCommonModel);
-          inputModel.models[metaModel.name] = metaModel;
-        } else {
-          Logger.warn('Model did not have $id, ignoring.', newCommonModel);
         }
+        inputModel.models[newMetaModel.name] = newMetaModel;
       }
     }
     return Promise.resolve(inputModel);

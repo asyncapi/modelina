@@ -187,7 +187,7 @@ class Root {
 }
 ```
 
-### Ap/pre-pending to existng rendered content
+### Ap/pre-pending to existing rendered content
 As the hello world example appended content, this time lets prepend some content to the properties.
 ```ts
 import { TypeScriptGenerator } from '@asyncapi/modelina';
@@ -198,7 +198,7 @@ const generator = new TypeScriptGenerator({
       class: {
         property({ content }) {
           const description = '// Hello world!'
-          return `${description}\n${content}`;
+          return `${content}\n${description}`;
         }
       }
     }
@@ -304,7 +304,7 @@ self({ dependencyManager, content }) {
 
 Some languages has specific helper functions, and some very basic interfaces, such as for Java.
 
-In TypeScript because you can have different import syntaxes based on the module system such as [CJS](../examples/typescript-use-cjs/) or [ESM](../examples/typescript-use-esm/), therefore it provies a specific function `addTypeScriptDependency` that takes care of that logic, and you just have to remember `addTypeScriptDependency('ImportanWhat', 'FromWhere')`.
+In TypeScript because you can have different import syntaxes based on the module system such as [CJS](../examples/typescript-use-cjs/) or [ESM](../examples/typescript-use-esm/), therefore it provides a specific function `addTypeScriptDependency` that takes care of that logic, and you just have to remember `addTypeScriptDependency('Import what', 'From where')`.
 
 ### Overriding the default preset
 
@@ -415,6 +415,13 @@ This preset is a generator for the meta model `ConstrainedObjectModel` and [can 
 | Method | Description | Additional arguments |
 |---|---|---|
 | `field` | A method to extend rendered given field. | `field` object as a [`ConstrainedObjectPropertyModel`](./internal-model.md#the-constrained-meta-model) instance. |
+
+#### **Enum**
+
+This preset is a generator for the meta model `ConstrainedEnumModel` and [can be accessed through the `model` argument](#presets-shape).
+
+| Method | Description | Additional arguments |
+|---|---|---|
 
 ### C#
 

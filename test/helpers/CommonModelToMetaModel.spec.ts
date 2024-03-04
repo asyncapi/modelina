@@ -14,6 +14,10 @@ import {
 } from '../../src';
 import { convertToMetaModel } from '../../src/helpers';
 describe('CommonModelToMetaModel', () => {
+  const defaultOptions = {
+    options: {},
+    alreadySeenModels: new Map()
+  };
   afterEach(() => {
     jest.restoreAllMocks();
   });
@@ -23,7 +27,10 @@ describe('CommonModelToMetaModel', () => {
       cm.$id = 'test';
       cm.type = ['string', 'null'];
 
-      const model = convertToMetaModel(cm);
+      const model = convertToMetaModel({
+        ...defaultOptions,
+        jsonSchemaModel: cm
+      });
 
       expect(model).not.toBeUndefined();
       expect(model instanceof StringModel).toEqual(true);
@@ -34,7 +41,10 @@ describe('CommonModelToMetaModel', () => {
       cm.$id = 'test';
       cm.type = ['string'];
 
-      const model = convertToMetaModel(cm);
+      const model = convertToMetaModel({
+        ...defaultOptions,
+        jsonSchemaModel: cm
+      });
 
       expect(model).not.toBeUndefined();
       expect(model instanceof StringModel).toEqual(true);
@@ -50,7 +60,10 @@ describe('CommonModelToMetaModel', () => {
       cm.$id = 'test';
       cm.union = [cm1, cm2];
 
-      const model = convertToMetaModel(cm);
+      const model = convertToMetaModel({
+        ...defaultOptions,
+        jsonSchemaModel: cm
+      });
 
       expect(model).not.toBeUndefined();
       expect(model instanceof UnionModel).toEqual(true);
@@ -69,7 +82,10 @@ describe('CommonModelToMetaModel', () => {
       cm.$id = 'test';
       cm.union = [cm1, cm2];
 
-      const model = convertToMetaModel(cm);
+      const model = convertToMetaModel({
+        ...defaultOptions,
+        jsonSchemaModel: cm
+      });
 
       expect(model).not.toBeUndefined();
       expect(model instanceof UnionModel).toEqual(true);
@@ -82,7 +98,10 @@ describe('CommonModelToMetaModel', () => {
     const cm = new CommonModel();
     cm.$id = 'test';
 
-    const model = convertToMetaModel(cm);
+    const model = convertToMetaModel({
+      ...defaultOptions,
+      jsonSchemaModel: cm
+    });
 
     expect(model).not.toBeUndefined();
     expect(model instanceof AnyModel).toEqual(true);
@@ -100,7 +119,10 @@ describe('CommonModelToMetaModel', () => {
     ];
     cm.$id = 'test';
 
-    const model = convertToMetaModel(cm);
+    const model = convertToMetaModel({
+      ...defaultOptions,
+      jsonSchemaModel: cm
+    });
 
     expect(model).not.toBeUndefined();
     expect(model instanceof AnyModel).toEqual(true);
@@ -110,7 +132,10 @@ describe('CommonModelToMetaModel', () => {
     cm.type = ['string', 'number', 'integer', 'boolean', 'object', 'array'];
     cm.$id = 'test';
 
-    const model = convertToMetaModel(cm);
+    const model = convertToMetaModel({
+      ...defaultOptions,
+      jsonSchemaModel: cm
+    });
 
     expect(model).not.toBeUndefined();
     expect(model instanceof AnyModel).toEqual(true);
@@ -120,14 +145,18 @@ describe('CommonModelToMetaModel', () => {
       const cm = new CommonModel();
       cm.type = 'string';
       cm.$id = 'test';
-      cm.enum = ['test'];
+      cm.enum = ['test', 'test2'];
 
-      const model = convertToMetaModel(cm);
+      const model = convertToMetaModel({
+        ...defaultOptions,
+        jsonSchemaModel: cm
+      });
 
       expect(model).not.toBeUndefined();
       expect(model instanceof EnumModel).toEqual(true);
-      expect((model as EnumModel).values.length).toEqual(1);
+      expect((model as EnumModel).values.length).toEqual(2);
       expect((model as EnumModel).values[0].key).toEqual('test');
+      expect((model as EnumModel).values[1].key).toEqual('test2');
     });
     test('when different types of values', () => {
       const cm = new CommonModel();
@@ -135,7 +164,10 @@ describe('CommonModelToMetaModel', () => {
       cm.$id = 'test';
       cm.enum = [{ test: 1 }, 123, 'test', true];
 
-      const model = convertToMetaModel(cm);
+      const model = convertToMetaModel({
+        ...defaultOptions,
+        jsonSchemaModel: cm
+      });
 
       expect(model).not.toBeUndefined();
       expect(model instanceof EnumModel).toEqual(true);
@@ -151,7 +183,10 @@ describe('CommonModelToMetaModel', () => {
     cm.type = 'string';
     cm.$id = 'test';
 
-    const model = convertToMetaModel(cm);
+    const model = convertToMetaModel({
+      ...defaultOptions,
+      jsonSchemaModel: cm
+    });
 
     expect(model).not.toBeUndefined();
     expect(model instanceof StringModel).toEqual(true);
@@ -161,7 +196,10 @@ describe('CommonModelToMetaModel', () => {
     cm.type = 'number';
     cm.$id = 'test';
 
-    const model = convertToMetaModel(cm);
+    const model = convertToMetaModel({
+      ...defaultOptions,
+      jsonSchemaModel: cm
+    });
 
     expect(model).not.toBeUndefined();
     expect(model instanceof FloatModel).toEqual(true);
@@ -171,7 +209,10 @@ describe('CommonModelToMetaModel', () => {
     cm.type = 'integer';
     cm.$id = 'test';
 
-    const model = convertToMetaModel(cm);
+    const model = convertToMetaModel({
+      ...defaultOptions,
+      jsonSchemaModel: cm
+    });
 
     expect(model).not.toBeUndefined();
     expect(model instanceof IntegerModel).toEqual(true);
@@ -181,7 +222,10 @@ describe('CommonModelToMetaModel', () => {
     cm.type = 'boolean';
     cm.$id = 'test';
 
-    const model = convertToMetaModel(cm);
+    const model = convertToMetaModel({
+      ...defaultOptions,
+      jsonSchemaModel: cm
+    });
 
     expect(model).not.toBeUndefined();
     expect(model instanceof BooleanModel).toEqual(true);
@@ -191,7 +235,10 @@ describe('CommonModelToMetaModel', () => {
     cm.type = 'object';
     cm.$id = 'test';
 
-    const model = convertToMetaModel(cm);
+    const model = convertToMetaModel({
+      ...defaultOptions,
+      jsonSchemaModel: cm
+    });
 
     expect(model).not.toBeUndefined();
     expect(model instanceof ObjectModel).toEqual(true);
@@ -201,7 +248,10 @@ describe('CommonModelToMetaModel', () => {
     cm.type = 'array';
     cm.$id = 'test';
 
-    const model = convertToMetaModel(cm);
+    const model = convertToMetaModel({
+      ...defaultOptions,
+      jsonSchemaModel: cm
+    });
 
     expect(model).not.toBeUndefined();
     expect(model instanceof ArrayModel).toEqual(true);
@@ -217,7 +267,10 @@ describe('CommonModelToMetaModel', () => {
       test: spm
     };
 
-    const model = convertToMetaModel(cm);
+    const model = convertToMetaModel({
+      ...defaultOptions,
+      jsonSchemaModel: cm
+    });
 
     expect(model).not.toBeUndefined();
     expect(model instanceof ObjectModel).toEqual(true);
@@ -233,7 +286,10 @@ describe('CommonModelToMetaModel', () => {
     };
     cm.additionalProperties = spm;
 
-    const model = convertToMetaModel(cm);
+    const model = convertToMetaModel({
+      ...defaultOptions,
+      jsonSchemaModel: cm
+    });
 
     expect(model).not.toBeUndefined();
     expect(model instanceof ObjectModel).toEqual(true);
@@ -252,7 +308,10 @@ describe('CommonModelToMetaModel', () => {
     };
     cm.additionalProperties = spm;
 
-    const model = convertToMetaModel(cm);
+    const model = convertToMetaModel({
+      ...defaultOptions,
+      jsonSchemaModel: cm
+    });
 
     expect(model).not.toBeUndefined();
     expect(model instanceof ObjectModel).toEqual(true);
@@ -272,7 +331,10 @@ describe('CommonModelToMetaModel', () => {
     cm.$id = 'test';
     cm.extend = [extend];
 
-    const model = convertToMetaModel(cm);
+    const model = convertToMetaModel({
+      ...defaultOptions,
+      jsonSchemaModel: cm
+    });
 
     expect(model instanceof ObjectModel).toEqual(true);
     expect(model.options.extend?.length).toEqual(1);
@@ -297,7 +359,10 @@ describe('CommonModelToMetaModel', () => {
     };
     cm.additionalProperties = booleanCM;
 
-    const model = convertToMetaModel(cm);
+    const model = convertToMetaModel({
+      ...defaultOptions,
+      jsonSchemaModel: cm
+    });
 
     expect(model).not.toBeUndefined();
     expect(model instanceof ObjectModel).toEqual(true);
@@ -333,7 +398,10 @@ describe('CommonModelToMetaModel', () => {
     };
     cm.additionalProperties = booleanCM;
 
-    const model = convertToMetaModel(cm);
+    const model = convertToMetaModel({
+      ...defaultOptions,
+      jsonSchemaModel: cm
+    });
 
     expect(model).not.toBeUndefined();
     expect(model instanceof DictionaryModel).toEqual(true);
@@ -356,7 +424,10 @@ describe('CommonModelToMetaModel', () => {
     cm.$id = 'test';
     cm.items = spm;
 
-    const model = convertToMetaModel(cm);
+    const model = convertToMetaModel({
+      ...defaultOptions,
+      jsonSchemaModel: cm
+    });
 
     expect(model).not.toBeUndefined();
     expect(model instanceof ArrayModel).toEqual(true);
@@ -373,7 +444,10 @@ describe('CommonModelToMetaModel', () => {
     cm.items = spm;
     cm.additionalItems = spm;
 
-    const model = convertToMetaModel(cm);
+    const model = convertToMetaModel({
+      ...defaultOptions,
+      jsonSchemaModel: cm
+    });
 
     expect(model).not.toBeUndefined();
     expect(model instanceof ArrayModel).toEqual(true);
@@ -386,7 +460,10 @@ describe('CommonModelToMetaModel', () => {
     cm.type = ['string', 'number'];
     cm.$id = 'test';
 
-    const model = convertToMetaModel(cm);
+    const model = convertToMetaModel({
+      ...defaultOptions,
+      jsonSchemaModel: cm
+    });
 
     expect(model).not.toBeUndefined();
     expect(model instanceof UnionModel).toEqual(true);
@@ -400,7 +477,10 @@ describe('CommonModelToMetaModel', () => {
     const dog = new CommonModel();
     dog.$id = 'Dog';
     cm.union = [cat, dog];
-    const model = convertToMetaModel(cm);
+    const model = convertToMetaModel({
+      ...defaultOptions,
+      jsonSchemaModel: cm
+    });
     expect(model).not.toBeUndefined();
     expect(model instanceof UnionModel).toEqual(true);
     expect((model as UnionModel).union.length).toEqual(2);
@@ -413,7 +493,10 @@ describe('CommonModelToMetaModel', () => {
     cm.$id = 'test';
     cm.items = [scm, scm];
 
-    const model = convertToMetaModel(cm);
+    const model = convertToMetaModel({
+      ...defaultOptions,
+      jsonSchemaModel: cm
+    });
 
     expect(model).not.toBeUndefined();
     expect(model instanceof TupleModel).toEqual(true);
@@ -427,7 +510,10 @@ describe('CommonModelToMetaModel', () => {
       test: cm
     };
 
-    const model = convertToMetaModel(cm);
+    const model = convertToMetaModel({
+      ...defaultOptions,
+      jsonSchemaModel: cm
+    });
 
     expect(model).not.toBeUndefined();
     expect(model instanceof ObjectModel).toEqual(true);
@@ -437,10 +523,13 @@ describe('CommonModelToMetaModel', () => {
     const cm = new CommonModel();
     cm.$id = 'test';
     cm.type = 'string';
-    cm.enum = ['testConst'];
+    cm.enum = ['testConst', 'testConst2'];
     cm.const = 'testConst';
 
-    const model = convertToMetaModel(cm);
+    const model = convertToMetaModel({
+      ...defaultOptions,
+      jsonSchemaModel: cm
+    });
 
     expect(model).not.toBeUndefined();
     expect(model instanceof EnumModel).toEqual(true);
@@ -448,17 +537,39 @@ describe('CommonModelToMetaModel', () => {
       {
         key: cm.const,
         value: cm.const
+      },
+      {
+        key: 'testConst2',
+        value: 'testConst2'
       }
     ]);
     expect(model.options.const?.originalInput).toEqual(cm.const);
   });
 
+  test('should handle single enums as const with option', () => {
+    const cm = new CommonModel();
+    cm.$id = 'test';
+    cm.enum = ['testConst'];
+
+    const model = convertToMetaModel({
+      ...defaultOptions,
+      jsonSchemaModel: cm,
+      options: { interpretSingleEnumAsConst: true }
+    });
+
+    expect(model).not.toBeUndefined();
+    expect(model instanceof AnyModel).toEqual(true);
+    expect(model.options.const?.originalInput).toEqual(cm.enum[0]);
+  });
   test('should handle const', () => {
     const cm = new CommonModel();
     cm.$id = 'test';
     cm.const = 'testConst';
 
-    const model = convertToMetaModel(cm);
+    const model = convertToMetaModel({
+      ...defaultOptions,
+      jsonSchemaModel: cm
+    });
 
     expect(model).not.toBeUndefined();
     expect(model instanceof AnyModel).toEqual(true);
@@ -470,7 +581,10 @@ describe('CommonModelToMetaModel', () => {
     cm.$id = 'test';
     cm.discriminator = 'testDiscriminator';
 
-    const model = convertToMetaModel(cm);
+    const model = convertToMetaModel({
+      ...defaultOptions,
+      jsonSchemaModel: cm
+    });
 
     expect(model).not.toBeUndefined();
     expect(model instanceof AnyModel).toEqual(true);
