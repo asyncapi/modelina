@@ -83,7 +83,8 @@ export const PYTHON_DEFAULT_CLASS_PRESET: ClassPresetType<PythonOptions> = {
     if (Object.keys(properties).length > 0) {
       const assigments = Object.values(properties).map((property) => {
         if (!property.required) {
-          return `if hasattr(input, '${property.propertyName}'):\n\tself._${property.propertyName} = input.${property.propertyName}`;
+          return `if hasattr(input, '${property.propertyName}'):
+  self._${property.propertyName} = input.${property.propertyName}`;
         }
         return `self._${property.propertyName} = input.${property.propertyName}`;
       });
@@ -94,14 +95,15 @@ No properties
 """`;
     }
     return `def __init__(self, input):
-${renderer.indent(body)}`;
+${renderer.indent(body, 2)}`;
   },
-  getter({ property }) {
-    return `@property
-def ${property.propertyName}(self):\n\treturn self._${property.propertyName}`;
+  getter({ renderer, property }) {
+    return renderer.indent(`@property
+def ${property.propertyName}(self):
+  return self._${property.propertyName}`);
   },
-  setter({ property }) {
-    return `@${property.propertyName}.setter
-def ${property.propertyName}(self, ${property.propertyName}):\n\tself._${property.propertyName} = ${property.propertyName}`;
+  setter({ renderer, property }) {
+    return renderer.indent(`@${property.propertyName}.setter
+def ${property.propertyName}(self, ${property.propertyName}):\n\tself._${property.propertyName} = ${property.propertyName}`);
   }
 };
