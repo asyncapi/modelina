@@ -22,6 +22,11 @@ export class EnumRenderer extends GoRenderer<ConstrainedEnumModel> {
       return `${this.model.name}Values[${value.key}]: ${value.key},`;
     });
     const additionalContent = await this.runAdditionalContentPreset();
+    const renderedAdditionalContent = additionalContent
+      ? `
+    ${this.indent(additionalContent)}    
+`
+      : '';
     const values = this.model.values
       .map((value) => {
         return value.value;
@@ -46,10 +51,7 @@ func (op ${this.model.name}) Value() any {
 var ${this.model.name}Values = []any{${values}}
 var ValuesTo${this.model.name} = map[any]${this.model.name}{
 ${this.indent(this.renderBlock(valuesToEnumMap))}
-}
-
-${this.indent(additionalContent)}
-`;
+}${renderedAdditionalContent}`;
   }
 
   async renderItems(): Promise<string> {

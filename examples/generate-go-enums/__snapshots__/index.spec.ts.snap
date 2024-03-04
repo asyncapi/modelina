@@ -34,8 +34,7 @@ var ValuesToCities = map[any]Cities{
   CitiesValues[CitiesLondon]: CitiesLondon,
   CitiesValues[CitiesRome]: CitiesRome,
   CitiesValues[CitiesBrussels]: CitiesBrussels,
-}
-",
+}",
 ]
 `;
 
@@ -65,7 +64,6 @@ var ValuesToOptions = map[any]Options{
   OptionsValues[OptionsNumber_213]: OptionsNumber_213,
   OptionsValues[OptionsTrue]: OptionsTrue,
   OptionsValues[OptionsRun]: OptionsRun,
-}
-",
+}",
 ]
 `;

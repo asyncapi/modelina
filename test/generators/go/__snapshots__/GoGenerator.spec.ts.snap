@@ -89,8 +89,7 @@ var ValuesToThings = map[any]Things{
   ThingsValues[ThingsReservedNumber_1]: ThingsReservedNumber_1,
   ThingsValues[ThingsFalse]: ThingsFalse,
   ThingsValues[ThingsCurlyleftQuotationTestQuotationColonQuotationTestQuotationCurlyright]: ThingsCurlyleftQuotationTestQuotationColonQuotationTestQuotationCurlyright,
-}
-"
+}"
 `;
 
 exports[`GoGenerator should render \`struct\` type 1`] = `
@@ -131,8 +130,7 @@ var ValuesToCustomEnum = map[any]CustomEnum{
   CustomEnumValues[CustomEnumTexas]: CustomEnumTexas,
   CustomEnumValues[CustomEnumAlabama]: CustomEnumAlabama,
   CustomEnumValues[CustomEnumCalifornia]: CustomEnumCalifornia,
-}
-"
+}"
 `;
 
 exports[`GoGenerator should work custom preset for \`struct\` type 1`] = `
