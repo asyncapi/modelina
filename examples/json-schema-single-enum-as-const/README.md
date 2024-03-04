@@ -1,6 +1,8 @@
 # JSON Schema interpret single enum as constant
 
-This example shows how to use the `interpretSingleEnumAsConst` option on the JSON Schema input processor to instead of interpreting `{enum: ['single value']}` as an enum, it will instead only be generated as a constant value.
+This example shows how to use the `interpretSingleEnumAsConst` option on the JSON Schema input processor to instead of interpreting `{enum: ['single value']}` as an enum, it will instead only be generated as a constant value. 
+
+This ONLY applies when it's a single value.
 
 ## How to run this example
 
