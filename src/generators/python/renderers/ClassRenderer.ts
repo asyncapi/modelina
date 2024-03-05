@@ -104,6 +104,7 @@ def ${property.propertyName}(self):
   },
   setter({ renderer, property }) {
     return renderer.indent(`@${property.propertyName}.setter
-def ${property.propertyName}(self, ${property.propertyName}):\n\tself._${property.propertyName} = ${property.propertyName}`);
+def ${property.propertyName}(self, ${property.propertyName}):
+  self._${property.propertyName} = ${property.propertyName}`);
   }
 };
