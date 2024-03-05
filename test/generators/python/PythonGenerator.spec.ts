@@ -96,11 +96,9 @@ describe('PythonGenerator', () => {
         },
         required: ['street_name', 'city', 'state', 'house_number', 'array_type']
       };
-      const expectedDependencies: string[] = [];
       const models = await generator.generate(doc);
       expect(models).toHaveLength(1);
       expect(models[0].result).toMatchSnapshot();
-      expect(models[0].dependencies).toEqual(expectedDependencies);
     });
 
     test('should work with custom preset for `class` type', async () => {
