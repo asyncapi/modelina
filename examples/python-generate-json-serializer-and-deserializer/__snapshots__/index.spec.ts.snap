@@ -14,14 +14,14 @@ Array [
       return self._email
     @email.setter
     def email(self, email):
-    	self._email = email
+      self._email = email
 
     @property
     def additionalProperties(self):
       return self._additionalProperties
     @additionalProperties.setter
     def additionalProperties(self, additionalProperties):
-    	self._additionalProperties = additionalProperties
+      self._additionalProperties = additionalProperties
 
   def serializeToJson(self):
     return json.dumps(self.__dict__, default=lambda o: o.__dict__, indent=2)
