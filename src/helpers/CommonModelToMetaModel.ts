@@ -18,7 +18,7 @@ import {
   AnyModel,
   MetaModelOptions
 } from '../models';
-import { JsonSchemaProcessorOptions } from 'processors';
+import { JsonSchemaProcessorOptions } from '../processors';
 
 function getMetaModelOptions(
   commonModel: CommonModel,
