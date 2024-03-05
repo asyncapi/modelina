@@ -104,3 +104,11 @@ In Modelina 3 this used is rendered as:
 class Message(BaseModel):
   identifier: str = Field(alias='''The Identifier for the Message''')
 ```
+
+### Following standardized styling guide
+
+Before names of properties and model names did not follow any specific styling standard.
+
+In v4, we switched to using the following:
+- Variables and functions: https://peps.python.org/pep-0008/#function-and-variable-names
+- Model names: https://peps.python.org/pep-0008/#class-names
