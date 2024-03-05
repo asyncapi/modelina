@@ -53,11 +53,18 @@ describe('PythonConstrainer', () => {
   describe('Any', () => {
     test('should render type', () => {
       const model = new ConstrainedAnyModel('test', undefined, {}, '');
+      const dependencyManager = new PythonDependencyManager(
+        PythonGenerator.defaultOptions
+      );
       const type = PythonDefaultTypeMapping.Any({
         constrainedModel: model,
-        ...defaultOptions
+        ...defaultOptions,
+        dependencyManager
       });
       expect(type).toEqual('Any');
+      expect(dependencyManager.dependencies).toEqual([
+        'from typing import Any'
+      ]);
     });
   });
   describe('Float', () => {
