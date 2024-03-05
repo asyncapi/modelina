@@ -6,23 +6,23 @@ exports[`PYTHON_PYDANTIC_PRESET should render pydantic for class 1`] = `
     multi
     line
     description''', default=None)
-  additionalProperties: Optional[dict[Any, Any]] = Field(default=None)
+  additional_properties: Optional[dict[Any, Any]] = Field(default=None)
 "
 `;
 
 exports[`PYTHON_PYDANTIC_PRESET should render union to support Python < 3.10 1`] = `
 Array [
   "class UnionTest(BaseModel): 
-  unionTest: Optional[Union[Union1, Union2]] = Field(default=None)
-  additionalProperties: Optional[dict[Any, Any]] = Field(default=None)
+  union_test: Optional[Union[Union1, Union2]] = Field(default=None)
+  additional_properties: Optional[dict[Any, Any]] = Field(default=None)
 ",
   "class Union1(BaseModel): 
-  testProp1: Optional[str] = Field(default=None)
-  additionalProperties: Optional[dict[Any, Any]] = Field(default=None)
+  test_prop1: Optional[str] = Field(default=None)
+  additional_properties: Optional[dict[Any, Any]] = Field(default=None)
 ",
   "class Union2(BaseModel): 
-  testProp2: Optional[str] = Field(default=None)
-  additionalProperties: Optional[dict[Any, Any]] = Field(default=None)
+  test_prop2: Optional[str] = Field(default=None)
+  additional_properties: Optional[dict[Any, Any]] = Field(default=None)
 ",
 ]
 `;
