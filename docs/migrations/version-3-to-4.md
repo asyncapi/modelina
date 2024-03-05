@@ -112,3 +112,24 @@ Before names of properties and model names did not follow any specific styling s
 In v4, we switched to using the following:
 - Variables and functions: https://peps.python.org/pep-0008/#function-and-variable-names
 - Model names: https://peps.python.org/pep-0008/#class-names
+
+This means that properties and their accessor methods (getter and setters) have been renamed from:
+```diff
+- self._someWeirdValueExclamationQuotationHash_2 = input.someWeirdValueExclamationQuotationHash_2
++ self._some_weird_value_exclamation_quotation_hash_2 = input.some_weird_value_exclamation_quotation_hash_2
+```
+
+And model names have been renamed to:
+```diff
+- class AsyncApi_3Dot_0Dot_0SchemaDot:
++ class AsyncApi3Dot0Dot0SchemaDot:
+```
+
+If you are using the Python preset `PYTHON_JSON_SERIALIZER_PRESET`, the functions have also been renamed:
+```diff
+- serializeToJson
++ serialize_to_json
+
+- deserializeFromJson
++ deserialize_from_json
+```

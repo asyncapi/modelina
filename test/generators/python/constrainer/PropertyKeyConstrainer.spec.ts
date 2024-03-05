@@ -71,12 +71,12 @@ describe('PropertyKeyConstrainer', () => {
       {}
     );
     const objectPropertyModel = new ObjectPropertyModel(
-      'reservedReturn',
+      'reserved_return',
       false,
       objectModel
     );
     const constrainedObjectPropertyModel = new ConstrainedObjectPropertyModel(
-      'reservedReturn',
+      'reserved_return',
       '',
       objectPropertyModel.required,
       constrainedObjectModel
@@ -92,7 +92,7 @@ describe('PropertyKeyConstrainer', () => {
       objectPropertyModel.required,
       constrainedObjectModel
     );
-    constrainedObjectModel.properties['reservedReturn'] =
+    constrainedObjectModel.properties['reserved_return'] =
       constrainedObjectPropertyModel;
     constrainedObjectModel.properties['return'] =
       constrainedObjectPropertyModel2;
@@ -103,11 +103,11 @@ describe('PropertyKeyConstrainer', () => {
       constrainedObjectPropertyModel: constrainedObjectPropertyModel2,
       options: PythonGenerator.defaultOptions
     });
-    expect(constrainedKey).toEqual('reservedReservedReturn');
+    expect(constrainedKey).toEqual('reserved_reserved_return');
   });
   test('should never render reserved keywords', () => {
     const constrainedKey = constrainPropertyName('return');
-    expect(constrainedKey).toEqual('reservedReturn');
+    expect(constrainedKey).toEqual('reserved_return');
   });
   describe('custom constraints', () => {
     test('should be able to overwrite all hooks', () => {

@@ -22,11 +22,11 @@ exports[`PYTHON_JSON_SERIALIZER_PRESET should render serializer and deserializer
   def additional_properties(self, additional_properties):
   	self._additional_properties = additional_properties
 
-  def serializeToJson(self):
+  def serialize_to_json(self):
     return json.dumps(self.__dict__, default=lambda o: o.__dict__, indent=2)
 
   @staticmethod
-  def deserializeFromJson(json_string):
+  def deserialize_from_json(json_string):
     return Test(**json.loads(json_string))
 "
 `;
