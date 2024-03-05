@@ -17,6 +17,9 @@ There are special use-cases that each language supports; this document pertains 
 In some cases you might want to use [pydantic](https://pypi.org/project/pydantic/) data validation and settings management using Python type hints for the models.
 Modelina follows Pydantic v2.
 
+There are some limitations to the current implementation:
+1. The preset doesn't unwrap properties of type `ConstrainedDictionaryModel` with `serialilzationType = unwrap`, they are simply excluded from the serialization
+
 You can find an example of its use [here](../../examples/generate-python-pydantic-models/index.ts)
 
 ## Generate models with JSON Serializer and Deserializer methods
