@@ -16,7 +16,8 @@ export const PythonDefaultTypeMapping: PythonTypeMapping = {
   Reference({ constrainedModel }): string {
     return constrainedModel.name;
   },
-  Any(): string {
+  Any({ dependencyManager }): string {
+    dependencyManager.addDependency('from typing import Any');
     return 'Any';
   },
   Float(): string {
