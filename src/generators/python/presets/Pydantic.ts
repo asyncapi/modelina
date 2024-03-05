@@ -1,4 +1,7 @@
-import { ConstrainedDictionaryModel, ConstrainedUnionModel } from '../../../models';
+import {
+  ConstrainedDictionaryModel,
+  ConstrainedUnionModel
+} from '../../../models';
 import { PythonOptions } from '../PythonGenerator';
 import { ClassPresetType, PythonPreset } from '../PythonPreset';
 
