@@ -12,17 +12,17 @@ class ObjProperty:
     	self._additionalProperties: dict[Any, Any] = input[\\"additionalProperties\\"]
 
   @property
-  def number(self):
+  def number(self) -> float:
   	return self._number
   @number.setter
-  def number(self, number):
+  def number(self, number: float):
   	self._number = number
 
   @property
-  def additionalProperties(self):
+  def additionalProperties(self) -> dict[Any, Any]:
   	return self._additionalProperties
   @additionalProperties.setter
-  def additionalProperties(self, additionalProperties):
+  def additionalProperties(self, additionalProperties: dict[Any, Any]):
   	self._additionalProperties = additionalProperties
 ",
 ]
@@ -40,17 +40,17 @@ class ObjProperty:
     	self._additionalProperties: dict[Any, Any] = input[\\"additionalProperties\\"]
 
   @property
-  def number(self):
+  def number(self) -> float:
   	return self._number
   @number.setter
-  def number(self, number):
+  def number(self, number: float):
   	self._number = number
 
   @property
-  def additionalProperties(self):
+  def additionalProperties(self) -> dict[Any, Any]:
   	return self._additionalProperties
   @additionalProperties.setter
-  def additionalProperties(self, additionalProperties):
+  def additionalProperties(self, additionalProperties: dict[Any, Any]):
   	self._additionalProperties = additionalProperties
 ",
 ]
@@ -68,17 +68,17 @@ class Root:
     	self._objProperty: ObjProperty = ObjProperty(input[\\"objProperty\\"])
 
   @property
-  def email(self):
+  def email(self) -> str:
   	return self._email
   @email.setter
-  def email(self, email):
+  def email(self, email: str):
   	self._email = email
 
   @property
-  def objProperty(self):
+  def objProperty(self) -> ObjProperty:
   	return self._objProperty
   @objProperty.setter
-  def objProperty(self, objProperty):
+  def objProperty(self, objProperty: ObjProperty):
   	self._objProperty = objProperty
 ",
 ]
@@ -96,17 +96,17 @@ class Root:
     	self._objProperty: ObjProperty = ObjProperty(input[\\"objProperty\\"])
 
   @property
-  def email(self):
+  def email(self) -> str:
   	return self._email
   @email.setter
-  def email(self, email):
+  def email(self, email: str):
   	self._email = email
 
   @property
-  def objProperty(self):
+  def objProperty(self) -> ObjProperty:
   	return self._objProperty
   @objProperty.setter
-  def objProperty(self, objProperty):
+  def objProperty(self, objProperty: ObjProperty):
   	self._objProperty = objProperty
 ",
 ]

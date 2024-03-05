@@ -105,7 +105,7 @@ ${renderer.indent(body)}`;
   },
   getter({ property }) {
     return `@property
-def ${property.propertyName}(self):\n\treturn self._${property.propertyName}`;
+def ${property.propertyName}(self) -> ${property.property.type}:\n\treturn self._${property.propertyName}`;
   },
   setter({ property }) {
     // if const value exists we should not render a setter

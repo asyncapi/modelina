@@ -10,17 +10,17 @@ Array [
     	self._additionalProperties: dict[Any, Any] = input[\\"additionalProperties\\"]
 
   @property
-  def email(self):
+  def email(self) -> str:
   	return self._email
   @email.setter
-  def email(self, email):
+  def email(self, email: str):
   	self._email = email
 
   @property
-  def additionalProperties(self):
+  def additionalProperties(self) -> dict[Any, Any]:
   	return self._additionalProperties
   @additionalProperties.setter
-  def additionalProperties(self, additionalProperties):
+  def additionalProperties(self, additionalProperties: dict[Any, Any]):
   	self._additionalProperties = additionalProperties
 
   def serializeToJson(self):

@@ -8,10 +8,10 @@ Array [
     	self._email: str = input[\\"email\\"]
 
   @property
-  def email(self):
+  def email(self) -> str:
   	return self._email
   @email.setter
-  def email(self, email):
+  def email(self, email: str):
   	self._email = email
 ",
 ]
