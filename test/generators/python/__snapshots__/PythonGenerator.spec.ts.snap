@@ -12,14 +12,14 @@ exports[`PythonGenerator Class should not render reserved keyword 1`] = `
   def reservedReservedDel(self):
   	return self._reservedReservedDel
   @reservedReservedDel.setter
-  def reservedReservedDel(self, reservedReservedDel):
+  def reservedReservedDel(self, reservedReservedDel: str):
   	self._reservedReservedDel = reservedReservedDel
 
   @property
   def reservedDel(self):
   	return self._reservedDel
   @reservedDel.setter
-  def reservedDel(self, reservedDel):
+  def reservedDel(self, reservedDel: str):
   	self._reservedDel = reservedDel
 "
 `;
@@ -43,56 +43,56 @@ exports[`PythonGenerator Class should render \`class\` type 1`] = `
   def streetName(self):
   	return self._streetName
   @streetName.setter
-  def streetName(self, streetName):
+  def streetName(self, streetName: str):
   	self._streetName = streetName
 
   @property
   def city(self):
   	return self._city
   @city.setter
-  def city(self, city):
+  def city(self, city: str):
   	self._city = city
 
   @property
   def state(self):
   	return self._state
   @state.setter
-  def state(self, state):
+  def state(self, state: str):
   	self._state = state
 
   @property
   def houseNumber(self):
   	return self._houseNumber
   @houseNumber.setter
-  def houseNumber(self, houseNumber):
+  def houseNumber(self, houseNumber: float):
   	self._houseNumber = houseNumber
 
   @property
   def marriage(self):
   	return self._marriage
   @marriage.setter
-  def marriage(self, marriage):
+  def marriage(self, marriage: bool):
   	self._marriage = marriage
 
   @property
   def members(self):
   	return self._members
   @members.setter
-  def members(self, members):
+  def members(self, members: str | float | bool):
   	self._members = members
 
   @property
   def arrayType(self):
   	return self._arrayType
   @arrayType.setter
-  def arrayType(self, arrayType):
+  def arrayType(self, arrayType: list[str | float | Any]):
   	self._arrayType = arrayType
 
   @property
   def additionalProperties(self):
   	return self._additionalProperties
   @additionalProperties.setter
-  def additionalProperties(self, additionalProperties):
+  def additionalProperties(self, additionalProperties: dict[Any | str, Any | str]):
   	self._additionalProperties = additionalProperties
 "
 `;
@@ -116,7 +116,7 @@ exports[`PythonGenerator Class should work with custom preset for \`class\` type
   	return self._property
   test3
   @property.setter
-  def property(self, property):
+  def property(self, property: str):
   	self._property = property
 
   test2
@@ -125,7 +125,7 @@ exports[`PythonGenerator Class should work with custom preset for \`class\` type
   	return self._additionalProperties
   test3
   @additionalProperties.setter
-  def additionalProperties(self, additionalProperties):
+  def additionalProperties(self, additionalProperties: dict[Any, Any]):
   	self._additionalProperties = additionalProperties
 "
 `;

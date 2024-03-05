@@ -114,6 +114,6 @@ def ${property.propertyName}(self):\n\treturn self._${property.propertyName}`;
     }
 
     return `@${property.propertyName}.setter
-def ${property.propertyName}(self, ${property.propertyName}):\n\tself._${property.propertyName} = ${property.propertyName}`;
+def ${property.propertyName}(self, ${property.propertyName}: ${property.property.type}):\n\tself._${property.propertyName} = ${property.propertyName}`;
   }
 };
