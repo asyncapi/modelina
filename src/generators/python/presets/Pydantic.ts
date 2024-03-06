@@ -1,4 +1,7 @@
-import { ConstrainedUnionModel } from '../../../models';
+import {
+  ConstrainedDictionaryModel,
+  ConstrainedUnionModel
+} from '../../../models';
 import { PythonOptions } from '../PythonGenerator';
 import { ClassPresetType, PythonPreset } from '../PythonPreset';
 
@@ -38,7 +41,14 @@ const PYTHON_PYDANTIC_CLASS_PRESET: ClassPresetType<PythonOptions> = {
       : undefined;
     const defaultValue = params.property.required ? undefined : 'default=None';
     const jsonAlias = `serialization_alias='${params.property.unconstrainedPropertyName}'`;
-    const fieldTags = [description, defaultValue, jsonAlias].filter(
+    let exclude = undefined;
+    if (
+      params.property.property instanceof ConstrainedDictionaryModel &&
+      params.property.property.serializationType === 'unwrap'
+    ) {
+      exclude = 'exclude=True';
+    }
+    const fieldTags = [description, defaultValue, jsonAlias, exclude].filter(
       (value) => value
     );
     return `${propertyName}: ${type} = Field(${fieldTags.join(', ')})`;
