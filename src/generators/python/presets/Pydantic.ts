@@ -35,15 +35,13 @@ const PYTHON_PYDANTIC_CLASS_PRESET: ClassPresetType<PythonOptions> = {
 
     const description = params.property.property.originalInput['description']
       ? `description='''${params.property.property.originalInput['description']}'''`
-      : '';
-    const defaultValue = params.property.required ? '' : 'default=None';
-
-    if (description && defaultValue) {
-      return `${propertyName}: ${type} = Field(${description}, ${defaultValue})`;
-    } else if (description) {
-      return `${propertyName}: ${type} = Field(${description})`;
-    }
-    return `${propertyName}: ${type} = Field(${defaultValue})`;
+      : undefined;
+    const defaultValue = params.property.required ? undefined : 'default=None';
+    const jsonAlias = `serialization_alias='${params.property.unconstrainedPropertyName}'`;
+    const fieldTags = [description, defaultValue, jsonAlias].filter(
+      (value) => value
+    );
+    return `${propertyName}: ${type} = Field(${fieldTags.join(', ')})`;
   },
   ctor: () => '',
   getter: () => '',
