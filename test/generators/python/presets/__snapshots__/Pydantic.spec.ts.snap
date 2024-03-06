@@ -5,24 +5,24 @@ exports[`PYTHON_PYDANTIC_PRESET should render pydantic for class 1`] = `
   prop: Optional[str] = Field(description='''test
     multi
     line
-    description''', default=None)
-  additional_properties: Optional[dict[Any, Any]] = Field(default=None)
+    description''', default=None, serialization_alias='prop')
+  additional_properties: Optional[dict[Any, Any]] = Field(default=None, serialization_alias='additionalProperties', exclude=True)
 "
 `;
 
 exports[`PYTHON_PYDANTIC_PRESET should render union to support Python < 3.10 1`] = `
 Array [
   "class UnionTest(BaseModel): 
-  union_test: Optional[Union[Union1, Union2]] = Field(default=None)
-  additional_properties: Optional[dict[Any, Any]] = Field(default=None)
+  union_test: Optional[Union[Union1, Union2]] = Field(default=None, serialization_alias='unionTest')
+  additional_properties: Optional[dict[Any, Any]] = Field(default=None, serialization_alias='additionalProperties', exclude=True)
 ",
   "class Union1(BaseModel): 
-  test_prop1: Optional[str] = Field(default=None)
-  additional_properties: Optional[dict[Any, Any]] = Field(default=None)
+  test_prop1: Optional[str] = Field(default=None, serialization_alias='testProp1')
+  additional_properties: Optional[dict[Any, Any]] = Field(default=None, serialization_alias='additionalProperties', exclude=True)
 ",
   "class Union2(BaseModel): 
-  test_prop2: Optional[str] = Field(default=None)
-  additional_properties: Optional[dict[Any, Any]] = Field(default=None)
+  test_prop2: Optional[str] = Field(default=None, serialization_alias='testProp2')
+  additional_properties: Optional[dict[Any, Any]] = Field(default=None, serialization_alias='additionalProperties', exclude=True)
 ",
 ]
 `;
