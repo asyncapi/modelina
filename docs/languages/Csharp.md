@@ -61,9 +61,11 @@ Currently not supported, [let everyone know you need it](https://github.com/asyn
 
 ## Generate models with equals and GetHashCode methods
 
-To overwrite the `Equal` and `GetHashCode` methods, use the preset `CSHARP_COMMON_PRESET` and provide the options `equal: true` and `hashCode: true`
+To overwrite the `Equals` and `GetHashCode` methods, use the preset `CSHARP_COMMON_PRESET` and provide the options `equal: true` and `hashCode: true`
 
 Check out this [example for a live demonstration](../../examples/csharp-generate-equals-and-hashcode).
+
+Note that, the `Equals` method uses `Object.Equals(objA, objB)`. This means that [reference types properties](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/reference-types) that do not override their default `Equals` method will perform a reference equality check to determine equality, returning `false` if they do not reference the same object.
 
 ## Generate models with auto-implemented properties
 
