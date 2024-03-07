@@ -7,7 +7,7 @@ import {
 import { pascalCase } from 'change-case';
 import { CsharpClassPreset } from '../CSharpPreset';
 import { CSharpOptions } from '../CSharpGenerator';
-import { isPrimitive, isEnum } from '../Constants';
+import { isPrimitive, isEnum, isStringRenderingType } from '../Constants';
 
 /**
  * Renderer for CSharp's `struct` type
@@ -106,7 +106,8 @@ export const CSHARP_DEFAULT_CLASS_PRESET: CsharpClassPreset<CSharpOptions> = {
       options?.handleNullable &&
       property.required &&
       !isPrimitive(property) &&
-      !isEnum(property)
+      !isEnum(property) &&
+      !isStringRenderingType(property)
     ) {
       nullablePropertyEnding = ' = null!';
     }
@@ -115,10 +116,20 @@ export const CSHARP_DEFAULT_CLASS_PRESET: CsharpClassPreset<CSharpOptions> = {
       const getter = await renderer.runGetterPreset(property);
       const setter = await renderer.runSetterPreset(property);
 
+      if (property.property.options.const) {
+        return `public const ${property.property.type} ${pascalCase(
+          property.propertyName
+        )} { ${getter} } = ${property.property.options.const.value};`;
+      }
+
       const semiColon = nullablePropertyEnding !== '' ? ';' : '';
       return `public ${property.property.type} ${pascalCase(
         property.propertyName
       )} { ${getter} ${setter} }${nullablePropertyEnding}${semiColon}`;
+    }
+
+    if (property.property.options.const) {
+      return `private const ${property.property.type} ${property.propertyName} = ${property.property.options.const.value};`;
     }
     return `private ${property.property.type} ${property.propertyName}${nullablePropertyEnding};`;
   },
@@ -126,6 +137,13 @@ export const CSHARP_DEFAULT_CLASS_PRESET: CsharpClassPreset<CSharpOptions> = {
     const formattedAccessorName = pascalCase(property.propertyName);
     if (options?.autoImplementedProperties) {
       return '';
+    }
+
+    if (property.property.options.const) {
+      return `public ${property.property.type} ${formattedAccessorName} 
+{
+  ${await renderer.runGetterPreset(property)}
+}`;
     }
 
     return `public ${property.property.type} ${formattedAccessorName} 

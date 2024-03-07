@@ -3,9 +3,10 @@ import {
   Preset,
   CommonPreset,
   PresetArgs,
-  EnumPreset,
   ConstrainedObjectModel,
-  ConstrainedObjectPropertyModel
+  ConstrainedObjectPropertyModel,
+  ConstrainedEnumModel,
+  EnumArgs
 } from '../../models';
 import {
   StructRenderer,
@@ -23,6 +24,12 @@ export interface StructPreset<R extends AbstractRenderer, O>
   field?: (
     args: PresetArgs<R, O, ConstrainedObjectModel> & FieldArgs
   ) => Promise<string> | string;
+}
+interface EnumPreset<R extends AbstractRenderer, O>
+  extends CommonPreset<R, O, ConstrainedEnumModel> {
+  item?: (
+    args: PresetArgs<R, O, ConstrainedEnumModel> & EnumArgs & { index: number }
+  ) => string;
 }
 export type StructPresetType<O> = StructPreset<StructRenderer, O>;
 export type EnumPresetType<O> = EnumPreset<EnumRenderer, O>;
