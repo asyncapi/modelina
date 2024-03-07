@@ -34,12 +34,12 @@ interface EnumPreset<R extends AbstractRenderer, O>
 export type StructPresetType<O> = StructPreset<StructRenderer, O>;
 export type EnumPresetType<O> = EnumPreset<EnumRenderer, O>;
 
-export type GoPreset<O = GoOptions> = Preset<{
+export type GoPreset<O = any> = Preset<{
   struct: StructPresetType<O>;
   enum: EnumPresetType<O>;
 }>;
 
-export const GO_DEFAULT_PRESET: GoPreset = {
+export const GO_DEFAULT_PRESET: GoPreset<GoOptions> = {
   struct: GO_DEFAULT_STRUCT_PRESET,
   enum: GO_DEFAULT_ENUM_PRESET
 };
