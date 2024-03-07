@@ -883,6 +883,18 @@
         "doc",
         "test"
       ]
+    },
+    {
+      "login": "Souvikns",
+      "name": "souvik",
+      "avatar_url": "https://avatars.githubusercontent.com/u/41781438?v=4",
+      "profile": "https://github.com/Souvikns",
+      "contributions": [
+        "code",
+        "test",
+        "example",
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
