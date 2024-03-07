@@ -98,13 +98,19 @@ No properties
 ${renderer.indent(body, 2)}`;
   },
   getter({ renderer, property }) {
-    return renderer.indent(`@property
+    return renderer.indent(
+      `@property
 def ${property.propertyName}(self):
-  return self._${property.propertyName}`);
+  return self._${property.propertyName}`,
+      0
+    );
   },
   setter({ renderer, property }) {
-    return renderer.indent(`@${property.propertyName}.setter
+    return renderer.indent(
+      `@${property.propertyName}.setter
 def ${property.propertyName}(self, ${property.propertyName}):
-  self._${property.propertyName} = ${property.propertyName}`);
+  self._${property.propertyName} = ${property.propertyName}`,
+      0
+    );
   }
 };
