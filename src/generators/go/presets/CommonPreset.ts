@@ -58,7 +58,7 @@ export const GO_COMMON_PRESET: GoPreset<GoCommonPresetOptions> = {
     }
   },
   enum: {
-    self({ content, model, renderer, options }) {
+    additionalContent({ content, model, renderer, options }) {
       const blocks: string[] = [];
       if (options.addJsonTag) {
         blocks.push(renderMarshallingFunctions({ model, renderer }));
