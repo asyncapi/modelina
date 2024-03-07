@@ -1,4 +1,4 @@
-# TODO: Your example title
+# Go Struct Tags In Models
 
 `GO_COMMON_PRESET` to render JSON `struct-tags` in go `structs` along with adding custom `Marshaler` functions for enum.
 

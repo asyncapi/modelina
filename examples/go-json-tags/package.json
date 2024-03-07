@@ -1,5 +1,5 @@
 {
-  "config" : { "example_name" : "TEMPLATE" },
+  "config" : { "example_name" : "go-json-tags" },
   "scripts": {
     "install": "cd ../.. && npm i",
     "start": "../../node_modules/.bin/ts-node --cwd ../../ ./examples/$npm_package_config_example_name/index.ts",
