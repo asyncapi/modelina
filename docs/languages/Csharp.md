@@ -65,11 +65,11 @@ To overwrite the `Equals` and `GetHashCode` methods, use the preset `CSHARP_COMM
 
 Check out this [example for a live demonstration](../../examples/csharp-generate-equals-and-hashcode).
 
-Note that, the `Equals` method uses `Object.Equals(objA, objB)`. This means that [reference types properties](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/reference-types) that do not override their default `Equals` method will perform a reference equality check to determine equality, returning `false` if they do not reference the same object.
+Note that the `Equals` method uses `Object.Equals(objA, objB)`. This means that [reference types properties](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/reference-types) that do not override their default `Equals` method will perform a reference equality check to determine equality, returning `false` if they do not reference the same object.
 
 ## Generate models with auto-implemented properties
 
-To generate auto-implemented properties (the ones with with `{ get; set; }` accessors), use the preset `CSHARP_COMMON_PRESET` and provide the option `autoImplementedProperties: true`
+To generate auto-implemented properties (the ones with `{ get; set; }` accessors), use the preset `CSHARP_COMMON_PRESET` and provide the option `autoImplementedProperties: true`
 
 Check out this [example for a live demonstration](../../examples/csharp-auto-implemented-properties).
 
