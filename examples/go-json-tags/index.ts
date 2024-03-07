@@ -1,7 +1,13 @@
-import { GoGenerator, GO_COMMON_PRESET, GoCommonPresetOptions } from '../../src';
+import {
+  GoGenerator,
+  GO_COMMON_PRESET,
+  GoCommonPresetOptions
+} from '../../src';
 
-const options: GoCommonPresetOptions = {addJsonTag: true}
-const generator = new GoGenerator({presets: [{preset: GO_COMMON_PRESET, options}]});
+const options: GoCommonPresetOptions = { addJsonTag: true };
+const generator = new GoGenerator({
+  presets: [{ preset: GO_COMMON_PRESET, options }]
+});
 const jsonSchemaDraft7 = {
   $schema: 'http://json-schema.org/draft-07/schema#',
   type: 'object',
