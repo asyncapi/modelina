@@ -59,7 +59,10 @@ describe('GoGenerator', () => {
         {
           struct: {
             field({ field }) {
-              return `${field.propertyName} ${field.property.type}`; // private fields
+              return `field ${field.propertyName}`;
+            },
+            additionalContent() {
+              return 'additionalContent';
             }
           }
         }
@@ -92,8 +95,11 @@ describe('GoGenerator', () => {
       presets: [
         {
           enum: {
-            self({ content }) {
-              return content;
+            item({ index }) {
+              return `test ${index}`;
+            },
+            additionalContent() {
+              return 'additionalContent';
             }
           }
         }

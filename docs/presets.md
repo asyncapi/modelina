@@ -416,6 +416,14 @@ This preset is a generator for the meta model `ConstrainedObjectModel` and [can 
 |---|---|---|
 | `field` | A method to extend rendered given field. | `field` object as a [`ConstrainedObjectPropertyModel`](./internal-model.md#the-constrained-meta-model) instance. |
 
+#### **Enum**
+
+This preset is a generator for the meta model `ConstrainedEnumModel` and [can be accessed through the `model` argument](#presets-shape).
+
+| Method | Description | Additional arguments |
+|---|---|---|
+| `item` | A method to extend rendering the enum items. | `item` object as a [`ConstrainedEnumValueModel`](./internal-model.md#the-constrained-meta-model) instance. `index` as `number`, the current enum item being rendered. |
+
 ### C#
 
 #### **Class**
