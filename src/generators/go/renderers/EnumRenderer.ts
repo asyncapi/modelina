@@ -22,7 +22,7 @@ export class EnumRenderer extends GoRenderer<ConstrainedEnumModel> {
       return `${this.model.name}Values[${value.key}]: ${value.key},`;
     });
     const additionalContent = await this.runAdditionalContentPreset();
-  
+
     const values = this.model.values
       .map((value) => {
         return value.value;
