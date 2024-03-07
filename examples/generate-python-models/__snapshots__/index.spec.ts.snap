@@ -7,12 +7,12 @@ Array [
     if hasattr(input, 'email'):
       self._email = input.email
 
-    @property
-    def email(self):
-      return self._email
-    @email.setter
-    def email(self, email):
-      self._email = email
+  @property
+  def email(self):
+    return self._email
+  @email.setter
+  def email(self, email):
+    self._email = email
 ",
 ]
 `;

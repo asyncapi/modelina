@@ -8,19 +8,19 @@ exports[`PythonGenerator Class should not render reserved keyword 1`] = `
     if hasattr(input, 'reservedDel'):
       self._reservedDel = input.reservedDel
 
-    @property
-    def reservedReservedDel(self):
-      return self._reservedReservedDel
-    @reservedReservedDel.setter
-    def reservedReservedDel(self, reservedReservedDel):
-      self._reservedReservedDel = reservedReservedDel
+  @property
+  def reservedReservedDel(self):
+    return self._reservedReservedDel
+  @reservedReservedDel.setter
+  def reservedReservedDel(self, reservedReservedDel):
+    self._reservedReservedDel = reservedReservedDel
 
-    @property
-    def reservedDel(self):
-      return self._reservedDel
-    @reservedDel.setter
-    def reservedDel(self, reservedDel):
-      self._reservedDel = reservedDel
+  @property
+  def reservedDel(self):
+    return self._reservedDel
+  @reservedDel.setter
+  def reservedDel(self, reservedDel):
+    self._reservedDel = reservedDel
 "
 `;
 
@@ -39,61 +39,61 @@ exports[`PythonGenerator Class should render \`class\` type 1`] = `
     if hasattr(input, 'additionalProperties'):
       self._additionalProperties = input.additionalProperties
 
-    @property
-    def streetName(self):
-      return self._streetName
-    @streetName.setter
-    def streetName(self, streetName):
-      self._streetName = streetName
+  @property
+  def streetName(self):
+    return self._streetName
+  @streetName.setter
+  def streetName(self, streetName):
+    self._streetName = streetName
 
-    @property
-    def city(self):
-      return self._city
-    @city.setter
-    def city(self, city):
-      self._city = city
+  @property
+  def city(self):
+    return self._city
+  @city.setter
+  def city(self, city):
+    self._city = city
 
-    @property
-    def state(self):
-      return self._state
-    @state.setter
-    def state(self, state):
-      self._state = state
+  @property
+  def state(self):
+    return self._state
+  @state.setter
+  def state(self, state):
+    self._state = state
 
-    @property
-    def houseNumber(self):
-      return self._houseNumber
-    @houseNumber.setter
-    def houseNumber(self, houseNumber):
-      self._houseNumber = houseNumber
+  @property
+  def houseNumber(self):
+    return self._houseNumber
+  @houseNumber.setter
+  def houseNumber(self, houseNumber):
+    self._houseNumber = houseNumber
 
-    @property
-    def marriage(self):
-      return self._marriage
-    @marriage.setter
-    def marriage(self, marriage):
-      self._marriage = marriage
+  @property
+  def marriage(self):
+    return self._marriage
+  @marriage.setter
+  def marriage(self, marriage):
+    self._marriage = marriage
 
-    @property
-    def members(self):
-      return self._members
-    @members.setter
-    def members(self, members):
-      self._members = members
+  @property
+  def members(self):
+    return self._members
+  @members.setter
+  def members(self, members):
+    self._members = members
 
-    @property
-    def arrayType(self):
-      return self._arrayType
-    @arrayType.setter
-    def arrayType(self, arrayType):
-      self._arrayType = arrayType
+  @property
+  def arrayType(self):
+    return self._arrayType
+  @arrayType.setter
+  def arrayType(self, arrayType):
+    self._arrayType = arrayType
 
-    @property
-    def additionalProperties(self):
-      return self._additionalProperties
-    @additionalProperties.setter
-    def additionalProperties(self, additionalProperties):
-      self._additionalProperties = additionalProperties
+  @property
+  def additionalProperties(self):
+    return self._additionalProperties
+  @additionalProperties.setter
+  def additionalProperties(self, additionalProperties):
+    self._additionalProperties = additionalProperties
 "
 `;
 
@@ -111,22 +111,22 @@ exports[`PythonGenerator Class should work with custom preset for \`class\` type
       self._additionalProperties = input.additionalProperties
 
   test2
-    @property
-    def property(self):
-      return self._property
+  @property
+  def property(self):
+    return self._property
   test3
-    @property.setter
-    def property(self, property):
-      self._property = property
+  @property.setter
+  def property(self, property):
+    self._property = property
 
   test2
-    @property
-    def additionalProperties(self):
-      return self._additionalProperties
+  @property
+  def additionalProperties(self):
+    return self._additionalProperties
   test3
-    @additionalProperties.setter
-    def additionalProperties(self, additionalProperties):
-      self._additionalProperties = additionalProperties
+  @additionalProperties.setter
+  def additionalProperties(self, additionalProperties):
+    self._additionalProperties = additionalProperties
 "
 `;
 

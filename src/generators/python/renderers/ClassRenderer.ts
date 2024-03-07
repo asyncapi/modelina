@@ -97,20 +97,14 @@ No properties
     return `def __init__(self, input):
 ${renderer.indent(body, 2)}`;
   },
-  getter({ renderer, property }) {
-    return renderer.indent(
-      `@property
+  getter({ property }) {
+    return `@property
 def ${property.propertyName}(self):
-  return self._${property.propertyName}`,
-      0
-    );
+  return self._${property.propertyName}`;
   },
-  setter({ renderer, property }) {
-    return renderer.indent(
-      `@${property.propertyName}.setter
+  setter({ property }) {
+    return `@${property.propertyName}.setter
 def ${property.propertyName}(self, ${property.propertyName}):
-  self._${property.propertyName} = ${property.propertyName}`,
-      0
-    );
+  self._${property.propertyName} = ${property.propertyName}`;
   }
 };
