@@ -166,7 +166,7 @@ describe('PythonConstrainer', () => {
         constrainedModel: model,
         ...defaultOptions
       });
-      expect(type).toEqual('list[str]');
+      expect(type).toEqual('List[str]');
     });
   });
 

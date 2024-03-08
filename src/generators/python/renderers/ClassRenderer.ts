@@ -100,7 +100,8 @@ export const PYTHON_DEFAULT_CLASS_PRESET: ClassPresetType<PythonOptions> = {
 No properties
 """`;
     }
-    return `def __init__(self, input: dict):
+    renderer.dependencyManager.addDependency(`from typing import Dict`);
+    return `def __init__(self, input: Dict):
 ${renderer.indent(body)}`;
   },
   getter({ property }) {

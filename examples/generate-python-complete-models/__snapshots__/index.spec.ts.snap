@@ -3,7 +3,7 @@
 exports[`Should be able to render python models and should generate \`implicit\` or \`explicit\` imports for models implementing referenced types: nested-model 1`] = `
 Array [
   "
-
+from typing import Any
 class ObjProperty: 
   def __init__(self, input: dict):
     if hasattr(input, \\"number\\"):
@@ -31,7 +31,7 @@ class ObjProperty:
 exports[`Should be able to render python models and should generate \`implicit\` or \`explicit\` imports for models implementing referenced types: nested-model 2`] = `
 Array [
   "
-
+from typing import Any
 class ObjProperty: 
   def __init__(self, input: dict):
     if hasattr(input, \\"number\\"):
@@ -59,7 +59,7 @@ class ObjProperty:
 exports[`Should be able to render python models and should generate \`implicit\` or \`explicit\` imports for models implementing referenced types: root-model-explicit-import 1`] = `
 Array [
   "from ObjProperty import ObjProperty
-
+from typing import Any
 class Root: 
   def __init__(self, input: dict):
     if hasattr(input, \\"email\\"):
@@ -87,7 +87,7 @@ class Root:
 exports[`Should be able to render python models and should generate \`implicit\` or \`explicit\` imports for models implementing referenced types: root-model-implicit-import 1`] = `
 Array [
   "from ObjProperty import ObjProperty
-
+from typing import Any
 class Root: 
   def __init__(self, input: dict):
     if hasattr(input, \\"email\\"):
