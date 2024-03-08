@@ -895,6 +895,18 @@
         "example",
         "doc"
       ]
+    },
+    {
+      "login": "Louis-PhilippeGentile",
+      "name": "Louis-PhilippeGentile",
+      "avatar_url": "https://avatars.githubusercontent.com/u/43426946?v=4",
+      "profile": "https://github.com/Louis-PhilippeGentile",
+      "contributions": [
+        "code",
+        "test",
+        "doc",
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,
