@@ -3,7 +3,7 @@
 exports[`Should be able to render JSON serialization and deserialization functions and should log expected output to console 1`] = `
 Array [
   "class Root: 
-  def __init__(self, input: dict):
+  def __init__(self, input: Dict):
     if hasattr(input, \\"email\\"):
     	self._email: str = input[\\"email\\"]
     if hasattr(input, \\"additionalProperties\\"):
