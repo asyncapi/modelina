@@ -83,8 +83,9 @@ export const PYTHON_DEFAULT_CLASS_PRESET: ClassPresetType<PythonOptions> = {
     if (Object.keys(properties).length > 0) {
       const assigments = Object.values(properties).map((property) => {
         if (!property.required) {
+          const propAssignment = `self._${property.propertyName} = input.${property.propertyName}`;
           return `if hasattr(input, '${property.propertyName}'):
-  self._${property.propertyName} = input.${property.propertyName}`;
+${renderer.indent(propAssignment, 2)}`;
         }
         return `self._${property.propertyName} = input.${property.propertyName}`;
       });
@@ -97,14 +98,16 @@ No properties
     return `def __init__(self, input):
 ${renderer.indent(body, 2)}`;
   },
-  getter({ property }) {
+  getter({ property, renderer }) {
+    const propAssignment = `return self._${property.propertyName}`;
     return `@property
 def ${property.propertyName}(self):
-  return self._${property.propertyName}`;
+${renderer.indent(propAssignment, 2)}`;
   },
-  setter({ property }) {
+  setter({ property, renderer }) {
+    const propAssignment = `self._${property.propertyName} = ${property.propertyName}`;
     return `@${property.propertyName}.setter
 def ${property.propertyName}(self, ${property.propertyName}):
-  self._${property.propertyName} = ${property.propertyName}`;
+${renderer.indent(propAssignment, 2)}`;
   }
 };
