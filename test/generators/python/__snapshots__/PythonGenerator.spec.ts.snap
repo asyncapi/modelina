@@ -3,48 +3,39 @@
 exports[`PythonGenerator Class should not render reserved keyword 1`] = `
 "class Address: 
   def __init__(self, input: Dict):
-    if hasattr(input, \\"reservedReservedDel\\"):
-    	self._reservedReservedDel: str = input[\\"reservedReservedDel\\"]
-    if hasattr(input, \\"reservedDel\\"):
-    	self._reservedDel: str = input[\\"reservedDel\\"]
+    if hasattr(input, \\"reserved_del\\"):
+    	self._reserved_del: str = input[\\"reserved_del\\"]
 
   @property
-  def reservedReservedDel(self) -> str:
-  	return self._reservedReservedDel
-  @reservedReservedDel.setter
-  def reservedReservedDel(self, reservedReservedDel: str):
-  	self._reservedReservedDel = reservedReservedDel
-
-  @property
-  def reservedDel(self) -> str:
-  	return self._reservedDel
-  @reservedDel.setter
-  def reservedDel(self, reservedDel: str):
-  	self._reservedDel = reservedDel
+  def reserved_del(self) -> str:
+  	return self._reserved_del
+  @reserved_del.setter
+  def reserved_del(self, reserved_del: str):
+  	self._reserved_del = reserved_del
 "
 `;
 
 exports[`PythonGenerator Class should render \`class\` type 1`] = `
 "class Address: 
   def __init__(self, input: Dict):
-    self._streetName: str = input[\\"streetName\\"]
+    self._street_name: str = input[\\"street_name\\"]
     self._city: str = input[\\"city\\"]
     self._state: str = input[\\"state\\"]
-    self._houseNumber: float = input[\\"houseNumber\\"]
+    self._house_number: float = input[\\"house_number\\"]
     if hasattr(input, \\"marriage\\"):
     	self._marriage: bool = input[\\"marriage\\"]
     if hasattr(input, \\"members\\"):
     	self._members: str | float | bool = input[\\"members\\"]
-    self._arrayType: List[str | float | Any] = input[\\"arrayType\\"]
-    if hasattr(input, \\"additionalProperties\\"):
-    	self._additionalProperties: dict[Any | str, Any | str] = input[\\"additionalProperties\\"]
+    self._array_type: List[str | float | Any] = input[\\"array_type\\"]
+    if hasattr(input, \\"additional_properties\\"):
+    	self._additional_properties: dict[Any | str, Any | str] = input[\\"additional_properties\\"]
 
   @property
-  def streetName(self) -> str:
-  	return self._streetName
-  @streetName.setter
-  def streetName(self, streetName: str):
-  	self._streetName = streetName
+  def street_name(self) -> str:
+  	return self._street_name
+  @street_name.setter
+  def street_name(self, street_name: str):
+  	self._street_name = street_name
 
   @property
   def city(self) -> str:
@@ -61,11 +52,11 @@ exports[`PythonGenerator Class should render \`class\` type 1`] = `
   	self._state = state
 
   @property
-  def houseNumber(self) -> float:
-  	return self._houseNumber
-  @houseNumber.setter
-  def houseNumber(self, houseNumber: float):
-  	self._houseNumber = houseNumber
+  def house_number(self) -> float:
+  	return self._house_number
+  @house_number.setter
+  def house_number(self, house_number: float):
+  	self._house_number = house_number
 
   @property
   def marriage(self) -> bool:
@@ -82,18 +73,18 @@ exports[`PythonGenerator Class should render \`class\` type 1`] = `
   	self._members = members
 
   @property
-  def arrayType(self) -> List[str | float | Any]:
-  	return self._arrayType
-  @arrayType.setter
-  def arrayType(self, arrayType: List[str | float | Any]):
-  	self._arrayType = arrayType
+  def array_type(self) -> List[str | float | Any]:
+  	return self._array_type
+  @array_type.setter
+  def array_type(self, array_type: List[str | float | Any]):
+  	self._array_type = array_type
 
   @property
-  def additionalProperties(self) -> dict[Any | str, Any | str]:
-  	return self._additionalProperties
-  @additionalProperties.setter
-  def additionalProperties(self, additionalProperties: dict[Any | str, Any | str]):
-  	self._additionalProperties = additionalProperties
+  def additional_properties(self) -> dict[Any | str, Any | str]:
+  	return self._additional_properties
+  @additional_properties.setter
+  def additional_properties(self, additional_properties: dict[Any | str, Any | str]):
+  	self._additional_properties = additional_properties
 "
 `;
 
@@ -107,8 +98,8 @@ exports[`PythonGenerator Class should work with custom preset for \`class\` type
   def __init__(self, input: Dict):
     if hasattr(input, \\"property\\"):
     	self._property: str = input[\\"property\\"]
-    if hasattr(input, \\"additionalProperties\\"):
-    	self._additionalProperties: dict[Any, Any] = input[\\"additionalProperties\\"]
+    if hasattr(input, \\"additional_properties\\"):
+    	self._additional_properties: dict[Any, Any] = input[\\"additional_properties\\"]
 
   test2
   @property
@@ -121,12 +112,12 @@ exports[`PythonGenerator Class should work with custom preset for \`class\` type
 
   test2
   @property
-  def additionalProperties(self) -> dict[Any, Any]:
-  	return self._additionalProperties
+  def additional_properties(self) -> dict[Any, Any]:
+  	return self._additional_properties
   test3
-  @additionalProperties.setter
-  def additionalProperties(self, additionalProperties: dict[Any, Any]):
-  	self._additionalProperties = additionalProperties
+  @additional_properties.setter
+  def additional_properties(self, additional_properties: dict[Any, Any]):
+  	self._additional_properties = additional_properties
 "
 `;
 
