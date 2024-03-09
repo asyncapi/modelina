@@ -11,6 +11,12 @@ There are special use-cases that each language supports; this document pertains 
 
 <!-- tocstop -->
 
+## Generate JSON struct-tags and marshaler functions for enums
+
+To generate go models that works correctly with JSON marshal functions we need to generate appropriate JSON `struct-tags`, use the preset `GO_COMMON_PRESET` and provide the option `addJsonTag: true`.
+
+check out this [example for a live demonstration](../../examples/go-json-tags/)
+
 ## Generate serializer and deserializer functionality
 
 The most widely used usecase for Modelina is to generate models that include serialization and deserialization functionality to convert the models into payload data. This payload data can of course be many different kinds, JSON, XML, raw binary, you name it.
