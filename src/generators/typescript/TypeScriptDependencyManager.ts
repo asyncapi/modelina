@@ -1,6 +1,10 @@
 import { AbstractDependencyManager } from '../AbstractDependencyManager';
 import { renderJavaScriptDependency } from '../../helpers';
-import { ConstrainedMetaModel } from '../../models';
+import {
+  ConstrainedMetaModel,
+  ConstrainedObjectModel,
+  ConstrainedReferenceModel
+} from '../../models';
 import {
   TypeScriptExportType,
   TypeScriptModelType,
@@ -55,12 +59,16 @@ export class TypeScriptDependencyManager extends AbstractDependencyManager {
     exportType: TypeScriptExportType,
     modelType: TypeScriptModelType
   ): string {
+    const isInterface =
+      model instanceof ConstrainedObjectModel ||
+      (model instanceof ConstrainedReferenceModel &&
+        model.ref instanceof ConstrainedObjectModel);
     const dependencyObject =
       exportType === 'named' ? `{${model.name}}` : model.name;
     return this.renderDependency(
       dependencyObject,
       `./${model.name}`,
-      modelType
+      isInterface ? modelType : 'class'
     );
   }
 
@@ -85,7 +93,9 @@ export class TypeScriptDependencyManager extends AbstractDependencyManager {
         ? `export default ${model.name};\n`
         : `export type { ${model.name} };`;
     const esmExport =
-      modelType === 'interface' ? esmExportType : esmExportValue;
+      modelType === 'interface' && model instanceof ConstrainedObjectModel
+        ? esmExportType
+        : esmExportValue;
     return this.options.moduleSystem === 'CJS' ? cjsExport : esmExport;
   }
 }

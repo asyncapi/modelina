@@ -949,12 +949,14 @@ export { OtherModel };"
 `;
 
 exports[`TypeScriptGenerator should render models and their dependencies for ESM module system with named exports as interfaces 1`] = `
-"import type {OtherModel} from './OtherModel';
+"import {HouseType} from './HouseType';
+import type {OtherModel} from './OtherModel';
 interface Address {
   streetName: string;
   city: string;
   state: string;
   houseNumber: number;
+  houseType?: HouseType;
   marriage?: boolean;
   members?: string | number | boolean;
   arrayType: (string | number | any)[];
@@ -965,6 +967,16 @@ export type { Address };"
 `;
 
 exports[`TypeScriptGenerator should render models and their dependencies for ESM module system with named exports as interfaces 2`] = `
+"
+enum HouseType {
+  APARTMENT = \\"apartment\\",
+  HOUSE = \\"house\\",
+  CONDO = \\"condo\\",
+}
+export { HouseType };"
+`;
+
+exports[`TypeScriptGenerator should render models and their dependencies for ESM module system with named exports as interfaces 3`] = `
 "
 interface OtherModel {
   streetName?: string;
