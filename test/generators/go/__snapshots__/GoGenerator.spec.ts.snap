@@ -113,9 +113,9 @@ exports[`GoGenerator should work custom preset for \`enum\` type 1`] = `
 type CustomEnum uint
 
 const (
-  CustomEnumTexas CustomEnum = iota
-  CustomEnumAlabama
-  CustomEnumCalifornia
+  test 0
+  test 1
+  test 2
 )
 
 // Value returns the value of the enum.
@@ -132,13 +132,15 @@ var ValuesToCustomEnum = map[any]CustomEnum{
   CustomEnumValues[CustomEnumAlabama]: CustomEnumAlabama,
   CustomEnumValues[CustomEnumCalifornia]: CustomEnumCalifornia,
 }
-"
+additionalContent"
 `;
 
 exports[`GoGenerator should work custom preset for \`struct\` type 1`] = `
 "// CustomStruct represents a CustomStruct model.
 type CustomStruct struct {
-  Property string
-  AdditionalProperties map[string]string
+  field Property
+  field AdditionalProperties
+
+  additionalContent
 }"
 `;
