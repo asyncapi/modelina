@@ -1,7 +1,11 @@
 import { AbstractDependencyManager } from '../AbstractDependencyManager';
 import { renderJavaScriptDependency } from '../../helpers';
 import { ConstrainedMetaModel } from '../../models';
-import { TypeScriptExportType, TypeScriptOptions } from './TypeScriptGenerator';
+import {
+  TypeScriptExportType,
+  TypeScriptModelType,
+  TypeScriptOptions
+} from './TypeScriptGenerator';
 
 export class TypeScriptDependencyManager extends AbstractDependencyManager {
   constructor(
@@ -14,19 +18,32 @@ export class TypeScriptDependencyManager extends AbstractDependencyManager {
   /**
    * Simple helper function to add a dependency correct based on the module system that the user defines.
    */
-  addTypeScriptDependency(toImport: string, fromModule: string): void {
-    const dependencyImport = this.renderDependency(toImport, fromModule);
+  addTypeScriptDependency(
+    toImport: string,
+    fromModule: string,
+    modelType: TypeScriptModelType
+  ): void {
+    const dependencyImport = this.renderDependency(
+      toImport,
+      fromModule,
+      modelType
+    );
     this.addDependency(dependencyImport);
   }
 
   /**
    * Simple helper function to render a dependency based on the module system that the user defines.
    */
-  renderDependency(toImport: string, fromModule: string): string {
+  renderDependency(
+    toImport: string,
+    fromModule: string,
+    modelType: TypeScriptModelType
+  ): string {
     return renderJavaScriptDependency(
       toImport,
       fromModule,
-      this.options.moduleSystem
+      this.options.moduleSystem,
+      modelType === 'interface' ? 'type' : 'value'
     );
   }
 
@@ -35,11 +52,16 @@ export class TypeScriptDependencyManager extends AbstractDependencyManager {
    */
   renderCompleteModelDependencies(
     model: ConstrainedMetaModel,
-    exportType: TypeScriptExportType
+    exportType: TypeScriptExportType,
+    modelType: TypeScriptModelType
   ): string {
     const dependencyObject =
       exportType === 'named' ? `{${model.name}}` : model.name;
-    return this.renderDependency(dependencyObject, `./${model.name}`);
+    return this.renderDependency(
+      dependencyObject,
+      `./${model.name}`,
+      modelType
+    );
   }
 
   /**
@@ -47,16 +69,23 @@ export class TypeScriptDependencyManager extends AbstractDependencyManager {
    */
   renderExport(
     model: ConstrainedMetaModel,
-    exportType: TypeScriptExportType
+    exportType: TypeScriptExportType,
+    modelType: TypeScriptModelType
   ): string {
     const cjsExport =
       exportType === 'default'
         ? `module.exports = ${model.name};`
         : `exports.${model.name} = ${model.name};`;
-    const esmExport =
+    const esmExportValue =
       exportType === 'default'
         ? `export default ${model.name};\n`
         : `export { ${model.name} };`;
+    const esmExportType =
+      exportType === 'default'
+        ? `export default ${model.name};\n`
+        : `export type { ${model.name} };`;
+    const esmExport =
+      modelType === 'interface' ? esmExportType : esmExportValue;
     return this.options.moduleSystem === 'CJS' ? cjsExport : esmExport;
   }
 }
