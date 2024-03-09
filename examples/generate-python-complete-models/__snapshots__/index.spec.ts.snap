@@ -8,8 +8,8 @@ class ObjProperty:
   def __init__(self, input):
     if hasattr(input, 'number'):
       self._number = input.number
-    if hasattr(input, 'additionalProperties'):
-      self._additional_properties = input.additionalProperties
+    if hasattr(input, 'additional_properties'):
+      self._additional_properties = input.additional_properties
 
   @property
   def number(self):
@@ -20,10 +20,10 @@ class ObjProperty:
 
   @property
   def additional_properties(self):
-  	return self._additional_properties
+    return self._additional_properties
   @additional_properties.setter
   def additional_properties(self, additional_properties):
-  	self._additional_properties = additional_properties
+    self._additional_properties = additional_properties
 ",
 ]
 `;
@@ -35,9 +35,9 @@ Array [
 class ObjProperty: 
   def __init__(self, input):
     if hasattr(input, 'number'):
-    	self._number = input.number
+      self._number = input.number
     if hasattr(input, 'additional_properties'):
-    	self._additional_properties = input.additional_properties
+      self._additional_properties = input.additional_properties
 
   @property
   def number(self):
@@ -48,10 +48,10 @@ class ObjProperty:
 
   @property
   def additional_properties(self):
-  	return self._additional_properties
+    return self._additional_properties
   @additional_properties.setter
   def additional_properties(self, additional_properties):
-  	self._additional_properties = additional_properties
+    self._additional_properties = additional_properties
 ",
 ]
 `;
@@ -63,9 +63,9 @@ Array [
 class Root: 
   def __init__(self, input):
     if hasattr(input, 'email'):
-    	self._email = input.email
+      self._email = input.email
     if hasattr(input, 'obj_property'):
-    	self._obj_property = input.obj_property
+      self._obj_property = input.obj_property
 
   @property
   def email(self):
@@ -76,10 +76,10 @@ class Root:
 
   @property
   def obj_property(self):
-  	return self._obj_property
+    return self._obj_property
   @obj_property.setter
   def obj_property(self, obj_property):
-  	self._obj_property = obj_property
+    self._obj_property = obj_property
 ",
 ]
 `;
@@ -91,9 +91,9 @@ Array [
 class Root: 
   def __init__(self, input):
     if hasattr(input, 'email'):
-    	self._email = input.email
+      self._email = input.email
     if hasattr(input, 'obj_property'):
-    	self._obj_property = input.obj_property
+      self._obj_property = input.obj_property
 
   @property
   def email(self):
@@ -104,10 +104,10 @@ class Root:
 
   @property
   def obj_property(self):
-  	return self._obj_property
+    return self._obj_property
   @obj_property.setter
   def obj_property(self, obj_property):
-  	self._obj_property = obj_property
+    self._obj_property = obj_property
 ",
 ]
 `;
