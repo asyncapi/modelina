@@ -27,7 +27,7 @@ export const DefaultModelNameConstraints: ModelNameConstraints = {
   NO_NUMBER_START_CHAR,
   NO_EMPTY_VALUE,
   NAMING_FORMATTER: (value: string) => {
-    return FormatHelpers.toPascalCase(value);
+    return FormatHelpers.toPascalCaseMergingNumbers(value);
   },
   NO_RESERVED_KEYWORDS: (value: string) => {
     return NO_RESERVED_KEYWORDS(value, isReservedPythonKeyword);

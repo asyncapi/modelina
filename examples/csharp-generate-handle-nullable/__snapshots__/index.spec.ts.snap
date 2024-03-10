@@ -7,6 +7,10 @@ Array [
   public string? Email { get; set; }
   public string Name { get; set; } = null!;
   public int Age { get; set; }
+  public System.DateTime ApplicationDate { get; set; }
+  public System.DateTimeOffset Timestamp { get; set; }
+  public System.DateTime? ApplicationDate2 { get; set; }
+  public System.DateTimeOffset? Timestamp2 { get; set; }
   public Dictionary<string, dynamic>[]? NullableFoos { get; set; }
   public Dictionary<string, dynamic>[] MandatoryFoos { get; set; } = null!;
 }",

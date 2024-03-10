@@ -1,4 +1,7 @@
-import { ConstrainedUnionModel } from '../../../models';
+import {
+  ConstrainedDictionaryModel,
+  ConstrainedUnionModel
+} from '../../../models';
 import { PythonOptions } from '../PythonGenerator';
 import { ClassPresetType, PythonPreset } from '../PythonPreset';
 
@@ -33,17 +36,22 @@ const PYTHON_PYDANTIC_CLASS_PRESET: ClassPresetType<PythonOptions> = {
       type = `Optional[${type}]`;
     }
 
-    const alias = params.property.property.originalInput['description']
-      ? `alias='''${params.property.property.originalInput['description']}'''`
-      : '';
-    const defaultValue = params.property.required ? '' : 'default=None';
-
-    if (alias && defaultValue) {
-      return `${propertyName}: ${type} = Field(${alias}, ${defaultValue})`;
-    } else if (alias) {
-      return `${propertyName}: ${type} = Field(${alias})`;
+    const description = params.property.property.originalInput['description']
+      ? `description='''${params.property.property.originalInput['description']}'''`
+      : undefined;
+    const defaultValue = params.property.required ? undefined : 'default=None';
+    const jsonAlias = `serialization_alias='${params.property.unconstrainedPropertyName}'`;
+    let exclude = undefined;
+    if (
+      params.property.property instanceof ConstrainedDictionaryModel &&
+      params.property.property.serializationType === 'unwrap'
+    ) {
+      exclude = 'exclude=True';
     }
-    return `${propertyName}: ${type} = Field(${defaultValue})`;
+    const fieldTags = [description, defaultValue, jsonAlias, exclude].filter(
+      (value) => value
+    );
+    return `${propertyName}: ${type} = Field(${fieldTags.join(', ')})`;
   },
   ctor: () => '',
   getter: () => '',

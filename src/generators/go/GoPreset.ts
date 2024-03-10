@@ -3,9 +3,10 @@ import {
   Preset,
   CommonPreset,
   PresetArgs,
-  EnumPreset,
   ConstrainedObjectModel,
-  ConstrainedObjectPropertyModel
+  ConstrainedObjectPropertyModel,
+  ConstrainedEnumModel,
+  EnumArgs
 } from '../../models';
 import {
   StructRenderer,
@@ -24,15 +25,21 @@ export interface StructPreset<R extends AbstractRenderer, O>
     args: PresetArgs<R, O, ConstrainedObjectModel> & FieldArgs
   ) => Promise<string> | string;
 }
+interface EnumPreset<R extends AbstractRenderer, O>
+  extends CommonPreset<R, O, ConstrainedEnumModel> {
+  item?: (
+    args: PresetArgs<R, O, ConstrainedEnumModel> & EnumArgs & { index: number }
+  ) => string;
+}
 export type StructPresetType<O> = StructPreset<StructRenderer, O>;
 export type EnumPresetType<O> = EnumPreset<EnumRenderer, O>;
 
-export type GoPreset<O = GoOptions> = Preset<{
+export type GoPreset<O = any> = Preset<{
   struct: StructPresetType<O>;
   enum: EnumPresetType<O>;
 }>;
 
-export const GO_DEFAULT_PRESET: GoPreset = {
+export const GO_DEFAULT_PRESET: GoPreset<GoOptions> = {
   struct: GO_DEFAULT_STRUCT_PRESET,
   enum: GO_DEFAULT_ENUM_PRESET
 };

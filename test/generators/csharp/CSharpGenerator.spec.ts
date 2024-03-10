@@ -148,6 +148,28 @@ describe('CSharpGenerator', () => {
     ]);
   });
 
+  test('should generate a const string in record', async () => {
+    const doc = {
+      $id: '_address',
+      type: 'object',
+      properties: {
+        property: { type: 'string', const: 'test' }
+      },
+      required: ['property'],
+      additionalProperties: {
+        type: 'string'
+      }
+    };
+
+    generator.options.modelType = 'record';
+    const models = await generator.generate(doc);
+    expect(models).toHaveLength(1);
+    expect(models[0].result).toMatchSnapshot();
+    expect(models[0].dependencies).toEqual([
+      'using System.Collections.Generic;'
+    ]);
+  });
+
   test('should render `enum` type', async () => {
     const doc = {
       $id: 'Things',
@@ -166,8 +188,7 @@ describe('CSharpGenerator', () => {
       enum: ['test+', 'test', 'test-', 'test?!', '*test']
     };
 
-    generator = new CSharpGenerator();
-
+    generator.options.modelType = 'record';
     const models = await generator.generate(doc);
     expect(models).toHaveLength(1);
     expect(models[0].result).toMatchSnapshot();
@@ -296,6 +317,29 @@ describe('CSharpGenerator', () => {
           }
         ]
       });
+
+      const models = await generator.generate(doc);
+      expect(models).toHaveLength(1);
+      expect(models[0].result).toMatchSnapshot();
+      expect(models[0].dependencies).toEqual([
+        'using System.Collections.Generic;'
+      ]);
+    });
+
+    test('should generate a const string', async () => {
+      const doc = {
+        $id: 'CustomClass',
+        type: 'object',
+        properties: {
+          property: { type: 'string', const: 'test' }
+        },
+        additionalProperties: {
+          type: 'string'
+        },
+        required: ['property']
+      };
+
+      generator = new CSharpGenerator();
 
       const models = await generator.generate(doc);
       expect(models).toHaveLength(1);
