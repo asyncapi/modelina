@@ -21,13 +21,13 @@ exports[`CSharpGenerator class renderer should be able to overwrite property pre
   public string? Property 
   {
     get { return property; }
-    set { property = value; }
+    set { this.property = value; }
   }
 
   public Dictionary<string, string>? AdditionalProperties 
   {
     get { return additionalProperties; }
-    set { additionalProperties = value; }
+    set { this.additionalProperties = value; }
   }
 }"
 `;
@@ -48,55 +48,55 @@ exports[`CSharpGenerator should render \`class\` type 1`] = `
   public string StreetName 
   {
     get { return streetName; }
-    set { streetName = value; }
+    set { this.streetName = value; }
   }
 
   public string City 
   {
     get { return city; }
-    set { city = value; }
+    set { this.city = value; }
   }
 
   public string State 
   {
     get { return state; }
-    set { state = value; }
+    set { this.state = value; }
   }
 
   public double HouseNumber 
   {
     get { return houseNumber; }
-    set { houseNumber = value; }
+    set { this.houseNumber = value; }
   }
 
   public bool? Marriage 
   {
     get { return marriage; }
-    set { marriage = value; }
+    set { this.marriage = value; }
   }
 
   public dynamic? Members 
   {
     get { return members; }
-    set { members = value; }
+    set { this.members = value; }
   }
 
   public dynamic[]? TupleType 
   {
     get { return tupleType; }
-    set { tupleType = value; }
+    set { this.tupleType = value; }
   }
 
   public string[] ArrayType 
   {
     get { return arrayType; }
-    set { arrayType = value; }
+    set { this.arrayType = value; }
   }
 
   public Dictionary<string, dynamic>? AdditionalProperties 
   {
     get { return additionalProperties; }
-    set { additionalProperties = value; }
+    set { this.additionalProperties = value; }
   }
 }"
 `;
@@ -218,55 +218,55 @@ exports[`CSharpGenerator should render models and their dependencies 1`] = `
     public string StreetName 
     {
       get { return streetName; }
-      set { streetName = value; }
+      set { this.streetName = value; }
     }
 
     public string City 
     {
       get { return city; }
-      set { city = value; }
+      set { this.city = value; }
     }
 
     public string State 
     {
       get { return state; }
-      set { state = value; }
+      set { this.state = value; }
     }
 
     public double HouseNumber 
     {
       get { return houseNumber; }
-      set { houseNumber = value; }
+      set { this.houseNumber = value; }
     }
 
     public bool? Marriage 
     {
       get { return marriage; }
-      set { marriage = value; }
+      set { this.marriage = value; }
     }
 
     public dynamic? Members 
     {
       get { return members; }
-      set { members = value; }
+      set { this.members = value; }
     }
 
     public dynamic[] ArrayType 
     {
       get { return arrayType; }
-      set { arrayType = value; }
+      set { this.arrayType = value; }
     }
 
     public OtherModel? OtherModel 
     {
       get { return otherModel; }
-      set { otherModel = value; }
+      set { this.otherModel = value; }
     }
 
     public Dictionary<string, dynamic>? AdditionalProperties 
     {
       get { return additionalProperties; }
-      set { additionalProperties = value; }
+      set { this.additionalProperties = value; }
     }
   }
 }"
@@ -285,13 +285,13 @@ exports[`CSharpGenerator should render models and their dependencies 2`] = `
     public string? StreetName 
     {
       get { return streetName; }
-      set { streetName = value; }
+      set { this.streetName = value; }
     }
 
     public Dictionary<string, dynamic>? AdditionalProperties 
     {
       get { return additionalProperties; }
-      set { additionalProperties = value; }
+      set { this.additionalProperties = value; }
     }
   }
 }"
@@ -315,67 +315,67 @@ exports[`CSharpGenerator should render null-forgiving operator if handleNullable
   public string StreetName 
   {
     get { return streetName; }
-    set { streetName = value; }
+    set { this.streetName = value; }
   }
 
   public string City 
   {
     get { return city; }
-    set { city = value; }
+    set { this.city = value; }
   }
 
   public string State 
   {
     get { return state; }
-    set { state = value; }
+    set { this.state = value; }
   }
 
   public double HouseNumber 
   {
     get { return houseNumber; }
-    set { houseNumber = value; }
+    set { this.houseNumber = value; }
   }
 
   public bool? Marriage 
   {
     get { return marriage; }
-    set { marriage = value; }
+    set { this.marriage = value; }
   }
 
   public HouseType HouseType 
   {
     get { return houseType; }
-    set { houseType = value; }
+    set { this.houseType = value; }
   }
 
   public TerraceType? TerraceType 
   {
     get { return terraceType; }
-    set { terraceType = value; }
+    set { this.terraceType = value; }
   }
 
   public dynamic? Members 
   {
     get { return members; }
-    set { members = value; }
+    set { this.members = value; }
   }
 
   public dynamic[]? TupleType 
   {
     get { return tupleType; }
-    set { tupleType = value; }
+    set { this.tupleType = value; }
   }
 
   public string[] ArrayType 
   {
     get { return arrayType; }
-    set { arrayType = value; }
+    set { this.arrayType = value; }
   }
 
   public Dictionary<string, dynamic>? AdditionalProperties 
   {
     get { return additionalProperties; }
-    set { additionalProperties = value; }
+    set { this.additionalProperties = value; }
   }
 }"
 `;
