@@ -9,7 +9,7 @@ Array [
   public string[]? Email 
   {
     get { return email; }
-    set { email = value; }
+    set { this.email = value; }
   }
 }",
 ]
