@@ -10,12 +10,28 @@ import {
   SwaggerV2Schema,
   OpenapiV3Schema,
   AsyncapiV2Schema,
-  ProcessorOptions
+  ProcessorOptions,
+  MetaModel
 } from '../models';
 import { Logger } from '../utils';
-import { Interpreter } from '../interpreter/Interpreter';
+import { Interpreter, InterpreterOptions } from '../interpreter/Interpreter';
 import { convertToMetaModel } from '../helpers';
 import { ParserOptions } from '@apidevtools/json-schema-ref-parser/dist/lib/options';
+export interface JsonSchemaProcessorOptions extends InterpreterOptions {
+  /**
+   * This option enables that a single enum value `{enum: ['test']}` is interpreted the same as if the value was `{const: 'test'}`
+   * Use this option to reduce the number of enums being created and use constant values instead.
+   */
+  interpretSingleEnumAsConst?: boolean;
+}
+
+export const defaultJsonSchemaProcessorOptions: JsonSchemaProcessorOptions = {
+  allowInheritance: false,
+  disableCache: false,
+  ignoreAdditionalItems: false,
+  ignoreAdditionalProperties: false,
+  interpretSingleEnumAsConst: false
+};
 
 /**
  * Class for processing JSON Schema
@@ -88,11 +104,10 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
     );
     input = await this.dereferenceInputs(input);
     const parsedSchema = Draft7Schema.toSchema(input);
-    const newCommonModel = JsonSchemaInputProcessor.convertSchemaToCommonModel(
+    const metaModel = JsonSchemaInputProcessor.convertSchemaToMetaModel(
       parsedSchema,
       options
     );
-    const metaModel = convertToMetaModel(newCommonModel);
     inputModel.models[metaModel.name] = metaModel;
     Logger.debug('Completed processing input as JSON Schema draft 7 document');
     return inputModel;
@@ -118,11 +133,10 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
     );
     input = await this.dereferenceInputs(input);
     const parsedSchema = Draft4Schema.toSchema(input);
-    const newCommonModel = JsonSchemaInputProcessor.convertSchemaToCommonModel(
+    const metaModel = JsonSchemaInputProcessor.convertSchemaToMetaModel(
       parsedSchema,
       options
     );
-    const metaModel = convertToMetaModel(newCommonModel);
     inputModel.models[metaModel.name] = metaModel;
     Logger.debug('Completed processing input as JSON Schema draft 4 document');
     return inputModel;
@@ -148,11 +162,10 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
     );
     input = await this.dereferenceInputs(input);
     const parsedSchema = Draft6Schema.toSchema(input);
-    const newCommonModel = JsonSchemaInputProcessor.convertSchemaToCommonModel(
+    const metaModel = JsonSchemaInputProcessor.convertSchemaToMetaModel(
       parsedSchema,
       options
     );
-    const metaModel = convertToMetaModel(newCommonModel);
     inputModel.models[metaModel.name] = metaModel;
     Logger.debug('Completed processing input as JSON Schema draft 6 document');
     return inputModel;
@@ -490,10 +503,37 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
     options?: ProcessorOptions
   ): CommonModel {
     const interpreter = new Interpreter();
-    const model = interpreter.interpret(schema, options?.interpreter);
+    const model = interpreter.interpret(
+      schema,
+      options?.jsonSchema ?? options?.interpreter
+    );
     if (model === undefined) {
       throw new Error('Could not interpret schema to internal model');
     }
     return model;
+  }
+
+  /**
+   * Simplifies a JSON Schema into a common models
+   *
+   * @param schema to simplify to common model
+   */
+  static convertSchemaToMetaModel(
+    schema:
+      | Draft4Schema
+      | Draft6Schema
+      | Draft7Schema
+      | SwaggerV2Schema
+      | OpenapiV3Schema
+      | AsyncapiV2Schema
+      | boolean,
+    options?: ProcessorOptions
+  ): MetaModel {
+    const commonModel = this.convertSchemaToCommonModel(schema, options);
+    return convertToMetaModel({
+      jsonSchemaModel: commonModel,
+      options: { ...defaultJsonSchemaProcessorOptions, ...options?.jsonSchema },
+      alreadySeenModels: new Map()
+    });
   }
 }

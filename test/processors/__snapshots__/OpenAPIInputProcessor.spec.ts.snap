@@ -2,7 +2,13 @@
 
 exports[`OpenAPIInputProcessor process() should process the OpenAPI document accurately 1`] = `
 InputMetaModel {
-  "models": Object {},
+  "models": Object {
+    "": AnyModel {
+      "name": "",
+      "options": undefined,
+      "originalInput": undefined,
+    },
+  },
   "originalInput": Object {
     "components": Object {
       "ApiResponse": Object {

@@ -4,7 +4,6 @@ import { InputMetaModel, OpenapiV3Schema, ProcessorOptions } from '../models';
 import { Logger } from '../utils';
 import SwaggerParser from '@apidevtools/swagger-parser';
 import { OpenAPIV3, OpenAPIV3_1 } from 'openapi-types';
-import { convertToMetaModel } from '../helpers';
 
 /**
  * Class for processing OpenAPI V3.0 inputs
@@ -246,22 +245,17 @@ export class OpenAPIInputProcessor extends AbstractInputProcessor {
       schema,
       name
     );
-    const newCommonModel = JsonSchemaInputProcessor.convertSchemaToCommonModel(
+    const newMetaModel = JsonSchemaInputProcessor.convertSchemaToMetaModel(
       internalSchema,
       options
     );
-    if (newCommonModel.$id !== undefined) {
-      if (inputModel.models[newCommonModel.$id] !== undefined) {
-        Logger.warn(
-          `Overwriting existing model with $id ${newCommonModel.$id}, are there two models with the same id present?`,
-          newCommonModel
-        );
-      }
-      const metaModel = convertToMetaModel(newCommonModel);
-      inputModel.models[metaModel.name] = metaModel;
-    } else {
-      Logger.warn('Model did not have $id, ignoring.', newCommonModel);
+    if (inputModel.models[newMetaModel.name] !== undefined) {
+      Logger.warn(
+        `Overwriting existing model with name ${newMetaModel.name}, are there two models with the same name present? Overwriting the old model.`,
+        newMetaModel.name
+      );
     }
+    inputModel.models[newMetaModel.name] = newMetaModel;
   }
 
   /**

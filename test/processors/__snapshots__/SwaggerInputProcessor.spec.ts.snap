@@ -2,7 +2,13 @@
 
 exports[`SwaggerInputProcessor process() should process the swagger document accurately 1`] = `
 InputMetaModel {
-  "models": Object {},
+  "models": Object {
+    "": AnyModel {
+      "name": "",
+      "options": Object {},
+      "originalInput": undefined,
+    },
+  },
   "originalInput": Object {
     "definitions": Object {
       "ApiResponse": Object {
