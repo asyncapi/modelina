@@ -10,7 +10,7 @@ Modelina uses something called **presets** to extend the rendered model. You can
   * [Hello world!](#hello-world)
   * [Presets in depth](#presets-in-depth)
     + [Overwriting existing rendered content](#overwriting-existing-rendered-content)
-    + [Ap/pre-pending to existng rendered content](#appre-pending-to-existng-rendered-content)
+    + [Ap/pre-pending to existing rendered content](#appre-pending-to-existing-rendered-content)
     + [Reusing presets (options)](#reusing-presets-options)
     + [Adding new dependencies](#adding-new-dependencies)
     + [Overriding the default preset](#overriding-the-default-preset)
