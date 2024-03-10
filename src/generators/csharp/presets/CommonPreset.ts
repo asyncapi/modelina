@@ -23,7 +23,7 @@ function renderEqual({
   let equalProperties = propertyKeys
     .map((propertyName) => {
       const accessorMethodProp = FormatHelpers.upperFirst(propertyName);
-      return `Object.Equals(${accessorMethodProp}, model.${accessorMethodProp})`;
+      return `${accessorMethodProp} == model.${accessorMethodProp}`;
     })
     .join(' && \n');
   equalProperties = `return ${
