@@ -37,10 +37,10 @@ exports[`CSHARP_COMMON_PRESET should render Equals support function 1`] = `
     if(obj is Test model)
     {
       if(ReferenceEquals(this, model)) { return true; }
-      return StringProp == model.StringProp && 
-      NumberProp == model.NumberProp && 
-      ObjectProp == model.ObjectProp && 
-      AdditionalProperties == model.AdditionalProperties;
+      return Object.Equals(StringProp, model.StringProp) && 
+      Object.Equals(NumberProp, model.NumberProp) && 
+      Object.Equals(ObjectProp, model.ObjectProp) && 
+      Object.Equals(AdditionalProperties, model.AdditionalProperties);
     }
 
     return false;
@@ -81,8 +81,8 @@ exports[`CSHARP_COMMON_PRESET should render Equals support function 2`] = `
     if(obj is NestedTest model)
     {
       if(ReferenceEquals(this, model)) { return true; }
-      return StringProp == model.StringProp && 
-      AdditionalProperties == model.AdditionalProperties;
+      return Object.Equals(StringProp, model.StringProp) && 
+      Object.Equals(AdditionalProperties, model.AdditionalProperties);
     }
 
     return false;
