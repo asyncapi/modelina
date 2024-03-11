@@ -34,7 +34,7 @@ export class PythonDependencyManager extends AbstractDependencyManager {
      * Merge all `y` together and make sure they are unique and render the dependency as `from x import y1, y2, y3`
      */
     for (const dependency of this.dependencies) {
-      const regex = /from ([A-Za-z]+) import ([A-Za-z,\s]+)/g;
+      const regex = /from ([A-Za-z0-9]+) import ([A-Za-z0-9,\s]+)/g;
       const matches = regex.exec(dependency);
 
       if (!matches) {
