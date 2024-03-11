@@ -582,7 +582,8 @@ export function convertToObjectModel(
     jsonSchemaModel.additionalProperties !== undefined ||
     jsonSchemaModel.patternProperties !== undefined
   ) {
-    let propertyName = 'additionalProperties';
+    let propertyName =
+      options.propertyNameForAdditionalProperties ?? 'additionalProperties';
     while (metaModel.properties[String(propertyName)] !== undefined) {
       propertyName = `reserved_${propertyName}`;
     }
