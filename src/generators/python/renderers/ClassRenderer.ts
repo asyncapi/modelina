@@ -90,7 +90,8 @@ export const PYTHON_DEFAULT_CLASS_PRESET: ClassPresetType<PythonOptions> = {
           assignment = `self._${property.propertyName}: ${property.property.type} = input["${property.propertyName}"]`;
         }
         if (!property.required) {
-          return `if hasattr(input, "${property.propertyName}"):\n\t${assignment}`;
+          return `if hasattr(input, '${property.propertyName}'):
+${renderer.indent(assignment, 2)}`;
         }
         return assignment;
       });
@@ -102,19 +103,25 @@ No properties
     }
     renderer.dependencyManager.addDependency(`from typing import Dict`);
     return `def __init__(self, input: Dict):
-${renderer.indent(body)}`;
+${renderer.indent(body, 2)}`;
   },
-  getter({ property }) {
+  getter({ property, renderer }) {
+    const propAssignment = `return self._${property.propertyName}`;
     return `@property
-def ${property.propertyName}(self) -> ${property.property.type}:\n\treturn self._${property.propertyName}`;
+def ${property.propertyName}(self) -> ${property.property.type}:
+${renderer.indent(propAssignment, 2)}`;
   },
-  setter({ property }) {
+  setter({ property, renderer }) {
     // if const value exists we should not render a setter
     if (property.property.options.const?.value) {
       return '';
     }
 
+    const propAssignment = `self._${property.propertyName} = ${property.propertyName}`;
+    const propArgument = `${property.propertyName}: ${property.property.type}`;
+
     return `@${property.propertyName}.setter
-def ${property.propertyName}(self, ${property.propertyName}: ${property.property.type}):\n\tself._${property.propertyName} = ${property.propertyName}`;
+def ${property.propertyName}(self, ${propArgument}):
+${renderer.indent(propAssignment, 2)}`;
   }
 };

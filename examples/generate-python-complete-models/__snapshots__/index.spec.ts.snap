@@ -6,24 +6,24 @@ Array [
 from typing import Any, Dict
 class ObjProperty: 
   def __init__(self, input: Dict):
-    if hasattr(input, \\"number\\"):
-    	self._number: float = input[\\"number\\"]
-    if hasattr(input, \\"additional_properties\\"):
-    	self._additional_properties: dict[Any, Any] = input[\\"additional_properties\\"]
+    if hasattr(input, 'number'):
+      self._number: float = input[\\"number\\"]
+    if hasattr(input, 'additional_properties'):
+      self._additional_properties: dict[Any, Any] = input[\\"additional_properties\\"]
 
   @property
   def number(self) -> float:
-  	return self._number
+    return self._number
   @number.setter
   def number(self, number: float):
-  	self._number = number
+    self._number = number
 
   @property
   def additional_properties(self) -> dict[Any, Any]:
-  	return self._additional_properties
+    return self._additional_properties
   @additional_properties.setter
   def additional_properties(self, additional_properties: dict[Any, Any]):
-  	self._additional_properties = additional_properties
+    self._additional_properties = additional_properties
 ",
 ]
 `;
@@ -34,24 +34,24 @@ Array [
 from typing import Any, Dict
 class ObjProperty: 
   def __init__(self, input: Dict):
-    if hasattr(input, \\"number\\"):
-    	self._number: float = input[\\"number\\"]
-    if hasattr(input, \\"additional_properties\\"):
-    	self._additional_properties: dict[Any, Any] = input[\\"additional_properties\\"]
+    if hasattr(input, 'number'):
+      self._number: float = input[\\"number\\"]
+    if hasattr(input, 'additional_properties'):
+      self._additional_properties: dict[Any, Any] = input[\\"additional_properties\\"]
 
   @property
   def number(self) -> float:
-  	return self._number
+    return self._number
   @number.setter
   def number(self, number: float):
-  	self._number = number
+    self._number = number
 
   @property
   def additional_properties(self) -> dict[Any, Any]:
-  	return self._additional_properties
+    return self._additional_properties
   @additional_properties.setter
   def additional_properties(self, additional_properties: dict[Any, Any]):
-  	self._additional_properties = additional_properties
+    self._additional_properties = additional_properties
 ",
 ]
 `;
@@ -62,24 +62,24 @@ Array [
 from typing import Any, Dict
 class Root: 
   def __init__(self, input: Dict):
-    if hasattr(input, \\"email\\"):
-    	self._email: str = input[\\"email\\"]
-    if hasattr(input, \\"obj_property\\"):
-    	self._obj_property: ObjProperty = ObjProperty(input[\\"obj_property\\"])
+    if hasattr(input, 'email'):
+      self._email: str = input[\\"email\\"]
+    if hasattr(input, 'obj_property'):
+      self._obj_property: ObjProperty = ObjProperty(input[\\"obj_property\\"])
 
   @property
   def email(self) -> str:
-  	return self._email
+    return self._email
   @email.setter
   def email(self, email: str):
-  	self._email = email
+    self._email = email
 
   @property
   def obj_property(self) -> ObjProperty:
-  	return self._obj_property
+    return self._obj_property
   @obj_property.setter
   def obj_property(self, obj_property: ObjProperty):
-  	self._obj_property = obj_property
+    self._obj_property = obj_property
 ",
 ]
 `;
@@ -90,24 +90,24 @@ Array [
 from typing import Any, Dict
 class Root: 
   def __init__(self, input: Dict):
-    if hasattr(input, \\"email\\"):
-    	self._email: str = input[\\"email\\"]
-    if hasattr(input, \\"obj_property\\"):
-    	self._obj_property: ObjProperty = ObjProperty(input[\\"obj_property\\"])
+    if hasattr(input, 'email'):
+      self._email: str = input[\\"email\\"]
+    if hasattr(input, 'obj_property'):
+      self._obj_property: ObjProperty = ObjProperty(input[\\"obj_property\\"])
 
   @property
   def email(self) -> str:
-  	return self._email
+    return self._email
   @email.setter
   def email(self, email: str):
-  	self._email = email
+    self._email = email
 
   @property
   def obj_property(self) -> ObjProperty:
-  	return self._obj_property
+    return self._obj_property
   @obj_property.setter
   def obj_property(self, obj_property: ObjProperty):
-  	self._obj_property = obj_property
+    self._obj_property = obj_property
 ",
 ]
 `;

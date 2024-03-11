@@ -2,6 +2,12 @@
 
 This document contain all the breaking changes and migrations guidelines for adapting your code to the new version.
 
+## Deprecation of `processor.interpreter`
+
+Since the early days we had the option to set `processorOptions.interpreter` options to change how JSON Schema is interpreted to Meta models. However, these options are more accurately part of the `processorOptions.jsonSchema` options. 
+
+Use this instead going forward.
+
 ## Fixed edge cases for camel case names
 
 Naming such as object properties using camel case formatting had an edge case where if they contained a number followed by an underscore and a letter it would be incorrectly formatted. This has been fixed in this version, which might mean properties, model names, etc that use camel case might be renamed.

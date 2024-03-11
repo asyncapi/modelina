@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`JAVA_DESCRIPTION_PRESET should not render anything when isExtended is true and model is discriminator or dictionary 1`] = `
+exports[`JAVA_DESCRIPTION_PRESET should not render anything when allowInheritance is true and model is discriminator or dictionary 1`] = `
 Array [
   "public class ExtendDoc implements Extend {
   private final DiscriminatorTest type = DiscriminatorTest.EXTEND_DOC;

@@ -3,24 +3,24 @@
 exports[`PYTHON_JSON_SERIALIZER_PRESET should render serializer and deserializer for class 1`] = `
 "class Test: 
   def __init__(self, input: Dict):
-    if hasattr(input, \\"prop\\"):
-    	self._prop: str = input[\\"prop\\"]
-    if hasattr(input, \\"additional_properties\\"):
-    	self._additional_properties: dict[Any, Any] = input[\\"additional_properties\\"]
+    if hasattr(input, 'prop'):
+      self._prop: str = input[\\"prop\\"]
+    if hasattr(input, 'additional_properties'):
+      self._additional_properties: dict[Any, Any] = input[\\"additional_properties\\"]
 
   @property
   def prop(self) -> str:
-  	return self._prop
+    return self._prop
   @prop.setter
   def prop(self, prop: str):
-  	self._prop = prop
+    self._prop = prop
 
   @property
   def additional_properties(self) -> dict[Any, Any]:
-  	return self._additional_properties
+    return self._additional_properties
   @additional_properties.setter
   def additional_properties(self, additional_properties: dict[Any, Any]):
-  	self._additional_properties = additional_properties
+    self._additional_properties = additional_properties
 
   def serialize_to_json(self):
     return json.dumps(self.__dict__, default=lambda o: o.__dict__, indent=2)

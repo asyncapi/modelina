@@ -46,8 +46,10 @@ These examples show a specific input and how they can be used:
 - [json-schema-draft7-from-object](./json-schema-draft7-from-object) - A basic example where a JSON Schema draft 7 JS object is used to generate models.
 - [json-schema-draft6-from-object](./json-schema-draft6-from-object) - A basic example where a JSON Schema draft 6 JS object is used to generate models.
 - [json-schema-draft4-from-object](./json-schema-draft4-from-object) - A basic example where a JSON Schema draft 4 JS object is used to generate models.
+- [json-schema-single-enum-as-const](./json-schema-single-enum-as-const) - An advanced example that shows how to change how `enum` are interpreted when containing a single value.
 - [swagger2.0-from-object](./swagger2.0-from-object) - A basic example where a Swagger 2.0 JS object is used to generate models.
 - [meta-model](./meta-model) - A basic example how to provide a meta model for the generator
+
 
 ## General examples
 These are examples that can be applied in all scenarios.

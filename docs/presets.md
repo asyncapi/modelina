@@ -10,7 +10,7 @@ Modelina uses something called **presets** to extend the rendered model. You can
   * [Hello world!](#hello-world)
   * [Presets in depth](#presets-in-depth)
     + [Overwriting existing rendered content](#overwriting-existing-rendered-content)
-    + [Ap/pre-pending to existng rendered content](#appre-pending-to-existng-rendered-content)
+    + [Ap/pre-pending to existing rendered content](#appre-pending-to-existing-rendered-content)
     + [Reusing presets (options)](#reusing-presets-options)
     + [Adding new dependencies](#adding-new-dependencies)
     + [Overriding the default preset](#overriding-the-default-preset)
@@ -188,7 +188,7 @@ class Root {
 }
 ```
 
-### Ap/pre-pending to existng rendered content
+### Ap/pre-pending to existing rendered content
 As the hello world example appended content, this time lets prepend some content to the properties.
 ```ts
 import { TypeScriptGenerator } from '@asyncapi/modelina';
@@ -199,7 +199,7 @@ const generator = new TypeScriptGenerator({
       class: {
         property({ content }) {
           const description = '// Hello world!'
-          return `${description}\n${content}`;
+          return `${content}\n${description}`;
         }
       }
     }
@@ -305,7 +305,7 @@ self({ dependencyManager, content }) {
 
 Some languages has specific helper functions, and some very basic interfaces, such as for Java.
 
-In TypeScript because you can have different import syntaxes based on the module system such as [CJS](../examples/typescript-use-cjs/) or [ESM](../examples/typescript-use-esm/), therefore it provies a specific function `addTypeScriptDependency` that takes care of that logic, and you just have to remember `addTypeScriptDependency('ImportanWhat', 'FromWhere')`.
+In TypeScript because you can have different import syntaxes based on the module system such as [CJS](../examples/typescript-use-cjs/) or [ESM](../examples/typescript-use-esm/), therefore it provides a specific function `addTypeScriptDependency` that takes care of that logic, and you just have to remember `addTypeScriptDependency('Import what', 'From where')`.
 
 ### Overriding the default preset
 
