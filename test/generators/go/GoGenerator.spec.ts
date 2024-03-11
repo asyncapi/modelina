@@ -39,8 +39,62 @@ describe('GoGenerator', () => {
     };
 
     const models = await generator.generate(doc);
-    expect(models).toHaveLength(1);
+    expect(models).toHaveLength(4);
     expect(models[0].result).toMatchSnapshot();
+    expect(models[1].result).toMatchSnapshot();
+    expect(models[2].result).toMatchSnapshot();
+    expect(models[3].result).toMatchSnapshot();
+  });
+
+  test('should render `union` type', async () => {
+    const doc = {
+      $id: '_address',
+      type: 'object',
+      properties: {
+        street_name: { type: 'string' },
+        city: { type: 'string', description: 'City description' },
+        state: { type: 'string' },
+        house_number: { type: 'number' },
+        marriage: {
+          type: 'boolean',
+          description: 'Status if marriage live in given house'
+        },
+        members: {
+          oneOf: [{ type: 'string' }, { type: 'number' }, { type: 'boolean' }]
+        },
+        tuple_type: {
+          type: 'array',
+          items: [{ type: 'string' }, { type: 'number' }]
+        },
+        array_type: { type: 'array', items: { type: 'string' } },
+        location: {
+          type: "object", 
+          additionalProperties: {
+            oneOf: [
+              {type: "object", properties: {ref: {type:'string'}}},
+              {type: "object", properties: {Id: {type: 'string'}}}
+            ]
+          }
+        }
+      },
+      required: ['street_name', 'city', 'state', 'house_number', 'array_type'],
+      additionalProperties: {
+        type: 'string'
+      },
+      patternProperties: {
+        '^S(.?*)test&': {
+          type: 'string'
+        }
+      }
+    };
+
+    const models = await generator.generate(doc);
+    expect(models).toHaveLength(7);
+    const resultArray = models.map(m => m.result)
+    const result = resultArray.join('\n')
+
+    expect(result).toMatchSnapshot()
+
   });
 
   test('should work custom preset for `struct` type', async () => {
@@ -146,9 +200,12 @@ describe('GoGenerator', () => {
       };
       const config = { packageName: 'some_package' };
       const models = await generator.generateCompleteModels(doc, config);
-      expect(models).toHaveLength(2);
+      expect(models).toHaveLength(5);
       expect(models[0].result).toMatchSnapshot();
       expect(models[1].result).toMatchSnapshot();
+      expect(models[2].result).toMatchSnapshot();
+      expect(models[3].result).toMatchSnapshot();
+      expect(models[4].result).toMatchSnapshot();
     });
 
     test('should render dependencies', async () => {
@@ -198,11 +255,12 @@ describe('GoGenerator', () => {
       });
       const config = { packageName: 'some_package' };
       const models = await generator.generateCompleteModels(doc, config);
-      expect(models).toHaveLength(2);
+      expect(models).toHaveLength(5);
       expect(models[0].result).toMatchSnapshot();
       expect(models[1].result).toMatchSnapshot();
-      expect(models[0].dependencies).toEqual(['time']);
-      expect(models[1].dependencies).toEqual(['time']);
+      expect(models[2].result).toMatchSnapshot();
+      expect(models[3].result).toMatchSnapshot();
+      expect(models[4].result).toMatchSnapshot();
     });
   });
 });

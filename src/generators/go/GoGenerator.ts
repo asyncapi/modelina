@@ -11,6 +11,7 @@ import {
   ConstrainedObjectModel,
   ConstrainedEnumModel,
   ConstrainedMetaModel,
+  ConstrainedUnionModel,
   MetaModel
 } from '../../models';
 import {
@@ -32,6 +33,7 @@ import { Logger } from '../../utils/LoggingInterface';
 import { GoDefaultConstraints, GoDefaultTypeMapping } from './GoConstrainer';
 import { DeepPartial, mergePartialAndDefault } from '../../utils/Partials';
 import { GoDependencyManager } from './GoDependencyManager';
+import { UnionRenderer } from './renderers/UnionRenderer';
 
 export interface GoOptions extends CommonGeneratorOptions<GoPreset> {
   typeMapping: TypeMapping<GoOptions, GoDependencyManager>;
@@ -99,7 +101,8 @@ export class GoGenerator extends AbstractGenerator<
     //These are the models that we have separate renderers for
     const metaModelsToSplit: SplitOptions = {
       splitEnum: true,
-      splitObject: true
+      splitObject: true,
+      splitUnion: true
     };
     return split(model, metaModelsToSplit);
   }
@@ -142,6 +145,12 @@ export class GoGenerator extends AbstractGenerator<
         args.inputModel,
         optionsToUse
       );
+    } else if (args.constrainedModel instanceof ConstrainedUnionModel) {
+      return this.renderUnion(
+        args.constrainedModel,
+        args.inputModel,
+        optionsToUse
+      )
     }
     Logger.warn(
       `Go generator, cannot generate this type of model, ${args.constrainedModel.name}`
@@ -241,6 +250,32 @@ ${outputModel.result}`;
     const dependencyManagerToUse = this.getDependencyManager(optionsToUse);
     const presets = this.getPresets('struct');
     const renderer = new StructRenderer(
+      optionsToUse,
+      this,
+      presets,
+      model,
+      inputModel,
+      dependencyManagerToUse
+    );
+    const result = await renderer.runSelfPreset();
+    return RenderOutput.toRenderOutput({
+      result,
+      renderedName: model.name,
+      dependencies: dependencyManagerToUse.dependencies
+    });
+  }
+  async renderUnion(
+    model: ConstrainedUnionModel,
+    inputModel: InputMetaModel,
+    options?: DeepPartial<GoOptions>
+  ): Promise<RenderOutput> {
+    const optionsToUse = GoGenerator.getGoOptions({
+      ...this.options,
+      ...options
+    });
+    const dependencyManagerToUse = this.getDependencyManager(optionsToUse);
+    const presets = this.getPresets('union');
+    const renderer = new UnionRenderer(
       optionsToUse,
       this,
       presets,
