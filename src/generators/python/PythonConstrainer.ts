@@ -53,7 +53,7 @@ export const PythonDefaultTypeMapping: PythonTypeMapping = {
     return unionTypes.join(' | ');
   },
   Dictionary({ constrainedModel }): string {
-    return `dict[${constrainedModel.value.type}, ${constrainedModel.value.type}]`;
+    return `dict[${constrainedModel.key.type}, ${constrainedModel.value.type}]`;
   }
 };
 

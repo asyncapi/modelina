@@ -230,7 +230,7 @@ describe('PythonConstrainer', () => {
         'test',
         undefined,
         {},
-        'str'
+        'str2'
       );
       const model = new ConstrainedDictionaryModel(
         'test',
@@ -244,7 +244,7 @@ describe('PythonConstrainer', () => {
         constrainedModel: model,
         ...defaultOptions
       });
-      expect(type).toEqual('dict[str, str]');
+      expect(type).toEqual('dict[str, str2]');
     });
   });
 });
