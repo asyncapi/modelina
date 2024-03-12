@@ -37,14 +37,14 @@ jobs:
         run: |
           echo "Downloading release assets for version ${{ steps.release_version.outputs.version }}"
           mkdir -p ./dist
-          curl -L "https://github.com/asyncapi/modelina/releases/download/v${{ steps.release_version.outputs.version }}/modelina.x64.exe" -o "./dist/modelina.x64.exe"
-          curl -L "https://github.com/asyncapi/modelina/releases/download/v${{ steps.release_version.outputs.version }}/modelina.x86.exe" -o "./dist/modelina.x86.exe"
+          curl -L "https://github.com/asyncapi/modelina/releases/download/v${{ steps.release_version.outputs.version }}/modelina.x64.exe" -o "./modelina-cli/dist/modelina.x64.exe"
+          curl -L "https://github.com/asyncapi/modelina/releases/download/v${{ steps.release_version.outputs.version }}/modelina.x86.exe" -o "./modelina-cli/dist/modelina.x86.exe"
 
       - name: Get Checksum of the release
         id: release_checksum
         run: |
-          $checksum = (Get-FileHash -Path "./dist/modelina.x86.exe" -Algorithm SHA256).Hash
-          $checksum64 = (Get-FileHash -Path "./dist/modelina.x64.exe" -Algorithm SHA256).Hash
+          $checksum = (Get-FileHash -Path "./modelina-cli/dist/modelina.x86.exe" -Algorithm SHA256).Hash
+          $checksum64 = (Get-FileHash -Path "./modelina-cli/dist/modelina.x64.exe" -Algorithm SHA256).Hash
           echo "Setting checksum to $checksum"
           echo "checksum=$checksum" >> $env:GITHUB_OUTPUT
           echo "Setting checksum64 to $checksum64"
