@@ -9,7 +9,7 @@ class ObjProperty:
     if hasattr(input, 'number'):
       self._number: float = input[\\"number\\"]
     if hasattr(input, 'additional_properties'):
-      self._additional_properties: dict[Any, Any] = input[\\"additional_properties\\"]
+      self._additional_properties: dict[str, Any] = input[\\"additional_properties\\"]
 
   @property
   def number(self) -> float:
@@ -19,10 +19,10 @@ class ObjProperty:
     self._number = number
 
   @property
-  def additional_properties(self) -> dict[Any, Any]:
+  def additional_properties(self) -> dict[str, Any]:
     return self._additional_properties
   @additional_properties.setter
-  def additional_properties(self, additional_properties: dict[Any, Any]):
+  def additional_properties(self, additional_properties: dict[str, Any]):
     self._additional_properties = additional_properties
 ",
 ]
@@ -37,7 +37,7 @@ class ObjProperty:
     if hasattr(input, 'number'):
       self._number: float = input[\\"number\\"]
     if hasattr(input, 'additional_properties'):
-      self._additional_properties: dict[Any, Any] = input[\\"additional_properties\\"]
+      self._additional_properties: dict[str, Any] = input[\\"additional_properties\\"]
 
   @property
   def number(self) -> float:
@@ -47,10 +47,10 @@ class ObjProperty:
     self._number = number
 
   @property
-  def additional_properties(self) -> dict[Any, Any]:
+  def additional_properties(self) -> dict[str, Any]:
     return self._additional_properties
   @additional_properties.setter
-  def additional_properties(self, additional_properties: dict[Any, Any]):
+  def additional_properties(self, additional_properties: dict[str, Any]):
     self._additional_properties = additional_properties
 ",
 ]

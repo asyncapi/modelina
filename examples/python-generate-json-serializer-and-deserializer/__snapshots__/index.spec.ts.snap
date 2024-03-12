@@ -7,7 +7,7 @@ Array [
     if hasattr(input, 'email'):
       self._email: str = input[\\"email\\"]
     if hasattr(input, 'additional_properties'):
-      self._additional_properties: dict[Any, Any] = input[\\"additional_properties\\"]
+      self._additional_properties: dict[str, Any] = input[\\"additional_properties\\"]
 
   @property
   def email(self) -> str:
@@ -17,10 +17,10 @@ Array [
     self._email = email
 
   @property
-  def additional_properties(self) -> dict[Any, Any]:
+  def additional_properties(self) -> dict[str, Any]:
     return self._additional_properties
   @additional_properties.setter
-  def additional_properties(self, additional_properties: dict[Any, Any]):
+  def additional_properties(self, additional_properties: dict[str, Any]):
     self._additional_properties = additional_properties
 
   def serialize_to_json(self):

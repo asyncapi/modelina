@@ -28,7 +28,7 @@ exports[`PythonGenerator Class should render \`class\` type 1`] = `
       self._members: str | float | bool = input[\\"members\\"]
     self._array_type: List[str | float | Any] = input[\\"array_type\\"]
     if hasattr(input, 'additional_properties'):
-      self._additional_properties: dict[Any | str, Any | str] = input[\\"additional_properties\\"]
+      self._additional_properties: dict[str, Any | str] = input[\\"additional_properties\\"]
 
   @property
   def street_name(self) -> str:
@@ -80,10 +80,10 @@ exports[`PythonGenerator Class should render \`class\` type 1`] = `
     self._array_type = array_type
 
   @property
-  def additional_properties(self) -> dict[Any | str, Any | str]:
+  def additional_properties(self) -> dict[str, Any | str]:
     return self._additional_properties
   @additional_properties.setter
-  def additional_properties(self, additional_properties: dict[Any | str, Any | str]):
+  def additional_properties(self, additional_properties: dict[str, Any | str]):
     self._additional_properties = additional_properties
 "
 `;
@@ -99,7 +99,7 @@ exports[`PythonGenerator Class should work with custom preset for \`class\` type
     if hasattr(input, 'property'):
       self._property: str = input[\\"property\\"]
     if hasattr(input, 'additional_properties'):
-      self._additional_properties: dict[Any, Any] = input[\\"additional_properties\\"]
+      self._additional_properties: dict[str, Any] = input[\\"additional_properties\\"]
 
   test2
   @property
@@ -112,11 +112,11 @@ exports[`PythonGenerator Class should work with custom preset for \`class\` type
 
   test2
   @property
-  def additional_properties(self) -> dict[Any, Any]:
+  def additional_properties(self) -> dict[str, Any]:
     return self._additional_properties
   test3
   @additional_properties.setter
-  def additional_properties(self, additional_properties: dict[Any, Any]):
+  def additional_properties(self, additional_properties: dict[str, Any]):
     self._additional_properties = additional_properties
 "
 `;
