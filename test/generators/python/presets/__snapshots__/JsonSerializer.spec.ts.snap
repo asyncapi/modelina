@@ -4,9 +4,9 @@ exports[`PYTHON_JSON_SERIALIZER_PRESET should render serializer and deserializer
 "class Test: 
   def __init__(self, input: Dict):
     if hasattr(input, 'prop'):
-      self._prop: str = input[\\"prop\\"]
+      self._prop: str = input['prop']
     if hasattr(input, 'additional_properties'):
-      self._additional_properties: dict[str, Any] = input[\\"additional_properties\\"]
+      self._additional_properties: dict[str, Any] = input['additional_properties']
 
   @property
   def prop(self) -> str:

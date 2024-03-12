@@ -47,7 +47,6 @@ export class PythonDependencyManager extends AbstractDependencyManager {
         const toImport = matches[2]
           .split(',')
           .map((importMatch) => importMatch.trim());
-        // eslint-disable-next-line security/detect-object-injection
         importMap[`${from}`].push(...toImport);
       }
     }

@@ -83,11 +83,14 @@ export const PYTHON_DEFAULT_CLASS_PRESET: ClassPresetType<PythonOptions> = {
     let body = '';
     if (Object.keys(properties).length > 0) {
       const assignments = Object.values(properties).map((property) => {
+        if (property.property.options.const) {
+          return `self._${property.propertyName}: ${property.property.type} = ${property.property.options.const.value}`;
+        }
         let assignment: string;
         if (property.property instanceof ConstrainedReferenceModel) {
-          assignment = `self._${property.propertyName}: ${property.property.type} = ${property.property.type}(input["${property.propertyName}"])`;
+          assignment = `self._${property.propertyName}: ${property.property.type} = ${property.property.type}(input['${property.propertyName}'])`;
         } else {
-          assignment = `self._${property.propertyName}: ${property.property.type} = input["${property.propertyName}"]`;
+          assignment = `self._${property.propertyName}: ${property.property.type} = input['${property.propertyName}']`;
         }
         if (!property.required) {
           return `if hasattr(input, '${property.propertyName}'):

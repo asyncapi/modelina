@@ -68,6 +68,19 @@ describe('PythonGenerator', () => {
       expect(models[0].result).toMatchSnapshot();
     });
 
+    test('should render constant types', async () => {
+      const doc = {
+        $id: 'Address',
+        type: 'object',
+        properties: {
+          street_name: { type: 'string', const: 'someAddress' }
+        },
+        additionalProperties: false
+      };
+      const models = await generator.generate(doc);
+      expect(models).toHaveLength(1);
+      expect(models[0].result).toMatchSnapshot();
+    });
     test('should render `class` type', async () => {
       const doc = {
         $id: 'Address',

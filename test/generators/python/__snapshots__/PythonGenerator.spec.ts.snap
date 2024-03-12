@@ -4,7 +4,7 @@ exports[`PythonGenerator Class should not render reserved keyword 1`] = `
 "class Address: 
   def __init__(self, input: Dict):
     if hasattr(input, 'reserved_del'):
-      self._reserved_del: str = input[\\"reserved_del\\"]
+      self._reserved_del: str = input['reserved_del']
 
   @property
   def reserved_del(self) -> str:
@@ -18,17 +18,17 @@ exports[`PythonGenerator Class should not render reserved keyword 1`] = `
 exports[`PythonGenerator Class should render \`class\` type 1`] = `
 "class Address: 
   def __init__(self, input: Dict):
-    self._street_name: str = input[\\"street_name\\"]
-    self._city: str = input[\\"city\\"]
-    self._state: str = input[\\"state\\"]
-    self._house_number: float = input[\\"house_number\\"]
+    self._street_name: str = input['street_name']
+    self._city: str = input['city']
+    self._state: str = input['state']
+    self._house_number: float = input['house_number']
     if hasattr(input, 'marriage'):
-      self._marriage: bool = input[\\"marriage\\"]
+      self._marriage: bool = input['marriage']
     if hasattr(input, 'members'):
-      self._members: str | float | bool = input[\\"members\\"]
-    self._array_type: List[str | float | Any] = input[\\"array_type\\"]
+      self._members: str | float | bool = input['members']
+    self._array_type: List[str | float | Any] = input['array_type']
     if hasattr(input, 'additional_properties'):
-      self._additional_properties: dict[str, Any | str] = input[\\"additional_properties\\"]
+      self._additional_properties: dict[str, Any | str] = input['additional_properties']
 
   @property
   def street_name(self) -> str:
@@ -88,6 +88,17 @@ exports[`PythonGenerator Class should render \`class\` type 1`] = `
 "
 `;
 
+exports[`PythonGenerator Class should render constant types 1`] = `
+"class Address: 
+  def __init__(self, input: Dict):
+    self._street_name: str = 'someAddress'
+
+  @property
+  def street_name(self) -> str:
+    return self._street_name
+"
+`;
+
 exports[`PythonGenerator Class should work with custom preset for \`class\` type 1`] = `
 "class CustomClass: 
   test1
@@ -97,9 +108,9 @@ exports[`PythonGenerator Class should work with custom preset for \`class\` type
 
   def __init__(self, input: Dict):
     if hasattr(input, 'property'):
-      self._property: str = input[\\"property\\"]
+      self._property: str = input['property']
     if hasattr(input, 'additional_properties'):
-      self._additional_properties: dict[str, Any] = input[\\"additional_properties\\"]
+      self._additional_properties: dict[str, Any] = input['additional_properties']
 
   test2
   @property

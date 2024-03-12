@@ -139,3 +139,73 @@ If you are using the Python preset `PYTHON_JSON_SERIALIZER_PRESET`, the function
 - deserializeFromJson
 + deserialize_from_json
 ```
+
+### Type hints
+Classes now have type hints on all properties and accessor functions.
+
+Before:
+```python
+from typing import Any, Dict
+class ObjProperty: 
+  def __init__(self, input):
+    if hasattr(input, 'number'):
+      self._number = input['number']
+    if hasattr(input, 'additional_properties'):
+      self._additional_properties = input['additional_properties']
+
+  @property
+  def number(self):
+    return self._number
+  @number.setter
+  def number(self, number):
+    self._number = number
+
+  @property
+  def additional_properties(self):
+    return self._additional_properties
+  @additional_properties.setter
+  def additional_properties(self, additional_properties):
+    self._additional_properties = additional_properties
+```
+
+After:
+```python
+from typing import Any, Dict
+class ObjProperty: 
+  def __init__(self, input: Dict):
+    if hasattr(input, 'number'):
+      self._number: float = input['number']
+    if hasattr(input, 'additional_properties'):
+      self._additional_properties: dict[str, Any] = input['additional_properties']
+
+  @property
+  def number(self) -> float:
+    return self._number
+  @number.setter
+  def number(self, number: float):
+    self._number = number
+
+  @property
+  def additional_properties(self) -> dict[str, Any]:
+    return self._additional_properties
+  @additional_properties.setter
+  def additional_properties(self, additional_properties: dict[str, Any]):
+    self._additional_properties = additional_properties
+```
+
+### Initialization of correct models
+Before in the constructor, if a property was another class, they would not correctly be initialized. Now a new instance of the object is created.
+
+### Constants are now rendered
+Before, constants where completely ignored, now they are respected and also means you don't have the possibility to change it through setters for example.
+
+```python
+class Address: 
+  def __init__(self, input: Dict):
+    self._street_name: str = 'someAddress'
+
+  @property
+  def street_name(self) -> str:
+    return self._street_name
+```
+

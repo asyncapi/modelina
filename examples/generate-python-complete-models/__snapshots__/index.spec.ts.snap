@@ -7,9 +7,9 @@ from typing import Any, Dict
 class ObjProperty: 
   def __init__(self, input: Dict):
     if hasattr(input, 'number'):
-      self._number: float = input[\\"number\\"]
+      self._number: float = input['number']
     if hasattr(input, 'additional_properties'):
-      self._additional_properties: dict[str, Any] = input[\\"additional_properties\\"]
+      self._additional_properties: dict[str, Any] = input['additional_properties']
 
   @property
   def number(self) -> float:
@@ -35,9 +35,9 @@ from typing import Any, Dict
 class ObjProperty: 
   def __init__(self, input: Dict):
     if hasattr(input, 'number'):
-      self._number: float = input[\\"number\\"]
+      self._number: float = input['number']
     if hasattr(input, 'additional_properties'):
-      self._additional_properties: dict[str, Any] = input[\\"additional_properties\\"]
+      self._additional_properties: dict[str, Any] = input['additional_properties']
 
   @property
   def number(self) -> float:
@@ -63,9 +63,9 @@ from typing import Any, Dict
 class Root: 
   def __init__(self, input: Dict):
     if hasattr(input, 'email'):
-      self._email: str = input[\\"email\\"]
+      self._email: str = input['email']
     if hasattr(input, 'obj_property'):
-      self._obj_property: ObjProperty = ObjProperty(input[\\"obj_property\\"])
+      self._obj_property: ObjProperty = ObjProperty(input['obj_property'])
 
   @property
   def email(self) -> str:
@@ -91,9 +91,9 @@ from typing import Any, Dict
 class Root: 
   def __init__(self, input: Dict):
     if hasattr(input, 'email'):
-      self._email: str = input[\\"email\\"]
+      self._email: str = input['email']
     if hasattr(input, 'obj_property'):
-      self._obj_property: ObjProperty = ObjProperty(input[\\"obj_property\\"])
+      self._obj_property: ObjProperty = ObjProperty(input['obj_property'])
 
   @property
   def email(self) -> str:

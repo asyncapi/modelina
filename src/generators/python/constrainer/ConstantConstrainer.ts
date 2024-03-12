@@ -45,7 +45,7 @@ export function defaultConstantConstraints(): PythonConstantConstraint {
         constOptions
       });
     } else if (constrainedMetaModel instanceof ConstrainedStringModel) {
-      return `"${constOptions.originalInput}"`;
+      return `'${constOptions.originalInput}'`;
     }
 
     return undefined;

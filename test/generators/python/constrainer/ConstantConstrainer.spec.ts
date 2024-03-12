@@ -78,7 +78,7 @@ describe('defaultConstantConstraints', () => {
         ),
         options: PythonGenerator.defaultOptions
       });
-      expect(constrainedConstant).toEqual('"testValue"');
+      expect(constrainedConstant).toEqual("'testValue'");
     });
   });
 });

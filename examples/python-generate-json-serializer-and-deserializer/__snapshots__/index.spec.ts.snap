@@ -5,9 +5,9 @@ Array [
   "class Root: 
   def __init__(self, input: Dict):
     if hasattr(input, 'email'):
-      self._email: str = input[\\"email\\"]
+      self._email: str = input['email']
     if hasattr(input, 'additional_properties'):
-      self._additional_properties: dict[str, Any] = input[\\"additional_properties\\"]
+      self._additional_properties: dict[str, Any] = input['additional_properties']
 
   @property
   def email(self) -> str:
