@@ -1,0 +1,40 @@
+name: Bump Homebrew formula for Modelina
+
+on:
+  # Since now release depends on schedule, might be that there is a situation we cannot wait for schedule and trigger release manually
+  workflow_dispatch:
+  # We cannot run brew release continusly every time we release something as sometimes we release a couple of times a day and overload brew pipelines
+  # More details https://github.com/asyncapi/cli/issues/503
+  schedule:
+    - cron: "0 23 * * *"
+
+jobs:
+  bump-formula-in-homebrew:
+    if: github.repository == 'asyncapi/modelina'
+    name: Bump the formula in homebrew-core repo
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+      - name: Get version from package.json
+        id: extractver
+        run: echo "version=$(npm run get-version --silent)" >> $GITHUB_OUTPUT
+      - uses: mislav/bump-homebrew-formula-action@v2
+        with:
+          # A PR will be sent to github.com/Homebrew/homebrew-core to update AsyncAPI Modelina formula:
+          formula-name: modelina
+          # https://github.com/mislav/bump-homebrew-formula-action/issues/58
+          formula-path: Formula/a/modelina.rb
+          tag-name: ${{ steps.extractver.outputs.version }}
+          download-url: https://registry.npmjs.org/@asyncapi/modelina/-/modelina-${{ steps.extractver.outputs.version }}.tgz #we need to point to npm not github as there is a dist that is not on github
+        env:
+          COMMITTER_TOKEN: ${{ secrets.GH_TOKEN_BOT_EVE }}
+      - if: failure() # Only, on failure, send a message on the 94_bot-failing-ci slack channel
+        name: Report workflow run status to Slack
+        uses: 8398a7/action-slack@fbd6aa58ba854a740e11a35d0df80cb5d12101d8 #using https://github.com/8398a7/action-slack/releases/tag/v3.15.1
+        with:
+          status: ${{ job.status }}
+          fields: repo,action,workflow
+          text: 'AsyncAPI Modelina release to BREW failed'
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_CI_FAIL_NOTIFY }}

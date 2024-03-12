@@ -1,8 +1,7 @@
 {
   "name": "@asyncapi/modelina-cli",
   "description": "CLI to work with Modelina",
-  "version": "0.0.0",
-  "author": "@asyncapi",
+  "version": "3.4.0",
   "bin": {
     "modelina": "./bin/run"
   },
@@ -37,7 +36,8 @@
     "rimraf": "^5.0.5",
     "shx": "^0.3.4",
     "ts-node": "^10.9.2",
-    "typescript": "4.6.4"
+    "typescript": "4.6.4",
+    "simple-git": "^3.16.0"
   },
   "files": [
     "/bin",
@@ -75,7 +75,10 @@
   "publishConfig": {
     "access": "public"
   },
-  "repository": "asyncapi/modelina",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/asyncapi/modelina.git"
+  },
   "scripts": {
     "build": "rimraf lib && tsc && oclif manifest && echo \"Build Completed\"",
     "dev": "tsc --watch",
@@ -91,14 +94,15 @@
     "pack:linux": "oclif pack deb && npm run pack:rename",
     "pack:tarballs": "oclif pack tarballs -t linux-x64 && npm run pack:rename",
     "pack:windows": "oclif pack win && npm run pack:rename",
-    "pack:rename": "echo node scripts/releasePackagesRename.js",
+    "pack:rename": "node scripts/releasePackagesRename.js",
     "prepublishOnly": "npm run build",
     "pretest": "npm run build",
     "pretest:coverage": "npm run build",
     "test": "cross-env NODE_ENV=development CUSTOM_CONTEXT_FILENAME=\"test.asyncapi-modelina\" CUSTOM_CONTEXT_FILE_LOCATION=\"\" nyc --extension .ts mocha --require ts-node/register --require test/helpers/init.js --reporter spec --timeout 100000 \"test/**/*.test.ts\"",
     "get-version": "echo $npm_package_version",
     "createhook": "oclif generate hook myhook --event=command_not_found",
-    "createhookinit": "oclif generate hook inithook --event=init"
+    "createhookinit": "oclif generate hook inithook --event=init",
+    "bump:version": "npm --no-git-tag-version --allow-same-version version $VERSION"
   },
   "types": "lib/index.d.ts"
 }
