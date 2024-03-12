@@ -64,11 +64,11 @@ jobs:
       - name: Build project
         run: npm run prepublishOnly
       - name: Assets generation
-        run: npm run ${{ matrix.npm_script }}
+        run: cd modelina-cli && npm run ${{ matrix.npm_script }}
       - name: Update release
         uses: softprops/action-gh-release@v1
         with:
-          files: dist/${{ matrix.dist_folder }}/modelina.${{ matrix.extension }}
+          files: modelina-cli/dist/${{ matrix.dist_folder }}/modelina.${{ matrix.extension }}
           tag_name: v${{ steps.extractver.outputs.version }}
           token: ${{ secrets.GH_TOKEN }}
       - if: failure() # Only, on failure, send a message on the 94_bot-failing-ci slack channel
@@ -77,6 +77,6 @@ jobs:
         with:
           status: ${{ job.status }}
           fields: repo,action,workflow
-          text: 'AsyncAPI CLI release build artifacts failed'
+          text: 'AsyncAPI Modelina release build artifacts failed'
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_CI_FAIL_NOTIFY }}
