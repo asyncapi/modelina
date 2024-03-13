@@ -2,89 +2,100 @@
 
 exports[`PythonGenerator Class should not render reserved keyword 1`] = `
 "class Address: 
-  def __init__(self, input):
+  def __init__(self, input: Dict):
     if hasattr(input, 'reserved_del'):
-      self._reserved_del = input.reserved_del
+      self._reserved_del: str = input['reserved_del']
 
   @property
-  def reserved_del(self):
+  def reserved_del(self) -> str:
     return self._reserved_del
   @reserved_del.setter
-  def reserved_del(self, reserved_del):
+  def reserved_del(self, reserved_del: str):
     self._reserved_del = reserved_del
 "
 `;
 
 exports[`PythonGenerator Class should render \`class\` type 1`] = `
 "class Address: 
-  def __init__(self, input):
-    self._street_name = input.street_name
-    self._city = input.city
-    self._state = input.state
-    self._house_number = input.house_number
+  def __init__(self, input: Dict):
+    self._street_name: str = input['street_name']
+    self._city: str = input['city']
+    self._state: str = input['state']
+    self._house_number: float = input['house_number']
     if hasattr(input, 'marriage'):
-      self._marriage = input.marriage
+      self._marriage: bool = input['marriage']
     if hasattr(input, 'members'):
-      self._members = input.members
-    self._array_type = input.array_type
+      self._members: str | float | bool = input['members']
+    self._array_type: List[str | float | Any] = input['array_type']
     if hasattr(input, 'additional_properties'):
-      self._additional_properties = input.additional_properties
+      self._additional_properties: dict[str, Any | str] = input['additional_properties']
 
   @property
-  def street_name(self):
+  def street_name(self) -> str:
     return self._street_name
   @street_name.setter
-  def street_name(self, street_name):
+  def street_name(self, street_name: str):
     self._street_name = street_name
 
   @property
-  def city(self):
+  def city(self) -> str:
     return self._city
   @city.setter
-  def city(self, city):
+  def city(self, city: str):
     self._city = city
 
   @property
-  def state(self):
+  def state(self) -> str:
     return self._state
   @state.setter
-  def state(self, state):
+  def state(self, state: str):
     self._state = state
 
   @property
-  def house_number(self):
+  def house_number(self) -> float:
     return self._house_number
   @house_number.setter
-  def house_number(self, house_number):
+  def house_number(self, house_number: float):
     self._house_number = house_number
 
   @property
-  def marriage(self):
+  def marriage(self) -> bool:
     return self._marriage
   @marriage.setter
-  def marriage(self, marriage):
+  def marriage(self, marriage: bool):
     self._marriage = marriage
 
   @property
-  def members(self):
+  def members(self) -> str | float | bool:
     return self._members
   @members.setter
-  def members(self, members):
+  def members(self, members: str | float | bool):
     self._members = members
 
   @property
-  def array_type(self):
+  def array_type(self) -> List[str | float | Any]:
     return self._array_type
   @array_type.setter
-  def array_type(self, array_type):
+  def array_type(self, array_type: List[str | float | Any]):
     self._array_type = array_type
 
   @property
-  def additional_properties(self):
+  def additional_properties(self) -> dict[str, Any | str]:
     return self._additional_properties
   @additional_properties.setter
-  def additional_properties(self, additional_properties):
+  def additional_properties(self, additional_properties: dict[str, Any | str]):
     self._additional_properties = additional_properties
+"
+`;
+
+exports[`PythonGenerator Class should render constant types 1`] = `
+"class Address: 
+  def __init__(self, input: Dict):
+    self._street_name: str = 'someAddress'
+
+  @property
+  def street_name(self) -> str:
+    return self._street_name
 "
 `;
 
@@ -95,35 +106,35 @@ exports[`PythonGenerator Class should work with custom preset for \`class\` type
   test1
 
 
-  def __init__(self, input):
+  def __init__(self, input: Dict):
     if hasattr(input, 'property'):
-      self._property = input.property
+      self._property: str = input['property']
     if hasattr(input, 'additional_properties'):
-      self._additional_properties = input.additional_properties
+      self._additional_properties: dict[str, Any] = input['additional_properties']
 
   test2
   @property
-  def property(self):
+  def property(self) -> str:
     return self._property
   test3
   @property.setter
-  def property(self, property):
+  def property(self, property: str):
     self._property = property
 
   test2
   @property
-  def additional_properties(self):
+  def additional_properties(self) -> dict[str, Any]:
     return self._additional_properties
   test3
   @additional_properties.setter
-  def additional_properties(self, additional_properties):
+  def additional_properties(self, additional_properties: dict[str, Any]):
     self._additional_properties = additional_properties
 "
 `;
 
 exports[`PythonGenerator Class should work with empty objects 1`] = `
 "class CustomClass: 
-  def __init__(self, input):
+  def __init__(self, input: Dict):
     \\"\\"\\"
     No properties
     \\"\\"\\"

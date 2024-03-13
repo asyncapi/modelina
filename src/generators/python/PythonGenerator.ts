@@ -239,7 +239,7 @@ ${outputModel.result}`;
     return RenderOutput.toRenderOutput({
       result,
       renderedName: model.name,
-      dependencies: dependencyManagerToUse.dependencies
+      dependencies: dependencyManagerToUse.renderDependencies()
     });
   }
 
@@ -266,7 +266,7 @@ ${outputModel.result}`;
     return RenderOutput.toRenderOutput({
       result,
       renderedName: model.name,
-      dependencies: dependencyManagerToUse.dependencies
+      dependencies: dependencyManagerToUse.renderDependencies()
     });
   }
 }

@@ -1,7 +1,8 @@
 import { PythonRenderer } from '../PythonRenderer';
 import {
   ConstrainedObjectModel,
-  ConstrainedObjectPropertyModel
+  ConstrainedObjectPropertyModel,
+  ConstrainedReferenceModel
 } from '../../../models';
 import { PythonOptions } from '../PythonGenerator';
 import { ClassPresetType } from '../PythonPreset';
@@ -81,33 +82,49 @@ export const PYTHON_DEFAULT_CLASS_PRESET: ClassPresetType<PythonOptions> = {
     const properties = model.properties || {};
     let body = '';
     if (Object.keys(properties).length > 0) {
-      const assigments = Object.values(properties).map((property) => {
-        if (!property.required) {
-          const propAssignment = `self._${property.propertyName} = input.${property.propertyName}`;
-          return `if hasattr(input, '${property.propertyName}'):
-${renderer.indent(propAssignment, 2)}`;
+      const assignments = Object.values(properties).map((property) => {
+        if (property.property.options.const) {
+          return `self._${property.propertyName}: ${property.property.type} = ${property.property.options.const.value}`;
         }
-        return `self._${property.propertyName} = input.${property.propertyName}`;
+        let assignment: string;
+        if (property.property instanceof ConstrainedReferenceModel) {
+          assignment = `self._${property.propertyName}: ${property.property.type} = ${property.property.type}(input['${property.propertyName}'])`;
+        } else {
+          assignment = `self._${property.propertyName}: ${property.property.type} = input['${property.propertyName}']`;
+        }
+        if (!property.required) {
+          return `if hasattr(input, '${property.propertyName}'):
+${renderer.indent(assignment, 2)}`;
+        }
+        return assignment;
       });
-      body = renderer.renderBlock(assigments);
+      body = renderer.renderBlock(assignments);
     } else {
       body = `"""
 No properties
 """`;
     }
-    return `def __init__(self, input):
+    renderer.dependencyManager.addDependency(`from typing import Dict`);
+    return `def __init__(self, input: Dict):
 ${renderer.indent(body, 2)}`;
   },
   getter({ property, renderer }) {
     const propAssignment = `return self._${property.propertyName}`;
     return `@property
-def ${property.propertyName}(self):
+def ${property.propertyName}(self) -> ${property.property.type}:
 ${renderer.indent(propAssignment, 2)}`;
   },
   setter({ property, renderer }) {
+    // if const value exists we should not render a setter
+    if (property.property.options.const?.value) {
+      return '';
+    }
+
     const propAssignment = `self._${property.propertyName} = ${property.propertyName}`;
+    const propArgument = `${property.propertyName}: ${property.property.type}`;
+
     return `@${property.propertyName}.setter
-def ${property.propertyName}(self, ${property.propertyName}):
+def ${property.propertyName}(self, ${propArgument}):
 ${renderer.indent(propAssignment, 2)}`;
   }
 };
