@@ -15,7 +15,10 @@ import {
   GO_DEFAULT_STRUCT_PRESET
 } from './renderers/StructRenderer';
 import { EnumRenderer, GO_DEFAULT_ENUM_PRESET } from './renderers/EnumRenderer';
-import {GO_DEFAULT_UNION_PRESET, UnionRenderer} from './renderers/UnionRenderer'
+import {
+  GO_DEFAULT_UNION_PRESET,
+  UnionRenderer
+} from './renderers/UnionRenderer';
 import { GoOptions } from './GoGenerator';
 
 export interface FieldArgs {
@@ -23,7 +26,7 @@ export interface FieldArgs {
 }
 
 export interface UnionFieldArgs {
-  field: ConstrainedMetaModel
+  field: ConstrainedMetaModel;
 }
 
 export interface StructPreset<R extends AbstractRenderer, O>
@@ -52,7 +55,7 @@ export type UnionPresetType<O> = UnionPreset<UnionRenderer, O>;
 export type GoPreset<O = any> = Preset<{
   struct: StructPresetType<O>;
   enum: EnumPresetType<O>;
-  union: UnionPresetType<O>
+  union: UnionPresetType<O>;
 }>;
 
 export const GO_DEFAULT_PRESET: GoPreset<GoOptions> = {

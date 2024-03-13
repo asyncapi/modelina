@@ -68,11 +68,11 @@ describe('GoGenerator', () => {
         },
         array_type: { type: 'array', items: { type: 'string' } },
         location: {
-          type: "object", 
+          type: 'object',
           additionalProperties: {
             oneOf: [
-              {type: "object", properties: {ref: {type:'string'}}},
-              {type: "object", properties: {Id: {type: 'string'}}}
+              { type: 'object', properties: { ref: { type: 'string' } } },
+              { type: 'object', properties: { Id: { type: 'string' } } }
             ]
           }
         }
@@ -90,11 +90,10 @@ describe('GoGenerator', () => {
 
     const models = await generator.generate(doc);
     expect(models).toHaveLength(7);
-    const resultArray = models.map(m => m.result)
-    const result = resultArray.join('\n')
+    const resultArray = models.map((m) => m.result);
+    const result = resultArray.join('\n');
 
-    expect(result).toMatchSnapshot()
-
+    expect(result).toMatchSnapshot();
   });
 
   test('should work custom preset for `struct` type', async () => {

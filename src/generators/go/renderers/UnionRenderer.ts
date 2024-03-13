@@ -1,9 +1,6 @@
 import { GoRenderer } from '../GoRenderer';
 import { UnionPresetType } from '../GoPreset';
-import {
-  ConstrainedUnionModel,
-  ConstrainedMetaModel,
-} from '../../../models';
+import { ConstrainedUnionModel, ConstrainedMetaModel } from '../../../models';
 import { GoOptions } from '../GoGenerator';
 
 /**
@@ -35,7 +32,7 @@ ${this.indent(this.renderBlock(content, 2))}
     for (const field of fields) {
       const renderField = await this.runFieldPreset(field);
       if (!content.includes(renderField)) {
-        content.push(renderField)
+        content.push(renderField);
       }
     }
     return this.renderBlock(content);
@@ -50,17 +47,17 @@ export const GO_DEFAULT_UNION_PRESET: UnionPresetType<GoOptions> = {
   self({ renderer }) {
     return renderer.defaultSelf();
   },
-  field({ field, options, model }) {
-    let fieldType = field.type
-    
+  field({ field, options }) {
+    const fieldType = field.type;
+
     if (fieldType === 'interface{}') {
-      return `${options.unionAnyModelName} ${fieldType}`
+      return `${options.unionAnyModelName} ${fieldType}`;
     }
     if (fieldType.includes('map')) {
-      return `${options.unionDictModelName} ${fieldType}`
+      return `${options.unionDictModelName} ${fieldType}`;
     }
     if (fieldType.includes('[]')) {
-      return `${options.unionArrModelName} ${fieldType}`
+      return `${options.unionArrModelName} ${fieldType}`;
     }
     return `${fieldType}`;
   }

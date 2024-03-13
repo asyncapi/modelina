@@ -38,9 +38,9 @@ import { UnionRenderer } from './renderers/UnionRenderer';
 export interface GoOptions extends CommonGeneratorOptions<GoPreset> {
   typeMapping: TypeMapping<GoOptions, GoDependencyManager>;
   constraints: Constraints<GoOptions>;
-  unionAnyModelName: String;
-  unionDictModelName: String;
-  unionArrModelName: String;
+  unionAnyModelName: string;
+  unionDictModelName: string;
+  unionArrModelName: string;
 }
 export type GoConstantConstraint = ConstantConstraint<GoOptions>;
 export type GoEnumKeyConstraint = EnumKeyConstraint<GoOptions>;
@@ -65,9 +65,9 @@ export class GoGenerator extends AbstractGenerator<
     defaultPreset: GO_DEFAULT_PRESET,
     typeMapping: GoDefaultTypeMapping,
     constraints: GoDefaultConstraints,
-    unionAnyModelName: "ModelinaAnyType",
-    unionDictModelName: "ModelinaDictType",
-    unionArrModelName: "ModelinaArrType"
+    unionAnyModelName: 'ModelinaAnyType',
+    unionDictModelName: 'ModelinaDictType',
+    unionArrModelName: 'ModelinaArrType'
   };
 
   static defaultCompleteModelOptions: GoRenderCompleteModelOptions = {
@@ -156,7 +156,7 @@ export class GoGenerator extends AbstractGenerator<
         args.constrainedModel,
         args.inputModel,
         optionsToUse
-      )
+      );
     }
     Logger.warn(
       `Go generator, cannot generate this type of model, ${args.constrainedModel.name}`
