@@ -38,6 +38,9 @@ import { UnionRenderer } from './renderers/UnionRenderer';
 export interface GoOptions extends CommonGeneratorOptions<GoPreset> {
   typeMapping: TypeMapping<GoOptions, GoDependencyManager>;
   constraints: Constraints<GoOptions>;
+  unionAnyModelName: String;
+  unionDictModelName: String;
+  unionArrModelName: String;
 }
 export type GoConstantConstraint = ConstantConstraint<GoOptions>;
 export type GoEnumKeyConstraint = EnumKeyConstraint<GoOptions>;
@@ -61,7 +64,10 @@ export class GoGenerator extends AbstractGenerator<
     ...defaultGeneratorOptions,
     defaultPreset: GO_DEFAULT_PRESET,
     typeMapping: GoDefaultTypeMapping,
-    constraints: GoDefaultConstraints
+    constraints: GoDefaultConstraints,
+    unionAnyModelName: "ModelinaAnyType",
+    unionDictModelName: "ModelinaDictType",
+    unionArrModelName: "ModelinaArrType"
   };
 
   static defaultCompleteModelOptions: GoRenderCompleteModelOptions = {

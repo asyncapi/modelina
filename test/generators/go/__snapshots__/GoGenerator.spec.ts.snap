@@ -20,7 +20,7 @@ package some_package
 type Union struct {
   string
   float64
-  interface{}
+  ModelinaAnyType interface{}
 }"
 `;
 
@@ -30,7 +30,7 @@ package some_package
 
 // AdditionalProperties represents a AdditionalProperties model.
 type AdditionalProperties struct {
-  interface{}
+  ModelinaAnyType interface{}
   string
 }"
 `;
@@ -88,7 +88,7 @@ package some_package
 type Union struct {
   string
   float64
-  interface{}
+  ModelinaAnyType interface{}
 }"
 `;
 
@@ -98,7 +98,7 @@ package some_package
 
 // AdditionalProperties represents a AdditionalProperties model.
 type AdditionalProperties struct {
-  interface{}
+  ModelinaAnyType interface{}
   string
 }"
 `;
@@ -177,14 +177,13 @@ exports[`GoGenerator should render \`struct\` type 2`] = `
 type Union struct {
   string
   float64
-  interface{}
+  ModelinaAnyType interface{}
 }"
 `;
 
 exports[`GoGenerator should render \`struct\` type 3`] = `
 "// AdditionalProperties represents a AdditionalProperties model.
 type AdditionalProperties struct {
-  string
   string
 }"
 `;
@@ -215,7 +214,7 @@ type Members struct {
 type Union struct {
   string
   float64
-  interface{}
+  ModelinaAnyType interface{}
 }
 // LocationAdditionalProperty represents a LocationAdditionalProperty model.
 type LocationAdditionalProperty struct {
@@ -224,7 +223,6 @@ type LocationAdditionalProperty struct {
 }
 // AdditionalProperties represents a AdditionalProperties model.
 type AdditionalProperties struct {
-  string
   string
 }
 // Address represents a Address model.
