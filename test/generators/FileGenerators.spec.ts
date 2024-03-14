@@ -108,7 +108,7 @@ describe.each(generatorsToTest)(
       expect(generator.generateCompleteModels).toHaveBeenCalledTimes(1);
       expect(FileHelpers.writerToFileSystem).toHaveBeenCalledTimes(1);
     });
-    test.only('should try and generate models to files', async () => {
+    test('should try and generate models to files', async () => {
       const outputDir = './test';
       const expectedOutputDirPath = path.resolve(outputDir);
       jest
