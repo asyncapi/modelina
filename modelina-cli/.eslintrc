@@ -1,0 +1,27 @@
+{
+  "extends": [
+    "oclif", 
+    "oclif-typescript", 
+    "prettier"
+  ],
+  "rules": {
+    "@typescript-eslint/no-explicit-any": 0,
+    "@typescript-eslint/no-unused-vars": "off",
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "new-cap": "off",
+    "require-await": "off",
+    "no-useless-call": "off",
+    "no-await-in-loop": "off",
+    "no-warning-comments": "error",
+    "prettier/prettier": "off",
+    "complexity": "off",
+    "unicorn/filename-case": "off",
+    "unicorn/prefer-array-some": "off",
+    "unicorn/prefer-top-level-await": "off",
+    "unicorn/no-abusive-eslint-disable": "off",
+    "unicorn/no-await-expression-member": "off",
+    "security/detect-non-literal-fs-filename": "off",
+    "no-underscore-dangle": "off",
+    "unicorn/prefer-module": "off"
+  }
+}
