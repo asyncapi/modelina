@@ -209,3 +209,8 @@ class Address:
     return self._street_name
 ```
 
+## Go
+
+### File names
+
+In v4, file names for go will be formatted as `snake_case.go`. This is the "standard" in go: https://github.com/golang/go/issues/36060
