@@ -54,7 +54,7 @@ exports[`PythonGenerator Class should handle self reference models 1`] = `
 exports[`PythonGenerator Class should not render reserved keyword 1`] = `
 "class Address: 
   def __init__(self, input: Dict):
-    if hasattr(input, 'reserved_del'):
+    if 'reserved_del' in input:
       self._reserved_del: str = input['reserved_del']
 
   @property
@@ -73,12 +73,12 @@ exports[`PythonGenerator Class should render \`class\` type 1`] = `
     self._city: str = input['city']
     self._state: str = input['state']
     self._house_number: float = input['house_number']
-    if hasattr(input, 'marriage'):
+    if 'marriage' in input:
       self._marriage: bool = input['marriage']
-    if hasattr(input, 'members'):
+    if 'members' in input:
       self._members: str | float | bool = input['members']
     self._array_type: List[str | float | Any] = input['array_type']
-    if hasattr(input, 'additional_properties'):
+    if 'additional_properties' in input:
       self._additional_properties: dict[str, Any | str] = input['additional_properties']
 
   @property
@@ -158,9 +158,9 @@ exports[`PythonGenerator Class should work with custom preset for \`class\` type
 
 
   def __init__(self, input: Dict):
-    if hasattr(input, 'property'):
+    if 'property' in input:
       self._property: str = input['property']
-    if hasattr(input, 'additional_properties'):
+    if 'additional_properties' in input:
       self._additional_properties: dict[str, Any] = input['additional_properties']
 
   test2
