@@ -142,7 +142,9 @@ describe.each(generatorsToTest)(
         .at(0)
         .at(1);
       expect(filePath).toMatch(expectedOutputDirPath);
-      expect(filePath.replace(expectedOutputDirPath, '')).toMatchSnapshot();
+      expect(
+        filePath.replace(`${expectedOutputDirPath}/`, '')
+      ).toMatchSnapshot();
       expect(
         (FileHelpers.writerToFileSystem as jest.Mock).mock.calls.at(0).at(2)
       ).toEqual(false);
