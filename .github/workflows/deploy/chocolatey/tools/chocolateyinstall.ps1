@@ -12,7 +12,7 @@ $packageArgs = @{
   url64bit      = $url64
   #file         = $fileLocation NOTE: Commented out because we are using url instead
 
-  softwareName  = 'asyncapi-modelina*'
+  softwareName  = 'modelina*'
 
   checksum      = '{{checksum}}'
   checksumType  = 'sha256' #default is md5, can also be sha1, sha256 or sha512

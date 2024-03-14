@@ -9,7 +9,7 @@
 
     <!-- == SOFTWARE SPECIFIC SECTION == -->
     <!-- This section is about the software itself -->
-    <title>asyncapi-modelina</title>
+    <title>modelina</title>
     <authors>AsyncAPI_Initiative</authors>
     <projectUrl>https://www.asyncapi.com/</projectUrl>
     <iconUrl>https://avatars.githubusercontent.com/u/16401334?s=200</iconUrl>

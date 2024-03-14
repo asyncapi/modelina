@@ -37,14 +37,14 @@ jobs:
         run: |
           echo "Downloading release assets for version ${{ steps.release_version.outputs.version }}"
           mkdir -p ./dist
-          curl -L "https://github.com/asyncapi/modelina/releases/download/v${{ steps.release_version.outputs.version }}/modelina.x64.exe" -o "./modelina-cli/dist/modelina.x64.exe"
-          curl -L "https://github.com/asyncapi/modelina/releases/download/v${{ steps.release_version.outputs.version }}/modelina.x86.exe" -o "./modelina-cli/dist/modelina.x86.exe"
+          curl -L "https://github.com/asyncapi/modelina/releases/download/v${{ steps.release_version.outputs.version }}/modelina.x64.exe" -o "./modelina-cli/dist/win32/modelina.x64.exe"
+          curl -L "https://github.com/asyncapi/modelina/releases/download/v${{ steps.release_version.outputs.version }}/modelina.x86.exe" -o "./modelina-cli/dist/win32/modelina.x86.exe"
 
       - name: Get Checksum of the release
         id: release_checksum
         run: |
-          $checksum = (Get-FileHash -Path "./modelina-cli/dist/modelina.x86.exe" -Algorithm SHA256).Hash
-          $checksum64 = (Get-FileHash -Path "./modelina-cli/dist/modelina.x64.exe" -Algorithm SHA256).Hash
+          $checksum = (Get-FileHash -Path "./modelina-cli/dist/win32/modelina.x86.exe" -Algorithm SHA256).Hash
+          $checksum64 = (Get-FileHash -Path "./modelina-cli/dist/win32/modelina.x64.exe" -Algorithm SHA256).Hash
           echo "Setting checksum to $checksum"
           echo "checksum=$checksum" >> $env:GITHUB_OUTPUT
           echo "Setting checksum64 to $checksum64"
@@ -58,7 +58,7 @@ jobs:
       - name: Run Chocolatey Pack
         run: |
           cd ./.github/workflows/deploy/chocolatey
-          choco pack ./asyncapi-modelina.nuspec
+          choco pack ./modelina.nuspec
           choco apikey add --source "'https://push.chocolatey.org/'" --key ${{ secrets.CHOCOLATEY_API_KEY }}
           choco push ./modelina.${{ steps.release_version.outputs.version }}.nupkg --source "'https://push.chocolatey.org/'"  
           

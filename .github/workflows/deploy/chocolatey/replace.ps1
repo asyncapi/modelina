@@ -7,7 +7,7 @@ param (
 
 $filePaths = @(
   './tools/chocolateyinstall.ps1'
-  './asyncapi-modelina.nuspec'
+  './modelina.nuspec'
 )
 
 foreach ($filePath in $filePaths) {
