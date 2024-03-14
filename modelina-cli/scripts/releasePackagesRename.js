@@ -52,7 +52,7 @@ async function renameWindows({version, name, sha, arch}) {
   const dist = 'dist/win32';
 
   const generatedPath = path.resolve(dist, `${name}-v${version}-${sha}-${arch}.exe`);
-  const newPath = path.resolve(dist,`modelina.${arch}.exe`);
+  const newPath = path.resolve(dist, `modelina.${arch}.exe`);
   await checkAndRenameFile(generatedPath, newPath);
 }
 
