@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`generateToFiles should try and generate models to files 1`] = `"/test_model.go"`;
+
+exports[`generateToFiles should try and generate models to files 2`] = `"/TestModel.dart"`;
+
+exports[`generateToFiles should try and generate models to files 3`] = `"/TestModel.java"`;
+
+exports[`generateToFiles should try and generate models to files 4`] = `"/TestModel.js"`;
+
+exports[`generateToFiles should try and generate models to files 5`] = `"/TestModel.ts"`;
+
+exports[`generateToFiles should try and generate models to files 6`] = `"/TestModel.cs"`;
+
+exports[`generateToFiles should try and generate models to files 7`] = `"/test_model.rs"`;
+
+exports[`generateToFiles should try and generate models to files 8`] = `"/TestModel.py"`;
+
+exports[`generateToFiles should try and generate models to files 9`] = `"/TestModel.kt"`;
+
+exports[`generateToFiles should try and generate models to files 10`] = `"/TestModel.php"`;
+
+exports[`generateToFiles should try and generate models to files 11`] = `"/TestModel.hpp"`;
