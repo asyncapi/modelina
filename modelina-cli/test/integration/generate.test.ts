@@ -1,7 +1,7 @@
-/* eslint-disable no-warning-comments */
+ 
 /* eslint-disable sonarjs/no-duplicate-string */
-/* eslint-disable sonarjs/no-identical-functions */
-import path from 'path';
+ 
+import path from 'node:path';
 import { expect, test } from '@oclif/test';
 import { createMockServer, stopMockServer } from '../helpers';
 import {rimrafSync} from 'rimraf';

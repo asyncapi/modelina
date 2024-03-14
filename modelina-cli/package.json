@@ -88,7 +88,7 @@
     "generate:commands": "npm run generate:readme:create && npm run generate:readme:commands && node ./scripts/updateUsageDocs.js && rimraf ./scripts/README.md",
     "generate:readme:toc": "markdown-toc -i README.md",
     "lint": "eslint --max-warnings 0 --config .eslintrc .",
-    "lint:fix": "eslint --max-warnings 5 --config .eslintrc . --fix",
+    "lint:fix": "npm run lint -- --fix",
     "pack:all": "npm run pack:macos && npm run pack:linux && npm run pack:tarballs && npm run pack:windows",
     "pack:macos": "oclif pack macos && npm run pack:rename",
     "pack:linux": "oclif pack deb && npm run pack:rename",

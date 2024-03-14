@@ -32,19 +32,22 @@ export default class ContextEdit extends Command {
       this.log(
         `Edited context "${contextName}".\n\nYou can set it as your current context: modelina config context use ${contextName}\nYou can use this context when needed by passing ${contextName} as a parameter: modelina validate ${contextName}`
       );
-    } catch (e) {
+    } catch (error) {
       if (
-        e instanceof (MissingContextFileError || ContextFileWrongFormatError)
+        error instanceof (MissingContextFileError || ContextFileWrongFormatError)
       ) {
         this.log(
           'You have no context file configured. Run "modelina config context init" to initialize it.'
         );
         return;
-      } else if (e instanceof ContextFileEmptyError) {
+      }
+
+ if (error instanceof ContextFileEmptyError) {
         this.log(`Context file "${CONTEXT_FILE_PATH}" is empty.`);
         return;
       }
-      throw e;
+
+      throw error;
     }
   }
 }

@@ -1,8 +1,8 @@
-import { existsSync, writeFileSync, unlinkSync,rmdirSync, mkdirSync , promises as fs } from 'fs';
-import * as path from 'path';
+import { existsSync, writeFileSync, unlinkSync, mkdirSync , promises as fs } from 'node:fs';
+import * as path from 'node:path';
 import { IContextFile, CONTEXT_FILE_PATH } from '../../src/models/Context';
 import SpecificationFile from '../../src/models/SpecificationFile';
-import http from 'http';
+import http from 'node:http';
 import rimraf from 'rimraf';
 
 const ASYNCAPI_FILE_PATH = path.resolve(process.cwd(), 'specification.yaml');
@@ -121,13 +121,18 @@ export function stopMockServer() {
 function getContentType(filePath:string):string {
   const extname = path.extname(filePath);
   switch (extname) {
-  case '.json':
+  case '.json': {
     return 'application/json';
+  }
+
   case '.yml':
-  case '.yaml':
+  case '.yaml': {
     return 'application/yaml';
-  default:
+  }
+
+  default: {
     // Any other suggestion?
     return 'application/octet-stream';
+  }
   }
 }

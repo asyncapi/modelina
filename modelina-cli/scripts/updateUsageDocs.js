@@ -1,5 +1,5 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
-const {writeFile, readFile} = require('fs').promises;
+ 
+const {writeFile, readFile} = require('node:fs').promises;
 
 // Define the paths to the README and usage files
 const README_PATH = './scripts/README.md'; // File path for the generated README file
@@ -35,8 +35,8 @@ async function run() {
     const readmeContents = await readContents();
     // Append the contents of the README file to the usage documentation file
     await writeFile(USAGE_PATH, readmeContents, { flag: 'a' });
-  } catch (e) {
-    console.error(e);
+  } catch (error) {
+    console.error(error);
   }
 }
 
@@ -53,7 +53,7 @@ async function readContents() {
     const commandsStartText = '<!-- commands -->';
     const commandStartIndex = readmeContents.indexOf(commandsStartText);
     const commandStopIndex = readmeContents.indexOf('<!-- commandsstop -->');
-    //cutting the content between the above mentioned tags, removing white spaces and checking if there is some text as it will mean text was added by oclif
+    // cutting the content between the above mentioned tags, removing white spaces and checking if there is some text as it will mean text was added by oclif
     commandsContent = readmeContents.slice(commandStartIndex + commandsStartText.length, commandStopIndex).trim();
 
     if (commandsContent.length === 0) {

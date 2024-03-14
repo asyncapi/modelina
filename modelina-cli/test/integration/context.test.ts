@@ -1,6 +1,7 @@
-import path from 'path';
-import { expect, test } from '@oclif/test';
+/* eslint sonarjs/no-duplicate-string: 0 */
 
+import path from 'node:path';
+import { expect, test } from '@oclif/test';
 import TestHelper from '../helpers';
 import { CONTEXT_FILE_PATH } from '../../src/models/Context';
 
@@ -22,7 +23,7 @@ describe('config:context, positive scenario', () => {
       .command(['config:context:current'])
       .it('should show current context', (ctx, done) => {
         expect(ctx.stdout).to.equals(
-          `${testHelper.context.current}: ${testHelper.context.store['home']}\n`
+          `${testHelper.context.current}: ${testHelper.context.store.home}\n`
         );
         expect(ctx.stderr).to.equals('');
         done();
@@ -61,23 +62,21 @@ describe('config:context, positive scenario', () => {
         expect(ctx.stderr).to.equals('');
         done();
       });
-  });
 
-  describe('config:context:add', () => {
     test
-      .stderr()
-      .stdout()
-      .command(['config:context:add', 'test', './test/specification.yml'])
-      .it(
-        'should NOT add new context with already existing in context file name "test"',
-        (ctx, done) => {
-          expect(ctx.stdout).to.equals('');
-          expect(ctx.stderr).to.equals(
-            `ContextError: Context with name "test" already exists in context file "${CONTEXT_FILE_PATH}".\n`
-          );
-          done();
-        }
-      );
+    .stderr()
+    .stdout()
+    .command(['config:context:add', 'test', './test/specification.yml'])
+    .it(
+      'should NOT add new context with already existing in context file name "test"',
+      (ctx, done) => {
+        expect(ctx.stdout).to.equals('');
+        expect(ctx.stderr).to.equals(
+          `ContextError: Context with name "test" already exists in context file "${CONTEXT_FILE_PATH}".\n`
+        );
+        done();
+      }
+    );
   });
 
   describe('config:context:edit', () => {
@@ -130,9 +129,6 @@ describe('config:context, positive scenario', () => {
         expect(ctx.stderr).to.equals('');
         done();
       });
-  });
-
-  describe('config:context:init', () => {
     test
       .stderr()
       .stdout()
@@ -142,9 +138,6 @@ describe('config:context, positive scenario', () => {
         expect(ctx.stderr).to.equals('');
         done();
       });
-  });
-
-  describe('config:context:init', () => {
     test
       .stderr()
       .stdout()
@@ -154,18 +147,16 @@ describe('config:context, positive scenario', () => {
         expect(ctx.stderr).to.equals('');
         done();
       });
-  });
 
-  describe('config:context:init', () => {
     test
-      .stderr()
-      .stdout()
-      .command(['config:context:init', '~'])
-      .it('should initialize new empty context file with switch "~"', (ctx, done) => {
-        expect(ctx.stdout).to.contain('Initialized context');
-        expect(ctx.stderr).to.equals('');
-        done();
-      });
+    .stderr()
+    .stdout()
+    .command(['config:context:init', '~'])
+    .it('should initialize new empty context file with switch "~"', (ctx, done) => {
+      expect(ctx.stdout).to.contain('Initialized context');
+      expect(ctx.stderr).to.equals('');
+      done();
+    });
   });
 });
 
@@ -200,7 +191,7 @@ describe('config:context, negative scenario', () => {
       );
   });
 
-  describe('config:context:add', () => {
+  describe('config:context:add should handle incorrect formats', () => {
     testHelper.deleteDummyContextFile();
     testHelper.createDummyContextFileWrong('{}');
     test
@@ -219,7 +210,7 @@ describe('config:context, negative scenario', () => {
       );
   });
 
-  describe('config:context:add', () => {
+  describe('config:context:add should handle empty array', () => {
     testHelper.deleteDummyContextFile();
     testHelper.createDummyContextFileWrong('[]');
     test
@@ -243,7 +234,7 @@ describe('config:context, negative scenario', () => {
   // `{"current":"home","store":{"home":"homeSpecFile","code":"codeSpecFile"}}`
   // is considered wrong in `@oclif/test`, limiting possibilities of negative
   // scenarios coding.
-  describe('config:context:add', () => {
+  describe('config:context:add should handle unwrapping objects', () => {
     testHelper.deleteDummyContextFile();
     testHelper.createDummyContextFileWrong(
       '{"current":"home","current2":"test","store":{"home":"homeSpecFile","code":"codeSpecFile"}}'
@@ -265,24 +256,18 @@ describe('config:context, negative scenario', () => {
   });
 });
 
-describe('config:context, negative scenario', () => {
-  after(() => {
-    testHelper.deleteDummyContextFile();
-  });
-
-  describe('config:context:list', () => {
-    testHelper.deleteDummyContextFile();
-    test
-      .stderr()
-      .stdout()
-      .command(['config:context:list'])
-      .it(
-        'should output info message (to stdout, NOT stderr) about absence of context file.',
-        (ctx, done) => {
-          expect(ctx.stdout).to.contain('You have no context file configured.');
-          expect(ctx.stderr).to.equals('');
-          done();
-        }
-      );
-  });
+describe('config:context:list', () => {
+  testHelper.deleteDummyContextFile();
+  test
+    .stderr()
+    .stdout()
+    .command(['config:context:list'])
+    .it(
+      'should output info message (to stdout, NOT stderr) about absence of context file.',
+      (ctx, done) => {
+        expect(ctx.stdout).to.contain('You have no context file configured.');
+        expect(ctx.stderr).to.equals('');
+        done();
+      }
+    );
 });

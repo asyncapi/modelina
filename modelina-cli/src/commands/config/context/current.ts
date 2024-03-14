@@ -19,19 +19,23 @@ export default class ContextCurrent extends Command {
 
     try {
       fileContent = await getCurrentContext();
-    } catch (e) {
+    } catch (error) {
       if (
-        e instanceof (MissingContextFileError || ContextFileWrongFormatError)
+        error instanceof (MissingContextFileError || ContextFileWrongFormatError)
       ) {
         this.log(
           'You have no context file configured. Run "modelina config context init" to initialize it.'
         );
         return;
-      } else if (e instanceof ContextFileEmptyError) {
+      }
+
+ if (error instanceof ContextFileEmptyError) {
         this.log(`Context file "${CONTEXT_FILE_PATH}" is empty.`);
         return;
-      } else if (
-        e instanceof ContextNotFoundError ||
+      }
+
+ if (
+        error instanceof ContextNotFoundError ||
         (fileContent && !fileContent.current)
       ) {
         this.log(
@@ -39,7 +43,8 @@ export default class ContextCurrent extends Command {
         );
         return;
       }
-      throw e;
+
+      throw error;
     }
 
     if (fileContent) {

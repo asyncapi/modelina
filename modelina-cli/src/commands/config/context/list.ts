@@ -32,16 +32,17 @@ export default class ContextList extends Command {
           this.log(`${contextName}: ${filePath}`);
         }
       }
-    } catch (e) {
+    } catch (error) {
       if (
-        e instanceof (MissingContextFileError || ContextFileWrongFormatError)
+        error instanceof (MissingContextFileError || ContextFileWrongFormatError)
       ) {
         this.log(
           'You have no context file configured. Run "modelina config context init" to initialize it.'
         );
         return;
       }
-      throw e;
+
+      throw error;
     }
   }
 }
