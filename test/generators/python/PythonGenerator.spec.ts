@@ -86,7 +86,6 @@ describe('PythonGenerator', () => {
         $id: 'Address',
         type: 'object',
         properties: {
-          test: { type: 'string' },
           self_model: { $ref: '#' },
           array_model: { type: 'array', items: { $ref: '#' } },
           tuple_model: {

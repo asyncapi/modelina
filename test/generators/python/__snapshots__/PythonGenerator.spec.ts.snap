@@ -3,8 +3,6 @@
 exports[`PythonGenerator Class should handle self reference models 1`] = `
 "class Address: 
   def __init__(self, input: Dict):
-    if 'test' in input:
-      self._test: str = input['test']
     if 'self_model' in input:
       self._self_model: Address = Address(input['self_model'])
     if 'array_model' in input:
@@ -15,13 +13,6 @@ exports[`PythonGenerator Class should handle self reference models 1`] = `
       self._map_model: dict[str, Address] = input['map_model']
     if 'union_model' in input:
       self._union_model: Address = input['union_model']
-
-  @property
-  def test(self) -> str:
-    return self._test
-  @test.setter
-  def test(self, test: str):
-    self._test = test
 
   @property
   def self_model(self) -> 'Address':
