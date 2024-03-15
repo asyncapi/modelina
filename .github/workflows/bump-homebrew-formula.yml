@@ -5,8 +5,8 @@ on:
   workflow_dispatch:
   # We cannot run brew release continusly every time we release something as sometimes we release a couple of times a day and overload brew pipelines
   # More details https://github.com/asyncapi/cli/issues/503
-  schedule:
-    - cron: "0 23 * * *"
+  # schedule:
+  #   - cron: "0 23 * * *"
 
 jobs:
   bump-formula-in-homebrew:

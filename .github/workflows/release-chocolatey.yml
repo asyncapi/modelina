@@ -2,8 +2,8 @@ name: Release Chocolatey Package
 on:
   # We cannot run chocolatey release continuously every time we release something as sometimes we release a couple of times a day and overload chocolatey pipelines
   # More details https://github.com/asyncapi/cli/issues/503
-  schedule:
-    - cron: '0 23 * * *' # Run every day at 23:00 UTC
+  # schedule:
+  #   - cron: '0 23 * * *' # Run every day at 23:00 UTC
   # Since now release depends on schedule, might be that there is a situation we cannot wait for schedule and trigger release manually
   workflow_dispatch:
     inputs:
@@ -33,7 +33,27 @@ jobs:
           echo "Setting version to $version"
           echo "version=$version" >> $env:GITHUB_OUTPUT
 
+      - name: Check if this is a new version to release
+        id: check_new_version
+        run: |
+          $output = choco search asyncapi-cli --version=${{ steps.release_version.outputs.version }}
+          # Output is of the form:
+          # Chocolatey v2.2.2
+          # asyncapi-cli 0.0.1 [Approved]
+          # 1 packages found.
+          # If the version is not found, the output will of the form:
+          # Chocolatey v2.2.2
+          # 0 packages found.
+          if ($output -match "0 packages found.") {
+            echo "This is a new version to release"
+            echo "new_version=true" >> $env:GITHUB_OUTPUT
+          }
+          else {
+            echo "This is not a new version to release"
+            echo "new_version=false" >> $env:GITHUB_OUTPUT
+          }
       - name: Download release
+        if: steps.check_new_version.outputs.new_version == 'true'
         run: |
           echo "Downloading release assets for version ${{ steps.release_version.outputs.version }}"
           mkdir -p ./dist
