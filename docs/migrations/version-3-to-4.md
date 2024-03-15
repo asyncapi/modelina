@@ -104,3 +104,20 @@ In Modelina 3 this used is rendered as:
 class Message(BaseModel):
   identifier: str = Field(alias='''The Identifier for the Message''')
 ```
+
+## GO
+
+### Union types will be generated correctly with struct embeddings
+
+Modelina now supports union types for `Go`. Since `Go` does not have native union types support modelina uses `struct embeddings` to mock union types.
+
+```go
+type Union struct {
+  CustomStruct
+  int
+  string
+  ModelinaArrType []string
+  ModelinaDictType map[string] interface{}
+  ModelinaAnyType interface {}
+}
+```
