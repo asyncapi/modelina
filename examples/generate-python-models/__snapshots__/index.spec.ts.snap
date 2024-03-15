@@ -3,16 +3,16 @@
 exports[`Should be able to render python models and should log expected output to console 1`] = `
 Array [
   "class Root: 
-  def __init__(self, input):
+  def __init__(self, input: Dict):
     if hasattr(input, 'email'):
-    	self._email = input.email
+      self._email: str = input['email']
 
   @property
-  def email(self):
-  	return self._email
+  def email(self) -> str:
+    return self._email
   @email.setter
-  def email(self, email):
-  	self._email = email
+  def email(self, email: str):
+    self._email = email
 ",
 ]
 `;

@@ -53,11 +53,18 @@ describe('PythonConstrainer', () => {
   describe('Any', () => {
     test('should render type', () => {
       const model = new ConstrainedAnyModel('test', undefined, {}, '');
+      const dependencyManager = new PythonDependencyManager(
+        PythonGenerator.defaultOptions
+      );
       const type = PythonDefaultTypeMapping.Any({
         constrainedModel: model,
-        ...defaultOptions
+        ...defaultOptions,
+        dependencyManager
       });
       expect(type).toEqual('Any');
+      expect(dependencyManager.dependencies).toEqual([
+        'from typing import Any'
+      ]);
     });
   });
   describe('Float', () => {
@@ -159,7 +166,7 @@ describe('PythonConstrainer', () => {
         constrainedModel: model,
         ...defaultOptions
       });
-      expect(type).toEqual('list[str]');
+      expect(type).toEqual('List[str]');
     });
   });
 
@@ -223,7 +230,7 @@ describe('PythonConstrainer', () => {
         'test',
         undefined,
         {},
-        'str'
+        'str2'
       );
       const model = new ConstrainedDictionaryModel(
         'test',
@@ -237,7 +244,7 @@ describe('PythonConstrainer', () => {
         constrainedModel: model,
         ...defaultOptions
       });
-      expect(type).toEqual('dict[str, str]');
+      expect(type).toEqual('dict[str, str2]');
     });
   });
 });

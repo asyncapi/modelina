@@ -3,7 +3,8 @@ import {
   ConstrainedObjectModel,
   ConstrainedObjectPropertyModel,
   ObjectModel,
-  ObjectPropertyModel
+  ObjectPropertyModel,
+  PythonGenerator
 } from '../../../../src';
 import {
   DefaultPropertyKeyConstraints,
@@ -37,7 +38,8 @@ describe('PropertyKeyConstrainer', () => {
       constrainedObjectModel,
       objectModel,
       objectPropertyModel,
-      constrainedObjectPropertyModel
+      constrainedObjectPropertyModel,
+      options: PythonGenerator.defaultOptions
     });
   };
 
@@ -55,7 +57,9 @@ describe('PropertyKeyConstrainer', () => {
   });
   test('should use camel naming format', () => {
     const constrainedKey = constrainPropertyName('some weird_value!"#2');
-    expect(constrainedKey).toEqual('someWeirdValueExclamationQuotationHash_2');
+    expect(constrainedKey).toEqual(
+      'some_weird_value_exclamation_quotation_hash_2'
+    );
   });
   test('should not contain duplicate properties', () => {
     const objectModel = new ObjectModel('test', undefined, {}, {});
@@ -67,12 +71,12 @@ describe('PropertyKeyConstrainer', () => {
       {}
     );
     const objectPropertyModel = new ObjectPropertyModel(
-      'reservedReturn',
+      'reserved_return',
       false,
       objectModel
     );
     const constrainedObjectPropertyModel = new ConstrainedObjectPropertyModel(
-      'reservedReturn',
+      'reserved_return',
       '',
       objectPropertyModel.required,
       constrainedObjectModel
@@ -88,7 +92,7 @@ describe('PropertyKeyConstrainer', () => {
       objectPropertyModel.required,
       constrainedObjectModel
     );
-    constrainedObjectModel.properties['reservedReturn'] =
+    constrainedObjectModel.properties['reserved_return'] =
       constrainedObjectPropertyModel;
     constrainedObjectModel.properties['return'] =
       constrainedObjectPropertyModel2;
@@ -96,13 +100,14 @@ describe('PropertyKeyConstrainer', () => {
       constrainedObjectModel,
       objectModel,
       objectPropertyModel: objectPropertyModel2,
-      constrainedObjectPropertyModel: constrainedObjectPropertyModel2
+      constrainedObjectPropertyModel: constrainedObjectPropertyModel2,
+      options: PythonGenerator.defaultOptions
     });
-    expect(constrainedKey).toEqual('reservedReservedReturn');
+    expect(constrainedKey).toEqual('reserved_reserved_return');
   });
   test('should never render reserved keywords', () => {
     const constrainedKey = constrainPropertyName('return');
-    expect(constrainedKey).toEqual('reservedReturn');
+    expect(constrainedKey).toEqual('reserved_return');
   });
   describe('custom constraints', () => {
     test('should be able to overwrite all hooks', () => {
@@ -131,7 +136,8 @@ describe('PropertyKeyConstrainer', () => {
         constrainedObjectModel,
         objectModel,
         objectPropertyModel,
-        constrainedObjectPropertyModel
+        constrainedObjectPropertyModel,
+        options: PythonGenerator.defaultOptions
       });
       //Expect all callbacks to be called
       for (const jestMockCallback of Object.values(mockedConstraintCallbacks)) {
@@ -170,7 +176,8 @@ describe('PropertyKeyConstrainer', () => {
         constrainedObjectModel,
         objectModel,
         objectPropertyModel,
-        constrainedObjectPropertyModel
+        constrainedObjectPropertyModel,
+        options: PythonGenerator.defaultOptions
       });
       expect(constrainedValue).toEqual('');
       expect(jestCallback).toHaveBeenCalled();

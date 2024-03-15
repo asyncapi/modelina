@@ -2,6 +2,12 @@
 
 This document contain all the breaking changes and migrations guidelines for adapting your code to the new version.
 
+## Deprecation of `processor.interpreter`
+
+Since the early days we had the option to set `processorOptions.interpreter` options to change how JSON Schema is interpreted to Meta models. However, these options are more accurately part of the `processorOptions.jsonSchema` options. 
+
+Use this instead going forward.
+
 ## Fixed edge cases for camel case names
 
 Naming such as object properties using camel case formatting had an edge case where if they contained a number followed by an underscore and a letter it would be incorrectly formatted. This has been fixed in this version, which might mean properties, model names, etc that use camel case might be renamed.
@@ -105,7 +111,110 @@ class Message(BaseModel):
   identifier: str = Field(alias='''The Identifier for the Message''')
 ```
 
-## GO
+### Following standardized styling guide
+
+Before names of properties and model names did not follow any specific styling standard.
+
+In v4, we switched to using the following:
+- Variables and functions: https://peps.python.org/pep-0008/#function-and-variable-names
+- Model names: https://peps.python.org/pep-0008/#class-names
+
+This means that properties and their accessor methods (getter and setters) have been renamed from:
+```diff
+- self._someWeirdValueExclamationQuotationHash_2 = input.someWeirdValueExclamationQuotationHash_2
++ self._some_weird_value_exclamation_quotation_hash_2 = input.some_weird_value_exclamation_quotation_hash_2
+```
+
+And model names have been renamed to:
+```diff
+- class AsyncApi_3Dot_0Dot_0SchemaDot:
++ class AsyncApi3Dot0Dot0SchemaDot:
+```
+
+If you are using the Python preset `PYTHON_JSON_SERIALIZER_PRESET`, the functions have also been renamed:
+```diff
+- serializeToJson
++ serialize_to_json
+
+- deserializeFromJson
++ deserialize_from_json
+```
+
+### Type hints
+Classes now have type hints on all properties and accessor functions.
+
+Before:
+```python
+from typing import Any, Dict
+class ObjProperty: 
+  def __init__(self, input):
+    if hasattr(input, 'number'):
+      self._number = input['number']
+    if hasattr(input, 'additional_properties'):
+      self._additional_properties = input['additional_properties']
+
+  @property
+  def number(self):
+    return self._number
+  @number.setter
+  def number(self, number):
+    self._number = number
+
+  @property
+  def additional_properties(self):
+    return self._additional_properties
+  @additional_properties.setter
+  def additional_properties(self, additional_properties):
+    self._additional_properties = additional_properties
+```
+
+After:
+```python
+from typing import Any, Dict
+class ObjProperty: 
+  def __init__(self, input: Dict):
+    if hasattr(input, 'number'):
+      self._number: float = input['number']
+    if hasattr(input, 'additional_properties'):
+      self._additional_properties: dict[str, Any] = input['additional_properties']
+
+  @property
+  def number(self) -> float:
+    return self._number
+  @number.setter
+  def number(self, number: float):
+    self._number = number
+
+  @property
+  def additional_properties(self) -> dict[str, Any]:
+    return self._additional_properties
+  @additional_properties.setter
+  def additional_properties(self, additional_properties: dict[str, Any]):
+    self._additional_properties = additional_properties
+```
+
+### Initialization of correct models
+Before in the constructor, if a property was another class, they would not correctly be initialized. Now a new instance of the object is created.
+
+### Constants are now rendered
+Before, constants where completely ignored, now they are respected and also means you don't have the possibility to change it through setters for example.
+
+```python
+class Address: 
+  def __init__(self, input: Dict):
+    self._street_name: str = 'someAddress'
+
+  @property
+  def street_name(self) -> str:
+    return self._street_name
+```
+
+## Go
+
+### File names
+
+In v4, file names for go will be formatted as `snake_case.go`. This is the "standard" in go: https://github.com/golang/go/issues/36060
+
 
 ### Union types will be generated correctly with struct embeddings
 

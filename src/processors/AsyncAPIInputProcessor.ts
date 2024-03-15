@@ -15,7 +15,6 @@ import { JsonSchemaInputProcessor } from './JsonSchemaInputProcessor';
 import { InputMetaModel, ProcessorOptions } from '../models';
 import { Logger } from '../utils';
 import { AsyncapiV2Schema } from '../models/AsyncapiV2Schema';
-import { convertToMetaModel } from '../helpers';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
 import {
@@ -104,24 +103,17 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
 
     const addToInputModel = (payload: AsyncAPISchemaInterface) => {
       const schema = AsyncAPIInputProcessor.convertToInternalSchema(payload);
-      const newCommonModel =
-        JsonSchemaInputProcessor.convertSchemaToCommonModel(schema, options);
-
-      if (newCommonModel.$id !== undefined) {
-        if (inputModel.models[newCommonModel.$id] !== undefined) {
-          Logger.warn(
-            `Overwriting existing model with $id ${newCommonModel.$id}, are there two models with the same id present?`,
-            newCommonModel
-          );
-        }
-        const metaModel = convertToMetaModel(newCommonModel);
-        inputModel.models[metaModel.name] = metaModel;
-      } else {
+      const newMetaModel = JsonSchemaInputProcessor.convertSchemaToMetaModel(
+        schema,
+        options
+      );
+      if (inputModel.models[newMetaModel.name] !== undefined) {
         Logger.warn(
-          'Model did not have $id which is required, ignoring.',
-          newCommonModel
+          `Overwriting existing model with name ${newMetaModel.name}, are there two models with the same name present? Overwriting the old model.`,
+          newMetaModel.name
         );
       }
+      inputModel.models[newMetaModel.name] = newMetaModel;
     };
 
     // Go over all the message payloads and convert them to models
