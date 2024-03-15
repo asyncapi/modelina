@@ -1,16 +1,10 @@
 [![AsyncAPI Modelina](./docs/img/readme-banner.png)](https://www.modelina.org)
-[![blackbox pipeline status](<https://img.shields.io/github/actions/workflow/status/asyncapi/modelina/blackbox-testing.yml?label=blackbox%20testing>)](https://github.com/asyncapi/modelina/actions/workflows/blackbox-testing.yml?query=branch%3Amaster++)
-[![Coverage Status](https://coveralls.io/repos/github/asyncapi/modelina/badge.svg?branch=master)](https://coveralls.io/github/asyncapi/modelina?branch=master)
-[![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
-![Maintenance score](https://img.shields.io/npms-io/maintenance-score/@asyncapi/modelina)
-[![Npm latest version](https://img.shields.io/npm/v/@asyncapi/modelina)](https://www.npmjs.com/package/@asyncapi/modelina)
+[![Npm latest version](https://img.shields.io/npm/v/@asyncapi/modelina-cli)](https://www.npmjs.com/package/@asyncapi/modelina-cli)
 [![License](https://img.shields.io/github/license/asyncapi/modelina)](https://github.com/asyncapi/modelina/blob/master/LICENSE)
-[![last commit](https://img.shields.io/github/last-commit/asyncapi/modelina)](https://github.com/asyncapi/modelina/commits/master)
-[![Discussions](https://img.shields.io/github/discussions/asyncapi/modelina)](https://github.com/asyncapi/modelina/discussions)
-[![Website](https://img.shields.io/website?label=website&url=https%3A%2F%2Fwww.modelina.org)](https://www.modelina.org)
-[![Playground](https://img.shields.io/website?label=playground&url=https%3A%2F%2Fwww.modelina.org%2Fplayground)](https://www.modelina.org/playground) <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-81-orange.svg?style=flat-square)](#contributors-)
-<!-- ALL-CONTRIBUTORS-BADGE:END -->
+![NPM Downloads](https://img.shields.io/npm/dm/modelina-cli?label=npm)
+![homebrew downloads](https://img.shields.io/homebrew/installs/dm/modelina?label=Brew)
+![Chocolatey Downloads](https://img.shields.io/chocolatey/dt/modelina?label=Chocolatey)
+
 
 Your one-stop tool for generating accurate and well-tested models for representing the message payloads. Use it as a tool in your development workflow, or a library in a larger integrations, entirely in your control.
 
@@ -21,7 +15,6 @@ Your one-stop tool for generating accurate and well-tested models for representi
 <!-- toc -->
 
 - [Installing Modelina](#installing-modelina)
-- [AsyncAPI CLI](#asyncapi-cli)
 - [Features](#features)
 - [Requirements](#requirements)
 - [Documentation](#documentation)
@@ -35,18 +28,16 @@ Your one-stop tool for generating accurate and well-tested models for representi
 
 ## Installing Modelina
 
-Run this command to install Modelina in your project:
+Install Modelina directly as a dependency to your project:
 
 ```bash
 npm install @asyncapi/modelina
 ```
 
-## AsyncAPI CLI
-
-If you have the [AsyncAPI CLI installed](https://github.com/asyncapi/cli#installation) (ONLY support AsyncAPI inputs), you can run the following command to use [Modelina](https://github.com/asyncapi/cli#usage):
+Or if you want to [run Modelina, use the CLI](./modelina-cli/README.md).
 
 ```bash
-asyncapi generate models <language> ./asyncapi.json
+modelina generate <language> ./asyncapi.json
 ```
 
 <h2 align="center">What Does Modelina Do?</h2>
