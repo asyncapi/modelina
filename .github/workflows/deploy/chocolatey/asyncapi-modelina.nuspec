@@ -2,7 +2,7 @@
 <!-- Do not remove this test for UTF-8: if “Ω” doesn’t appear as greek uppercase omega letter enclosed in quotation marks, you should use an editor that supports UTF-8, not this one. -->
 <package xmlns="http://schemas.microsoft.com/packaging/2015/06/nuspec.xsd">
   <metadata>
-    <id>asyncapi</id>
+    <id>modelina</id>
     <version>{{version}}</version>
     <packageSourceUrl>https://github.com/asyncapi/modelina/releases/v{{version}}</packageSourceUrl>
     <owners>AsyncAPI_Initiative</owners>
@@ -13,7 +13,7 @@
     <authors>AsyncAPI_Initiative</authors>
     <projectUrl>https://www.asyncapi.com/</projectUrl>
     <iconUrl>https://avatars.githubusercontent.com/u/16401334?s=200</iconUrl>
-    <copyright>2023 AsyncAPI Initiative</copyright>
+    <copyright>2024 AsyncAPI Initiative</copyright>
     <licenseUrl>https://github.com/asyncapi/modelina/blob/master/LICENSE</licenseUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <releaseNotes>https://github.com/asyncapi/modelina/releases/v{{version}}</releaseNotes>
