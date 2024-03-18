@@ -12,6 +12,7 @@
 [![All Contributors](https://img.shields.io/badge/all_contributors-81-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
+
 Your one-stop tool for generating accurate and well-tested models for representing the message payloads. Use it as a tool in your development workflow, or a library in a larger integrations, entirely in your control.
 
 ---
@@ -21,7 +22,6 @@ Your one-stop tool for generating accurate and well-tested models for representi
 <!-- toc -->
 
 - [Installing Modelina](#installing-modelina)
-- [AsyncAPI CLI](#asyncapi-cli)
 - [Features](#features)
 - [Requirements](#requirements)
 - [Documentation](#documentation)
@@ -35,18 +35,16 @@ Your one-stop tool for generating accurate and well-tested models for representi
 
 ## Installing Modelina
 
-Run this command to install Modelina in your project:
+Install Modelina directly as a dependency to your project:
 
 ```bash
 npm install @asyncapi/modelina
 ```
 
-## AsyncAPI CLI
-
-If you have the [AsyncAPI CLI installed](https://github.com/asyncapi/cli#installation) (ONLY support AsyncAPI inputs), you can run the following command to use [Modelina](https://github.com/asyncapi/cli#usage):
+Or if you want to [run Modelina, use the CLI](./modelina-cli/README.md).
 
 ```bash
-asyncapi generate models <language> ./asyncapi.json
+modelina generate <language> ./asyncapi.json
 ```
 
 <h2 align="center">What Does Modelina Do?</h2>
