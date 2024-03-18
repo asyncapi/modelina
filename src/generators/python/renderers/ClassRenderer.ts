@@ -87,12 +87,18 @@ ${this.indent(this.renderBlock(content, 2))}
   returnPropertyType({
     model,
     property,
-    propertyType
+    propertyType,
+    visitedMap = []
   }: {
     model: ConstrainedMetaModel;
     property: ConstrainedMetaModel;
     propertyType: string;
+    visitedMap?: string[];
   }): string {
+    if (visitedMap.includes(property.name)) {
+      return propertyType;
+    }
+    visitedMap.push(property.name);
     const isSelfReference =
       property instanceof ConstrainedReferenceModel && property.ref === model;
     if (isSelfReference) {
@@ -102,7 +108,8 @@ ${this.indent(this.renderBlock(content, 2))}
       return this.returnPropertyType({
         model,
         property: property.valueModel,
-        propertyType
+        propertyType,
+        visitedMap
       });
     } else if (property instanceof ConstrainedTupleModel) {
       let newPropType = propertyType;
@@ -110,7 +117,8 @@ ${this.indent(this.renderBlock(content, 2))}
         newPropType = this.returnPropertyType({
           model,
           property: tupl.value,
-          propertyType
+          propertyType,
+          visitedMap
         });
       }
       return newPropType;
@@ -120,7 +128,8 @@ ${this.indent(this.renderBlock(content, 2))}
         newPropType = this.returnPropertyType({
           model,
           property: unionModel,
-          propertyType
+          propertyType,
+          visitedMap
         });
       }
       return newPropType;
@@ -128,7 +137,8 @@ ${this.indent(this.renderBlock(content, 2))}
       return this.returnPropertyType({
         model,
         property: property.value,
-        propertyType
+        propertyType,
+        visitedMap
       });
     }
     return propertyType;
