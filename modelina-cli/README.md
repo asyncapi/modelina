@@ -21,7 +21,7 @@ Here are all the ways you can install and run the Modelina CLI. For a full list 
 <h2 align="center">MacOS</h2>
 <!-- prettier-ignore-start -->
 <!-- markdownlint-disable -->
-<table>
+<table  align="center" style="width: 100%;">
   <tr>
     <td>
 <b><a href="https://brew.sh/">Brew</a></b>
@@ -63,7 +63,7 @@ sudo installer -pkg modelina.pkg -target /
 <h2 align="center">Windows</h2>
 <!-- prettier-ignore-start -->
 <!-- markdownlint-disable -->
-<table style="width: 100%;">
+<table align="center" style="width: 100%;">
   <tr>
     <td>
 <b><a href="https://chocolatey.org/install">Chocolatey</a></b>
@@ -92,7 +92,7 @@ Manually download and run the executable [`modelina.x86.exe`](https://github.com
 <h2 align="center">Linux</h2>
 <!-- prettier-ignore-start -->
 <!-- markdownlint-disable -->
-<table>
+<table align="center" style="width: 100%;">
   <tr>
     <td><b>Debian</b>
 
@@ -124,7 +124,7 @@ Remember to symlink the binaries `ln -s <absolute-path>/bin/modelina /user/local
 <h2 align="center">Other ways</h2>
 <!-- prettier-ignore-start -->
 <!-- markdownlint-disable -->
-<table style="width: 100%;">
+<table align="center" style="width: 100%;">
   <tr>
     <td>
 <b>NPM</b>
