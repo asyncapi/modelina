@@ -3,7 +3,7 @@ import { Flags } from '@oclif/core';
 import ModelinaCommand from '../base';
 
 import type { AbstractGenerator, AbstractFileGenerator } from '@asyncapi/modelina';
-import { readFile } from 'fs/promises';
+import { readFile } from 'node:fs/promises';
 
 enum Languages {
   typescript = 'typescript',
@@ -176,8 +176,8 @@ export default class Models extends ModelinaCommand {
     const { language, file } = args;
     let document = "";
     try {
-      document = await readFile(file, 'utf-8');
-    } catch (error) {
+      document = await readFile(file, 'utf8');
+    } catch {
       throw new Error('Unable to read input file content.');
     }
 

@@ -20,6 +20,8 @@
     "unicorn/prefer-top-level-await": "off",
     "unicorn/no-abusive-eslint-disable": "off",
     "unicorn/no-await-expression-member": "off",
-    "security/detect-non-literal-fs-filename": "off"
+    "security/detect-non-literal-fs-filename": "off",
+    "no-underscore-dangle": "off",
+    "unicorn/prefer-module": "off"
   }
 }

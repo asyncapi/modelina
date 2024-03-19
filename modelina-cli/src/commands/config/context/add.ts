@@ -45,16 +45,17 @@ export default class ContextAdd extends Command {
           `The newly added context "${contextName}", is set as your current context!`
         );
       }
-    } catch (e) {
+    } catch (error) {
       if (
-        e instanceof (MissingContextFileError || ContextFileWrongFormatError)
+        error instanceof (MissingContextFileError || ContextFileWrongFormatError)
       ) {
         this.log(
           'You have no context file configured. Run "modelina config context init" to initialize it.'
         );
         return;
       }
-      throw e;
+
+      throw error;
     }
   }
 }

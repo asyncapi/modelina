@@ -1,8 +1,8 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
+ 
 
-const { rename, access, mkdir } = require('fs').promises;
+const { rename, access, mkdir } = require('node:fs').promises;
 const packageJson = require('../package.json');
-const path = require('path');
+const path = require('node:path');
 const simpleGit = require('simple-git');
 const git = simpleGit({baseDir: process.cwd()});
 
@@ -10,7 +10,7 @@ async function fileExists(checkPath) {
   try {
     await access(checkPath);
     return true;
-  } catch (e) {
+  } catch {
     return false;
   }
 }
@@ -22,7 +22,9 @@ async function checkAndRenameFile(generatedPath, newPath) {
 }
 
 async function createDirectory(directoryPath) {
-  await mkdir(directoryPath);
+  if (await fileExists(directoryPath)) {
+    await mkdir(directoryPath);
+  }
 }
 
 async function renameDeb({version, name, sha}) {

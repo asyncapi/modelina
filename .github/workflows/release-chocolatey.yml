@@ -1,0 +1,93 @@
+name: Release Chocolatey Package
+on:
+  # We cannot run chocolatey release continuously every time we release something as sometimes we release a couple of times a day and overload chocolatey pipelines
+  # More details https://github.com/asyncapi/cli/issues/503
+  # schedule:
+  #   - cron: '0 23 * * *' # Run every day at 23:00 UTC
+  # Since now release depends on schedule, might be that there is a situation we cannot wait for schedule and trigger release manually
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to release (optional)'
+        required: false
+  
+jobs:
+  release:
+    name: Publish to Chocolatey Community
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set Version
+        id: release_version
+        run: |
+          if ( "${{ github.event_name }}" -eq "workflow_dispatch" -and "${{ github.event.inputs.version }}" -ne "" ) {
+            $version = "${{ github.event.inputs.version }}"
+          }
+          else {
+            $version = $(npm pkg get version)
+          }
+
+          $version = $version.Replace("`"", "")
+          echo "Setting version to $version"
+          echo "version=$version" >> $env:GITHUB_OUTPUT
+
+      - name: Check if this is a new version to release
+        id: check_new_version
+        run: |
+          $output = choco search asyncapi-cli --version=${{ steps.release_version.outputs.version }}
+          # Output is of the form:
+          # Chocolatey v2.2.2
+          # asyncapi-cli 0.0.1 [Approved]
+          # 1 packages found.
+          # If the version is not found, the output will of the form:
+          # Chocolatey v2.2.2
+          # 0 packages found.
+          if ($output -match "0 packages found.") {
+            echo "This is a new version to release"
+            echo "new_version=true" >> $env:GITHUB_OUTPUT
+          }
+          else {
+            echo "This is not a new version to release"
+            echo "new_version=false" >> $env:GITHUB_OUTPUT
+          }
+      - name: Download release
+        if: steps.check_new_version.outputs.new_version == 'true'
+        run: |
+          echo "Downloading release assets for version ${{ steps.release_version.outputs.version }}"
+          mkdir -p ./dist
+          curl -L "https://github.com/asyncapi/modelina/releases/download/v${{ steps.release_version.outputs.version }}/modelina.x64.exe" -o "./modelina-cli/dist/win32/modelina.x64.exe"
+          curl -L "https://github.com/asyncapi/modelina/releases/download/v${{ steps.release_version.outputs.version }}/modelina.x86.exe" -o "./modelina-cli/dist/win32/modelina.x86.exe"
+
+      - name: Get Checksum of the release
+        id: release_checksum
+        run: |
+          $checksum = (Get-FileHash -Path "./modelina-cli/dist/win32/modelina.x86.exe" -Algorithm SHA256).Hash
+          $checksum64 = (Get-FileHash -Path "./modelina-cli/dist/win32/modelina.x64.exe" -Algorithm SHA256).Hash
+          echo "Setting checksum to $checksum"
+          echo "checksum=$checksum" >> $env:GITHUB_OUTPUT
+          echo "Setting checksum64 to $checksum64"
+          echo "checksum64=$checksum64" >> $env:GITHUB_OUTPUT
+
+      - name: Make nuspec from the template
+        run: |
+          cd ./.github/workflows/deploy/chocolatey
+          pwsh -File ./replace.ps1 -version ${{ steps.release_version.outputs.version }} -checksum ${{ steps.release_checksum.outputs.checksum }} -checksum64 ${{ steps.release_checksum.outputs.checksum64 }}
+
+      - name: Run Chocolatey Pack
+        run: |
+          cd ./.github/workflows/deploy/chocolatey
+          choco pack ./modelina.nuspec
+          choco apikey add --source "'https://push.chocolatey.org/'" --key ${{ secrets.CHOCOLATEY_API_KEY }}
+          choco push ./modelina.${{ steps.release_version.outputs.version }}.nupkg --source "'https://push.chocolatey.org/'"  
+          
+      - if: failure() # Only, on failure, send a message on the 94_bot-failing-ci slack channel
+        name: Report workflow run status to Slack
+        uses: 8398a7/action-slack@fbd6aa58ba854a740e11a35d0df80cb5d12101d8 #using https://github.com/8398a7/action-slack/releases/tag/v3.15.1
+        with:
+          status: ${{ job.status }}
+          fields: repo,action,workflow
+          text: 'AsyncAPI Modelina release to Chocolatey failed'
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_CI_FAIL_NOTIFY }}
