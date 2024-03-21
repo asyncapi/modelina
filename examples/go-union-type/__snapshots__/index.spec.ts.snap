@@ -1,12 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Should be able to render TEMPLATE and should log expected output to console 1`] = `
+exports[`Should be able to render union types and should log expected output to console 1`] = `
 Array [
   "type Root = Map<string, AdditionalPropertyOneOf_0 | AdditionalPropertyOneOf_1>;",
 ]
 `;
 
-exports[`Should be able to render TEMPLATE and should log expected output to console 2`] = `
+exports[`Should be able to render union types and should log expected output to console 2`] = `
 Array [
   "class AdditionalPropertyOneOf_0 {
   private _ref?: string;
@@ -29,7 +29,7 @@ Array [
 ]
 `;
 
-exports[`Should be able to render TEMPLATE and should log expected output to console 3`] = `
+exports[`Should be able to render union types and should log expected output to console 3`] = `
 Array [
   "class AdditionalPropertyOneOf_1 {
   private _id?: string;
