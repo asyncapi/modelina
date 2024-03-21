@@ -41,7 +41,7 @@ export const GoDefaultTypeMapping: GoTypeMapping = {
   },
   Union({ constrainedModel }): string {
     //Because Go have no notion of unions (and no custom implementation), we have to render it as any value.
-    return `${constrainedModel.name}`;
+    return constrainedModel.name;
   },
   Dictionary({ constrainedModel }): string {
     return `map[${constrainedModel.key.type}]${constrainedModel.value.type}`;

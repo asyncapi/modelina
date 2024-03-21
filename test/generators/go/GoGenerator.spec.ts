@@ -90,8 +90,7 @@ describe('GoGenerator', () => {
 
     const models = await generator.generate(doc);
     expect(models).toHaveLength(7);
-    const resultArray = models.map((m) => m.result);
-    const result = resultArray.join('\n');
+    const result = models.map((m) => m.result).join('\n');
 
     expect(result).toMatchSnapshot();
   });
