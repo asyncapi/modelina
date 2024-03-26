@@ -39,14 +39,15 @@ export const Content: FunctionComponent<ContentProps> = ({ setNewConfig, setNewQ
   return (
     <div className="h-full w-full flex">
       <PanelGroup direction="horizontal">
-        {/* OPTIONS & EDITOR */}
+        {/* OPTIONS */}
+        {
+          showOptions && 
+          <div className={`bg-[#1f2937] text-white h-full w-[20%]`}>
+            <OptionsNavigation setNewConfig={setNewConfig} />
+          </div>
+        }
+        {/* EDITOR */}
         <Panel className="flex flex-row" id="left-panel">
-          {
-            showOptions && 
-            <div className={`bg-[#1f2937] text-white h-full w-[100%] md:w-[40%]`}>
-              <OptionsNavigation setNewConfig={setNewConfig} />
-            </div>
-          }
           <div className={`h-full w-full`}>
             <div className="max-xl:col-span-2 xl:grid-cols-1 h-full">
               <div className="h-full bg-code-editor-dark text-white rounded-b shadow-lg font-bold">
@@ -66,27 +67,27 @@ export const Content: FunctionComponent<ContentProps> = ({ setNewConfig, setNewQ
           </div>
         </Panel>
 
-        <PanelResizeHandle />
+        <PanelResizeHandle className="w-1.5 bg-blue-700" />
 
-        {/* OUTPUT NAVIGATION AND OUTPUTS */}
-        <Panel className="flex flex-row" id="right-panel" minSize={4}>  
-          {
-            showOutputNavigation && <div className='h-full w-[100%] md:w-[30%]'>
-              <OutputNavigation />
-            </div>
-          }
-          <div className={`h-full ${showOutputNavigation ? "w-[70%]" : "w-full"}`}>
-            <div className={`h-full`}>
-              {error ? (
-                <CustomError statusCode={statusCode} errorMessage={errorMessage} />
-              ) : (
-                <PlaygroundGeneratedContext.Provider
-                  value={PlaygroundGeneratedContextValue}
-                >
-                  <GeneratedModelsComponent setNewQuery={setNewQuery} />
-                </PlaygroundGeneratedContext.Provider>
-              )}
-            </div>
+        {/* OUTPUT NAVIGATION */}
+        {
+          showOutputNavigation && 
+          <div className='h-full w-[20%]'>
+            <OutputNavigation />
+          </div>
+        }
+        {/* OUTPUTS */}
+        <Panel className="flex flex-row" id="right-panel">  
+          <div className={`h-full w-full`}>
+            {error ? (
+              <CustomError statusCode={statusCode} errorMessage={errorMessage} />
+            ) : (
+              <PlaygroundGeneratedContext.Provider
+                value={PlaygroundGeneratedContextValue}
+              >
+                <GeneratedModelsComponent setNewQuery={setNewQuery} />
+              </PlaygroundGeneratedContext.Provider>
+            )}
           </div>
         </Panel>
       </PanelGroup>
