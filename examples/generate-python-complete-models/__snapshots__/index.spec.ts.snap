@@ -6,9 +6,9 @@ Array [
 from typing import Any, Dict
 class ObjProperty: 
   def __init__(self, input: Dict):
-    if hasattr(input, 'number'):
+    if 'number' in input:
       self._number: float = input['number']
-    if hasattr(input, 'additional_properties'):
+    if 'additional_properties' in input:
       self._additional_properties: dict[str, Any] = input['additional_properties']
 
   @property
@@ -34,9 +34,9 @@ Array [
 from typing import Any, Dict
 class ObjProperty: 
   def __init__(self, input: Dict):
-    if hasattr(input, 'number'):
+    if 'number' in input:
       self._number: float = input['number']
-    if hasattr(input, 'additional_properties'):
+    if 'additional_properties' in input:
       self._additional_properties: dict[str, Any] = input['additional_properties']
 
   @property
@@ -62,9 +62,9 @@ Array [
 from typing import Any, Dict
 class Root: 
   def __init__(self, input: Dict):
-    if hasattr(input, 'email'):
+    if 'email' in input:
       self._email: str = input['email']
-    if hasattr(input, 'obj_property'):
+    if 'obj_property' in input:
       self._obj_property: ObjProperty = ObjProperty(input['obj_property'])
 
   @property
@@ -90,9 +90,9 @@ Array [
 from typing import Any, Dict
 class Root: 
   def __init__(self, input: Dict):
-    if hasattr(input, 'email'):
+    if 'email' in input:
       self._email: str = input['email']
-    if hasattr(input, 'obj_property'):
+    if 'obj_property' in input:
       self._obj_property: ObjProperty = ObjProperty(input['obj_property'])
 
   @property

@@ -81,6 +81,99 @@ describe('PythonGenerator', () => {
       expect(models).toHaveLength(1);
       expect(models[0].result).toMatchSnapshot();
     });
+    test('should handle self reference models', async () => {
+      const doc = {
+        $id: 'Address',
+        type: 'object',
+        properties: {
+          self_model: { $ref: '#' },
+          array_model: { type: 'array', items: { $ref: '#' } },
+          tuple_model: {
+            type: 'array',
+            items: [{ $ref: '#' }],
+            additionalItems: false
+          },
+          map_model: {
+            type: 'object',
+            additionalProperties: {
+              $ref: '#'
+            }
+          },
+          union_model: {
+            oneOf: [{ $ref: '#' }]
+          }
+        },
+        additionalProperties: false
+      };
+      const models = await generator.generate(doc);
+      expect(models).toHaveLength(1);
+      expect(models[0].result).toMatchSnapshot();
+    });
+
+    test('should handle weird self reference models', async () => {
+      const doc = {
+        allOf: [
+          {
+            $ref: '#/definitions/json-schema-draft-07-schema'
+          },
+          {
+            properties: {
+              items: {
+                anyOf: [
+                  {
+                    $ref: '#'
+                  },
+                  {
+                    type: 'array',
+                    minItems: 1,
+                    items: {
+                      $ref: '#'
+                    }
+                  }
+                ],
+                default: {}
+              }
+            }
+          }
+        ],
+        definitions: {
+          'json-schema-draft-07-schema': {
+            title: 'Core schema meta-schema',
+            definitions: {
+              schemaArray: {
+                type: 'array',
+                minItems: 1,
+                items: {
+                  $ref: '#/definitions/json-schema-draft-07-schema'
+                }
+              }
+            },
+            type: ['object', 'boolean'],
+            properties: {
+              additionalItems: {
+                $ref: '#/definitions/json-schema-draft-07-schema'
+              },
+              items: {
+                anyOf: [
+                  {
+                    $ref: '#/definitions/json-schema-draft-07-schema'
+                  },
+                  {
+                    $ref: '#/definitions/json-schema-draft-07-schema/definitions/schemaArray'
+                  }
+                ],
+                default: true
+              }
+            },
+            default: true
+          }
+        }
+      };
+      const models = await generator.generate(doc);
+      expect(models).toHaveLength(1);
+      expect(models[0].result).toMatchSnapshot();
+    });
+
     test('should render `class` type', async () => {
       const doc = {
         $id: 'Address',

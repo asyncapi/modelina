@@ -4,7 +4,7 @@ exports[`Should be able to render python models and should log expected output t
 Array [
   "class Root: 
   def __init__(self, input: Dict):
-    if hasattr(input, 'email'):
+    if 'email' in input:
       self._email: str = input['email']
 
   @property
