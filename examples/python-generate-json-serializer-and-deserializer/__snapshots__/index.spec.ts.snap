@@ -4,9 +4,9 @@ exports[`Should be able to render JSON serialization and deserialization functio
 Array [
   "class Root: 
   def __init__(self, input: Dict):
-    if hasattr(input, 'email'):
+    if 'email' in input:
       self._email: str = input['email']
-    if hasattr(input, 'additional_properties'):
+    if 'additional_properties' in input:
       self._additional_properties: dict[str, Any] = input['additional_properties']
 
   @property
