@@ -23,6 +23,11 @@ export interface JsonSchemaProcessorOptions extends InterpreterOptions {
    * Use this option to reduce the number of enums being created and use constant values instead.
    */
   interpretSingleEnumAsConst?: boolean;
+
+  /**
+   * This option changes which property name that should be used to represent `additionalProperties` in JSON Schema
+   */
+  propertyNameForAdditionalProperties?: string;
 }
 
 export const defaultJsonSchemaProcessorOptions: JsonSchemaProcessorOptions = {
@@ -30,7 +35,8 @@ export const defaultJsonSchemaProcessorOptions: JsonSchemaProcessorOptions = {
   disableCache: false,
   ignoreAdditionalItems: false,
   ignoreAdditionalProperties: false,
-  interpretSingleEnumAsConst: false
+  interpretSingleEnumAsConst: false,
+  propertyNameForAdditionalProperties: 'additionalProperties'
 };
 
 /**

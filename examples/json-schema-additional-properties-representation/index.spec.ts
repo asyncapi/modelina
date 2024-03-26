@@ -3,7 +3,7 @@ const spy = jest.spyOn(global.console, 'log').mockImplementation(() => {
 });
 import { generate } from './index';
 
-describe('Should be able to render enum with single value as const', () => {
+describe('Should be able to render object with different additional property', () => {
   afterAll(() => {
     jest.restoreAllMocks();
   });
