@@ -1,0 +1,53 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Should be able to process a pure OpenAPI V3.1 object and should log expected output to console 1`] = `
+Array [
+  "class TestPost_200ApplicationJson {
+  private _email?: string;
+
+  constructor(input: {
+    email?: string,
+  }) {
+    this._email = input.email;
+  }
+
+  get email(): string | undefined { return this._email; }
+  set email(email: string | undefined) { this._email = email; }
+}",
+]
+`;
+
+exports[`Should be able to process a pure OpenAPI V3.1 object and should log expected output to console 2`] = `
+Array [
+  "class TestPostMultipartFormMinusData {
+  private _id?: string;
+  private _address?: Map<string, any>;
+  private _profileImage?: string;
+  private _additionalProperties?: Map<string, any>;
+
+  constructor(input: {
+    id?: string,
+    address?: Map<string, any>,
+    profileImage?: string,
+    additionalProperties?: Map<string, any>,
+  }) {
+    this._id = input.id;
+    this._address = input.address;
+    this._profileImage = input.profileImage;
+    this._additionalProperties = input.additionalProperties;
+  }
+
+  get id(): string | undefined { return this._id; }
+  set id(id: string | undefined) { this._id = id; }
+
+  get address(): Map<string, any> | undefined { return this._address; }
+  set address(address: Map<string, any> | undefined) { this._address = address; }
+
+  get profileImage(): string | undefined { return this._profileImage; }
+  set profileImage(profileImage: string | undefined) { this._profileImage = profileImage; }
+
+  get additionalProperties(): Map<string, any> | undefined { return this._additionalProperties; }
+  set additionalProperties(additionalProperties: Map<string, any> | undefined) { this._additionalProperties = additionalProperties; }
+}",
+]
+`;

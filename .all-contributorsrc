@@ -871,6 +871,42 @@
         "code",
         "bug"
       ]
+    },
+    {
+      "login": "Athul0491",
+      "name": "Athul Tulasidasan",
+      "avatar_url": "https://avatars.githubusercontent.com/u/65664185?v=4",
+      "profile": "https://github.com/Athul0491",
+      "contributions": [
+        "code",
+        "example",
+        "doc",
+        "test"
+      ]
+    },
+    {
+      "login": "Souvikns",
+      "name": "souvik",
+      "avatar_url": "https://avatars.githubusercontent.com/u/41781438?v=4",
+      "profile": "https://github.com/Souvikns",
+      "contributions": [
+        "code",
+        "test",
+        "example",
+        "doc"
+      ]
+    },
+    {
+      "login": "Louis-PhilippeGentile",
+      "name": "Louis-PhilippeGentile",
+      "avatar_url": "https://avatars.githubusercontent.com/u/43426946?v=4",
+      "profile": "https://github.com/Louis-PhilippeGentile",
+      "contributions": [
+        "code",
+        "test",
+        "doc",
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,
