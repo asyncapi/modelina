@@ -8,6 +8,7 @@ import CustomError from '../CustomError';
 import OutputNavigation from './OutputNavigation';
 import { OptionsNavigation } from './OptionsNavigation';
 import GeneratedModelsComponent from './GeneratedModels';
+import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 
 interface ContentProps {
   setNewConfig: (config: string, configValue: any, updateCode?: boolean) => void;
@@ -37,41 +38,47 @@ export const Content: FunctionComponent<ContentProps> = ({ setNewConfig, setNewQ
 
   return (
     <div className="h-full w-full flex">
-      {/* OPTIONS & EDITOR */}
-      <div className="h-full w-[50%] flex">
+      <PanelGroup direction="horizontal">
+        {/* OPTIONS */}
         {
-          showOptions && <div className={`bg-[#1f2937] text-white h-full w-[100%] md:w-[40%]`}>
+          showOptions && 
+          <div className={`bg-[#1f2937] text-white h-full w-[20%]`}>
             <OptionsNavigation setNewConfig={setNewConfig} />
           </div>
         }
-        <div className={`h-full ${showOptions ? "w-[60%]" : "w-full"}`}>
-          <div className="max-xl:col-span-2 xl:grid-cols-1 h-full">
-            <div className="h-full bg-code-editor-dark text-white rounded-b shadow-lg font-bold">
-              <MonacoEditorWrapper
-                value={input}
-                onChange={(_, change) => {
-                  setInput(change);
-                  generateNewCode(change);
-                }}
-                editorDidMount={() => {
-                  setLoaded({ ...loaded, editorLoaded: true });
-                }}
-                language="json"
-              />
+        {/* EDITOR */}
+        <Panel className="flex flex-row" id="left-panel">
+          <div className={`h-full w-full`}>
+            <div className="max-xl:col-span-2 xl:grid-cols-1 h-full">
+              <div className="h-full bg-code-editor-dark text-white rounded-b shadow-lg font-bold">
+                <MonacoEditorWrapper
+                  value={input}
+                  onChange={(_, change) => {
+                    setInput(change);
+                    generateNewCode(change);
+                  }}
+                  editorDidMount={() => {
+                    setLoaded({ ...loaded, editorLoaded: true });
+                  }}
+                  language="json"
+                />
+              </div>
             </div>
           </div>
-        </div>
-      </div>
+        </Panel>
 
-      {/* OUTPUT NAVIGATION AND OUTPUTS */}
-      <div className="h-full w-[50%] flex">
+        <PanelResizeHandle className="w-1.5 bg-blue-700" />
+
+        {/* OUTPUT NAVIGATION */}
         {
-          showOutputNavigation && <div className='h-full w-[100%] md:w-[30%]'>
+          showOutputNavigation && 
+          <div className='h-full w-[20%]'>
             <OutputNavigation />
           </div>
         }
-        <div className={`h-full ${showOutputNavigation ? "w-[70%]" : "w-full"}`}>
-          <div className={`h-full`}>
+        {/* OUTPUTS */}
+        <Panel className="flex flex-row" id="right-panel">  
+          <div className={`h-full w-full`}>
             {error ? (
               <CustomError statusCode={statusCode} errorMessage={errorMessage} />
             ) : (
@@ -82,8 +89,8 @@ export const Content: FunctionComponent<ContentProps> = ({ setNewConfig, setNewQ
               </PlaygroundGeneratedContext.Provider>
             )}
           </div>
-        </div>
-      </div>
+        </Panel>
+      </PanelGroup>
     </div>
   );
 };

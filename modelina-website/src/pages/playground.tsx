@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { useEffect, useState } from 'react';
 import Playground from '@/components/playground/Playground';
 import GenericLayout from '@/components/layouts/GenericLayout';
