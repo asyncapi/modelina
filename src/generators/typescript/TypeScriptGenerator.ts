@@ -39,13 +39,14 @@ import { TypeScriptDependencyManager } from './TypeScriptDependencyManager';
 
 export type TypeScriptModuleSystemType = 'ESM' | 'CJS';
 export type TypeScriptExportType = 'named' | 'default';
+export type TypeScriptModelType = 'class' | 'interface';
 export interface TypeScriptOptions
   extends CommonGeneratorOptions<
     TypeScriptPreset,
     TypeScriptDependencyManager
   > {
   renderTypes: boolean;
-  modelType: 'class' | 'interface';
+  modelType: TypeScriptModelType;
   enumType: 'enum' | 'union';
   mapType: 'indexedObject' | 'map' | 'record';
   typeMapping: TypeMapping<TypeScriptOptions, TypeScriptDependencyManager>;
@@ -210,12 +211,14 @@ export class TypeScriptGenerator extends AbstractGenerator<
     const modelDependencyImports = modelDependencies.map((model) => {
       return dependencyManagerToUse.renderCompleteModelDependencies(
         model,
-        completeModelOptionsToUse.exportType
+        completeModelOptionsToUse.exportType,
+        optionsToUse.modelType
       );
     });
     const modelExport = dependencyManagerToUse.renderExport(
       args.constrainedModel,
-      completeModelOptionsToUse.exportType
+      completeModelOptionsToUse.exportType,
+      optionsToUse.modelType
     );
 
     const modelCode = `${outputModel.result}\n${modelExport}`;
