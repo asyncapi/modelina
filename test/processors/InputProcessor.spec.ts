@@ -4,6 +4,7 @@ import { InputMetaModel, ProcessorOptions } from '../../src/models';
 import {
   AbstractInputProcessor,
   AsyncAPIInputProcessor,
+  AvroSchemaInputProcessor,
   JsonSchemaInputProcessor,
   InputProcessor,
   SwaggerInputProcessor
@@ -58,6 +59,9 @@ describe('InputProcessor', () => {
       const asyncInputProcessor = new AsyncAPIInputProcessor();
       jest.spyOn(asyncInputProcessor, 'shouldProcess');
       jest.spyOn(asyncInputProcessor, 'process');
+      const avroSchemaInputProcessor = new AvroSchemaInputProcessor();
+      jest.spyOn(avroSchemaInputProcessor, 'shouldProcess');
+      jest.spyOn(avroSchemaInputProcessor, 'process');
       const defaultInputProcessor = new JsonSchemaInputProcessor();
       jest.spyOn(defaultInputProcessor, 'shouldProcess');
       jest.spyOn(defaultInputProcessor, 'process');
@@ -70,12 +74,14 @@ describe('InputProcessor', () => {
       const processor = new InputProcessor();
       processor.setProcessor('asyncapi', asyncInputProcessor);
       processor.setProcessor('swagger', swaggerInputProcessor);
+      processor.setProcessor('avroSchema', avroSchemaInputProcessor);
       processor.setProcessor('openapi', openAPIInputProcessor);
       processor.setProcessor('default', defaultInputProcessor);
       return {
         processor,
         asyncInputProcessor,
         swaggerInputProcessor,
+        avroSchemaInputProcessor,
         openAPIInputProcessor,
         defaultInputProcessor
       };
@@ -177,7 +183,30 @@ describe('InputProcessor', () => {
       expect(defaultInputProcessor.process).not.toHaveBeenCalled();
       expect(defaultInputProcessor.shouldProcess).not.toHaveBeenCalled();
     });
-
+    test('should be able to process Avro Schema input', async () => {
+      const { processor, avroSchemaInputProcessor, defaultInputProcessor } =
+        getProcessors();
+      const inputSchemaString = fs.readFileSync(
+        path.resolve(__dirname, './AvroSchemaInputProcessor/sample.json'),
+        'utf8'
+      );
+      const inputSchema = JSON.parse(inputSchemaString);
+      await processor.process(inputSchema);
+      expect(avroSchemaInputProcessor.process).not.toHaveBeenCalled();
+      expect(avroSchemaInputProcessor.shouldProcess).toHaveBeenNthCalledWith(
+        1,
+        inputSchema
+      );
+      expect(defaultInputProcessor.process).toHaveBeenNthCalledWith(
+        1,
+        inputSchema,
+        undefined
+      );
+      expect(defaultInputProcessor.shouldProcess).toHaveBeenNthCalledWith(
+        1,
+        inputSchema
+      );
+    });
     test('should be able to process AsyncAPI schema input with options', async () => {
       const { processor, asyncInputProcessor, defaultInputProcessor } =
         getProcessors();
