@@ -2,52 +2,36 @@
 
 exports[`Should be able to render union types and should log expected output to console 1`] = `
 Array [
-  "type Root = Map<string, AdditionalPropertyOneOf_0 | AdditionalPropertyOneOf_1>;",
+  "// AdditionalProperty represents a AdditionalProperty model.
+type AdditionalProperty struct {
+  AdditionalPropertyOneOf_0
+  AdditionalPropertyOneOf_1
+}",
 ]
 `;
 
 exports[`Should be able to render union types and should log expected output to console 2`] = `
 Array [
-  "class AdditionalPropertyOneOf_0 {
-  private _ref?: string;
-  private _additionalProperties?: Map<string, any>;
-
-  constructor(input: {
-    ref?: string,
-    additionalProperties?: Map<string, any>,
-  }) {
-    this._ref = input.ref;
-    this._additionalProperties = input.additionalProperties;
-  }
-
-  get ref(): string | undefined { return this._ref; }
-  set ref(ref: string | undefined) { this._ref = ref; }
-
-  get additionalProperties(): Map<string, any> | undefined { return this._additionalProperties; }
-  set additionalProperties(additionalProperties: Map<string, any> | undefined) { this._additionalProperties = additionalProperties; }
-}",
+  "",
 ]
 `;
 
 exports[`Should be able to render union types and should log expected output to console 3`] = `
 Array [
-  "class AdditionalPropertyOneOf_1 {
-  private _id?: string;
-  private _additionalProperties?: Map<string, any>;
+  "// AdditionalPropertyOneOf_0 represents a AdditionalPropertyOneOf_0 model.
+type AdditionalPropertyOneOf_0 struct {
+  Ref string
+  AdditionalProperties map[string]interface{}
+}",
+]
+`;
 
-  constructor(input: {
-    id?: string,
-    additionalProperties?: Map<string, any>,
-  }) {
-    this._id = input.id;
-    this._additionalProperties = input.additionalProperties;
-  }
-
-  get id(): string | undefined { return this._id; }
-  set id(id: string | undefined) { this._id = id; }
-
-  get additionalProperties(): Map<string, any> | undefined { return this._additionalProperties; }
-  set additionalProperties(additionalProperties: Map<string, any> | undefined) { this._additionalProperties = additionalProperties; }
+exports[`Should be able to render union types and should log expected output to console 4`] = `
+Array [
+  "// AdditionalPropertyOneOf_1 represents a AdditionalPropertyOneOf_1 model.
+type AdditionalPropertyOneOf_1 struct {
+  Id string
+  AdditionalProperties map[string]interface{}
 }",
 ]
 `;

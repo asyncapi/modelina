@@ -1,6 +1,6 @@
-import { TypeScriptGenerator } from '../../src';
+import { GoGenerator } from '../../src';
 
-const generator = new TypeScriptGenerator();
+const generator = new GoGenerator();
 const jsonSchemaDraft7 = {
   $schema: 'http://json-schema.org/draft-07/schema#',
   type: 'object',

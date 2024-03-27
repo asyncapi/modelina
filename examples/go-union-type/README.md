@@ -2,16 +2,6 @@
 
 Modelina now supports union types for `Go`. Since `Go` does not have native union types support modelina uses `struct embeddings` to mock union types.
 
-```go
-type Union struct {
-  CustomStruct
-  int
-  string
-  ModelinaArrType []string
-  ModelinaDictType map[string] interface{}
-  ModelinaAnyType interface {}
-}
-```
 
 ## How to run this example
 
