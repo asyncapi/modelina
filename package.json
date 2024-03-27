@@ -101,6 +101,8 @@
     "test:blackbox:cplusplus": "cross-env CI=true jest ./test/blackbox/blackbox-cplusplus.spec.ts",
     "test:blackbox:java": "cross-env CI=true jest ./test/blackbox/blackbox-java.spec.ts",
     "test:runtime:java": "cross-env CI=true jest ./test/runtime/runtime-java.spec.ts",
+    "test:runtime:python": "cross-env CI=true jest ./test/runtime/runtime-python.spec.ts",
+    "generate:runtime:python": "cross-env CI=true ts-node ./test/runtime/runtime-python.ts",
     "generate:runtime:java": "cross-env CI=true ts-node ./test/runtime/runtime-java.ts",
     "test:runtime:go": "cross-env CI=true jest ./test/runtime/runtime-go.spec.ts",
     "generate:runtime:go": "cross-env CI=true ts-node ./test/runtime/runtime-go.ts",
