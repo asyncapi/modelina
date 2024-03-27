@@ -1,0 +1,82 @@
+name: Upload custom assets to GitHub release
+
+on:
+  # It cannot run on release event as when release is created then version is not yet bumped in package.json
+  # This means we cannot extract easily latest version and have a risk that package is not yet on npm
+  push:
+    branches:
+      - master
+
+jobs:
+  upload-assets:
+    name: Generate and upload assets
+    if: startsWith(github.event.commits[0].message, 'chore(release):')
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            npm_script: pack:linux
+            dist_folder: deb
+            extension: deb
+          - os: ubuntu-latest
+            npm_script: pack:tarballs
+            dist_folder: tar
+            extension: tar.gz
+          - os: windows-latest
+            npm_script: pack:windows
+            dist_folder: win32
+            extension: x64.exe
+          - os: windows-latest
+            npm_script: pack:windows
+            dist_folder: win32
+            extension: x86.exe
+          - os: macos-latest
+            npm_script: pack:macos
+            dist_folder: macos
+            extension: arm64.pkg
+          - os: macos-latest
+            npm_script: pack:macos
+            dist_folder: macos
+            extension: x64.pkg
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Check package-lock version
+        uses: asyncapi/.github/.github/actions/get-node-version-from-package-lock@master
+        id: lockversion
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "${{ steps.lockversion.outputs.version }}"
+          cache: 'npm'
+          cache-dependency-path: '**/package-lock.json'
+      - name: Get version from package.json
+        uses: actions/github-script@v6
+        id: extractver
+        with:
+          script: |
+            const packageJson = require('./package.json');
+            const packageJsonVersion = packageJson.version;
+            core.setOutput('version', packageJsonVersion);
+      - name: Install dependencies
+        run: npm install
+      - name: Build project
+        run: npm run prepublishOnly
+      - name: Assets generation
+        run: cd modelina-cli && npm run ${{ matrix.npm_script }}
+      - name: Update release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: modelina-cli/dist/${{ matrix.dist_folder }}/modelina.${{ matrix.extension }}
+          tag_name: v${{ steps.extractver.outputs.version }}
+          token: ${{ secrets.GH_TOKEN }}
+      - if: failure() # Only, on failure, send a message on the 94_bot-failing-ci slack channel
+        name: Report workflow run status to Slack
+        uses: 8398a7/action-slack@fbd6aa58ba854a740e11a35d0df80cb5d12101d8 #using https://github.com/8398a7/action-slack/releases/tag/v3.15.1
+        with:
+          status: ${{ job.status }}
+          fields: repo,action,workflow
+          text: 'AsyncAPI Modelina release build artifacts failed'
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_CI_FAIL_NOTIFY }}
