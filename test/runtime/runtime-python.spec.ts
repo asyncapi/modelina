@@ -11,6 +11,6 @@ test("Python runtime testing", async () => {
         __dirname,
         "./runtime-python/test/"
     )} && python3 main.py`;
-    await execCommand(compileCommand);
+    await execCommand(compileCommand,true);
   
 });
