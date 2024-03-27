@@ -11,7 +11,7 @@ describe('GoRenderer', () => {
       GoGenerator.defaultOptions,
       new GoGenerator(),
       [],
-      new ConstrainedObjectModel('', undefined, '', {}),
+      new ConstrainedObjectModel('', undefined, {}, '', {}),
       new InputMetaModel(),
       new GoDependencyManager(GoGenerator.defaultOptions)
     );

@@ -214,3 +214,19 @@ class Address:
 ### File names
 
 In v4, file names for go will be formatted as `snake_case.go`. This is the "standard" in go: https://github.com/golang/go/issues/36060
+
+
+### Union types will be generated correctly with struct embeddings
+
+Modelina now supports union types for `Go`. Since `Go` does not have native union types support modelina uses `struct embeddings` to mock union types.
+
+```go
+type Union struct {
+  CustomStruct
+  int
+  string
+  ModelinaArrType []string
+  ModelinaDictType map[string] interface{}
+  ModelinaAnyType interface {}
+}
+```

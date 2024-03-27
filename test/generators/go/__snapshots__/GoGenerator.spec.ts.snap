@@ -3,6 +3,41 @@
 exports[`GoGenerator generateCompleteModels() should render dependencies 1`] = `
 "
 package some_package
+
+// Members represents a Members model.
+type Members struct {
+  string
+  float64
+  bool
+}"
+`;
+
+exports[`GoGenerator generateCompleteModels() should render dependencies 2`] = `
+"
+package some_package
+
+// Union represents a Union model.
+type Union struct {
+  string
+  float64
+  ModelinaAnyType interface{}
+}"
+`;
+
+exports[`GoGenerator generateCompleteModels() should render dependencies 3`] = `
+"
+package some_package
+
+// AdditionalProperties represents a AdditionalProperties model.
+type AdditionalProperties struct {
+  ModelinaAnyType interface{}
+  string
+}"
+`;
+
+exports[`GoGenerator generateCompleteModels() should render dependencies 4`] = `
+"
+package some_package
 import (  
   \\"time\\"
 )
@@ -13,14 +48,14 @@ type Address struct {
   State string
   HouseNumber float64
   Marriage bool
-  Members interface{}
-  ArrayType []interface{}
+  Members *Members
+  ArrayType []Union
   OtherModel *OtherModel
-  AdditionalProperties map[string]interface{}
+  AdditionalProperties map[string]AdditionalProperties
 }"
 `;
 
-exports[`GoGenerator generateCompleteModels() should render dependencies 2`] = `
+exports[`GoGenerator generateCompleteModels() should render dependencies 5`] = `
 "
 package some_package
 import (  
@@ -37,6 +72,41 @@ exports[`GoGenerator generateCompleteModels() should render models 1`] = `
 "
 package some_package
 
+// Members represents a Members model.
+type Members struct {
+  string
+  float64
+  bool
+}"
+`;
+
+exports[`GoGenerator generateCompleteModels() should render models 2`] = `
+"
+package some_package
+
+// Union represents a Union model.
+type Union struct {
+  string
+  float64
+  ModelinaAnyType interface{}
+}"
+`;
+
+exports[`GoGenerator generateCompleteModels() should render models 3`] = `
+"
+package some_package
+
+// AdditionalProperties represents a AdditionalProperties model.
+type AdditionalProperties struct {
+  ModelinaAnyType interface{}
+  string
+}"
+`;
+
+exports[`GoGenerator generateCompleteModels() should render models 4`] = `
+"
+package some_package
+
 // Address represents a Address model.
 type Address struct {
   StreetName string
@@ -44,14 +114,14 @@ type Address struct {
   State string
   HouseNumber float64
   Marriage bool
-  Members interface{}
-  ArrayType []interface{}
+  Members *Members
+  ArrayType []Union
   OtherModel *OtherModel
-  AdditionalProperties map[string]interface{}
+  AdditionalProperties map[string]AdditionalProperties
 }"
 `;
 
-exports[`GoGenerator generateCompleteModels() should render models 2`] = `
+exports[`GoGenerator generateCompleteModels() should render models 5`] = `
 "
 package some_package
 
@@ -94,6 +164,31 @@ var ValuesToThings = map[any]Things{
 `;
 
 exports[`GoGenerator should render \`struct\` type 1`] = `
+"// Members represents a Members model.
+type Members struct {
+  string
+  float64
+  bool
+}"
+`;
+
+exports[`GoGenerator should render \`struct\` type 2`] = `
+"// Union represents a Union model.
+type Union struct {
+  string
+  float64
+  ModelinaAnyType interface{}
+}"
+`;
+
+exports[`GoGenerator should render \`struct\` type 3`] = `
+"// AdditionalProperties represents a AdditionalProperties model.
+type AdditionalProperties struct {
+  string
+}"
+`;
+
+exports[`GoGenerator should render \`struct\` type 4`] = `
 "// Address represents a Address model.
 type Address struct {
   StreetName string
@@ -101,9 +196,56 @@ type Address struct {
   State string
   HouseNumber float64
   Marriage bool
-  Members interface{}
-  TupleType []interface{}
+  Members *Members
+  TupleType []Union
   ArrayType []string
+  AdditionalProperties map[string]AdditionalProperties
+}"
+`;
+
+exports[`GoGenerator should render \`union\` type 1`] = `
+"// Members represents a Members model.
+type Members struct {
+  string
+  float64
+  bool
+}
+// Union represents a Union model.
+type Union struct {
+  string
+  float64
+  ModelinaAnyType interface{}
+}
+// LocationAdditionalProperty represents a LocationAdditionalProperty model.
+type LocationAdditionalProperty struct {
+  LocationAdditionalPropertyOneOf_0
+  LocationAdditionalPropertyOneOf_1
+}
+// AdditionalProperties represents a AdditionalProperties model.
+type AdditionalProperties struct {
+  string
+}
+// Address represents a Address model.
+type Address struct {
+  StreetName string
+  City string
+  State string
+  HouseNumber float64
+  Marriage bool
+  Members *Members
+  TupleType []Union
+  ArrayType []string
+  Location map[string]LocationAdditionalProperty
+  AdditionalProperties map[string]AdditionalProperties
+}
+// LocationAdditionalPropertyOneOf_0 represents a LocationAdditionalPropertyOneOf_0 model.
+type LocationAdditionalPropertyOneOf_0 struct {
+  Ref string
+  AdditionalProperties map[string]interface{}
+}
+// LocationAdditionalPropertyOneOf_1 represents a LocationAdditionalPropertyOneOf_1 model.
+type LocationAdditionalPropertyOneOf_1 struct {
+  Id string
   AdditionalProperties map[string]interface{}
 }"
 `;
