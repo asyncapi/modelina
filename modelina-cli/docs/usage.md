@@ -29,7 +29,7 @@ $ npm install -g @asyncapi/modelina-cli
 $ modelina COMMAND
 running command...
 $ modelina (--version)
-@asyncapi/modelina-cli/3.4.0 darwin-x64 node-v18.19.0
+@asyncapi/modelina-cli/3.4.0 linux-x64 node-v18.19.1
 $ modelina --help [COMMAND]
 USAGE
   $ modelina COMMAND
