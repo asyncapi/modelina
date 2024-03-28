@@ -907,6 +907,16 @@
         "doc",
         "bug"
       ]
+    },
+    {
+      "login": "AkhilJ321",
+      "name": "Akhil Jamwal",
+      "avatar_url": "https://avatars.githubusercontent.com/u/98508374?v=4",
+      "profile": "https://github.com/AkhilJ321",
+      "contributions": [
+        "code",
+        "test"
+      ]
     }
   ],
   "contributorsPerLine": 7,
