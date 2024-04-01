@@ -35,6 +35,12 @@ import { DeepPartial, mergePartialAndDefault } from '../../utils/Partials';
 import { GoDependencyManager } from './GoDependencyManager';
 import { UnionRenderer } from './renderers/UnionRenderer';
 
+/**
+ * @typedef GoOptions
+ * @prop {string} unionAnyModelName
+ * @prop {string} unionDictModelName
+ * @prop {string} unionArrModelName
+ */
 export interface GoOptions extends CommonGeneratorOptions<GoPreset> {
   typeMapping: TypeMapping<GoOptions, GoDependencyManager>;
   constraints: Constraints<GoOptions>;
@@ -53,9 +59,6 @@ export interface GoRenderCompleteModelOptions {
   packageName: string;
 }
 
-/**
- * Generator for Go
- */
 export class GoGenerator extends AbstractGenerator<
   GoOptions,
   GoRenderCompleteModelOptions
