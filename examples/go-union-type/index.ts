@@ -7,7 +7,12 @@ const jsonSchemaDraft7 = {
   additionalProperties: {
     oneOf: [
       { type: 'object', properties: { ref: { type: 'string' } } },
-      { type: 'object', properties: { Id: { type: 'string' } } }
+      { type: 'object', properties: { Id: { type: 'string' } } },
+      { type: 'string' },
+      { type: 'number' },
+      { type: 'array', items: { type: 'string' } },
+      { type: 'array', items: [{ type: 'string' }, { type: 'number' }] },
+      { oneOf: [{ type: 'string' }, { type: 'number' }, { type: 'boolean' }] }
     ]
   }
 };
