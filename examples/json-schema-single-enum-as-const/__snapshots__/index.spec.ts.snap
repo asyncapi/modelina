@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Should be able to render TEMPLATE and should log expected output to console 1`] = `
+exports[`Should be able to render enum with single value as const and should log expected output to console 1`] = `
 Array [
   "class Root {
   private _email?: 'test' = 'test';

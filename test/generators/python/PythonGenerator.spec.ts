@@ -109,7 +109,6 @@ describe('PythonGenerator', () => {
       expect(models).toHaveLength(1);
       expect(models[0].result).toMatchSnapshot();
     });
-
     test('should handle weird self reference models', async () => {
       const doc = {
         allOf: [
@@ -173,7 +172,6 @@ describe('PythonGenerator', () => {
       expect(models).toHaveLength(1);
       expect(models[0].result).toMatchSnapshot();
     });
-
     test('should render `class` type', async () => {
       const doc = {
         $id: 'Address',
