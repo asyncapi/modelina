@@ -27,7 +27,7 @@ const { readFile, writeFile } = fs;
 let REPO_ROOT_PATH = process.cwd();
 getRepoRootPath(process.cwd());
 
-const DEFAULT_CONTEXT_FILENAME = '.asyncapi-cli';
+const DEFAULT_CONTEXT_FILENAME = '.modelina-cli';
 const DEFAULT_CONTEXT_FILE_LOCATION = os.homedir();
 export const DEFAULT_CONTEXT_FILE_PATH = path.resolve(
   DEFAULT_CONTEXT_FILE_LOCATION,
@@ -81,7 +81,7 @@ export interface ICurrentContext {
   readonly context: string;
 }
 
-export async function initContext(contextFilePath: string) {
+export async function initContext(contextFilePath: string | undefined) {
   const fileContent: IContextFile = {
     store: {},
   };

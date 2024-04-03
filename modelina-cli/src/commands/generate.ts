@@ -1,5 +1,5 @@
 import { CSharpFileGenerator, JavaFileGenerator, JavaScriptFileGenerator, TypeScriptFileGenerator, GoFileGenerator, Logger, DartFileGenerator, PythonFileGenerator, RustFileGenerator, TS_COMMON_PRESET, TS_JSONBINPACK_PRESET, CSHARP_NEWTONSOFT_SERIALIZER_PRESET, CSHARP_COMMON_PRESET, CSHARP_JSON_SERIALIZER_PRESET, KotlinFileGenerator, TS_DESCRIPTION_PRESET, PhpFileGenerator, CplusplusFileGenerator, JAVA_CONSTRAINTS_PRESET, JAVA_JACKSON_PRESET, JAVA_COMMON_PRESET, JAVA_DESCRIPTION_PRESET, ScalaFileGenerator } from '@asyncapi/modelina';
-import { Flags } from '@oclif/core';
+import { Args, Flags } from '@oclif/core';
 import ModelinaCommand from '../base';
 
 import type { AbstractGenerator, AbstractFileGenerator } from '@asyncapi/modelina';
@@ -23,19 +23,10 @@ const possibleLanguageValues = Object.values(Languages).join(', ');
 
 export default class Models extends ModelinaCommand {
   static description = 'Generates typed models';
-  static args = [
-    {
-      name: 'language',
-      description: 'The language you want the typed models generated for.',
-      options: Object.keys(Languages),
-      required: true
-    },
-    { 
-      name: 'file', 
-      description: 'Path or URL to the AsyncAPI document, or context-name', 
-      required: true 
-    },
-  ];
+  static args = {
+    language: Args.string({description: 'The language you want the typed models generated for.', options: Object.keys(Languages), required: true}),
+    file: Args.string({description: 'Path or URL to the AsyncAPI document, or context-name', required: true}),
+  };
 
   static flags = {
     help: Flags.help({ char: 'h' }),

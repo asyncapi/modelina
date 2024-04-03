@@ -4,6 +4,8 @@ import path from 'node:path';
 import { expect, test } from '@oclif/test';
 import TestHelper from '../helpers';
 import { CONTEXT_FILE_PATH } from '../../src/models/Context';
+import { rmSync } from 'node:fs';
+import * as os from 'node:os';
 
 const testHelper = new TestHelper();
 
@@ -127,6 +129,7 @@ describe('config:context, positive scenario', () => {
       .it('should initialize new empty context file without a switch', (ctx, done) => {
         expect(ctx.stdout).to.contain('Initialized context');
         expect(ctx.stderr).to.equals('');
+        rmSync(path.resolve(process.cwd(), 'test.asyncapi-modelina'))
         done();
       });
     test
@@ -136,6 +139,7 @@ describe('config:context, positive scenario', () => {
       .it('should initialize new empty context file with switch "."', (ctx, done) => {
         expect(ctx.stdout).to.contain('Initialized context');
         expect(ctx.stderr).to.equals('');
+        rmSync(path.resolve(process.cwd(), 'test.asyncapi-modelina'))
         done();
       });
     test
@@ -145,6 +149,7 @@ describe('config:context, positive scenario', () => {
       .it('should initialize new empty context file with switch "./"', (ctx, done) => {
         expect(ctx.stdout).to.contain('Initialized context');
         expect(ctx.stderr).to.equals('');
+        rmSync(path.resolve(__dirname, '../../../', 'test.asyncapi-modelina'))
         done();
       });
 
@@ -155,6 +160,7 @@ describe('config:context, positive scenario', () => {
     .it('should initialize new empty context file with switch "~"', (ctx, done) => {
       expect(ctx.stdout).to.contain('Initialized context');
       expect(ctx.stderr).to.equals('');
+      rmSync(path.resolve(os.homedir(), 'test.asyncapi-modelina'))
       done();
     });
   });
