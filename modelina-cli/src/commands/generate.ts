@@ -4,7 +4,6 @@ import ModelinaCommand from '../base';
 
 import type { AbstractGenerator, AbstractFileGenerator } from '@asyncapi/modelina';
 import { readFile } from 'node:fs/promises';
-import ContextInit from './config/context/init';
 
 enum Languages {
   typescript = 'typescript',
