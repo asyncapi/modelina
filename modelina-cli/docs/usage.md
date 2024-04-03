@@ -13,7 +13,7 @@ $ npm install -g @asyncapi/modelina-cli
 $ modelina COMMAND
 running command...
 $ modelina (--version)
-@asyncapi/modelina-cli/4.0.0-next.23 darwin-x64 node-v18.19.0
+@asyncapi/modelina-cli/4.0.0-next.23 linux-x64 node-v18.19.1
 $ modelina --help [COMMAND]
 USAGE
   $ modelina COMMAND
@@ -27,7 +27,7 @@ USAGE
 * [`modelina config context add CONTEXT-NAME SPEC-FILE-PATH`](#modelina-config-context-add-context-name-spec-file-path)
 * [`modelina config context current`](#modelina-config-context-current)
 * [`modelina config context edit CONTEXT-NAME NEW-SPEC-FILE-PATH`](#modelina-config-context-edit-context-name-new-spec-file-path)
-* [`modelina config context init CONTEXT-FILE-PATH`](#modelina-config-context-init-context-file-path)
+* [`modelina config context init [CONTEXT-FILE-PATH]`](#modelina-config-context-init-context-file-path)
 * [`modelina config context list`](#modelina-config-context-list)
 * [`modelina config context remove CONTEXT-NAME`](#modelina-config-context-remove-context-name)
 * [`modelina config context use CONTEXT-NAME`](#modelina-config-context-use-context-name)
@@ -121,13 +121,13 @@ DESCRIPTION
 
 _See code: [src/commands/config/context/edit.ts](https://github.com/asyncapi/modelina/blob/v4.0.0-next.23/src/commands/config/context/edit.ts)_
 
-## `modelina config context init CONTEXT-FILE-PATH`
+## `modelina config context init [CONTEXT-FILE-PATH]`
 
 Initialize context
 
 ```
 USAGE
-  $ modelina config context init CONTEXT-FILE-PATH [-h]
+  $ modelina config context init [CONTEXT-FILE-PATH] [-h]
 
 ARGUMENTS
   CONTEXT-FILE-PATH  Specify directory in which context file should be created:
