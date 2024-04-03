@@ -19,18 +19,25 @@
 # Table of contents
 
 <!-- toc -->
-* [Table of contents](#table-of-contents)
-* [Installation](#installation)
-* [Download latest release](#download-latest-release)
-* [Install it](#install-it)
-* [Download latest release](#download-latest-release-1)
-* [Install it](#install-it-1)
-* [Download](#download)
-* [Install](#install)
-* [Download](#download-1)
-* [Install](#install-1)
-* [Usage](#usage)
-* [Commands](#commands)
+
+- [Installation](#installation)
+  * [MacOS](#macos)
+  * [Windows](#windows)
+  * [Linux](#linux)
+  * [Others](#others)
+- [Usage](#usage)
+- [Commands](#commands)
+  * [`modelina config`](#modelina-config)
+  * [`modelina config context`](#modelina-config-context)
+  * [`modelina config context add CONTEXT-NAME SPEC-FILE-PATH`](#modelina-config-context-add-context-name-spec-file-path)
+  * [`modelina config context current`](#modelina-config-context-current)
+  * [`modelina config context edit CONTEXT-NAME NEW-SPEC-FILE-PATH`](#modelina-config-context-edit-context-name-new-spec-file-path)
+  * [`modelina config context init [CONTEXT-FILE-PATH]`](#modelina-config-context-init-context-file-path)
+  * [`modelina config context list`](#modelina-config-context-list)
+  * [`modelina config context remove CONTEXT-NAME`](#modelina-config-context-remove-context-name)
+  * [`modelina config context use CONTEXT-NAME`](#modelina-config-context-use-context-name)
+  * [`modelina generate LANGUAGE FILE`](#modelina-generate-language-file)
+
 <!-- tocstop -->
 
 # Installation
