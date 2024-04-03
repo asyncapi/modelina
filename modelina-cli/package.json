@@ -82,7 +82,7 @@
   "scripts": {
     "build": "rimraf lib && tsc && oclif manifest && echo \"Build Completed\"",
     "dev": "tsc --watch",
-    "generate:readme:commands": "cd scripts && oclif readme",
+    "generate:readme:commands": "oclif readme --readme-path=\"./docs/usage.md\" --output-dir=\"./docs\"",
     "generate:assets": "npm run generate:readme:toc && npm run generate:commands",
     "generate:commands": "npm run generate:readme:commands && node ./scripts/updateUsageDocs.js",
     "generate:readme:toc": "markdown-toc -i README.md",
