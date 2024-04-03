@@ -1,4 +1,4 @@
-import { Flags } from '@oclif/core';
+import { Args, Flags } from '@oclif/core';
 import Command from '../../../base';
 import { editContext, CONTEXT_FILE_PATH } from '../../../models/Context';
 import {
@@ -13,14 +13,10 @@ export default class ContextEdit extends Command {
     help: Flags.help({ char: 'h' }),
   };
 
-  static args = [
-    { name: 'context-name', description: 'context name', required: true },
-    {
-      name: 'new-spec-file-path',
-      description: 'new file path of the input',
-      required: true,
-    },
-  ];
+  static args = {
+    'context-name': Args.string({description: 'context name', required: true}),
+    'new-spec-file-path': Args.string({description: 'file path of the spec file', required: true}),
+  };
 
   async run() {
     const { args } = await this.parse(ContextEdit);

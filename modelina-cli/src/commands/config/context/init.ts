@@ -1,4 +1,4 @@
-import { Flags } from '@oclif/core';
+import { Args, Flags } from '@oclif/core';
 import Command from '../../../base';
 import { initContext } from '../../../models/Context';
 
@@ -13,13 +13,9 @@ export default class ContextInit extends Command {
     - root of current repository : modelina config context init ./
     - user's home directory      : modelina config context init ~`;
 
-  static args = [
-    {
-      name: 'context-file-path',
-      description: `${ContextInit.contextFilePathMessage}`,
-      required: false,
-    },
-  ];
+  static args = {
+    'context-file-path': Args.string({description: `${ContextInit.contextFilePathMessage}`, required: true})
+  };
 
   async run() {
     const { args } = await this.parse(ContextInit);
