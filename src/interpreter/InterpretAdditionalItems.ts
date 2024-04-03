@@ -19,15 +19,18 @@ export default function interpretAdditionalItems(
   interpreter: Interpreter,
   interpreterOptions: InterpreterOptions = Interpreter.defaultInterpreterOptions
 ): void {
-  if (typeof schema === 'boolean' || model.type?.includes('array') === false) {
+  const isTuple = model.items !== undefined && Array.isArray(model.items);
+  if (
+    typeof schema === 'boolean' ||
+    model.type?.includes('array') === false ||
+    !isTuple
+  ) {
     return;
   }
   const hasArrayTypes = schema.items !== undefined;
   let defaultAdditionalItems = true;
-  if (hasArrayTypes && interpreterOptions.ignoreAdditionalItems !== undefined) {
-    defaultAdditionalItems = interpreterOptions.ignoreAdditionalItems
-      ? false
-      : true;
+  if (hasArrayTypes && interpreterOptions.ignoreAdditionalItems === true) {
+    defaultAdditionalItems = false;
   }
 
   const additionalItemsModel = interpreter.interpret(

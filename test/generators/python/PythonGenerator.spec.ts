@@ -129,8 +129,7 @@ describe('PythonGenerator', () => {
                       $ref: '#'
                     }
                   }
-                ],
-                default: {}
+                ]
               }
             }
           }
@@ -160,13 +159,12 @@ describe('PythonGenerator', () => {
                   {
                     $ref: '#/definitions/json-schema-draft-07-schema/definitions/schemaArray'
                   }
-                ],
-                default: true
+                ]
               }
-            },
-            default: true
+            }
           }
-        }
+        },
+        "$id": "root"
       };
       const models = await generator.generate(doc);
       expect(models).toHaveLength(1);

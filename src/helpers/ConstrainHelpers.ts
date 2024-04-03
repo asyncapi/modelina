@@ -616,6 +616,7 @@ export function constrainMetaModel<
     options: context.options
   });
   const newContext = { ...context, constrainedName };
+
   if (newContext.metaModel instanceof ObjectModel) {
     return constrainObjectModel(
       typeMapping,
