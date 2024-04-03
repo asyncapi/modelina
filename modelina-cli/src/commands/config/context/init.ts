@@ -14,7 +14,7 @@ export default class ContextInit extends Command {
     - user's home directory      : modelina config context init ~`;
 
   static args = {
-    'context-file-path': Args.string({description: `${ContextInit.contextFilePathMessage}`, required: true})
+    'context-file-path': Args.string({description: `${ContextInit.contextFilePathMessage}`, required: false})
   };
 
   async run() {

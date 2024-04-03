@@ -81,7 +81,7 @@ export interface ICurrentContext {
   readonly context: string;
 }
 
-export async function initContext(contextFilePath: string) {
+export async function initContext(contextFilePath: string | undefined) {
   const fileContent: IContextFile = {
     store: {},
   };
