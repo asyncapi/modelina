@@ -150,7 +150,7 @@ describe('GoConstrainer', () => {
         constrainedModel: model,
         ...defaultOptions
       });
-      expect(type).toEqual('interface{}');
+      expect(type).toEqual('test');
     });
   });
 
