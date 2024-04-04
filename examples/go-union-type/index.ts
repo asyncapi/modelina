@@ -1,6 +1,11 @@
 import { GoGenerator } from '../../src';
 
-const generator = new GoGenerator();
+const generator = new GoGenerator({
+  unionAnyModelName: 'ModelinaAnyType',
+  unionArrModelName: 'ModelinaArrType',
+  unionDictModelName: 'ModelinaDictType'
+});
+
 const jsonSchemaDraft7 = {
   $schema: 'http://json-schema.org/draft-07/schema#',
   type: 'object',

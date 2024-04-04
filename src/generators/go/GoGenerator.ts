@@ -37,9 +37,9 @@ import { UnionRenderer } from './renderers/UnionRenderer';
 
 /**
  * @typedef GoOptions
- * @prop {string} unionAnyModelName
- * @prop {string} unionDictModelName
- * @prop {string} unionArrModelName
+ * @prop {string} unionAnyModelName  Change default name for any models.
+ * @prop {string} unionDictModelName Change default name for Dictionary Models.
+ * @prop {string} unionArrModelName  Change default name for Array models.
  */
 export interface GoOptions extends CommonGeneratorOptions<GoPreset> {
   typeMapping: TypeMapping<GoOptions, GoDependencyManager>;
