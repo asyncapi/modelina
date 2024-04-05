@@ -3,12 +3,10 @@
  */
 
 export class AvroSchema {
-  type?: string | string[];
+  type?: string | string[] | AvroSchema;
   name?: string;
   namespace?: string;
   originalInput?: any;
-  const?: string;
-  required?: string[];
   doc?: string;
   aliases?: string[];
   symbols?: string[];
@@ -74,18 +72,5 @@ export class AvroSchema {
       (schema as any)[String(propName)] = copyProp;
     }
     return schema;
-  }
-
-  /**
-   * Checks if given property name is required in object
-   *
-   * @param propertyName given property name
-   * @returns {boolean}
-   */
-  isRequired(propertyName: any): boolean {
-    if (this.required === undefined) {
-      return false;
-    }
-    return this.required.includes(propertyName);
   }
 }
