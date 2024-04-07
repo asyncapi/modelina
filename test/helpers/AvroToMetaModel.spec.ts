@@ -1,5 +1,6 @@
 import {
   AnyModel,
+  ArrayModel,
   AvroSchema,
   BooleanModel,
   EnumModel,
@@ -12,7 +13,7 @@ import { AvroToMetaModel } from '../../src/helpers';
 
 describe('AvroToMetaModel', () => {
   describe('nullable', () => {
-    test('should apply null type', () => {
+    test('should apply null and string type', () => {
       const av = new AvroSchema();
       av.name = 'test';
       av.type = ['string', 'null'];
@@ -165,5 +166,26 @@ describe('AvroToMetaModel', () => {
 
     expect(model).not.toBeUndefined();
     expect(model instanceof EnumModel).toBeTruthy();
+  });
+  test('should convert to array model', () => {
+    const av = new AvroSchema();
+    av.name = 'test';
+    av.type = 'array';
+    av.items = 'string';
+
+    const model = AvroToMetaModel(av);
+
+    expect(model).not.toBeUndefined();
+    expect(model instanceof ArrayModel).toBeTruthy();
+  });
+  test('should handle AvroSchema value of type', () => {
+    const av = new AvroSchema();
+    av.name = 'test';
+    av.type = { name: 'test1', type: 'int' };
+
+    const model = AvroToMetaModel(av);
+
+    expect(model).not.toBeUndefined();
+    expect(model instanceof IntegerModel).toBeTruthy();
   });
 });

@@ -18,13 +18,11 @@ import { Logger } from '../utils';
 
 function getMetaModelOptions(AvroModel: AvroSchema): MetaModelOptions {
   const options: MetaModelOptions = {};
-
-  if (Array.isArray(AvroModel.type) && AvroModel.type !== null) {
+  if (Array.isArray(AvroModel.type) && AvroModel.type?.includes('null')) {
     options.isNullable = true;
   } else {
     options.isNullable = false;
   }
-
   return options;
 }
 
@@ -33,7 +31,7 @@ function shouldBeAnyType(avroSchemaModel: AvroSchema): boolean {
   const containsAllTypesButNotNull =
     Array.isArray(avroSchemaModel.type) &&
     avroSchemaModel.type.length >= 8 &&
-    avroSchemaModel.type !== null;
+    !avroSchemaModel.type.includes('null');
   const containsAllTypes =
     Array.isArray(avroSchemaModel.type) && avroSchemaModel.type.length === 10;
   return containsAllTypesButNotNull || containsAllTypes;
@@ -48,13 +46,23 @@ export function AvroToMetaModel(
     return alreadySeenModels.get(avroSchemaModel) as MetaModel;
   }
 
-  const modelName = avroSchemaModel.name || 'undefined';
+  const modelName = avroSchemaModel?.name || 'undefined';
 
   if (shouldBeAnyType(avroSchemaModel)) {
     return new AnyModel(
       modelName,
       avroSchemaModel.originalInput,
       getMetaModelOptions(avroSchemaModel)
+    );
+  }
+  if (
+    avroSchemaModel.type &&
+    !Array.isArray(avroSchemaModel.type) &&
+    typeof avroSchemaModel.type !== 'string'
+  ) {
+    return AvroToMetaModel(
+      avroSchemaModel.type as AvroSchema,
+      alreadySeenModels
     );
   }
   const objectModel = toObjectModel(
@@ -114,113 +122,125 @@ export function toBooleanModel(
   avroSchemaModel: AvroSchema,
   name: string
 ): BooleanModel | undefined {
-  if (avroSchemaModel.type !== 'boolean') {
-    return undefined;
+  if (
+    (typeof avroSchemaModel.type === 'string' ||
+      Array.isArray(avroSchemaModel.type)) &&
+    avroSchemaModel.type.includes('boolean')
+  ) {
+    return new BooleanModel(
+      name,
+      avroSchemaModel.originalInput,
+      getMetaModelOptions(avroSchemaModel)
+    );
   }
-  return new BooleanModel(
-    name,
-    avroSchemaModel.originalInput,
-    getMetaModelOptions(avroSchemaModel)
-  );
+  return undefined;
 }
 export function toIntegerModel(
   avroSchemaModel: AvroSchema,
   name: string
 ): IntegerModel | undefined {
-  if (avroSchemaModel.type !== 'int' && avroSchemaModel.type !== 'long') {
-    return undefined;
+  if (
+    (typeof avroSchemaModel.type === 'string' ||
+      Array.isArray(avroSchemaModel.type)) &&
+    (avroSchemaModel.type.includes('int') ||
+      avroSchemaModel.type.includes('long'))
+  ) {
+    return new IntegerModel(
+      name,
+      avroSchemaModel.originalInput,
+      getMetaModelOptions(avroSchemaModel)
+    );
   }
-  return new IntegerModel(
-    name,
-    avroSchemaModel.originalInput,
-    getMetaModelOptions(avroSchemaModel)
-  );
+  return undefined;
 }
 export function toFloatModel(
   avroSchemaModel: AvroSchema,
   name: string
 ): FloatModel | undefined {
-  if (avroSchemaModel.type !== 'float' && avroSchemaModel.type !== 'double') {
-    return undefined;
+  if (
+    (typeof avroSchemaModel.type === 'string' ||
+      Array.isArray(avroSchemaModel.type)) &&
+    (avroSchemaModel.type.includes('float') ||
+      avroSchemaModel.type.includes('double'))
+  ) {
+    return new FloatModel(
+      name,
+      avroSchemaModel.originalInput,
+      getMetaModelOptions(avroSchemaModel)
+    );
   }
-  return new FloatModel(
-    name,
-    avroSchemaModel.originalInput,
-    getMetaModelOptions(avroSchemaModel)
-  );
+  return undefined;
 }
 export function toStringModel(
   avroSchemaModel: AvroSchema,
   name: string
 ): StringModel | undefined {
-  if (avroSchemaModel.type !== 'string') {
-    return undefined;
+  if (
+    (typeof avroSchemaModel.type === 'string' ||
+      Array.isArray(avroSchemaModel.type)) &&
+    avroSchemaModel.type.includes('string')
+  ) {
+    return new StringModel(
+      name,
+      avroSchemaModel.originalInput,
+      getMetaModelOptions(avroSchemaModel)
+    );
   }
-  return new StringModel(
-    name,
-    avroSchemaModel.originalInput,
-    getMetaModelOptions(avroSchemaModel)
-  );
+  return undefined;
 }
 export function toEnumModel(
   avroSchemaModel: AvroSchema,
   name: string
 ): EnumModel | undefined {
   if (
-    avroSchemaModel.type !== 'enum' ||
-    !Array.isArray(avroSchemaModel.symbols)
+    ((typeof avroSchemaModel.type === 'string' ||
+      Array.isArray(avroSchemaModel.type)) &&
+      avroSchemaModel.type.includes('enum')) ||
+    Array.isArray(avroSchemaModel.symbols)
   ) {
-    return undefined;
-  }
-  const enumValueToEnumValueModel = (enumValue: unknown): EnumValueModel => {
-    if (typeof enumValue !== 'string') {
-      return new EnumValueModel(JSON.stringify(enumValue), enumValue);
-    }
-    return new EnumValueModel(enumValue, enumValue);
-  };
+    const enumValueToEnumValueModel = (enumValue: unknown): EnumValueModel => {
+      if (typeof enumValue !== 'string') {
+        return new EnumValueModel(JSON.stringify(enumValue), enumValue);
+      }
+      return new EnumValueModel(enumValue, enumValue);
+    };
 
-  const metaModel = new EnumModel(
-    name,
-    avroSchemaModel.originalInput,
-    getMetaModelOptions(avroSchemaModel),
-    []
-  );
+    const metaModel = new EnumModel(
+      name,
+      avroSchemaModel.originalInput,
+      getMetaModelOptions(avroSchemaModel),
+      []
+    );
 
-  if (avroSchemaModel.symbols) {
-    for (const enumValue of avroSchemaModel.symbols) {
-      metaModel.values.push(enumValueToEnumValueModel(enumValue));
+    if (avroSchemaModel.symbols) {
+      for (const enumValue of avroSchemaModel.symbols) {
+        metaModel.values.push(enumValueToEnumValueModel(enumValue));
+      }
     }
+    return metaModel;
   }
-  return metaModel;
+  return undefined;
 }
-// eslint-disable-next-line sonarjs/cognitive-complexity
 export function toUnionModel(
   avroSchemaModel: AvroSchema,
   name: string,
   alreadySeenModels: Map<AvroSchema, MetaModel>
 ): UnionModel | undefined {
-  const containsUnions = Array.isArray(avroSchemaModel.type);
+  if (!Array.isArray(avroSchemaModel.type)) {
+    return undefined;
+  }
 
-  // Should not create union from two types where one is null
+  // Should not create union from two types where one is null, i.e, true for ['string', 'null']
   const containsTypeWithNull =
     Array.isArray(avroSchemaModel.type) &&
     avroSchemaModel.type.length === 2 &&
     avroSchemaModel.type.includes('null');
-  const containsSimpleTypeUnion =
-    Array.isArray(avroSchemaModel.type) &&
-    avroSchemaModel.type.length > 1 &&
-    !containsTypeWithNull;
-  const isAnyType = shouldBeAnyType(avroSchemaModel);
 
-  //Lets see whether we should have a union or not.
-  if (
-    (!containsSimpleTypeUnion && !containsUnions) ||
-    Array.isArray(avroSchemaModel.type) ||
-    isAnyType ||
-    containsTypeWithNull
-  ) {
+  if (containsTypeWithNull) {
     return undefined;
   }
+
+  // type: ['string', 'int']
   const unionModel = new UnionModel(
     name,
     avroSchemaModel.originalInput,
@@ -231,27 +251,6 @@ export function toUnionModel(
   //cache model before continuing
   if (!alreadySeenModels.has(avroSchemaModel)) {
     alreadySeenModels.set(avroSchemaModel, unionModel);
-  }
-
-  // Has multiple types, so convert to union
-  if (containsUnions && Array.isArray(avroSchemaModel.type)) {
-    for (const unionCommonModel of avroSchemaModel.type) {
-      const isSingleNullType =
-        (Array.isArray(unionCommonModel.type) &&
-          unionCommonModel.type.length === 1 &&
-          unionCommonModel.type?.includes('null')) ||
-        unionCommonModel.type === 'null';
-      if (isSingleNullType) {
-        unionModel.options.isNullable = true;
-      } else {
-        const unionMetaModel = AvroToMetaModel(
-          unionCommonModel,
-          alreadySeenModels
-        );
-        unionModel.union.push(unionMetaModel);
-      }
-    }
-    return unionModel;
   }
 
   // Has simple union types
@@ -268,14 +267,14 @@ export function toUnionModel(
   if (objectModel !== undefined) {
     unionModel.union.push(objectModel);
   }
-  // const arrayModel = toArrayModel(
-  //   avroSchemaModel,
-  //   `${name}_array`,
-  //   alreadySeenModels
-  // );
-  // if (arrayModel !== undefined) {
-  //   unionModel.union.push(arrayModel);
-  // }
+  const arrayModel = toArrayModel(
+    avroSchemaModel,
+    `${name}_array`,
+    alreadySeenModels
+  );
+  if (arrayModel !== undefined) {
+    unionModel.union.push(arrayModel);
+  }
   const stringModel = toStringModel(avroSchemaModel, `${name}_string`);
   if (stringModel !== undefined) {
     unionModel.union.push(stringModel);
@@ -299,53 +298,45 @@ export function toObjectModel(
   name: string,
   alreadySeenModels: Map<AvroSchema, MetaModel>
 ): ObjectModel | undefined {
-  if (avroSchemaModel.type !== 'record') {
-    return undefined;
-  }
-  const metaModel = new ObjectModel(
-    name,
-    avroSchemaModel.originalInput,
-    getMetaModelOptions(avroSchemaModel),
-    {}
-  );
-  // cache model before continuing
-  if (!alreadySeenModels.has(avroSchemaModel)) {
-    alreadySeenModels.set(avroSchemaModel, metaModel);
-  }
-
-  // fields: a required attribute of record and a JSON Array of JSON Objects
-  for (const prop of avroSchemaModel?.fields || []) {
-    const isRequired = avroSchemaModel.isRequired(prop.name);
-    const propertyModel = new ObjectPropertyModel(
-      prop.name ?? '',
-      isRequired,
-      AvroToMetaModel(prop, alreadySeenModels)
+  if (
+    (typeof avroSchemaModel.type === 'string' ||
+      Array.isArray(avroSchemaModel.type)) &&
+    avroSchemaModel.type.includes('record')
+  ) {
+    const metaModel = new ObjectModel(
+      name,
+      avroSchemaModel.originalInput,
+      getMetaModelOptions(avroSchemaModel),
+      {}
     );
-    metaModel.properties[String(prop.name)] = propertyModel;
-  }
-
-  if (avroSchemaModel.extend?.length) {
-    metaModel.options.extend = [];
-
-    for (const extend of avroSchemaModel.extend) {
-      metaModel.options.extend.push(AvroToMetaModel(extend, alreadySeenModels));
+    // cache model before continuing
+    if (!alreadySeenModels.has(avroSchemaModel)) {
+      alreadySeenModels.set(avroSchemaModel, metaModel);
     }
-  }
 
-  return metaModel;
+    // fields: a required attribute of record and a JSON Array of JSON Objects
+    for (const prop of avroSchemaModel?.fields || []) {
+      const propertyModel = new ObjectPropertyModel(
+        prop.name ?? '',
+        true,
+        AvroToMetaModel(prop, alreadySeenModels)
+      );
+      metaModel.properties[String(prop.name)] = propertyModel;
+    }
+    return metaModel;
+  }
+  return undefined;
 }
 export function toArrayModel(
   avroSchemaModel: AvroSchema,
   name: string,
   alreadySeenModels: Map<AvroSchema, MetaModel>
 ): ArrayModel | undefined {
-  if (!avroSchemaModel.type?.includes('array')) {
-    return undefined;
-  }
-  const isNormalArray = !Array.isArray(avroSchemaModel.items);
-  //items single type = normal array
-  //items not sat = normal array, any type
-  if (isNormalArray) {
+  if (
+    (typeof avroSchemaModel.type === 'string' ||
+      Array.isArray(avroSchemaModel.type)) &&
+    avroSchemaModel.type?.includes('array')
+  ) {
     const placeholderModel = new AnyModel(
       '',
       undefined,
@@ -359,36 +350,13 @@ export function toArrayModel(
     );
     alreadySeenModels.set(avroSchemaModel, metaModel);
     if (avroSchemaModel.items !== undefined) {
-      const valueModel = AvroToMetaModel(
-        avroSchemaModel.items as AvroSchema,
-        alreadySeenModels
-      );
+      const AvroModel = new AvroSchema();
+      AvroModel.name = `${name}_${avroSchemaModel.items}`;
+      AvroModel.type = avroSchemaModel.items;
+      const valueModel = AvroToMetaModel(AvroModel, alreadySeenModels);
       metaModel.valueModel = valueModel;
     }
     return metaModel;
   }
-
-  const valueModel = new UnionModel(
-    'union',
-    avroSchemaModel.originalInput,
-    getMetaModelOptions(avroSchemaModel),
-    []
-  );
-  const metaModel = new ArrayModel(
-    name,
-    avroSchemaModel.originalInput,
-    getMetaModelOptions(avroSchemaModel),
-    valueModel
-  );
-  alreadySeenModels.set(avroSchemaModel, metaModel);
-  if (avroSchemaModel.items !== undefined) {
-    for (const itemModel of Array.isArray(avroSchemaModel.items)
-      ? avroSchemaModel.items
-      : [avroSchemaModel.items]) {
-      const itemsModel = AvroToMetaModel(itemModel, alreadySeenModels);
-      valueModel.union.push(itemsModel);
-    }
-  }
-
-  return metaModel;
+  return undefined;
 }

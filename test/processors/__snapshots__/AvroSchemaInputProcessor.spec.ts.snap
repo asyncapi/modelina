@@ -11,18 +11,42 @@ InputMetaModel {
       "originalInput": undefined,
       "properties": Object {
         "address": ObjectPropertyModel {
-          "property": AnyModel {
-            "name": "address",
+          "property": ObjectModel {
+            "name": "Address",
             "options": Object {
               "isNullable": false,
             },
             "originalInput": undefined,
+            "properties": Object {
+              "country": ObjectPropertyModel {
+                "property": StringModel {
+                  "name": "country",
+                  "options": Object {
+                    "isNullable": true,
+                  },
+                  "originalInput": undefined,
+                },
+                "propertyName": "country",
+                "required": true,
+              },
+              "zipcode": ObjectPropertyModel {
+                "property": IntegerModel {
+                  "name": "zipcode",
+                  "options": Object {
+                    "isNullable": false,
+                  },
+                  "originalInput": undefined,
+                },
+                "propertyName": "zipcode",
+                "required": true,
+              },
+            },
           },
           "propertyName": "address",
           "required": true,
         },
         "age": ObjectPropertyModel {
-          "property": AnyModel {
+          "property": IntegerModel {
             "name": "age",
             "options": Object {
               "isNullable": true,
@@ -33,18 +57,25 @@ InputMetaModel {
           "required": true,
         },
         "certifications": ObjectPropertyModel {
-          "property": AnyModel {
-            "name": "certifications",
+          "property": ArrayModel {
+            "name": "undefined",
             "options": Object {
               "isNullable": false,
             },
             "originalInput": undefined,
+            "valueModel": StringModel {
+              "name": "undefined_string",
+              "options": Object {
+                "isNullable": false,
+              },
+              "originalInput": undefined,
+            },
           },
           "propertyName": "certifications",
           "required": true,
         },
         "email": ObjectPropertyModel {
-          "property": AnyModel {
+          "property": StringModel {
             "name": "email",
             "options": Object {
               "isNullable": true,
@@ -55,12 +86,34 @@ InputMetaModel {
           "required": true,
         },
         "favoriteProgrammingLanguage": ObjectPropertyModel {
-          "property": AnyModel {
-            "name": "favoriteProgrammingLanguage",
+          "property": EnumModel {
+            "name": "ProgrammingLanguage",
             "options": Object {
               "isNullable": false,
             },
             "originalInput": undefined,
+            "values": Array [
+              EnumValueModel {
+                "key": "JS",
+                "value": "JS",
+              },
+              EnumValueModel {
+                "key": "Java",
+                "value": "Java",
+              },
+              EnumValueModel {
+                "key": "Go",
+                "value": "Go",
+              },
+              EnumValueModel {
+                "key": "Rust",
+                "value": "Rust",
+              },
+              EnumValueModel {
+                "key": "C",
+                "value": "C",
+              },
+            ],
           },
           "propertyName": "favoriteProgrammingLanguage",
           "required": true,
