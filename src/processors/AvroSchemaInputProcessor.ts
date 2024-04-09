@@ -27,7 +27,6 @@ export class AvroSchemaInputProcessor extends AbstractInputProcessor {
    *
    * @param input
    */
-
   shouldProcess(input?: any): boolean {
     if (
       input === '' ||

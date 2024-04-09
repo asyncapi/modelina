@@ -20,7 +20,7 @@ export class InputProcessor {
     this.setProcessor('openapi', new OpenAPIInputProcessor());
     this.setProcessor('default', new JsonSchemaInputProcessor());
     this.setProcessor('typescript', new TypeScriptInputProcessor());
-    this.setProcessor('avroSchema', new AvroSchemaInputProcessor());
+    this.setProcessor('avro', new AvroSchemaInputProcessor());
   }
 
   /**
