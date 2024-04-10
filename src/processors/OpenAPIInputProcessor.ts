@@ -271,6 +271,7 @@ export class OpenAPIInputProcessor extends AbstractInputProcessor {
     const namedSchema = JsonSchemaInputProcessor.reflectSchemaNames(
       schema,
       {},
+      new Set(),
       name,
       true
     );

@@ -1,5 +1,92 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`SwaggerInputProcessor process() should be able to use $ref when circular 1`] = `
+InputMetaModel {
+  "models": Object {
+    "": AnyModel {
+      "name": "",
+      "options": Object {},
+      "originalInput": undefined,
+    },
+  },
+  "originalInput": Object {
+    "definitions": Object {
+      "ApiResponse": Object {
+        "properties": Object {
+          "code": Object {
+            "format": "int32",
+            "type": "integer",
+          },
+          "loop": [Circular],
+          "message": Object {
+            "type": "string",
+          },
+          "type": Object {
+            "type": "string",
+          },
+        },
+        "type": "object",
+      },
+    },
+    "info": Object {
+      "title": "circular api",
+    },
+    "paths": Object {
+      "/test": Object {
+        "get": Object {
+          "responses": Object {
+            "200": Object {
+              "description": "successful operation",
+              "schema": Object {
+                "properties": Object {
+                  "code": Object {
+                    "format": "int32",
+                    "type": "integer",
+                  },
+                  "loop": [Circular],
+                  "message": Object {
+                    "type": "string",
+                  },
+                  "type": Object {
+                    "type": "string",
+                  },
+                },
+                "type": "object",
+              },
+            },
+          },
+        },
+      },
+    },
+    "swagger": "2.0",
+  },
+}
+`;
+
+exports[`SwaggerInputProcessor process() should be able to use $ref when circular 2`] = `
+Array [
+  Array [
+    Object {
+      "properties": Object {
+        "code": Object {
+          "format": "int32",
+          "type": "integer",
+        },
+        "loop": [Circular],
+        "message": Object {
+          "type": "string",
+        },
+        "type": Object {
+          "type": "string",
+        },
+      },
+      "type": "object",
+    },
+    "test_get_200",
+  ],
+]
+`;
+
 exports[`SwaggerInputProcessor process() should process the swagger document accurately 1`] = `
 InputMetaModel {
   "models": Object {

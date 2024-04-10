@@ -9,6 +9,12 @@ const basicDoc = JSON.parse(
     'utf8'
   )
 );
+const circularDoc = JSON.parse(
+  fs.readFileSync(
+    path.resolve(__dirname, './SwaggerInputProcessor/references_circular.json'),
+    'utf8'
+  )
+);
 jest.mock('../../src/utils/LoggingInterface');
 jest.spyOn(SwaggerInputProcessor, 'convertToInternalSchema');
 const mockedReturnModels = [new CommonModel()];
@@ -27,6 +33,9 @@ jest.mock('../../src/interpreter/Interpreter', () => {
 });
 
 describe('SwaggerInputProcessor', () => {
+  beforeEach(() => {
+    jest.resetAllMocks();
+  });
   afterAll(() => {
     jest.restoreAllMocks();
   });
@@ -70,6 +79,21 @@ describe('SwaggerInputProcessor', () => {
         });
       const processor = new SwaggerInputProcessor();
       const commonInputModel = await processor.process(basicDoc);
+      expect(commonInputModel).toMatchSnapshot();
+      expect(
+        (
+          SwaggerInputProcessor.convertToInternalSchema as any as jest.SpyInstance
+        ).mock.calls
+      ).toMatchSnapshot();
+    });
+    test('should be able to use $ref when circular', async () => {
+      JsonSchemaInputProcessor.convertSchemaToMetaModel = jest
+        .fn()
+        .mockImplementation(() => {
+          return mockedMetaModel;
+        });
+      const processor = new SwaggerInputProcessor();
+      const commonInputModel = await processor.process(circularDoc);
       expect(commonInputModel).toMatchSnapshot();
       expect(
         (
