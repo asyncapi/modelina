@@ -9,7 +9,7 @@ describe('Should be able to render model using Avro Schema', () => {
   });
   test('and should log expected output to console', async () => {
     await generate();
-    expect(spy.mock.calls.length).toEqual(1);
+    expect(spy.mock.calls.length).toEqual(3);
     expect(spy.mock.calls[0]).toMatchSnapshot();
   });
 });

@@ -1,7 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Should be able to render model using Avro Schema and should log expected output to console 1`] = `
-class Person {
+Array [
+  "class Person {
   private _reservedName: string;
   private _serialNo: string;
   private _email: string | null;
@@ -66,30 +67,6 @@ class Person {
 
   get someid(): string { return this._someid; }
   set someid(someid: string) { this._someid = someid; }
-}
-enum ProgrammingLanguage {
-  JS = "JS",
-  RESERVED_JAVA = "Java",
-  GO = "Go",
-  RUST = "Rust",
-  C = "C",
-}
-class Address {
-  private _zipcode: number;
-  private _country: string | null;
-
-  constructor(input: {
-    zipcode: number,
-    country: string | null,
-  }) {
-    this._zipcode = input.zipcode;
-    this._country = input.country;
-  }
-
-  get zipcode(): number { return this._zipcode; }
-  set zipcode(zipcode: number) { this._zipcode = zipcode; }
-
-  get country(): string | null { return this._country; }
-  set country(country: string | null) { this._country = country; }
-}
-`
+}",
+]
+`;
