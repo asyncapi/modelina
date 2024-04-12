@@ -15,6 +15,7 @@ For more specific integration options, please check out the [integration documen
 - [Generate models from AsyncAPI documents](#generate-models-from-asyncapi-documents)
   * [Limitations and Compatibility](#limitations-and-compatibility)
     + [Polymorphism](#polymorphism)
+- [Generate models from Avro Schema documents](#generate-models-from-avro-schema-documents)
 - [Generate models from JSON Schema documents](#generate-models-from-json-schema-documents)
 - [Generate models from Swagger 2.0 documents](#generate-models-from-swagger-20-documents)
   * [Limitations and Compatibility](#limitations-and-compatibility-1)
@@ -106,6 +107,16 @@ There are three ways to generate models for a JSON Schema document.
 - [Generate from a JSON Schema draft 4 JS object](../examples/json-schema-draft4-from-object)
 
 The library expects the `$schema` property for the document to be set in order to understand the input format. By default, if no other inputs are detected, it defaults to `JSON Schema draft 7`. The process of interpreting a JSON Schema to a model can be read [here](./inputs/JSON_Schema.md).
+
+## Generate models from Avro Schema documents
+
+See the below example to get started with Avro Schema for generating models.
+
+- [Generate from an Avro Schema JS Object](../examples/avro-schema-from-object)
+
+The Avro input processor expects the `type` property, as per [Avro Schema specs](https://avro.apache.org/docs/1.11.1/specification/#schema-declaration), in the input object in order to proceed successfully.
+
+> Note: Currently, we support `record` datatype for generating the `Object Model`.
 
 ## Generate models from Swagger 2.0 documents
 

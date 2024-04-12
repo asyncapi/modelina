@@ -43,6 +43,7 @@ These examples show a specific input and how they can be used:
 - [asyncapi-raml-schema](./asyncapi-raml-schema) - A basic example of how to use Modelina with an AsyncAPI document using RAML 1.0 data types as payload format.
 - [asyncapi-from-parser](./asyncapi-from-parser) - A basic example where an AsyncAPI JS object from the [parser-js](https://github.com/asyncapi/parser-js) is used to generate models.
 - [asyncapi-from-v1-parser](./asyncapi-from-v1-parser) - A basic example where an AsyncAPI JS object from the old v1 [parser-js](https://github.com/asyncapi/parser-js) is used to generate models.
+- [avro-schema-from-object](./avro-schema-from-object) - A basic example where an Avro Schema JS Object is used to generate models.
 - [json-schema-draft7-from-object](./json-schema-draft7-from-object) - A basic example where a JSON Schema draft 7 JS object is used to generate models.
 - [json-schema-draft6-from-object](./json-schema-draft6-from-object) - A basic example where a JSON Schema draft 6 JS object is used to generate models.
 - [json-schema-draft4-from-object](./json-schema-draft4-from-object) - A basic example where a JSON Schema draft 4 JS object is used to generate models.

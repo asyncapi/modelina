@@ -1,0 +1,95 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Should be able to render model using Avro Schema and should log expected output to console 1`] = `
+class Person {
+  private _reservedName: string;
+  private _serialNo: string;
+  private _email: string | null;
+  private _age: number | null;
+  private _favoriteProgrammingLanguage: ProgrammingLanguage;
+  private _certifications: string[];
+  private _address: Address;
+  private _weight: number;
+  private _height: number;
+  private _someid: string;
+
+  constructor(input: {
+    reservedName: string,
+    serialNo: string,
+    email: string | null,
+    age: number | null,
+    favoriteProgrammingLanguage: ProgrammingLanguage,
+    certifications: string[],
+    address: Address,
+    weight: number,
+    height: number,
+    someid: string,
+  }) {
+    this._reservedName = input.reservedName;
+    this._serialNo = input.serialNo;
+    this._email = input.email;
+    this._age = input.age;
+    this._favoriteProgrammingLanguage = input.favoriteProgrammingLanguage;
+    this._certifications = input.certifications;
+    this._address = input.address;
+    this._weight = input.weight;
+    this._height = input.height;
+    this._someid = input.someid;
+  }
+
+  get reservedName(): string { return this._reservedName; }
+  set reservedName(reservedName: string) { this._reservedName = reservedName; }
+
+  get serialNo(): string { return this._serialNo; }
+  set serialNo(serialNo: string) { this._serialNo = serialNo; }
+
+  get email(): string | null { return this._email; }
+  set email(email: string | null) { this._email = email; }
+
+  get age(): number | null { return this._age; }
+  set age(age: number | null) { this._age = age; }
+
+  get favoriteProgrammingLanguage(): ProgrammingLanguage { return this._favoriteProgrammingLanguage; }
+  set favoriteProgrammingLanguage(favoriteProgrammingLanguage: ProgrammingLanguage) { this._favoriteProgrammingLanguage = favoriteProgrammingLanguage; }
+
+  get certifications(): string[] { return this._certifications; }
+  set certifications(certifications: string[]) { this._certifications = certifications; }
+
+  get address(): Address { return this._address; }
+  set address(address: Address) { this._address = address; }
+
+  get weight(): number { return this._weight; }
+  set weight(weight: number) { this._weight = weight; }
+
+  get height(): number { return this._height; }
+  set height(height: number) { this._height = height; }
+
+  get someid(): string { return this._someid; }
+  set someid(someid: string) { this._someid = someid; }
+}
+enum ProgrammingLanguage {
+  JS = "JS",
+  RESERVED_JAVA = "Java",
+  GO = "Go",
+  RUST = "Rust",
+  C = "C",
+}
+class Address {
+  private _zipcode: number;
+  private _country: string | null;
+
+  constructor(input: {
+    zipcode: number,
+    country: string | null,
+  }) {
+    this._zipcode = input.zipcode;
+    this._country = input.country;
+  }
+
+  get zipcode(): number { return this._zipcode; }
+  set zipcode(zipcode: number) { this._zipcode = zipcode; }
+
+  get country(): string | null { return this._country; }
+  set country(country: string | null) { this._country = country; }
+}
+`
