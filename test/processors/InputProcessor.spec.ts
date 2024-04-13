@@ -74,7 +74,7 @@ describe('InputProcessor', () => {
       const processor = new InputProcessor();
       processor.setProcessor('asyncapi', asyncInputProcessor);
       processor.setProcessor('swagger', swaggerInputProcessor);
-      processor.setProcessor('avroSchema', avroSchemaInputProcessor);
+      processor.setProcessor('avro', avroSchemaInputProcessor);
       processor.setProcessor('openapi', openAPIInputProcessor);
       processor.setProcessor('default', defaultInputProcessor);
       return {
@@ -187,25 +187,22 @@ describe('InputProcessor', () => {
       const { processor, avroSchemaInputProcessor, defaultInputProcessor } =
         getProcessors();
       const inputSchemaString = fs.readFileSync(
-        path.resolve(__dirname, './AvroSchemaInputProcessor/sample.json'),
+        path.resolve(__dirname, './AvroSchemaInputProcessor/basic.json'),
         'utf8'
       );
       const inputSchema = JSON.parse(inputSchemaString);
       await processor.process(inputSchema);
-      expect(avroSchemaInputProcessor.process).not.toHaveBeenCalled();
-      expect(avroSchemaInputProcessor.shouldProcess).toHaveBeenNthCalledWith(
-        1,
-        inputSchema
-      );
-      expect(defaultInputProcessor.process).toHaveBeenNthCalledWith(
+      expect(avroSchemaInputProcessor.process).toHaveBeenNthCalledWith(
         1,
         inputSchema,
         undefined
       );
-      expect(defaultInputProcessor.shouldProcess).toHaveBeenNthCalledWith(
+      expect(avroSchemaInputProcessor.shouldProcess).toHaveBeenNthCalledWith(
         1,
         inputSchema
       );
+      expect(defaultInputProcessor.process).not.toHaveBeenCalled();
+      expect(defaultInputProcessor.shouldProcess).not.toHaveBeenCalled();
     });
     test('should be able to process AsyncAPI schema input with options', async () => {
       const { processor, asyncInputProcessor, defaultInputProcessor } =
