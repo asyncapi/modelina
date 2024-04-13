@@ -1,0 +1,35 @@
+name: Runtime testing Python Models
+
+on:
+  push:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    paths:
+      - 'src/generators/python/**'
+      - 'test/runtime/runtime-python/**'
+jobs:
+  test:
+    name: Runtime testing Python Models
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Check package-lock version
+        uses: asyncapi/.github/.github/actions/get-node-version-from-package-lock@master
+        id: lockversion
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '${{ steps.lockversion.outputs.version }}'
+          cache: 'npm'
+          cache-dependency-path: '**/package-lock.json'
+      - name: Build library
+        run: npm install && npm run build:prod
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+      - name: Generate Python models
+        run: npm run generate:runtime:python
+      - name: Run runtime tests
+        run: npm run test:runtime:python
