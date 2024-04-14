@@ -14,6 +14,7 @@ jobs:
     if: startsWith(github.event.commits[0].message, 'chore(release):')
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
         include:
           - os: ubuntu-latest
