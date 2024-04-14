@@ -197,7 +197,7 @@ The following table provides a short summary of available features for supported
   </tr>
   <tr>
     <td><a href="./docs/usage.md#generate-models-from-avro-schema-documents">Avro Schema<a></td>
-    <td>we support the Avro Schema version <em>1.11.1</em> to generate models</td>
+    <td>We support the following Avro versions: <a href="./examples/avro-schema-from-object">v1.x</a></td>
   </tr>
   <tr>
     <td><a href="./docs/usage.md#generate-models-from-json-schema-documents">JSON Schema</a></td>
