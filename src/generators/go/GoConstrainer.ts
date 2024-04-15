@@ -6,6 +6,7 @@ import { defaultModelNameConstraints } from './constrainer/ModelNameConstrainer'
 import { defaultPropertyKeyConstraints } from './constrainer/PropertyKeyConstrainer';
 import { defaultConstantConstraints } from './constrainer/ConstantConstrainer';
 import { GoTypeMapping } from './GoGenerator';
+import { ConstrainedMetaModel, ConstrainedObjectPropertyModel } from 'models';
 
 export const GoDefaultTypeMapping: GoTypeMapping = {
   Object({ constrainedModel }): string {
@@ -23,8 +24,13 @@ export const GoDefaultTypeMapping: GoTypeMapping = {
   Integer(): string {
     return 'int';
   },
-  String(): string {
-    return 'string';
+  String({constrainedModel, partOfProperty}): string {
+    return getType({
+      constrainedModel,
+      partOfProperty,
+      typeWhenNullableOrOptional: 'string',
+      type: 'string'
+    })
   },
   Boolean(): string {
     return 'bool';
@@ -47,6 +53,23 @@ export const GoDefaultTypeMapping: GoTypeMapping = {
     return `map[${constrainedModel.key.type}]${constrainedModel.value.type}`;
   }
 };
+
+function getType({
+  constrainedModel,
+  partOfProperty,
+  typeWhenNullableOrOptional,
+  type
+}: {
+  constrainedModel: ConstrainedMetaModel;
+  partOfProperty: ConstrainedObjectPropertyModel | undefined;
+  typeWhenNullableOrOptional: string;
+  type: string;
+}) {
+  if (constrainedModel.options.isNullable || !partOfProperty?.required) {
+    return typeWhenNullableOrOptional;
+  }
+  return type
+}
 
 export const GoDefaultConstraints = {
   enumKey: defaultEnumKeyConstraints(),
