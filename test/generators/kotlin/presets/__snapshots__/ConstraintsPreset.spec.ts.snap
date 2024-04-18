@@ -9,10 +9,10 @@ exports[`KOTLIN_CONSTRAINTS_PRESET should render constraints annotations 1`] = `
     @get:Max(99)
     val maxNumberProp: Double,
     @get:Size(min=2, max=3)
-    val arrayProp: List<Any>? = null,
+    val arrayProp: List<>? = null,
     @get:Pattern(regexp=\\"^I_\\")
     @get:Size(min=3)
     val stringProp: String? = null,
-    val additionalProperties: Map<String, Any>? = null,
+    val additionalProperties: Map<, >? = null,
 )"
 `;

@@ -13,7 +13,7 @@ exports[`PYTHON_PYDANTIC_PRESET should render pydantic for class 1`] = `
 exports[`PYTHON_PYDANTIC_PRESET should render union to support Python < 3.10 1`] = `
 Array [
   "class UnionTest(BaseModel): 
-  union_test: Optional[Union[Union1, Union2]] = Field(default=None, serialization_alias='unionTest')
+  union_test: Optional[Union[Union1.Union1, Union2.Union2]] = Field(default=None, serialization_alias='unionTest')
   additional_properties: Optional[dict[str, Any]] = Field(default=None, serialization_alias='additionalProperties', exclude=True)
 ",
   "class Union1(BaseModel): 

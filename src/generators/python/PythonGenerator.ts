@@ -7,9 +7,15 @@ import {
   defaultGeneratorOptions
 } from '../AbstractGenerator';
 import {
+  ConstrainedAnyModel,
+  ConstrainedBooleanModel,
   ConstrainedEnumModel,
+  ConstrainedFloatModel,
+  ConstrainedIntegerModel,
   ConstrainedMetaModel,
   ConstrainedObjectModel,
+  ConstrainedReferenceModel,
+  ConstrainedStringModel,
   InputMetaModel,
   MetaModel,
   RenderOutput
@@ -52,6 +58,20 @@ export type PythonTypeMapping = TypeMapping<
 >;
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface PythonRenderCompleteModelOptions {}
+
+/**
+ * All the constrained models that do not depend on others to determine the type
+ */
+const SAFE_MODEL_TYPES: any[] = [
+  ConstrainedAnyModel,
+  ConstrainedBooleanModel,
+  ConstrainedFloatModel,
+  ConstrainedIntegerModel,
+  ConstrainedStringModel,
+  ConstrainedReferenceModel,
+  ConstrainedObjectModel,
+  ConstrainedEnumModel
+];
 
 export class PythonGenerator extends AbstractGenerator<
   PythonOptions,
@@ -131,7 +151,8 @@ export class PythonGenerator extends AbstractGenerator<
         dependencyManager: dependencyManagerToUse,
         options: { ...this.options },
         constrainedName: '' //This is just a placeholder, it will be constrained within the function
-      }
+      },
+      SAFE_MODEL_TYPES
     );
   }
 

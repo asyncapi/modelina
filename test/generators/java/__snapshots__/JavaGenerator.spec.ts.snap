@@ -1206,7 +1206,6 @@ exports[`JavaGenerator should render \`class\` type 1`] = `
 Array [
   "",
   "",
-  "",
   "public class Address {
   private String streetName;
   private String city;

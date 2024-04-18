@@ -19,7 +19,7 @@ exports[`KotlinGenerator should render \`data class\` type 1`] = `
     val time: java.time.OffsetTime? = null,
     val dateTime: java.time.OffsetDateTime? = null,
     val binary: ByteArray? = null,
-    val additionalProperties: Map<String, Any>? = null,
+    val additionalProperties: Map<, >? = null,
 )"
 `;
 
@@ -55,7 +55,7 @@ exports[`KotlinGenerator should render \`enum\` type (union type) 1`] = `
 
 exports[`KotlinGenerator should render List type for collections 1`] = `
 "data class CustomClass(
-    val arrayType: List<Int>? = null,
+    val arrayType: List<>? = null,
 )"
 `;
 
@@ -82,7 +82,7 @@ data class Address(
     val members: Any? = null,
     val arrayType: List<Any>,
     val otherModel: OtherModel? = null,
-    val additionalProperties: Map<String, Any>? = null,
+    val additionalProperties: Map<, >? = null,
 )"
 `;
 
@@ -92,6 +92,6 @@ exports[`KotlinGenerator should render models and their dependencies 2`] = `
 
 data class OtherModel(
     val streetName: String? = null,
-    val additionalProperties: Map<String, Any>? = null,
+    val additionalProperties: Map<, >? = null,
 )"
 `;

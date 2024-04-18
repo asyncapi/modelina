@@ -479,7 +479,7 @@ exports[`TypeScriptGenerator should render \`class\` type 1`] = `
   private _marriage?: boolean;
   private _members?: string | number | boolean;
   private _tupleType?: [string, number];
-  private _tupleTypeWithAdditionalItems?: (string | number | any)[];
+  private _tupleTypeWithAdditionalItems?: [string, number];
   private _arrayType: string[];
   private _additionalProperties?: Map<string, any | string>;
 
@@ -491,7 +491,7 @@ exports[`TypeScriptGenerator should render \`class\` type 1`] = `
     marriage?: boolean,
     members?: string | number | boolean,
     tupleType?: [string, number],
-    tupleTypeWithAdditionalItems?: (string | number | any)[],
+    tupleTypeWithAdditionalItems?: [string, number],
     arrayType: string[],
     additionalProperties?: Map<string, any | string>,
   }) {
@@ -528,8 +528,8 @@ exports[`TypeScriptGenerator should render \`class\` type 1`] = `
   get tupleType(): [string, number] | undefined { return this._tupleType; }
   set tupleType(tupleType: [string, number] | undefined) { this._tupleType = tupleType; }
 
-  get tupleTypeWithAdditionalItems(): (string | number | any)[] | undefined { return this._tupleTypeWithAdditionalItems; }
-  set tupleTypeWithAdditionalItems(tupleTypeWithAdditionalItems: (string | number | any)[] | undefined) { this._tupleTypeWithAdditionalItems = tupleTypeWithAdditionalItems; }
+  get tupleTypeWithAdditionalItems(): [string, number] | undefined { return this._tupleTypeWithAdditionalItems; }
+  set tupleTypeWithAdditionalItems(tupleTypeWithAdditionalItems: [string, number] | undefined) { this._tupleTypeWithAdditionalItems = tupleTypeWithAdditionalItems; }
 
   get arrayType(): string[] { return this._arrayType; }
   set arrayType(arrayType: string[]) { this._arrayType = arrayType; }
@@ -558,7 +558,7 @@ exports[`TypeScriptGenerator should render \`interface\` type 1`] = `
   marriage?: boolean;
   members?: string | number | boolean;
   tupleType?: [string, number];
-  tupleTypeWithAdditionalItems?: (string | number | any)[];
+  tupleTypeWithAdditionalItems?: [string, number];
   arrayType: string[];
   additionalProperties?: Map<string, any | string>;
 }"
@@ -603,7 +603,7 @@ class Address {
   private _houseNumber: number;
   private _marriage?: boolean;
   private _members?: string | number | boolean;
-  private _arrayType: (string | number | any)[];
+  private _arrayType: [string, number];
   private _otherModel?: OtherModel;
   private _additionalProperties?: Map<string, any | string>;
 
@@ -614,7 +614,7 @@ class Address {
     houseNumber: number,
     marriage?: boolean,
     members?: string | number | boolean,
-    arrayType: (string | number | any)[],
+    arrayType: [string, number],
     otherModel?: OtherModel,
     additionalProperties?: Map<string, any | string>,
   }) {
@@ -647,8 +647,8 @@ class Address {
   get members(): string | number | boolean | undefined { return this._members; }
   set members(members: string | number | boolean | undefined) { this._members = members; }
 
-  get arrayType(): (string | number | any)[] { return this._arrayType; }
-  set arrayType(arrayType: (string | number | any)[]) { this._arrayType = arrayType; }
+  get arrayType(): [string, number] { return this._arrayType; }
+  set arrayType(arrayType: [string, number]) { this._arrayType = arrayType; }
 
   get otherModel(): OtherModel | undefined { return this._otherModel; }
   set otherModel(otherModel: OtherModel | undefined) { this._otherModel = otherModel; }
@@ -691,7 +691,7 @@ class Address {
   private _houseNumber: number;
   private _marriage?: boolean;
   private _members?: string | number | boolean;
-  private _arrayType: (string | number | any)[];
+  private _arrayType: [string, number];
   private _otherModel?: OtherModel;
   private _additionalProperties?: Map<string, any | string>;
 
@@ -702,7 +702,7 @@ class Address {
     houseNumber: number,
     marriage?: boolean,
     members?: string | number | boolean,
-    arrayType: (string | number | any)[],
+    arrayType: [string, number],
     otherModel?: OtherModel,
     additionalProperties?: Map<string, any | string>,
   }) {
@@ -735,8 +735,8 @@ class Address {
   get members(): string | number | boolean | undefined { return this._members; }
   set members(members: string | number | boolean | undefined) { this._members = members; }
 
-  get arrayType(): (string | number | any)[] { return this._arrayType; }
-  set arrayType(arrayType: (string | number | any)[]) { this._arrayType = arrayType; }
+  get arrayType(): [string, number] { return this._arrayType; }
+  set arrayType(arrayType: [string, number]) { this._arrayType = arrayType; }
 
   get otherModel(): OtherModel | undefined { return this._otherModel; }
   set otherModel(otherModel: OtherModel | undefined) { this._otherModel = otherModel; }
@@ -779,7 +779,7 @@ class Address {
   private _houseNumber: number;
   private _marriage?: boolean;
   private _members?: string | number | boolean;
-  private _arrayType: (string | number | any)[];
+  private _arrayType: [string, number];
   private _otherModel?: OtherModel;
   private _additionalProperties?: Map<string, any | string>;
 
@@ -790,7 +790,7 @@ class Address {
     houseNumber: number,
     marriage?: boolean,
     members?: string | number | boolean,
-    arrayType: (string | number | any)[],
+    arrayType: [string, number],
     otherModel?: OtherModel,
     additionalProperties?: Map<string, any | string>,
   }) {
@@ -823,8 +823,8 @@ class Address {
   get members(): string | number | boolean | undefined { return this._members; }
   set members(members: string | number | boolean | undefined) { this._members = members; }
 
-  get arrayType(): (string | number | any)[] { return this._arrayType; }
-  set arrayType(arrayType: (string | number | any)[]) { this._arrayType = arrayType; }
+  get arrayType(): [string, number] { return this._arrayType; }
+  set arrayType(arrayType: [string, number]) { this._arrayType = arrayType; }
 
   get otherModel(): OtherModel | undefined { return this._otherModel; }
   set otherModel(otherModel: OtherModel | undefined) { this._otherModel = otherModel; }
@@ -869,7 +869,7 @@ class Address {
   private _houseNumber: number;
   private _marriage?: boolean;
   private _members?: string | number | boolean;
-  private _arrayType: (string | number | any)[];
+  private _arrayType: [string, number];
   private _otherModel?: OtherModel;
   private _additionalProperties?: Map<string, any | string>;
 
@@ -880,7 +880,7 @@ class Address {
     houseNumber: number,
     marriage?: boolean,
     members?: string | number | boolean,
-    arrayType: (string | number | any)[],
+    arrayType: [string, number],
     otherModel?: OtherModel,
     additionalProperties?: Map<string, any | string>,
   }) {
@@ -913,8 +913,8 @@ class Address {
   get members(): string | number | boolean | undefined { return this._members; }
   set members(members: string | number | boolean | undefined) { this._members = members; }
 
-  get arrayType(): (string | number | any)[] { return this._arrayType; }
-  set arrayType(arrayType: (string | number | any)[]) { this._arrayType = arrayType; }
+  get arrayType(): [string, number] { return this._arrayType; }
+  set arrayType(arrayType: [string, number]) { this._arrayType = arrayType; }
 
   get otherModel(): OtherModel | undefined { return this._otherModel; }
   set otherModel(otherModel: OtherModel | undefined) { this._otherModel = otherModel; }

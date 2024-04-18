@@ -68,7 +68,7 @@ exports[`CSharpGenerator should render \`class\` type 1`] = `
   private double houseNumber;
   private bool? marriage;
   private dynamic? members;
-  private dynamic[]? tupleType;
+  private (string, double)? tupleType;
   private string[] arrayType;
   private Dictionary<string, dynamic>? additionalProperties;
 
@@ -108,7 +108,7 @@ exports[`CSharpGenerator should render \`class\` type 1`] = `
     set { members = value; }
   }
 
-  public dynamic[]? TupleType 
+  public (string, double)? TupleType 
   {
     get { return tupleType; }
     set { tupleType = value; }
@@ -178,7 +178,7 @@ exports[`CSharpGenerator should render \`record\` type if chosen 1`] = `
   public required double HouseNumber { get; init; }
   public bool? Marriage { get; init; }
   public dynamic? Members { get; init; }
-  public dynamic[]? TupleType { get; init; }
+  public (string, double)? TupleType { get; init; }
   public required string[] ArrayType { get; init; }
   public Dictionary<string, dynamic>? AdditionalProperties { get; init; }
 }"
@@ -238,7 +238,7 @@ exports[`CSharpGenerator should render models and their dependencies 1`] = `
     private double houseNumber;
     private bool? marriage;
     private dynamic? members;
-    private dynamic[] arrayType;
+    private (string, double) arrayType;
     private OtherModel? otherModel;
     private Dictionary<string, dynamic>? additionalProperties;
 
@@ -278,7 +278,7 @@ exports[`CSharpGenerator should render models and their dependencies 1`] = `
       set { members = value; }
     }
 
-    public dynamic[] ArrayType 
+    public (string, double) ArrayType 
     {
       get { return arrayType; }
       set { arrayType = value; }
@@ -335,7 +335,7 @@ exports[`CSharpGenerator should render null-forgiving operator if handleNullable
   private HouseType houseType;
   private TerraceType? terraceType;
   private dynamic? members;
-  private dynamic[]? tupleType;
+  private (string, double)? tupleType;
   private string[] arrayType = null!;
   private Dictionary<string, dynamic>? additionalProperties;
 
@@ -387,7 +387,7 @@ exports[`CSharpGenerator should render null-forgiving operator if handleNullable
     set { members = value; }
   }
 
-  public dynamic[]? TupleType 
+  public (string, double)? TupleType 
   {
     get { return tupleType; }
     set { tupleType = value; }

@@ -14,7 +14,7 @@ exports[`CplusplusGenerator Class should render \`class\` type 1`] = `
   double house_number;
   std::optional<bool> marriage;
   std::optional<std::variant<std::string, double, bool>> members;
-  std::vector<std::variant<std::string, double, std::any>> array_type;
+  std::tuple<std::string, double> array_type;
   std::optional<std::map<std::string, std::variant<std::any, std::string>>> additional_properties;
 };"
 `;
