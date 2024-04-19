@@ -1,4 +1,3 @@
-import { Args, Flags } from '@oclif/core';
 import ModelinaCommand from '../base';
 import { readFile } from 'fs/promises';
 import { Languages, ModelinaArgs, ModelinaFlags, generateModels } from '../helpers/generate';
