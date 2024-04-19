@@ -19,25 +19,18 @@
 # Table of contents
 
 <!-- toc -->
-
-- [Installation](#installation)
-  * [MacOS](#macos)
-  * [Windows](#windows)
-  * [Linux](#linux)
-  * [Others](#others)
-- [Usage](#usage)
-- [Commands](#commands)
-  * [`modelina config`](#modelina-config)
-  * [`modelina config context`](#modelina-config-context)
-  * [`modelina config context add CONTEXT-NAME SPEC-FILE-PATH`](#modelina-config-context-add-context-name-spec-file-path)
-  * [`modelina config context current`](#modelina-config-context-current)
-  * [`modelina config context edit CONTEXT-NAME NEW-SPEC-FILE-PATH`](#modelina-config-context-edit-context-name-new-spec-file-path)
-  * [`modelina config context init [CONTEXT-FILE-PATH]`](#modelina-config-context-init-context-file-path)
-  * [`modelina config context list`](#modelina-config-context-list)
-  * [`modelina config context remove CONTEXT-NAME`](#modelina-config-context-remove-context-name)
-  * [`modelina config context use CONTEXT-NAME`](#modelina-config-context-use-context-name)
-  * [`modelina generate LANGUAGE FILE`](#modelina-generate-language-file)
-
+* [Table of contents](#table-of-contents)
+* [Installation](#installation)
+* [Download latest release](#download-latest-release)
+* [Install it](#install-it)
+* [Download latest release](#download-latest-release-1)
+* [Install it](#install-it-1)
+* [Download](#download)
+* [Install](#install)
+* [Download](#download-1)
+* [Install](#install-1)
+* [Usage](#usage)
+* [Commands](#commands)
 <!-- tocstop -->
 
 # Installation
@@ -170,7 +163,7 @@ $ npm install -g @asyncapi/modelina-cli
 $ modelina COMMAND
 running command...
 $ modelina (--version)
-@asyncapi/modelina-cli/4.0.0-next.24 darwin-x64 node-v18.19.0
+@asyncapi/modelina-cli/4.0.0-next.27 darwin-x64 node-v18.19.0
 $ modelina --help [COMMAND]
 USAGE
   $ modelina COMMAND
@@ -204,7 +197,7 @@ DESCRIPTION
   CLI config settings
 ```
 
-_See code: [src/commands/config/index.ts](https://github.com/asyncapi/modelina/blob/v4.0.0-next.24/modelina-cli/src/commands/config/index.ts)_
+_See code: [src/commands/config/index.ts](https://github.com/asyncapi/modelina/blob/v4.0.0-next.27/modelina-cli/src/commands/config/index.ts)_
 
 ## `modelina config context`
 
@@ -218,7 +211,7 @@ DESCRIPTION
   Manage short aliases for full paths to inputs
 ```
 
-_See code: [src/commands/config/context/index.ts](https://github.com/asyncapi/modelina/blob/v4.0.0-next.24/modelina-cli/src/commands/config/context/index.ts)_
+_See code: [src/commands/config/context/index.ts](https://github.com/asyncapi/modelina/blob/v4.0.0-next.27/modelina-cli/src/commands/config/context/index.ts)_
 
 ## `modelina config context add CONTEXT-NAME SPEC-FILE-PATH`
 
@@ -230,7 +223,7 @@ USAGE
 
 ARGUMENTS
   CONTEXT-NAME    context name
-  SPEC-FILE-PATH  file path of the spec file
+  SPEC-FILE-PATH  file path of the input document
 
 FLAGS
   -h, --help         Show CLI help.
@@ -240,7 +233,7 @@ DESCRIPTION
   Add a context to the store
 ```
 
-_See code: [src/commands/config/context/add.ts](https://github.com/asyncapi/modelina/blob/v4.0.0-next.24/modelina-cli/src/commands/config/context/add.ts)_
+_See code: [src/commands/config/context/add.ts](https://github.com/asyncapi/modelina/blob/v4.0.0-next.27/modelina-cli/src/commands/config/context/add.ts)_
 
 ## `modelina config context current`
 
@@ -257,7 +250,7 @@ DESCRIPTION
   Shows the current context that is being used
 ```
 
-_See code: [src/commands/config/context/current.ts](https://github.com/asyncapi/modelina/blob/v4.0.0-next.24/modelina-cli/src/commands/config/context/current.ts)_
+_See code: [src/commands/config/context/current.ts](https://github.com/asyncapi/modelina/blob/v4.0.0-next.27/modelina-cli/src/commands/config/context/current.ts)_
 
 ## `modelina config context edit CONTEXT-NAME NEW-SPEC-FILE-PATH`
 
@@ -269,7 +262,7 @@ USAGE
 
 ARGUMENTS
   CONTEXT-NAME        context name
-  NEW-SPEC-FILE-PATH  file path of the spec file
+  NEW-SPEC-FILE-PATH  new file path of the input
 
 FLAGS
   -h, --help  Show CLI help.
@@ -278,7 +271,7 @@ DESCRIPTION
   Edit a context in the store
 ```
 
-_See code: [src/commands/config/context/edit.ts](https://github.com/asyncapi/modelina/blob/v4.0.0-next.24/modelina-cli/src/commands/config/context/edit.ts)_
+_See code: [src/commands/config/context/edit.ts](https://github.com/asyncapi/modelina/blob/v4.0.0-next.27/modelina-cli/src/commands/config/context/edit.ts)_
 
 ## `modelina config context init [CONTEXT-FILE-PATH]`
 
@@ -301,7 +294,7 @@ DESCRIPTION
   Initialize context
 ```
 
-_See code: [src/commands/config/context/init.ts](https://github.com/asyncapi/modelina/blob/v4.0.0-next.24/modelina-cli/src/commands/config/context/init.ts)_
+_See code: [src/commands/config/context/init.ts](https://github.com/asyncapi/modelina/blob/v4.0.0-next.27/modelina-cli/src/commands/config/context/init.ts)_
 
 ## `modelina config context list`
 
@@ -318,7 +311,7 @@ DESCRIPTION
   List all the stored contexts in the store
 ```
 
-_See code: [src/commands/config/context/list.ts](https://github.com/asyncapi/modelina/blob/v4.0.0-next.24/modelina-cli/src/commands/config/context/list.ts)_
+_See code: [src/commands/config/context/list.ts](https://github.com/asyncapi/modelina/blob/v4.0.0-next.27/modelina-cli/src/commands/config/context/list.ts)_
 
 ## `modelina config context remove CONTEXT-NAME`
 
@@ -338,7 +331,7 @@ DESCRIPTION
   Delete a context from the store
 ```
 
-_See code: [src/commands/config/context/remove.ts](https://github.com/asyncapi/modelina/blob/v4.0.0-next.24/modelina-cli/src/commands/config/context/remove.ts)_
+_See code: [src/commands/config/context/remove.ts](https://github.com/asyncapi/modelina/blob/v4.0.0-next.27/modelina-cli/src/commands/config/context/remove.ts)_
 
 ## `modelina config context use CONTEXT-NAME`
 
@@ -358,7 +351,7 @@ DESCRIPTION
   Set a context as current
 ```
 
-_See code: [src/commands/config/context/use.ts](https://github.com/asyncapi/modelina/blob/v4.0.0-next.24/modelina-cli/src/commands/config/context/use.ts)_
+_See code: [src/commands/config/context/use.ts](https://github.com/asyncapi/modelina/blob/v4.0.0-next.27/modelina-cli/src/commands/config/context/use.ts)_
 
 ## `modelina generate LANGUAGE FILE`
 
@@ -415,5 +408,5 @@ DESCRIPTION
   Generates typed models
 ```
 
-_See code: [src/commands/generate.ts](https://github.com/asyncapi/modelina/blob/v4.0.0-next.24/modelina-cli/src/commands/generate.ts)_
+_See code: [src/commands/generate.ts](https://github.com/asyncapi/modelina/blob/v4.0.0-next.27/modelina-cli/src/commands/generate.ts)_
 <!-- commandsstop -->
