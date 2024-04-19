@@ -39,9 +39,9 @@ export const GoDefaultTypeMapping: GoTypeMapping = {
   Enum({ constrainedModel }): string {
     return constrainedModel.name;
   },
-  Union(): string {
+  Union({ constrainedModel }): string {
     //Because Go have no notion of unions (and no custom implementation), we have to render it as any value.
-    return 'interface{}';
+    return constrainedModel.name;
   },
   Dictionary({ constrainedModel }): string {
     return `map[${constrainedModel.key.type}]${constrainedModel.value.type}`;

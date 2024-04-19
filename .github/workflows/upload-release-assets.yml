@@ -14,6 +14,7 @@ jobs:
     if: startsWith(github.event.commits[0].message, 'chore(release):')
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
         include:
           - os: ubuntu-latest
@@ -65,6 +66,7 @@ jobs:
       - name: Build project
         run: npm run prepublishOnly
       - name: Assets generation
+        shell: bash
         run: cd modelina-cli && npm run ${{ matrix.npm_script }}
       - name: Update release
         uses: softprops/action-gh-release@v1
