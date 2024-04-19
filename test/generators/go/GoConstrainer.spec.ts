@@ -64,7 +64,7 @@ describe('GoConstrainer', () => {
         constrainedModel: model,
         ...defaultOptions
       });
-      expect(type).toEqual('float64');
+      expect(type).toEqual('*float64');
     });
   });
   describe('Integer', () => {
@@ -74,7 +74,7 @@ describe('GoConstrainer', () => {
         constrainedModel: model,
         ...defaultOptions
       });
-      expect(type).toEqual('int');
+      expect(type).toEqual('*int');
     });
   });
   describe('String', () => {
@@ -84,7 +84,7 @@ describe('GoConstrainer', () => {
         constrainedModel: model,
         ...defaultOptions
       });
-      expect(type).toEqual('string');
+      expect(type).toEqual('*string');
     });
   });
   describe('Boolean', () => {
@@ -94,7 +94,7 @@ describe('GoConstrainer', () => {
         constrainedModel: model,
         ...defaultOptions
       });
-      expect(type).toEqual('bool');
+      expect(type).toEqual('*bool');
     });
   });
 

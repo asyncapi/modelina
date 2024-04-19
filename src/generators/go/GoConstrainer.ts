@@ -18,22 +18,37 @@ export const GoDefaultTypeMapping: GoTypeMapping = {
   Any(): string {
     return 'interface{}';
   },
-  Float(): string {
-    return 'float64';
-  },
-  Integer(): string {
-    return 'int';
-  },
-  String({constrainedModel, partOfProperty}): string {
+  Float({ constrainedModel, partOfProperty }): string {
     return getType({
       constrainedModel,
       partOfProperty,
-      typeWhenNullableOrOptional: 'string',
-      type: 'string'
-    })
+      typeWhenNullableOrOptional: '*float64',
+      type: 'float64'
+    });
   },
-  Boolean(): string {
-    return 'bool';
+  Integer({ constrainedModel, partOfProperty }): string {
+    return getType({
+      constrainedModel,
+      partOfProperty,
+      typeWhenNullableOrOptional: '*int',
+      type: 'int'
+    });
+  },
+  String({ constrainedModel, partOfProperty }): string {
+    return getType({
+      constrainedModel,
+      partOfProperty,
+      typeWhenNullableOrOptional: '*string',
+      type: 'string'
+    });
+  },
+  Boolean({ constrainedModel, partOfProperty }): string {
+    return getType({
+      constrainedModel,
+      partOfProperty,
+      typeWhenNullableOrOptional: '*bool',
+      type: 'bool'
+    });
   },
   Tuple(): string {
     //Because Go have no notion of tuples (and no custom implementation), we have to render it as a list of any value.
@@ -68,7 +83,7 @@ function getType({
   if (constrainedModel.options.isNullable || !partOfProperty?.required) {
     return typeWhenNullableOrOptional;
   }
-  return type
+  return type;
 }
 
 export const GoDefaultConstraints = {

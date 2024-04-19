@@ -6,9 +6,9 @@ Array [
 type AdditionalProperty struct {
   AdditionalPropertyOneOf_0
   AdditionalPropertyOneOf_1
-  string
-  float64
-  ModelinaArrType []string
+  *string
+  *float64
+  ModelinaArrType []*string
   ModelinaArrType []Union
   AdditionalPropertyOneOf_6
 }",
@@ -19,8 +19,8 @@ exports[`Should be able to render union types and should log expected output to 
 Array [
   "// Union represents a Union model.
 type Union struct {
-  string
-  float64
+  *string
+  *float64
   ModelinaAnyType interface{}
 }",
 ]
@@ -30,9 +30,9 @@ exports[`Should be able to render union types and should log expected output to 
 Array [
   "// AdditionalPropertyOneOf_6 represents a AdditionalPropertyOneOf_6 model.
 type AdditionalPropertyOneOf_6 struct {
-  string
-  float64
-  bool
+  *string
+  *float64
+  *bool
 }",
 ]
 `;
@@ -47,8 +47,8 @@ exports[`Should be able to render union types and should log expected output to 
 Array [
   "// AdditionalPropertyOneOf_0 represents a AdditionalPropertyOneOf_0 model.
 type AdditionalPropertyOneOf_0 struct {
-  Ref string
-  AdditionalProperties map[string]interface{}
+  Ref *string
+  AdditionalProperties map[*string]interface{}
 }",
 ]
 `;
@@ -57,8 +57,8 @@ exports[`Should be able to render union types and should log expected output to 
 Array [
   "// AdditionalPropertyOneOf_1 represents a AdditionalPropertyOneOf_1 model.
 type AdditionalPropertyOneOf_1 struct {
-  Id string
-  AdditionalProperties map[string]interface{}
+  Id *string
+  AdditionalProperties map[*string]interface{}
 }",
 ]
 `;
