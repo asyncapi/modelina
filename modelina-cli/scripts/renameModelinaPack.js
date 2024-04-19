@@ -4,5 +4,5 @@
 const path = require('path');
 const modelinaPkg = require(path.resolve(__dirname, '../../package.json')); 
 const fs = require('fs'); 
-
-fs.renameSync(path.resolve(__dirname, `./modelina-package/asyncapi-modelina-${modelinaPkg.version}.tgz`), path.resolve(__dirname, `./modelina-package/asyncapi-modelina.tgz`));
+fs.mkdirSync(path.resolve(__dirname, './modelina-package'));
+fs.renameSync(path.resolve(__dirname, `../asyncapi-modelina-${modelinaPkg.version}.tgz`), path.resolve(__dirname, `./modelina-package/asyncapi-modelina.tgz`));
