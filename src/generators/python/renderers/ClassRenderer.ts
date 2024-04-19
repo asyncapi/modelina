@@ -103,7 +103,10 @@ ${this.indent(this.renderBlock(content, 2))}
       property instanceof ConstrainedReferenceModel && property.ref === model;
     if (isSelfReference) {
       // Use forward references for getters and setters
-      return propertyType.replace(property.ref.type, `'${property.ref.type}'`);
+      return propertyType.replace(
+        `${property.ref.type}`,
+        `'${property.ref.type}'`
+      );
     } else if (property instanceof ConstrainedArrayModel) {
       return this.returnPropertyType({
         model,
@@ -154,12 +157,18 @@ export const PYTHON_DEFAULT_CLASS_PRESET: ClassPresetType<PythonOptions> = {
     let body = '';
     if (Object.keys(properties).length > 0) {
       const assignments = Object.values(properties).map((property) => {
-        const propertyType = property.property.type;
+        let propertyType = property.property.type;
+        const isSelfReference =
+          property.property instanceof ConstrainedReferenceModel &&
+          property.property.ref === model;
         if (property.property.options.const) {
           return `self._${property.propertyName}: ${propertyType} = ${property.property.options.const.value}`;
         }
         let assignment: string;
         if (property.property instanceof ConstrainedReferenceModel) {
+          if (!isSelfReference) {
+            propertyType = `${propertyType}.${propertyType}`;
+          }
           assignment = `self._${property.propertyName}: ${propertyType} = ${propertyType}(input['${property.propertyName}'])`;
         } else {
           assignment = `self._${property.propertyName}: ${propertyType} = input['${property.propertyName}']`;

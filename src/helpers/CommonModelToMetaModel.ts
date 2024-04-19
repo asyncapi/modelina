@@ -516,11 +516,7 @@ export function convertToDictionaryModel(
   }
   const originalInput =
     getOriginalInputFromAdditionalAndPatterns(jsonSchemaModel);
-  const keyModel = new StringModel(
-    name,
-    originalInput,
-    getMetaModelOptions(jsonSchemaModel, options)
-  );
+  const keyModel = new StringModel(name, originalInput, {});
   const valueModel = convertAdditionalAndPatterns(context);
   return new DictionaryModel(
     name,

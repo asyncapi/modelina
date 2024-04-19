@@ -15,9 +15,8 @@ export class PythonDependencyManager extends AbstractDependencyManager {
    */
   renderDependency(model: ConstrainedMetaModel): string {
     const useExplicitImports = this.options.importsStyle === 'explicit';
-    return `from ${useExplicitImports ? '.' : ''}${model.name} import ${
-      model.name
-    }`;
+    //return `import ${model.name} as ${model.name}`;
+    return `from . import ${model.name}`;
   }
 
   /**

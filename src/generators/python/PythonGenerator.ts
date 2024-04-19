@@ -40,6 +40,10 @@ export interface PythonOptions
   typeMapping: TypeMapping<PythonOptions, PythonDependencyManager>;
   constraints: Constraints<PythonOptions>;
   importsStyle: 'explicit' | 'implicit';
+  /**
+   * In order to handle circular model dependencies, we have to use a specific import style
+   */
+  pathToModels: string;
 }
 export type PythonConstantConstraint = ConstantConstraint<PythonOptions>;
 export type PythonEnumKeyConstraint = EnumKeyConstraint<PythonOptions>;
@@ -63,6 +67,7 @@ export class PythonGenerator extends AbstractGenerator<
     typeMapping: PythonDefaultTypeMapping,
     constraints: PythonDefaultConstraints,
     importsStyle: 'implicit',
+    pathToModels: '.',
     // Temporarily set
     dependencyManager: () => {
       return {} as PythonDependencyManager;
