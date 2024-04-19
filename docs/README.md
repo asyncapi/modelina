@@ -42,9 +42,6 @@ Contains many advanced ways to integrate Modelina _(i.e. websites)_.
 ### [Development](./development.md)
 Explains how to setup the project for development. 
 
-### [Generators](./generators.md)
-Details which different generator options are supported.
-
 ### [Presets](./presets.md)
 Goes more in-depth into how the preset system works, which enables full customization of generators.
 
