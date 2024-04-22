@@ -14,7 +14,7 @@ fs.renameSync(path.resolve(__dirname, `../asyncapi-modelina-${modelinaPkg.versio
 
 // Make sure we update the installed tarball as we will run into EINTEGRITY issues
 console.log(`Removing old @asyncapi/modelina dependency to avoid EINTEGRITY issues`)
-var child = spawnSync(`npm`, ["install", "./scripts/modelina-package/asyncapi-modelina.tgz"], { encoding : 'utf8', cwd: `${__dirname}/../` });
+var child = spawnSync(`npm`, ["install", path.resolve(__dirname, "./modelina-package/asyncapi-modelina.tgz")], { encoding : 'utf8', cwd: path.resolve(__dirname, '../')});
 console.log("Process finished.");
 if(child.error) {
     console.log("ERROR: ",child.error);
