@@ -16,11 +16,7 @@ fs.renameSync(path.resolve(__dirname, `../asyncapi-modelina-${modelinaPkg.versio
 
 // Make sure we update the installed tarball as we will run into EINTEGRITY issues
 console.log(`Installing new tarball @asyncapi/modelina dependency to avoid EINTEGRITY issues`)
-const child = [
-    spawnSync('npm', ['uninstall', '@asyncapi/modelina'], { encoding : 'utf8', cwd: path.resolve(__dirname, '../')}),
-    spawnSync('npm', ['install', pathToTarball], { encoding : 'utf8', cwd: path.resolve(__dirname, '../')})
-].reduce((previousSpawn, currentSpawn) => {return {stderr: previousSpawn.stderr + currentSpawn.stderr, stdout: previousSpawn.stdout + currentSpawn.stdout};});
+fs.rmSync(path.resolve(__dirname, '../node_modules/@asyncapi/modelina'), { recursive: true, force: true })
+spawnSync('npm', ['install', pathToTarball], { encoding : 'utf8', cwd: path.resolve(__dirname, '../'), shell: true});
 // "install", path.resolve(__dirname, "./modelina-package/asyncapi-modelina.tgz")
-console.log("stdout: ", child.stdout);
-console.log("stderr: ", child.stderr);
 console.log(`Modelina installed into CLI`);
