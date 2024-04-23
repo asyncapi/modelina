@@ -6,9 +6,9 @@ package some_package
 
 // Members represents a Members model.
 type Members struct {
-  *string
-  *float64
-  *bool
+  string
+  float64
+  bool
 }"
 `;
 
@@ -18,8 +18,8 @@ package some_package
 
 // Union represents a Union model.
 type Union struct {
-  *string
-  *float64
+  string
+  float64
   ModelinaAnyType interface{}
 }"
 `;
@@ -31,7 +31,7 @@ package some_package
 // AdditionalProperties represents a AdditionalProperties model.
 type AdditionalProperties struct {
   ModelinaAnyType interface{}
-  *string
+  string
 }"
 `;
 
@@ -43,15 +43,15 @@ import (
 )
 // Address represents a Address model.
 type Address struct {
-  StreetName string
-  City string
-  State string
-  HouseNumber float64
+  StreetName *string
+  City *string
+  State *string
+  HouseNumber *float64
   Marriage *bool
   Members *Members
   ArrayType []Union
   OtherModel *OtherModel
-  AdditionalProperties map[*string]AdditionalProperties
+  AdditionalProperties map[string]AdditionalProperties
 }"
 `;
 
@@ -64,7 +64,7 @@ import (
 // OtherModel represents a OtherModel model.
 type OtherModel struct {
   StreetName *string
-  AdditionalProperties map[*string]interface{}
+  AdditionalProperties map[string]interface{}
 }"
 `;
 
@@ -74,9 +74,9 @@ package some_package
 
 // Members represents a Members model.
 type Members struct {
-  *string
-  *float64
-  *bool
+  string
+  float64
+  bool
 }"
 `;
 
@@ -86,8 +86,8 @@ package some_package
 
 // Union represents a Union model.
 type Union struct {
-  *string
-  *float64
+  string
+  float64
   ModelinaAnyType interface{}
 }"
 `;
@@ -99,7 +99,7 @@ package some_package
 // AdditionalProperties represents a AdditionalProperties model.
 type AdditionalProperties struct {
   ModelinaAnyType interface{}
-  *string
+  string
 }"
 `;
 
@@ -110,14 +110,14 @@ package some_package
 // Address represents a Address model.
 type Address struct {
   StreetName interface{}
-  City string
-  State string
-  HouseNumber float64
+  City *string
+  State *string
+  HouseNumber *float64
   Marriage *bool
   Members *Members
   ArrayType []Union
   OtherModel *OtherModel
-  AdditionalProperties map[*string]AdditionalProperties
+  AdditionalProperties map[string]AdditionalProperties
 }"
 `;
 
@@ -128,7 +128,7 @@ package some_package
 // OtherModel represents a OtherModel model.
 type OtherModel struct {
   StreetName *string
-  AdditionalProperties map[*string]interface{}
+  AdditionalProperties map[string]interface{}
 }"
 `;
 
@@ -166,17 +166,17 @@ var ValuesToThings = map[any]Things{
 exports[`GoGenerator should render \`struct\` type 1`] = `
 "// Members represents a Members model.
 type Members struct {
-  *string
-  *float64
-  *bool
+  string
+  float64
+  bool
 }"
 `;
 
 exports[`GoGenerator should render \`struct\` type 2`] = `
 "// Union represents a Union model.
 type Union struct {
-  *string
-  *float64
+  string
+  float64
   ModelinaAnyType interface{}
 }"
 `;
@@ -184,36 +184,36 @@ type Union struct {
 exports[`GoGenerator should render \`struct\` type 3`] = `
 "// AdditionalProperties represents a AdditionalProperties model.
 type AdditionalProperties struct {
-  *string
+  string
 }"
 `;
 
 exports[`GoGenerator should render \`struct\` type 4`] = `
 "// Address represents a Address model.
 type Address struct {
-  StreetName string
-  City string
-  State string
-  HouseNumber float64
+  StreetName *string
+  City *string
+  State *string
+  HouseNumber *float64
   Marriage *bool
   Members *Members
   TupleType []Union
-  ArrayType []*string
-  AdditionalProperties map[*string]AdditionalProperties
+  ArrayType []string
+  AdditionalProperties map[string]AdditionalProperties
 }"
 `;
 
 exports[`GoGenerator should render \`union\` type 1`] = `
 "// Members represents a Members model.
 type Members struct {
-  *string
-  *float64
-  *bool
+  string
+  float64
+  bool
 }
 // Union represents a Union model.
 type Union struct {
-  *string
-  *float64
+  string
+  float64
   ModelinaAnyType interface{}
 }
 // LocationAdditionalProperty represents a LocationAdditionalProperty model.
@@ -223,30 +223,30 @@ type LocationAdditionalProperty struct {
 }
 // AdditionalProperties represents a AdditionalProperties model.
 type AdditionalProperties struct {
-  *string
+  string
 }
 // Address represents a Address model.
 type Address struct {
-  StreetName string
-  City string
-  State string
-  HouseNumber float64
+  StreetName *string
+  City *string
+  State *string
+  HouseNumber *float64
   Marriage *bool
   Members *Members
   TupleType []Union
-  ArrayType []*string
-  Location map[*string]LocationAdditionalProperty
-  AdditionalProperties map[*string]AdditionalProperties
+  ArrayType []string
+  Location map[string]LocationAdditionalProperty
+  AdditionalProperties map[string]AdditionalProperties
 }
 // LocationAdditionalPropertyOneOf_0 represents a LocationAdditionalPropertyOneOf_0 model.
 type LocationAdditionalPropertyOneOf_0 struct {
   Ref *string
-  AdditionalProperties map[*string]interface{}
+  AdditionalProperties map[string]interface{}
 }
 // LocationAdditionalPropertyOneOf_1 represents a LocationAdditionalPropertyOneOf_1 model.
 type LocationAdditionalPropertyOneOf_1 struct {
   Id *string
-  AdditionalProperties map[*string]interface{}
+  AdditionalProperties map[string]interface{}
 }"
 `;
 

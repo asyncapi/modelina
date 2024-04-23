@@ -80,7 +80,8 @@ function getType({
   typeWhenNullableOrOptional: string;
   type: string;
 }) {
-  if (constrainedModel.options.isNullable || !partOfProperty?.required) {
+  const requried = partOfProperty ? partOfProperty.property : false;
+  if (constrainedModel.options.isNullable || requried) {
     return typeWhenNullableOrOptional;
   }
   return type;
