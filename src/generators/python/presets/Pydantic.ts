@@ -33,17 +33,25 @@ const PYTHON_PYDANTIC_CLASS_PRESET: ClassPresetType<PythonOptions> = {
       type = `Optional[${type}]`;
     }
 
-    const alias = params.property.property.originalInput['description']
-      ? `alias='''${params.property.property.originalInput['description']}'''`
-      : '';
-    const defaultValue = params.property.required ? '' : 'default=None';
+    const decoratorArgs: string[] = [];
 
-    if (alias && defaultValue) {
-      return `${propertyName}: ${type} = Field(${alias}, ${defaultValue})`;
-    } else if (alias) {
-      return `${propertyName}: ${type} = Field(${alias})`;
+    if (params.property.property.originalInput['description']) {
+      decoratorArgs.push(
+        `description='''${params.property.property.originalInput['description']}'''`
+      );
     }
-    return `${propertyName}: ${type} = Field(${defaultValue})`;
+    if (!params.property.required) {
+      decoratorArgs.push('default=None');
+    }
+    if (
+      params.property.propertyName !== params.property.unconstrainedPropertyName
+    ) {
+      decoratorArgs.push(
+        `alias='''${params.property.unconstrainedPropertyName}'''`
+      );
+    }
+
+    return `${propertyName}: ${type} = Field(${decoratorArgs.join(', ')})`;
   },
   ctor: () => '',
   getter: () => '',
