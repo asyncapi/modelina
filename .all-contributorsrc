@@ -917,6 +917,17 @@
         "code",
         "test"
       ]
+    },
+    {
+      "login": "ahem",
+      "name": "Anders Hellerup Madsen",
+      "avatar_url": "https://avatars.githubusercontent.com/u/163283?v=4",
+      "profile": "https://github.com/ahem",
+      "contributions": [
+        "code",
+        "test",
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,
