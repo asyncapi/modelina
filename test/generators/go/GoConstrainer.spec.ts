@@ -206,7 +206,7 @@ describe('nullable & requried properties', () => {
     });
 
     test('requried', () => {
-      const model = new ConstrainedStringModel('test', undefined, {}, '')
+      const model = new ConstrainedStringModel('test', undefined, {}, '');
       const type = GoDefaultTypeMapping.String({
         constrainedModel: model,
         partOfProperty: {
@@ -216,9 +216,9 @@ describe('nullable & requried properties', () => {
           propertyName: ''
         },
         ...defaultOptions
-      })
-      expect(type).toEqual('string')
-    })
+      });
+      expect(type).toEqual('string');
+    });
 
     test('not nullable', () => {
       const model = new ConstrainedStringModel('test', undefined, {}, '');
@@ -245,7 +245,7 @@ describe('nullable & requried properties', () => {
       expect(type).toEqual('*int');
     });
     test('requried', () => {
-      const model = new ConstrainedIntegerModel('test', undefined, {}, '')
+      const model = new ConstrainedIntegerModel('test', undefined, {}, '');
       const type = GoDefaultTypeMapping.Integer({
         constrainedModel: model,
         partOfProperty: {
@@ -255,9 +255,9 @@ describe('nullable & requried properties', () => {
           propertyName: ''
         },
         ...defaultOptions
-      })
-      expect(type).toEqual('int')
-    })
+      });
+      expect(type).toEqual('int');
+    });
 
     test('not nullable', () => {
       const model = new ConstrainedIntegerModel('test', undefined, {}, '');
@@ -285,7 +285,7 @@ describe('nullable & requried properties', () => {
     });
 
     test('requried', () => {
-      const model = new ConstrainedFloatModel('test', undefined, {}, '')
+      const model = new ConstrainedFloatModel('test', undefined, {}, '');
       const type = GoDefaultTypeMapping.Float({
         constrainedModel: model,
         partOfProperty: {
@@ -295,9 +295,9 @@ describe('nullable & requried properties', () => {
           propertyName: ''
         },
         ...defaultOptions
-      })
-      expect(type).toEqual('float64')
-    })
+      });
+      expect(type).toEqual('float64');
+    });
 
     test('not nullable', () => {
       const model = new ConstrainedFloatModel('test', undefined, {}, '');
@@ -324,7 +324,7 @@ describe('nullable & requried properties', () => {
     });
 
     test('requried', () => {
-      const model = new ConstrainedBooleanModel('test', undefined, {}, '')
+      const model = new ConstrainedBooleanModel('test', undefined, {}, '');
       const type = GoDefaultTypeMapping.Boolean({
         constrainedModel: model,
         partOfProperty: {
@@ -334,9 +334,9 @@ describe('nullable & requried properties', () => {
           propertyName: ''
         },
         ...defaultOptions
-      })
-      expect(type).toEqual('bool')
-    })
+      });
+      expect(type).toEqual('bool');
+    });
 
     test('not nullable', () => {
       const model = new ConstrainedBooleanModel('test', undefined, {}, '');
