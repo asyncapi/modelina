@@ -47,7 +47,7 @@ exports[`Should be able to render union types and should log expected output to 
 Array [
   "// AdditionalPropertyOneOf_0 represents a AdditionalPropertyOneOf_0 model.
 type AdditionalPropertyOneOf_0 struct {
-  Ref *string
+  Ref string
   AdditionalProperties map[string]interface{}
 }",
 ]
@@ -57,7 +57,7 @@ exports[`Should be able to render union types and should log expected output to 
 Array [
   "// AdditionalPropertyOneOf_1 represents a AdditionalPropertyOneOf_1 model.
 type AdditionalPropertyOneOf_1 struct {
-  Id *string
+  Id string
   AdditionalProperties map[string]interface{}
 }",
 ]

@@ -4,7 +4,7 @@ exports[`Should be able to render Go Models and should log expected output to co
 Array [
   "// Root represents a Root model.
 type Root struct {
-  Email *string
+  Email string
 }",
 ]
 `;

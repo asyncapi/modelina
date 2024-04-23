@@ -3,9 +3,9 @@
 exports[`GO_COMMON_PRESET should render json tags for structs 1`] = `
 "// Root represents a Root model.
 type Root struct {
-  StringProp *string \`json:\\"stringProp\\"\`
-  NumberProp *float64 \`json:\\"numberProp\\"\`
-  BooleanProp *bool \`json:\\"booleanProp\\"\`
+  StringProp string \`json:\\"stringProp\\"\`
+  NumberProp float64 \`json:\\"numberProp\\"\`
+  BooleanProp bool \`json:\\"booleanProp\\"\`
 }"
 `;
 

@@ -43,11 +43,11 @@ import (
 )
 // Address represents a Address model.
 type Address struct {
-  StreetName *string
-  City *string
-  State *string
-  HouseNumber *float64
-  Marriage *bool
+  StreetName string
+  City string
+  State string
+  HouseNumber float64
+  Marriage bool
   Members *Members
   ArrayType []Union
   OtherModel *OtherModel
@@ -63,7 +63,7 @@ import (
 )
 // OtherModel represents a OtherModel model.
 type OtherModel struct {
-  StreetName *string
+  StreetName string
   AdditionalProperties map[string]interface{}
 }"
 `;
@@ -110,10 +110,10 @@ package some_package
 // Address represents a Address model.
 type Address struct {
   StreetName interface{}
-  City *string
-  State *string
-  HouseNumber *float64
-  Marriage *bool
+  City string
+  State string
+  HouseNumber float64
+  Marriage bool
   Members *Members
   ArrayType []Union
   OtherModel *OtherModel
@@ -127,7 +127,7 @@ package some_package
 
 // OtherModel represents a OtherModel model.
 type OtherModel struct {
-  StreetName *string
+  StreetName string
   AdditionalProperties map[string]interface{}
 }"
 `;
@@ -191,11 +191,11 @@ type AdditionalProperties struct {
 exports[`GoGenerator should render \`struct\` type 4`] = `
 "// Address represents a Address model.
 type Address struct {
-  StreetName *string
-  City *string
-  State *string
-  HouseNumber *float64
-  Marriage *bool
+  StreetName string
+  City string
+  State string
+  HouseNumber float64
+  Marriage bool
   Members *Members
   TupleType []Union
   ArrayType []string
@@ -227,11 +227,11 @@ type AdditionalProperties struct {
 }
 // Address represents a Address model.
 type Address struct {
-  StreetName *string
-  City *string
-  State *string
-  HouseNumber *float64
-  Marriage *bool
+  StreetName string
+  City string
+  State string
+  HouseNumber float64
+  Marriage bool
   Members *Members
   TupleType []Union
   ArrayType []string
@@ -240,12 +240,12 @@ type Address struct {
 }
 // LocationAdditionalPropertyOneOf_0 represents a LocationAdditionalPropertyOneOf_0 model.
 type LocationAdditionalPropertyOneOf_0 struct {
-  Ref *string
+  Ref string
   AdditionalProperties map[string]interface{}
 }
 // LocationAdditionalPropertyOneOf_1 represents a LocationAdditionalPropertyOneOf_1 model.
 type LocationAdditionalPropertyOneOf_1 struct {
-  Id *string
+  Id string
   AdditionalProperties map[string]interface{}
 }"
 `;
