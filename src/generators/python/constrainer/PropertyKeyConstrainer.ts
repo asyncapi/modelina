@@ -25,10 +25,10 @@ export type PropertyKeyConstraintOptions = {
 
 export const DefaultPropertyKeyConstraints: PropertyKeyConstraintOptions = {
   NO_SPECIAL_CHAR: (value: string) => {
-    //Exclude ` ` because it gets formatted by NAMING_FORMATTER
+    //Exclude ` ` and `-` because they gets formatted by NAMING_FORMATTER
     //Exclude '_' because they are allowed
     return FormatHelpers.replaceSpecialCharacters(value, {
-      exclude: [' ', '_'],
+      exclude: [' ', '-', '_'],
       separator: '_'
     });
   },

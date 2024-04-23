@@ -2,7 +2,7 @@
 
 exports[`PYTHON_PYDANTIC_PRESET should render pydantic for class 1`] = `
 "class Test(BaseModel): 
-  prop: Optional[str] = Field(alias='''test
+  prop: Optional[str] = Field(description='''test
     multi
     line
     description''', default=None)
