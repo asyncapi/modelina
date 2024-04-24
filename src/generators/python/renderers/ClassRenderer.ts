@@ -1,13 +1,8 @@
 import { PythonRenderer } from '../PythonRenderer';
 import {
-  ConstrainedArrayModel,
-  ConstrainedDictionaryModel,
-  ConstrainedMetaModel,
   ConstrainedObjectModel,
   ConstrainedObjectPropertyModel,
-  ConstrainedReferenceModel,
-  ConstrainedTupleModel,
-  ConstrainedUnionModel
+  ConstrainedReferenceModel
 } from '../../../models';
 import { PythonOptions } from '../PythonGenerator';
 import { ClassPresetType } from '../PythonPreset';
@@ -25,6 +20,7 @@ export class ClassRenderer extends PythonRenderer<ConstrainedObjectModel> {
       await this.renderAccessors(),
       await this.runAdditionalContentPreset()
     ];
+    this.dependencyManager.addDependency('from __future__ import annotations');
 
     return `class ${this.model.name}: 
 ${this.indent(this.renderBlock(content, 2))}
@@ -77,75 +73,6 @@ ${this.indent(this.renderBlock(content, 2))}
   runSetterPreset(property: ConstrainedObjectPropertyModel): Promise<string> {
     return this.runPreset('setter', { property });
   }
-
-  /**
-   * Return forward reference types (`Address` becomes `'Address'`) when it resolves around self-references that are
-   * either a direct dependency or part of another model such as array, union, dictionary and tuple.
-   *
-   * Otherwise just return the provided propertyType as is.
-   */
-  returnPropertyType({
-    model,
-    property,
-    propertyType,
-    visitedMap = []
-  }: {
-    model: ConstrainedMetaModel;
-    property: ConstrainedMetaModel;
-    propertyType: string;
-    visitedMap?: string[];
-  }): string {
-    if (visitedMap.includes(property.name)) {
-      return propertyType;
-    }
-    visitedMap.push(property.name);
-    const isSelfReference =
-      property instanceof ConstrainedReferenceModel && property.ref === model;
-    if (isSelfReference) {
-      // Use forward references for getters and setters
-      return propertyType.replace(
-        `${property.ref.type}`,
-        `'${property.ref.type}'`
-      );
-    } else if (property instanceof ConstrainedArrayModel) {
-      return this.returnPropertyType({
-        model,
-        property: property.valueModel,
-        propertyType,
-        visitedMap
-      });
-    } else if (property instanceof ConstrainedTupleModel) {
-      let newPropType = propertyType;
-      for (const tupl of property.tuple) {
-        newPropType = this.returnPropertyType({
-          model,
-          property: tupl.value,
-          propertyType,
-          visitedMap
-        });
-      }
-      return newPropType;
-    } else if (property instanceof ConstrainedUnionModel) {
-      let newPropType = propertyType;
-      for (const unionModel of property.union) {
-        newPropType = this.returnPropertyType({
-          model,
-          property: unionModel,
-          propertyType,
-          visitedMap
-        });
-      }
-      return newPropType;
-    } else if (property instanceof ConstrainedDictionaryModel) {
-      return this.returnPropertyType({
-        model,
-        property: property.value,
-        propertyType,
-        visitedMap
-      });
-    }
-    return propertyType;
-  }
 }
 
 export const PYTHON_DEFAULT_CLASS_PRESET: ClassPresetType<PythonOptions> = {
@@ -157,18 +84,12 @@ export const PYTHON_DEFAULT_CLASS_PRESET: ClassPresetType<PythonOptions> = {
     let body = '';
     if (Object.keys(properties).length > 0) {
       const assignments = Object.values(properties).map((property) => {
-        let propertyType = property.property.type;
-        const isSelfReference =
-          property.property instanceof ConstrainedReferenceModel &&
-          property.property.ref === model;
+        const propertyType = property.property.type;
         if (property.property.options.const) {
           return `self._${property.propertyName}: ${propertyType} = ${property.property.options.const.value}`;
         }
         let assignment: string;
         if (property.property instanceof ConstrainedReferenceModel) {
-          if (!isSelfReference) {
-            propertyType = `${propertyType}.${propertyType}`;
-          }
           assignment = `self._${property.propertyName}: ${propertyType} = ${propertyType}(input['${property.propertyName}'])`;
         } else {
           assignment = `self._${property.propertyName}: ${propertyType} = input['${property.propertyName}']`;
@@ -189,27 +110,19 @@ No properties
     return `def __init__(self, input: Dict):
 ${renderer.indent(body, 2)}`;
   },
-  getter({ property, renderer, model }) {
-    const propertyType = renderer.returnPropertyType({
-      model,
-      property: property.property,
-      propertyType: property.property.type
-    });
+  getter({ property, renderer }) {
+    const propertyType = property.property.type;
     const propAssignment = `return self._${property.propertyName}`;
     return `@property
 def ${property.propertyName}(self) -> ${propertyType}:
 ${renderer.indent(propAssignment, 2)}`;
   },
-  setter({ property, renderer, model }) {
+  setter({ property, renderer }) {
     // if const value exists we should not render a setter
     if (property.property.options.const?.value) {
       return '';
     }
-    const propertyType = renderer.returnPropertyType({
-      model,
-      property: property.property,
-      propertyType: property.property.type
-    });
+    const propertyType = property.property.type;
 
     const propAssignment = `self._${property.propertyName} = ${property.propertyName}`;
     const propArgument = `${property.propertyName}: ${propertyType}`;

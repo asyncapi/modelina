@@ -15,7 +15,17 @@ describe('PythonDependencyManager', () => {
         ['from x import y', 'from x import y2']
       );
       expect(dependencyManager.renderDependencies()).toEqual([
-        `from x import y, y2`
+        'from x import y, y2'
+      ]);
+    });
+    test('should render __future__ dependency first', () => {
+      const dependencyManager = new PythonDependencyManager(
+        PythonGenerator.defaultOptions,
+        ['from x import y', 'from __future__ import y']
+      );
+      expect(dependencyManager.renderDependencies()).toEqual([
+        'from __future__ import y',
+        'from x import y'
       ]);
     });
   });

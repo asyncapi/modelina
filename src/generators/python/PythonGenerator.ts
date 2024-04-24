@@ -211,8 +211,8 @@ export class PythonGenerator extends AbstractGenerator<
       .map((model) => {
         return dependencyManagerToUse.renderDependency(model);
       });
-    const outputContent = `${modelDependencies.join('\n')}
-${outputModel.dependencies.join('\n')}
+    const outputContent = `${outputModel.dependencies.join('\n')}
+${modelDependencies.join('\n')}
 ${outputModel.result}`;
     return RenderOutput.toRenderOutput({
       result: outputContent,
