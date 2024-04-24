@@ -7,7 +7,7 @@ import {
   ConstrainedReferenceModel
 } from '../../../models';
 import { GoOptions } from '../GoGenerator';
-import { FormatHelpers } from '../../../index';
+import { FormatHelpers } from '../../../helpers/FormatHelpers';
 
 const unionIncludesPrimitives = (model: ConstrainedUnionModel): boolean => {
   return !model.union.every(

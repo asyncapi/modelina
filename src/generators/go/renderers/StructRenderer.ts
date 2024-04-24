@@ -6,7 +6,7 @@ import {
   ConstrainedReferenceModel
 } from '../../../models';
 import { GoOptions } from '../GoGenerator';
-import { FormatHelpers } from '../../../index';
+import { FormatHelpers } from '../../../helpers/FormatHelpers';
 
 /**
  * Renderer for Go's `struct` type
