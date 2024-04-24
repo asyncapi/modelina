@@ -253,13 +253,18 @@ type LocationAdditionalPropertyOneOf_1 struct {
 exports[`GoGenerator should render interfaces for objects with discriminator 1`] = `
 Array [
   "// Vehicle represents a Vehicle model.
-type Vehicle struct {
-  Car
-  Truck
+type Vehicle interface {
+  IsVehicleType() bool
+}",
+  "// Cargo represents a Cargo model.
+type Cargo struct {
+  Vehicle *Vehicle
+  AdditionalProperties map[string]interface{}
 }",
   "// Car represents a Car model.
 type Car struct {
   VehicleType *VehicleType
+  RegistrationPlate string
   AdditionalProperties map[string]interface{}
 }",
   "// VehicleType represents an enum of VehicleType.
@@ -287,6 +292,7 @@ var ValuesToVehicleType = map[any]VehicleType{
   "// Truck represents a Truck model.
 type Truck struct {
   VehicleType *VehicleType
+  RegistrationPlate string
   AdditionalProperties map[string]interface{}
 }",
 ]

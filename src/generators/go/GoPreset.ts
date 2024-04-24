@@ -41,6 +41,7 @@ export interface UnionPreset<R extends AbstractRenderer, O>
   field?: (
     args: PresetArgs<R, O, ConstrainedUnionModel> & UnionFieldArgs
   ) => Promise<string> | string;
+  discriminator?: (args: PresetArgs<R, O, ConstrainedUnionModel>) => string;
 }
 interface EnumPreset<R extends AbstractRenderer, O>
   extends CommonPreset<R, O, ConstrainedEnumModel> {

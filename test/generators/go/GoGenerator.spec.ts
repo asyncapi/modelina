@@ -105,30 +105,43 @@ describe('GoGenerator', () => {
       channels: {},
       components: {
         messages: {
-          Vehicle: {
+          Cargo: {
             payload: {
-              title: 'Vehicle',
+              title: 'Cargo',
               type: 'object',
-              discriminator: 'vehicleType',
               properties: {
-                vehicleType: {
-                  title: 'VehicleType',
-                  type: 'string'
+                vehicle: {
+                  $ref: '#/components/schemas/Vehicle'
                 }
-              },
-              required: ['vehicleType'],
-              oneOf: [
-                {
-                  $ref: '#/components/schemas/Car'
-                },
-                {
-                  $ref: '#/components/schemas/Truck'
-                }
-              ]
+              }
             }
           }
         },
         schemas: {
+          Vehicle: {
+            title: 'Vehicle',
+            type: 'object',
+            discriminator: 'vehicleType',
+            properties: {
+              vehicleType: {
+                title: 'VehicleType',
+                type: 'string'
+              },
+              registrationPlate: {
+                title: 'RegistrationPlate',
+                type: 'string'
+              }
+            },
+            required: ['vehicleType', 'registrationPlate'],
+            oneOf: [
+              {
+                $ref: '#/components/schemas/Car'
+              },
+              {
+                $ref: '#/components/schemas/Truck'
+              }
+            ]
+          },
           Car: {
             type: 'object',
             properties: {
@@ -137,7 +150,6 @@ describe('GoGenerator', () => {
               }
             }
           },
-
           Truck: {
             type: 'object',
             properties: {
