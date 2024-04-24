@@ -34,6 +34,7 @@ export interface StructPreset<R extends AbstractRenderer, O>
   field?: (
     args: PresetArgs<R, O, ConstrainedObjectModel> & FieldArgs
   ) => Promise<string> | string;
+  discriminator?: (args: PresetArgs<R, O, ConstrainedUnionModel>) => string;
 }
 
 export interface UnionPreset<R extends AbstractRenderer, O>
