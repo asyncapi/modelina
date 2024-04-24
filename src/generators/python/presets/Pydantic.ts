@@ -21,30 +21,34 @@ const PYTHON_PYDANTIC_CLASS_PRESET: ClassPresetType<PythonOptions> = {
       `class ${model.name}(BaseModel):`
     );
   },
-  property(params) {
-    let type = params.property.property.type;
-    const propertyName = params.property.propertyName;
+  property({ property, model, renderer }) {
+    let type = property.property.type;
+    const propertyName = property.propertyName;
 
-    if (params.property.property instanceof ConstrainedUnionModel) {
-      const unionTypes = params.property.property.union.map(
+    if (property.property instanceof ConstrainedUnionModel) {
+      const unionTypes = property.property.union.map(
         (unionModel) => unionModel.type
       );
       type = `Union[${unionTypes.join(', ')}]`;
     }
 
-    if (!params.property.required) {
+    if (!property.required) {
       type = `Optional[${type}]`;
     }
+    type = renderer.renderPropertyType({
+      modelType: model.type,
+      propertyType: type
+    });
 
-    const description = params.property.property.originalInput['description']
-      ? `description='''${params.property.property.originalInput['description']}'''`
+    const description = property.property.originalInput['description']
+      ? `description='''${property.property.originalInput['description']}'''`
       : undefined;
-    const defaultValue = params.property.required ? undefined : 'default=None';
-    const jsonAlias = `serialization_alias='${params.property.unconstrainedPropertyName}'`;
+    const defaultValue = property.required ? undefined : 'default=None';
+    const jsonAlias = `serialization_alias='${property.unconstrainedPropertyName}'`;
     let exclude = undefined;
     if (
-      params.property.property instanceof ConstrainedDictionaryModel &&
-      params.property.property.serializationType === 'unwrap'
+      property.property instanceof ConstrainedDictionaryModel &&
+      property.property.serializationType === 'unwrap'
     ) {
       exclude = 'exclude=True';
     }

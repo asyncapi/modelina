@@ -73,6 +73,22 @@ ${this.indent(this.renderBlock(content, 2))}
   runSetterPreset(property: ConstrainedObjectPropertyModel): Promise<string> {
     return this.runPreset('setter', { property });
   }
+
+  /**
+   * Self-referencing property types should not use the default constrained `type`, instead it should use the type as is.
+   *
+   * We cant change the default type, because we dont have access to "parents" of a model.
+   */
+  renderPropertyType({
+    modelType,
+    propertyType
+  }: {
+    modelType: string;
+    propertyType: string;
+  }): string {
+    // Use forward references for getters and setters
+    return propertyType.replaceAll(`${modelType}.${modelType}`, `${modelType}`);
+  }
 }
 
 export const PYTHON_DEFAULT_CLASS_PRESET: ClassPresetType<PythonOptions> = {
@@ -84,7 +100,10 @@ export const PYTHON_DEFAULT_CLASS_PRESET: ClassPresetType<PythonOptions> = {
     let body = '';
     if (Object.keys(properties).length > 0) {
       const assignments = Object.values(properties).map((property) => {
-        const propertyType = property.property.type;
+        const propertyType = renderer.renderPropertyType({
+          modelType: model.type,
+          propertyType: property.property.type
+        });
         if (property.property.options.const) {
           return `self._${property.propertyName}: ${propertyType} = ${property.property.options.const.value}`;
         }
@@ -110,19 +129,25 @@ No properties
     return `def __init__(self, input: Dict):
 ${renderer.indent(body, 2)}`;
   },
-  getter({ property, renderer }) {
-    const propertyType = property.property.type;
+  getter({ property, renderer, model }) {
+    const propertyType = renderer.renderPropertyType({
+      modelType: model.type,
+      propertyType: property.property.type
+    });
     const propAssignment = `return self._${property.propertyName}`;
     return `@property
 def ${property.propertyName}(self) -> ${propertyType}:
 ${renderer.indent(propAssignment, 2)}`;
   },
-  setter({ property, renderer }) {
+  setter({ property, renderer, model }) {
     // if const value exists we should not render a setter
     if (property.property.options.const?.value) {
       return '';
     }
-    const propertyType = property.property.type;
+    const propertyType = renderer.renderPropertyType({
+      modelType: model.type,
+      propertyType: property.property.type
+    });
 
     const propAssignment = `self._${property.propertyName} = ${property.propertyName}`;
     const propArgument = `${property.propertyName}: ${propertyType}`;

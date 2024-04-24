@@ -39,6 +39,9 @@ export interface PythonOptions
   extends CommonGeneratorOptions<PythonPreset, PythonDependencyManager> {
   typeMapping: TypeMapping<PythonOptions, PythonDependencyManager>;
   constraints: Constraints<PythonOptions>;
+  /**
+   * @deprecated no longer in use - we had to switch to using explicit import style, always to support circular model dependencies.
+   */
   importsStyle: 'explicit' | 'implicit';
   /**
    * In order to handle circular model dependencies, we have to use a specific import style
@@ -66,7 +69,7 @@ export class PythonGenerator extends AbstractGenerator<
     defaultPreset: PYTHON_DEFAULT_PRESET,
     typeMapping: PythonDefaultTypeMapping,
     constraints: PythonDefaultConstraints,
-    importsStyle: 'implicit',
+    importsStyle: 'explicit',
     pathToModels: '.',
     // Temporarily set
     dependencyManager: () => {
