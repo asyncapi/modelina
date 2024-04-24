@@ -266,11 +266,12 @@ type Car struct {
   VehicleType *VehicleType
   RegistrationPlate string
   AdditionalProperties map[string]interface{}
+}
 
 func (serdp Car) IsVehicleType() bool {
   return true
 }
-}",
+",
   "// VehicleType represents an enum of VehicleType.
 type VehicleType uint
 
@@ -298,11 +299,12 @@ type Truck struct {
   VehicleType *VehicleType
   RegistrationPlate string
   AdditionalProperties map[string]interface{}
+}
 
 func (serdp Truck) IsVehicleType() bool {
   return true
 }
-}",
+",
 ]
 `;
 

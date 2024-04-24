@@ -35,13 +35,14 @@ export class StructRenderer extends GoRenderer<ConstrainedObjectModel> {
 
     return `${doc}
 type ${this.model.name} struct {
-${this.indent(this.renderBlock(content, 2))}${
+${this.indent(this.renderBlock(content, 2))}
+}${
       discriminator &&
       `
 
-${discriminator}`
-    }
-}`;
+${discriminator}
+`
+    }`;
   }
 
   async renderFields(): Promise<string> {
