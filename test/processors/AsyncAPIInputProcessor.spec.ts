@@ -20,10 +20,15 @@ const operationOneOf2DocString = fs.readFileSync(
   path.resolve(__dirname, './AsyncAPIInputProcessor/operation_oneof2.json'),
   'utf8'
 );
+const operationWithReply = fs.readFileSync(
+  path.resolve(__dirname, './AsyncAPIInputProcessor/operation_with_reply.json'),
+  'utf8'
+);
 const ymlFileURI = `file://${path.resolve(
   __dirname,
   './AsyncAPIInputProcessor/testasyncapi.yml'
 )}`;
+
 jest.mock('../../src/utils/LoggingInterface');
 
 describe('AsyncAPIInputProcessor', () => {
@@ -155,6 +160,13 @@ describe('AsyncAPIInputProcessor', () => {
     test('should be able to process file', async () => {
       const processor = new AsyncAPIInputProcessor();
       const commonInputModel = await processor.process(ymlFileURI);
+      expect(commonInputModel instanceof InputMetaModel).toBeTruthy();
+      expect(commonInputModel.models).toMatchSnapshot();
+    });
+    test('should be able to process operation with reply', async () => {
+      const { document } = await parser.parse(operationWithReply);
+      const processor = new AsyncAPIInputProcessor();
+      const commonInputModel = await processor.process(document);
       expect(commonInputModel instanceof InputMetaModel).toBeTruthy();
       expect(commonInputModel.models).toMatchSnapshot();
     });
