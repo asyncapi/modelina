@@ -64,7 +64,7 @@ generator.render(model, inputModel, { ...options });
 
 The output format is designed for you to use the generated models in further contexts. It might be part of a larger code generation such as AsyncAPI templates. This means that you can glue multiple models together into one large file, or split it out as you see fit.
 
-All [generate functions](./generators.md) return an array of `OutputModel`s, which contains the following properties.
+All `generate` functions return an array of `OutputModel`s, which contains the following properties.
 
 | Property | Type | Description |
 |---|---|---|
