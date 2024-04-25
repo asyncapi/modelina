@@ -93,6 +93,8 @@ Console.WriteLine(dateTime2);
 
 ## Python
 
+Models are aiming to be >= v3.7 compliant.
+
 ### Pydantic now follows v2 instead of v1
 
 Reference: https://docs.pydantic.dev/2.6/migration/
@@ -104,7 +106,7 @@ class Message(BaseModel):
   identifier: str = Field(description='''The Identifier for the Message''')
 ```
 
-In Modelina 3 this used is rendered as:
+In Modelina v3 this used is rendered as:
 
 ```python
 class Message(BaseModel):
@@ -217,6 +219,10 @@ class Address:
   def street_name(self) -> str:
     return self._street_name
 ```
+
+### Import style deprecation
+
+All models are from this point onwards imported using explicit styles `from . import ${model.name}` to allow for circular model dependencies to work. This means that the option `importsStyle` is deprecated and is no longer in use. It will be removed at some point in the future. 
 
 ## Go
 

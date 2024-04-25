@@ -2,6 +2,8 @@
 
 There are special use-cases that each language supports; this document pertains to **Python models**.
 
+The generated Python models require at least v[3.7](https://docs.python.org/release/3.7.0/).
+
 <!-- toc is generated with GitHub Actions do not remove toc markers -->
 
 <!-- toc -->

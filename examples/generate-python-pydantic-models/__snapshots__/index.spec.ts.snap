@@ -6,7 +6,7 @@ Array [
   optional_field: Optional[str] = Field(description='''this field is optional''', default=None, serialization_alias='optionalField')
   required_field: str = Field(description='''this field is required''', serialization_alias='requiredField')
   no_description: Optional[str] = Field(default=None, serialization_alias='noDescription')
-  options: Optional[Options] = Field(default=None, serialization_alias='options')
+  options: Optional[Options.Options] = Field(default=None, serialization_alias='options')
 ",
 ]
 `;

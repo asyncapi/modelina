@@ -34,7 +34,7 @@ describe('PythonConstrainer', () => {
     });
   });
   describe('Reference', () => {
-    test('should render the constrained name as type', () => {
+    test('should render the constrained name as type with import', () => {
       const refModel = new ConstrainedAnyModel('test', undefined, {}, '');
       const model = new ConstrainedReferenceModel(
         'test',
@@ -47,7 +47,7 @@ describe('PythonConstrainer', () => {
         constrainedModel: model,
         ...defaultOptions
       });
-      expect(type).toEqual(model.name);
+      expect(type).toEqual(`${model.name}.${model.name}`);
     });
   });
   describe('Any', () => {

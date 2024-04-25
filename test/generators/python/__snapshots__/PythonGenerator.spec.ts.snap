@@ -8,45 +8,45 @@ exports[`PythonGenerator Class should handle self reference models 1`] = `
     if 'array_model' in input:
       self._array_model: List[Address] = input['array_model']
     if 'tuple_model' in input:
-      self._tuple_model: tuple[Address] = input['tuple_model']
+      self._tuple_model: tuple[Address, str] = input['tuple_model']
     if 'map_model' in input:
       self._map_model: dict[str, Address] = input['map_model']
     if 'union_model' in input:
-      self._union_model: Address = input['union_model']
+      self._union_model: Address | str = input['union_model']
 
   @property
-  def self_model(self) -> 'Address':
+  def self_model(self) -> Address:
     return self._self_model
   @self_model.setter
-  def self_model(self, self_model: 'Address'):
+  def self_model(self, self_model: Address):
     self._self_model = self_model
 
   @property
-  def array_model(self) -> List['Address']:
+  def array_model(self) -> List[Address]:
     return self._array_model
   @array_model.setter
-  def array_model(self, array_model: List['Address']):
+  def array_model(self, array_model: List[Address]):
     self._array_model = array_model
 
   @property
-  def tuple_model(self) -> tuple['Address']:
+  def tuple_model(self) -> tuple[Address, str]:
     return self._tuple_model
   @tuple_model.setter
-  def tuple_model(self, tuple_model: tuple['Address']):
+  def tuple_model(self, tuple_model: tuple[Address, str]):
     self._tuple_model = tuple_model
 
   @property
-  def map_model(self) -> dict[str, 'Address']:
+  def map_model(self) -> dict[str, Address]:
     return self._map_model
   @map_model.setter
-  def map_model(self, map_model: dict[str, 'Address']):
+  def map_model(self, map_model: dict[str, Address]):
     self._map_model = map_model
 
   @property
-  def union_model(self) -> 'Address':
+  def union_model(self) -> Address | str:
     return self._union_model
   @union_model.setter
-  def union_model(self, union_model: 'Address'):
+  def union_model(self, union_model: Address | str):
     self._union_model = union_model
 "
 `;
