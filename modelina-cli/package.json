@@ -44,7 +44,8 @@
     "/lib",
     "/assets",
     "/npm-shrinkwrap.json",
-    "/oclif.manifest.json"
+    "/oclif.manifest.json",
+    "/README.md"
   ],
   "homepage": "https://github.com/asyncapi/modelina",
   "keywords": [
