@@ -6,6 +6,10 @@ import { defaultModelNameConstraints } from './constrainer/ModelNameConstrainer'
 import { defaultPropertyKeyConstraints } from './constrainer/PropertyKeyConstrainer';
 import { defaultConstantConstraints } from './constrainer/ConstantConstrainer';
 import { GoTypeMapping } from './GoGenerator';
+import {
+  ConstrainedMetaModel,
+  ConstrainedObjectPropertyModel
+} from '../../models';
 
 export const GoDefaultTypeMapping: GoTypeMapping = {
   Object({ constrainedModel }): string {
@@ -17,17 +21,37 @@ export const GoDefaultTypeMapping: GoTypeMapping = {
   Any(): string {
     return 'interface{}';
   },
-  Float(): string {
-    return 'float64';
+  Float({ constrainedModel, partOfProperty }): string {
+    return getType({
+      constrainedModel,
+      partOfProperty,
+      typeWhenNullableOrOptional: '*float64',
+      type: 'float64'
+    });
   },
-  Integer(): string {
-    return 'int';
+  Integer({ constrainedModel, partOfProperty }): string {
+    return getType({
+      constrainedModel,
+      partOfProperty,
+      typeWhenNullableOrOptional: '*int',
+      type: 'int'
+    });
   },
-  String(): string {
-    return 'string';
+  String({ constrainedModel, partOfProperty }): string {
+    return getType({
+      constrainedModel,
+      partOfProperty,
+      typeWhenNullableOrOptional: '*string',
+      type: 'string'
+    });
   },
-  Boolean(): string {
-    return 'bool';
+  Boolean({ constrainedModel, partOfProperty }): string {
+    return getType({
+      constrainedModel,
+      partOfProperty,
+      typeWhenNullableOrOptional: '*bool',
+      type: 'bool'
+    });
   },
   Tuple(): string {
     //Because Go have no notion of tuples (and no custom implementation), we have to render it as a list of any value.
@@ -47,6 +71,24 @@ export const GoDefaultTypeMapping: GoTypeMapping = {
     return `map[${constrainedModel.key.type}]${constrainedModel.value.type}`;
   }
 };
+
+function getType({
+  constrainedModel,
+  partOfProperty,
+  typeWhenNullableOrOptional,
+  type
+}: {
+  constrainedModel: ConstrainedMetaModel;
+  partOfProperty: ConstrainedObjectPropertyModel | undefined;
+  typeWhenNullableOrOptional: string;
+  type: string;
+}) {
+  const required = partOfProperty ? partOfProperty.required : false;
+  if (constrainedModel.options.isNullable && !required) {
+    return typeWhenNullableOrOptional;
+  }
+  return type;
+}
 
 export const GoDefaultConstraints = {
   enumKey: defaultEnumKeyConstraints(),

@@ -1,0 +1,94 @@
+{
+  "asyncapi": "3.0.0",
+  "info": {
+    "title": "Test",
+    "version": "1.0.0",
+    "description": "Test"
+  },
+  "defaultContentType": "application/json",
+  "servers": {
+    "local": {
+      "host": "localhost:1883",
+      "protocol": "mqtt"
+    }
+  },
+  "channels": {
+    "setParam": {
+      "address": "setParam",
+      "messages": {
+        "setParame": {
+          "$ref": "#/components/messages/setParam"
+        }
+      }
+    },
+    "setParamResult": {
+      "address": "setParamResult",
+      "messages": {
+        "setParamResult": {
+          "$ref": "#/components/messages/setParamResult"
+        }
+      }
+    }
+  },
+  "operations": {
+    "setParamOperation": {
+      "action": "send",
+      "channel": {
+        "$ref": "#/channels/setParam"
+      },
+      "reply": {
+        "channel": {
+          "$ref": "#/channels/setParamResult"
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "correlationId": {
+        "type": "object",
+        "additionalProperties": false,
+        "title": "correlationId",
+        "required": [
+          "id"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          }
+        }
+      },
+      "setParamPayload": {
+        "title": "setParam",
+        "required": [
+          "parameterList"
+        ],
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/correlationId"
+          }
+        ]
+      },
+      "setParamResultPayload": {
+        "title": "setParamResult",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/correlationId"
+          }
+        ]
+      }
+    },
+    "messages": {
+      "setParam": {
+        "payload": {
+          "$ref": "#/components/schemas/setParamPayload"
+        }
+      },
+      "setParamResult": {
+        "payload": {
+          "$ref": "#/components/schemas/setParamResultPayload"
+        }
+      }
+    }
+  }
+}

@@ -1,6 +1,6 @@
 {
   "name": "@asyncapi/modelina",
-  "version": "4.0.0-next.28",
+  "version": "4.0.0-next.31",
   "description": "Library for generating data models based on inputs such as AsyncAPI, OpenAPI, or JSON Schema documents",
   "license": "Apache-2.0",
   "homepage": "https://www.modelina.org",
@@ -127,7 +127,7 @@
     "lint:modelina": "eslint --max-warnings 0 --config .eslintrc .",
     "lint:cli": "cd modelina-cli && npm run lint",
     "lint:fix": "eslint --max-warnings 0 --config .eslintrc . --fix",
-    "generate:readme:toc": "markdown-toc -i README.md && markdown-toc -i ./docs/other-tools.md && markdown-toc -i ./docs/languages/Scala.md && markdown-toc -i ./docs/languages/Php.md && markdown-toc -i ./docs/languages/Cplusplus.md && markdown-toc -i ./examples/README.md && markdown-toc -i ./docs/languages/Python.md && markdown-toc -i ./docs/usage.md && markdown-toc -i ./docs/integration.md && markdown-toc -i ./docs/advanced.md && markdown-toc -i ./docs/languages/Dart.md && markdown-toc -i ./docs/languages/TypeScript.md && markdown-toc -i ./docs/languages/Java.md && markdown-toc -i ./docs/languages/JavaScript.md && markdown-toc -i ./docs/languages/Csharp.md && markdown-toc -i ./docs/README.md && markdown-toc -i ./docs/generators.md && markdown-toc -i ./docs/presets.md",
+    "generate:readme:toc": "markdown-toc -i README.md && markdown-toc -i ./docs/other-tools.md && markdown-toc -i ./docs/languages/Scala.md && markdown-toc -i ./docs/languages/Php.md && markdown-toc -i ./docs/languages/Cplusplus.md && markdown-toc -i ./examples/README.md && markdown-toc -i ./docs/languages/Python.md && markdown-toc -i ./docs/usage.md && markdown-toc -i ./docs/integration.md && markdown-toc -i ./docs/advanced.md && markdown-toc -i ./docs/languages/Dart.md && markdown-toc -i ./docs/languages/TypeScript.md && markdown-toc -i ./docs/languages/Java.md && markdown-toc -i ./docs/languages/JavaScript.md && markdown-toc -i ./docs/languages/Csharp.md && markdown-toc -i ./docs/README.md && markdown-toc -i ./docs/presets.md",
     "generate:assets": "npm run generate:assets:modelina && npm run generate:assets:cli",
     "generate:assets:modelina": "npm run build:prod && npm run docs && npm run generate:readme:toc && npm run format",
     "generate:assets:cli": "cd modelina-cli && npm run generate:assets",

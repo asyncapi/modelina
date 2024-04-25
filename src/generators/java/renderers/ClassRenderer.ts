@@ -25,13 +25,6 @@ export class ClassRenderer extends JavaRenderer<ConstrainedObjectModel> {
       await this.runAdditionalContentPreset()
     ];
 
-    if (this.options?.collectionType === 'List') {
-      this.dependencyManager.addDependency('import java.util.List;');
-    }
-    if (this.model.containsPropertyType(ConstrainedDictionaryModel)) {
-      this.dependencyManager.addDependency('import java.util.Map;');
-    }
-
     if (this.model.options.isExtended) {
       return `public interface ${this.model.name} {
 ${this.indent(this.renderBlock(content, 2))}

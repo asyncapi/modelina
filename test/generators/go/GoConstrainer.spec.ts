@@ -8,6 +8,7 @@ import {
   ConstrainedFloatModel,
   ConstrainedIntegerModel,
   ConstrainedObjectModel,
+  ConstrainedObjectPropertyModel,
   ConstrainedReferenceModel,
   ConstrainedStringModel,
   ConstrainedTupleModel,
@@ -66,12 +67,69 @@ describe('GoConstrainer', () => {
       });
       expect(type).toEqual('float64');
     });
+
+    test('nullable', () => {
+      const model = new ConstrainedFloatModel(
+        'test',
+        undefined,
+        { isNullable: true },
+        ''
+      );
+      const type = GoDefaultTypeMapping.Float({
+        constrainedModel: model,
+        ...defaultOptions
+      });
+      expect(type).toEqual('*float64');
+    });
+
+    test('requried', () => {
+      const model = new ConstrainedFloatModel('test', undefined, {}, '');
+      const type = GoDefaultTypeMapping.Float({
+        constrainedModel: model,
+        partOfProperty: new ConstrainedObjectPropertyModel(
+          'object',
+          '',
+          true,
+          model
+        ),
+        ...defaultOptions
+      });
+      expect(type).toEqual('float64');
+    });
   });
   describe('Integer', () => {
     test('should render type', () => {
       const model = new ConstrainedIntegerModel('test', undefined, {}, '');
       const type = GoDefaultTypeMapping.Integer({
         constrainedModel: model,
+        ...defaultOptions
+      });
+      expect(type).toEqual('int');
+    });
+
+    test('nullable', () => {
+      const model = new ConstrainedIntegerModel(
+        'test',
+        undefined,
+        { isNullable: true },
+        ''
+      );
+      const type = GoDefaultTypeMapping.Integer({
+        constrainedModel: model,
+        ...defaultOptions
+      });
+      expect(type).toEqual('*int');
+    });
+    test('requried', () => {
+      const model = new ConstrainedIntegerModel('test', undefined, {}, '');
+      const type = GoDefaultTypeMapping.Integer({
+        constrainedModel: model,
+        partOfProperty: new ConstrainedObjectPropertyModel(
+          'object',
+          '',
+          true,
+          model
+        ),
         ...defaultOptions
       });
       expect(type).toEqual('int');
@@ -86,12 +144,70 @@ describe('GoConstrainer', () => {
       });
       expect(type).toEqual('string');
     });
+
+    test('nullable', () => {
+      const model = new ConstrainedStringModel(
+        'test',
+        undefined,
+        { isNullable: true },
+        ''
+      );
+      const type = GoDefaultTypeMapping.String({
+        constrainedModel: model,
+        ...defaultOptions
+      });
+      expect(type).toEqual('*string');
+    });
+
+    test('requried', () => {
+      const model = new ConstrainedStringModel('test', undefined, {}, '');
+      const type = GoDefaultTypeMapping.String({
+        constrainedModel: model,
+        partOfProperty: new ConstrainedObjectPropertyModel(
+          'object',
+          '',
+          true,
+          model
+        ),
+        ...defaultOptions
+      });
+      expect(type).toEqual('string');
+    });
   });
   describe('Boolean', () => {
     test('should render type', () => {
       const model = new ConstrainedBooleanModel('test', undefined, {}, '');
       const type = GoDefaultTypeMapping.Boolean({
         constrainedModel: model,
+        ...defaultOptions
+      });
+      expect(type).toEqual('bool');
+    });
+
+    test('nullable', () => {
+      const model = new ConstrainedBooleanModel(
+        'test',
+        undefined,
+        { isNullable: true },
+        ''
+      );
+      const type = GoDefaultTypeMapping.Boolean({
+        constrainedModel: model,
+        ...defaultOptions
+      });
+      expect(type).toEqual('*bool');
+    });
+
+    test('requried', () => {
+      const model = new ConstrainedBooleanModel('test', undefined, {}, '');
+      const type = GoDefaultTypeMapping.Boolean({
+        constrainedModel: model,
+        partOfProperty: new ConstrainedObjectPropertyModel(
+          'object',
+          '',
+          true,
+          model
+        ),
         ...defaultOptions
       });
       expect(type).toEqual('bool');
