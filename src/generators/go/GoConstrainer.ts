@@ -6,7 +6,10 @@ import { defaultModelNameConstraints } from './constrainer/ModelNameConstrainer'
 import { defaultPropertyKeyConstraints } from './constrainer/PropertyKeyConstrainer';
 import { defaultConstantConstraints } from './constrainer/ConstantConstrainer';
 import { GoTypeMapping } from './GoGenerator';
-import { ConstrainedMetaModel, ConstrainedObjectPropertyModel } from 'models';
+import {
+  ConstrainedMetaModel,
+  ConstrainedObjectPropertyModel
+} from '../../models';
 
 export const GoDefaultTypeMapping: GoTypeMapping = {
   Object({ constrainedModel }): string {
