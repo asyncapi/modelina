@@ -928,6 +928,16 @@
         "test",
         "bug"
       ]
+    },
+    {
+      "login": "rquinio1A",
+      "name": "rquinio1A",
+      "avatar_url": "https://avatars.githubusercontent.com/u/58322910?v=4",
+      "profile": "https://github.com/rquinio1A",
+      "contributions": [
+        "code",
+        "example"
+      ]
     }
   ],
   "contributorsPerLine": 7,
