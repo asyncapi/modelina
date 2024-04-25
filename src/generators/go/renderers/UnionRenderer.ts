@@ -98,6 +98,8 @@ export const GO_DEFAULT_UNION_PRESET: UnionPresetType<GoOptions> = {
     }
 
     return `Is${FormatHelpers.toPascalCase(
+      model.name
+    )}${FormatHelpers.toPascalCase(
       model.options.discriminator.discriminator
     )}()`;
   }

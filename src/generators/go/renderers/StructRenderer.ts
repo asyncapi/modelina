@@ -84,12 +84,18 @@ export const GO_DEFAULT_STRUCT_PRESET: StructPresetType<GoOptions> = {
     return `${field.propertyName} ${fieldType}`;
   },
   discriminator({ model }) {
-    if (!model.options.discriminator?.discriminator) {
-      return '';
+    const { discriminator, parents } = model.options;
+
+    if (discriminator?.discriminator && parents?.length) {
+      return parents
+        .map((parent) => {
+          return `func (r ${model.name}) Is${FormatHelpers.toPascalCase(
+            parent.name
+          )}${FormatHelpers.toPascalCase(discriminator.discriminator)}() {}`;
+        })
+        .join('\n\n');
     }
 
-    return `func (r ${model.name}) Is${FormatHelpers.toPascalCase(
-      model.options.discriminator.discriminator
-    )}() {}`;
+    return '';
   }
 };

@@ -255,7 +255,7 @@ While the above changes work for primitives, it's problematic for objects with a
 
 ```go
 type Vehicle interface {
-  IsVehicleType()
+  IsVehicleVehicleType()
 }
 
 type Car struct {
@@ -264,7 +264,7 @@ type Car struct {
   AdditionalProperties map[string]interface{}
 }
 
-func (r Car) IsVehicleType() {}
+func (r Car) IsVehicleVehicleType() {}
 
 type Truck struct {
   VehicleType *VehicleType
@@ -272,7 +272,7 @@ type Truck struct {
   AdditionalProperties map[string]interface{}
 }
 
-func (r Truck) IsVehicleType() {}
+func (r Truck) IsVehicleVehicleType() {}
 
 type VehicleType uint
 

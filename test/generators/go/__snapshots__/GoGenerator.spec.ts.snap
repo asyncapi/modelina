@@ -132,6 +132,125 @@ type OtherModel struct {
 }"
 `;
 
+exports[`GoGenerator oneOf/discriminator handle setting title with const 1`] = `
+Array [
+  "// Pet represents a Pet model.
+type Pet interface {
+  IsPetType()
+}",
+  "// Dog represents a Dog model.
+type Dog struct {
+  ReservedType *DogType
+  AdditionalProperties map[string]interface{}
+}
+
+func (r Dog) IsPetType() {}
+",
+  "// DogType represents an enum of DogType.
+type DogType uint
+
+const (
+  DogTypeDog DogType = iota
+)
+
+// Value returns the value of the enum.
+func (op DogType) Value() any {
+	if op >= DogType(len(DogTypeValues)) {
+		return nil
+	}
+	return DogTypeValues[op]
+}
+
+var DogTypeValues = []any{\\"Dog\\"}
+var ValuesToDogType = map[any]DogType{
+  DogTypeValues[DogTypeDog]: DogTypeDog,
+}
+",
+  "// Cat represents a Cat model.
+type Cat struct {
+  ReservedType *CatType
+  AdditionalProperties map[string]interface{}
+}
+
+func (r Cat) IsPetType() {}
+",
+  "// CatType represents an enum of CatType.
+type CatType uint
+
+const (
+  CatTypeCat CatType = iota
+)
+
+// Value returns the value of the enum.
+func (op CatType) Value() any {
+	if op >= CatType(len(CatTypeValues)) {
+		return nil
+	}
+	return CatTypeValues[op]
+}
+
+var CatTypeValues = []any{\\"Cat\\"}
+var ValuesToCatType = map[any]CatType{
+  CatTypeValues[CatTypeCat]: CatTypeCat,
+}
+",
+]
+`;
+
+exports[`GoGenerator oneOf/discriminator should render interfaces for objects with discriminator 1`] = `
+Array [
+  "// Vehicle represents a Vehicle model.
+type Vehicle interface {
+  IsVehicleVehicleType()
+}",
+  "// Cargo represents a Cargo model.
+type Cargo struct {
+  Vehicle Vehicle
+  AdditionalProperties map[string]interface{}
+}",
+  "// Car represents a Car model.
+type Car struct {
+  VehicleType *VehicleType
+  RegistrationPlate string
+  AdditionalProperties map[string]interface{}
+}
+
+func (r Car) IsVehicleVehicleType() {}
+",
+  "// VehicleType represents an enum of VehicleType.
+type VehicleType uint
+
+const (
+  VehicleTypeCar VehicleType = iota
+  VehicleTypeTruck
+)
+
+// Value returns the value of the enum.
+func (op VehicleType) Value() any {
+	if op >= VehicleType(len(VehicleTypeValues)) {
+		return nil
+	}
+	return VehicleTypeValues[op]
+}
+
+var VehicleTypeValues = []any{\\"Car\\",\\"Truck\\"}
+var ValuesToVehicleType = map[any]VehicleType{
+  VehicleTypeValues[VehicleTypeCar]: VehicleTypeCar,
+  VehicleTypeValues[VehicleTypeTruck]: VehicleTypeTruck,
+}
+",
+  "// Truck represents a Truck model.
+type Truck struct {
+  VehicleType *VehicleType
+  RegistrationPlate string
+  AdditionalProperties map[string]interface{}
+}
+
+func (r Truck) IsVehicleVehicleType() {}
+",
+]
+`;
+
 exports[`GoGenerator should render \`enum\` with mixed types 1`] = `
 "// Things represents an enum of Things.
 type Things uint
@@ -248,60 +367,6 @@ type LocationAdditionalPropertyOneOf_1 struct {
   Id string
   AdditionalProperties map[string]interface{}
 }"
-`;
-
-exports[`GoGenerator should render interfaces for objects with discriminator 1`] = `
-Array [
-  "// Vehicle represents a Vehicle model.
-type Vehicle interface {
-  IsVehicleType()
-}",
-  "// Cargo represents a Cargo model.
-type Cargo struct {
-  Vehicle Vehicle
-  AdditionalProperties map[string]interface{}
-}",
-  "// Car represents a Car model.
-type Car struct {
-  VehicleType *VehicleType
-  RegistrationPlate string
-  AdditionalProperties map[string]interface{}
-}
-
-func (r Car) IsVehicleType() {}
-",
-  "// VehicleType represents an enum of VehicleType.
-type VehicleType uint
-
-const (
-  VehicleTypeCar VehicleType = iota
-  VehicleTypeTruck
-)
-
-// Value returns the value of the enum.
-func (op VehicleType) Value() any {
-	if op >= VehicleType(len(VehicleTypeValues)) {
-		return nil
-	}
-	return VehicleTypeValues[op]
-}
-
-var VehicleTypeValues = []any{\\"Car\\",\\"Truck\\"}
-var ValuesToVehicleType = map[any]VehicleType{
-  VehicleTypeValues[VehicleTypeCar]: VehicleTypeCar,
-  VehicleTypeValues[VehicleTypeTruck]: VehicleTypeTruck,
-}
-",
-  "// Truck represents a Truck model.
-type Truck struct {
-  VehicleType *VehicleType
-  RegistrationPlate string
-  AdditionalProperties map[string]interface{}
-}
-
-func (r Truck) IsVehicleType() {}
-",
-]
 `;
 
 exports[`GoGenerator should work custom preset for \`enum\` type 1`] = `
