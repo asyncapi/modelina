@@ -239,3 +239,16 @@ const generator = new GoGenerator({
   unionDictModelName: 'ModelinaDictType'
 });
 ```
+
+### Nullable and required properties
+
+Modelina now has support for nullable and required properties in go structs. This support exists for generic types like `int`, `string`, `bool`, `float64`.
+
+```go
+type info struct {
+  name string // required
+  description *string // nullable 
+  version *float64
+  isDevelopment *bool
+}
+```

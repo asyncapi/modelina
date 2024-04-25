@@ -109,7 +109,7 @@ package some_package
 
 // Address represents a Address model.
 type Address struct {
-  StreetName string
+  StreetName interface{}
   City string
   State string
   HouseNumber float64

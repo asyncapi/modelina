@@ -168,7 +168,7 @@ describe('GoGenerator', () => {
         $id: 'Address',
         type: 'object',
         properties: {
-          street_name: { type: 'string' },
+          street_name: [{ type: 'string' }, { type: 'null' }],
           city: { type: 'string', description: 'City description' },
           state: { type: 'string' },
           house_number: { type: 'number' },
