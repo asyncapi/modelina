@@ -1,7 +1,22 @@
 import { GoRenderer } from '../GoRenderer';
 import { UnionPresetType } from '../GoPreset';
-import { ConstrainedUnionModel, ConstrainedMetaModel } from '../../../models';
+import {
+  ConstrainedUnionModel,
+  ConstrainedMetaModel,
+  ConstrainedObjectModel,
+  ConstrainedReferenceModel
+} from '../../../models';
 import { GoOptions } from '../GoGenerator';
+import { FormatHelpers } from '../../../helpers/FormatHelpers';
+
+const unionIncludesPrimitives = (model: ConstrainedUnionModel): boolean => {
+  return !model.union.every(
+    (union) =>
+      union instanceof ConstrainedObjectModel ||
+      (union instanceof ConstrainedReferenceModel &&
+        union.ref instanceof ConstrainedObjectModel)
+  );
+};
 
 /**
  * Renderer for Go's `struct` type
@@ -10,14 +25,26 @@ import { GoOptions } from '../GoGenerator';
  */
 export class UnionRenderer extends GoRenderer<ConstrainedUnionModel> {
   public async defaultSelf(): Promise<string> {
+    const doc = this.renderComments(
+      `${this.model.name} represents a ${this.model.name} model.`
+    );
+
+    if (
+      !unionIncludesPrimitives(this.model) &&
+      this.model.options.discriminator
+    ) {
+      const content: string[] = [await this.runDiscriminatorAccessorPreset()];
+
+      return `${doc}
+type ${this.model.name} interface {
+${this.indent(this.renderBlock(content, 2))}
+}`;
+    }
+
     const content = [
       await this.renderFields(),
       await this.runAdditionalContentPreset()
     ];
-
-    const doc = this.renderComments(
-      `${this.model.name} represents a ${this.model.name} model.`
-    );
 
     return `${doc}
 type ${this.model.name} struct {
@@ -26,7 +53,7 @@ ${this.indent(this.renderBlock(content, 2))}
   }
 
   async renderFields(): Promise<string> {
-    const fields = this.model.union || {};
+    const fields = this.model.union;
     const content: string[] = [];
 
     for (const field of fields) {
@@ -40,6 +67,10 @@ ${this.indent(this.renderBlock(content, 2))}
 
   runFieldPreset(field: ConstrainedMetaModel): Promise<string> {
     return this.runPreset('field', { field });
+  }
+
+  runDiscriminatorAccessorPreset(): Promise<string> {
+    return this.runPreset('discriminator');
   }
 }
 
@@ -60,5 +91,14 @@ export const GO_DEFAULT_UNION_PRESET: UnionPresetType<GoOptions> = {
       return `${options.unionArrModelName} ${fieldType}`;
     }
     return `${fieldType}`;
+  },
+  discriminator({ model }) {
+    if (!model.options.discriminator?.discriminator) {
+      return '';
+    }
+
+    return `Is${FormatHelpers.toPascalCase(
+      model.options.discriminator.discriminator
+    )}() bool`;
   }
 };

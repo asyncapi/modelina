@@ -203,7 +203,7 @@ type Address struct {
 }"
 `;
 
-exports[`GoGenerator should render \`union\` type 1`] = `
+exports[`GoGenerator should render \`union\` type for primitives 1`] = `
 "// Members represents a Members model.
 type Members struct {
   string
@@ -248,6 +248,64 @@ type LocationAdditionalPropertyOneOf_1 struct {
   Id string
   AdditionalProperties map[string]interface{}
 }"
+`;
+
+exports[`GoGenerator should render interfaces for objects with discriminator 1`] = `
+Array [
+  "// Vehicle represents a Vehicle model.
+type Vehicle interface {
+  IsVehicleType() bool
+}",
+  "// Cargo represents a Cargo model.
+type Cargo struct {
+  Vehicle *Vehicle
+  AdditionalProperties map[string]interface{}
+}",
+  "// Car represents a Car model.
+type Car struct {
+  VehicleType *VehicleType
+  RegistrationPlate string
+  AdditionalProperties map[string]interface{}
+}
+
+func (serdp Car) IsVehicleType() bool {
+  return true
+}
+",
+  "// VehicleType represents an enum of VehicleType.
+type VehicleType uint
+
+const (
+  VehicleTypeCar VehicleType = iota
+  VehicleTypeTruck
+)
+
+// Value returns the value of the enum.
+func (op VehicleType) Value() any {
+	if op >= VehicleType(len(VehicleTypeValues)) {
+		return nil
+	}
+	return VehicleTypeValues[op]
+}
+
+var VehicleTypeValues = []any{\\"Car\\",\\"Truck\\"}
+var ValuesToVehicleType = map[any]VehicleType{
+  VehicleTypeValues[VehicleTypeCar]: VehicleTypeCar,
+  VehicleTypeValues[VehicleTypeTruck]: VehicleTypeTruck,
+}
+",
+  "// Truck represents a Truck model.
+type Truck struct {
+  VehicleType *VehicleType
+  RegistrationPlate string
+  AdditionalProperties map[string]interface{}
+}
+
+func (serdp Truck) IsVehicleType() bool {
+  return true
+}
+",
+]
 `;
 
 exports[`GoGenerator should work custom preset for \`enum\` type 1`] = `

@@ -46,7 +46,7 @@ describe('GoGenerator', () => {
     expect(models[3].result).toMatchSnapshot();
   });
 
-  test('should render `union` type', async () => {
+  test('should render `union` type for primitives', async () => {
     const doc = {
       $id: '_address',
       type: 'object',
@@ -93,6 +93,77 @@ describe('GoGenerator', () => {
     const result = models.map((m) => m.result).join('\n');
 
     expect(result).toMatchSnapshot();
+  });
+
+  test('should render interfaces for objects with discriminator', async () => {
+    const asyncapiDoc = {
+      asyncapi: '2.6.0',
+      info: {
+        title: 'Vehicle example',
+        version: '1.0.0'
+      },
+      channels: {},
+      components: {
+        messages: {
+          Cargo: {
+            payload: {
+              title: 'Cargo',
+              type: 'object',
+              properties: {
+                vehicle: {
+                  $ref: '#/components/schemas/Vehicle'
+                }
+              }
+            }
+          }
+        },
+        schemas: {
+          Vehicle: {
+            title: 'Vehicle',
+            type: 'object',
+            discriminator: 'vehicleType',
+            properties: {
+              vehicleType: {
+                title: 'VehicleType',
+                type: 'string'
+              },
+              registrationPlate: {
+                title: 'RegistrationPlate',
+                type: 'string'
+              }
+            },
+            required: ['vehicleType', 'registrationPlate'],
+            oneOf: [
+              {
+                $ref: '#/components/schemas/Car'
+              },
+              {
+                $ref: '#/components/schemas/Truck'
+              }
+            ]
+          },
+          Car: {
+            type: 'object',
+            properties: {
+              vehicleType: {
+                const: 'Car'
+              }
+            }
+          },
+          Truck: {
+            type: 'object',
+            properties: {
+              vehicleType: {
+                const: 'Truck'
+              }
+            }
+          }
+        }
+      }
+    };
+
+    const models = await generator.generate(asyncapiDoc);
+    expect(models.map((model) => model.result)).toMatchSnapshot();
   });
 
   test('should work custom preset for `struct` type', async () => {

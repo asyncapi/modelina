@@ -6,6 +6,7 @@ import {
   ConstrainedReferenceModel
 } from '../../../models';
 import { GoOptions } from '../GoGenerator';
+import { FormatHelpers } from '../../../helpers/FormatHelpers';
 
 /**
  * Renderer for Go's `struct` type
@@ -23,10 +24,25 @@ export class StructRenderer extends GoRenderer<ConstrainedObjectModel> {
       `${this.model.name} represents a ${this.model.name} model.`
     );
 
+    let discriminator = '';
+
+    if (
+      this.model.options.parents?.length &&
+      this.model.options.discriminator?.discriminator
+    ) {
+      discriminator = await this.runDiscriminatorFuncPreset();
+    }
+
     return `${doc}
 type ${this.model.name} struct {
 ${this.indent(this.renderBlock(content, 2))}
-}`;
+}${
+      discriminator &&
+      `
+
+${discriminator}
+`
+    }`;
   }
 
   async renderFields(): Promise<string> {
@@ -43,6 +59,10 @@ ${this.indent(this.renderBlock(content, 2))}
   runFieldPreset(field: ConstrainedObjectPropertyModel): Promise<string> {
     return this.runPreset('field', { field });
   }
+
+  runDiscriminatorFuncPreset(): Promise<string> {
+    return this.runPreset('discriminator');
+  }
 }
 
 export const GO_DEFAULT_STRUCT_PRESET: StructPresetType<GoOptions> = {
@@ -55,5 +75,16 @@ export const GO_DEFAULT_STRUCT_PRESET: StructPresetType<GoOptions> = {
       fieldType = `*${fieldType}`;
     }
     return `${field.propertyName} ${fieldType}`;
+  },
+  discriminator({ model }) {
+    if (!model.options.discriminator?.discriminator) {
+      return '';
+    }
+
+    return `func (serdp ${model.name}) Is${FormatHelpers.toPascalCase(
+      model.options.discriminator.discriminator
+    )}() bool {
+  return true
+}`;
   }
 };
