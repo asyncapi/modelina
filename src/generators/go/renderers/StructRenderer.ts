@@ -3,7 +3,8 @@ import { StructPresetType } from '../GoPreset';
 import {
   ConstrainedObjectModel,
   ConstrainedObjectPropertyModel,
-  ConstrainedReferenceModel
+  ConstrainedReferenceModel,
+  ConstrainedUnionModel
 } from '../../../models';
 import { GoOptions } from '../GoGenerator';
 import { FormatHelpers } from '../../../helpers/FormatHelpers';
@@ -71,7 +72,13 @@ export const GO_DEFAULT_STRUCT_PRESET: StructPresetType<GoOptions> = {
   },
   field({ field }) {
     let fieldType = field.property.type;
-    if (field.property instanceof ConstrainedReferenceModel) {
+    if (
+      field.property instanceof ConstrainedReferenceModel &&
+      !(
+        field.property.ref instanceof ConstrainedUnionModel &&
+        field.property.ref.options.discriminator
+      )
+    ) {
       fieldType = `*${fieldType}`;
     }
     return `${field.propertyName} ${fieldType}`;
@@ -81,10 +88,8 @@ export const GO_DEFAULT_STRUCT_PRESET: StructPresetType<GoOptions> = {
       return '';
     }
 
-    return `func (serdp ${model.name}) Is${FormatHelpers.toPascalCase(
+    return `func (r ${model.name}) Is${FormatHelpers.toPascalCase(
       model.options.discriminator.discriminator
-    )}() bool {
-  return true
-}`;
+    )}() {}`;
   }
 };

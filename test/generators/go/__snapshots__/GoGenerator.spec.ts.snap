@@ -254,11 +254,11 @@ exports[`GoGenerator should render interfaces for objects with discriminator 1`]
 Array [
   "// Vehicle represents a Vehicle model.
 type Vehicle interface {
-  IsVehicleType() bool
+  IsVehicleType()
 }",
   "// Cargo represents a Cargo model.
 type Cargo struct {
-  Vehicle *Vehicle
+  Vehicle Vehicle
   AdditionalProperties map[string]interface{}
 }",
   "// Car represents a Car model.
@@ -268,9 +268,7 @@ type Car struct {
   AdditionalProperties map[string]interface{}
 }
 
-func (serdp Car) IsVehicleType() bool {
-  return true
-}
+func (r Car) IsVehicleType() {}
 ",
   "// VehicleType represents an enum of VehicleType.
 type VehicleType uint
@@ -301,9 +299,7 @@ type Truck struct {
   AdditionalProperties map[string]interface{}
 }
 
-func (serdp Truck) IsVehicleType() bool {
-  return true
-}
+func (r Truck) IsVehicleType() {}
 ",
 ]
 `;
