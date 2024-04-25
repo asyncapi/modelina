@@ -25,6 +25,7 @@ async function generateDefaultExport() {
       // eslint-disable-next-line no-undef
       __dirname,
       './runtime-typescript/src/defaultExport'
+      
     ),
     { exportType: 'default' }
   );

@@ -162,6 +162,6 @@ export const CSHARP_DEFAULT_CLASS_PRESET: CsharpClassPreset<CSharpOptions> = {
     if (options?.autoImplementedProperties) {
       return 'set;';
     }
-    return `set { ${property.propertyName} = value; }`;
+    return `set { this.${property.propertyName} = value; }`;
   }
 };
