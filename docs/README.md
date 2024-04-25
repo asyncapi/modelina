@@ -10,7 +10,6 @@
 - [Advanced](#advanced)
 - [Integration](#integration)
 - [Development](#development)
-- [Generators](#generators)
 - [Presets](#presets)
 - [Interpretation of JSON Schema](#interpretation-of-json-schema)
 - [Migration](#migration)
