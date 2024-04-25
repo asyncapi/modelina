@@ -39,10 +39,13 @@ export const CSharpOclifFlags = {
 
 /**
  * This function builds all the relevant information for the main generate command
+ * 
+ * @param flags 
+ * @returns 
  */
 export function buildCSharpGenerator(flags: any): BuilderReturnType {
   const { namespace, csharpAutoImplement, csharpArrayType, csharpNewtonsoft, csharpHashcode, csharpEqual, csharpSystemJson } = flags;
-  let presets = [];
+  const presets = [];
 
   if (namespace === undefined) {
     throw new Error('In order to generate models to C#, we need to know which namespace they are under. Add `--namespace=NAMESPACE` to set the desired namespace.');

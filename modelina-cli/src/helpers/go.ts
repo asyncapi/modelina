@@ -1,12 +1,13 @@
 import { GoFileGenerator } from "@asyncapi/modelina";
 import { BuilderReturnType } from "./generate";
 
-export const GoOclifFlags = {
-
-}
+export const GoOclifFlags = { }
 
 /**
  * This function builds all the relevant information for the main generate command
+ * 
+ * @param flags 
+ * @returns 
  */
 export function buildGoGenerator(flags: any): BuilderReturnType {
   const { packageName } = flags;

@@ -1,11 +1,12 @@
 import { PhpFileGenerator } from "@asyncapi/modelina";
 
-export const PhpOclifFlags = {
-
-}
+export const PhpOclifFlags = { }
 
 /**
  * This function builds all the relevant information for the main generate command
+ * 
+ * @param flags 
+ * @returns 
  */
 export function buildPhpGenerator(flags: any) {
   const { namespace } = flags;

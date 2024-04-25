@@ -35,18 +35,18 @@ export enum Languages {
 const possibleLanguageValues = Object.values(Languages).join(', ');
 
 const buildMapper: { [key in Languages]: (flags: any) => BuilderReturnType } = {
-  ['typescript']: buildTypeScriptGenerator,
-  ['cplusplus']: buildCplusplusGenerator,
-  ['csharp']: buildCSharpGenerator,
-  ['dart']: buildDartGenerator,
-  ['golang']: buildGoGenerator,
-  ['java']: buildJavaGenerator,
-  ['javascript']: buildJavaScriptGenerator,
-  ['kotlin']: buildKotlinGenerator,
-  ['php']: buildPhpGenerator,
-  ['python']: buildPythonGenerator,
-  ['rust']: buildRustGenerator,
-  ['scala']: buildScalaGenerator,
+  typescript: buildTypeScriptGenerator,
+  cplusplus: buildCplusplusGenerator,
+  csharp: buildCSharpGenerator,
+  dart: buildDartGenerator,
+  golang: buildGoGenerator,
+  java: buildJavaGenerator,
+  javascript: buildJavaScriptGenerator,
+  kotlin: buildKotlinGenerator,
+  php: buildPhpGenerator,
+  python: buildPythonGenerator,
+  rust: buildRustGenerator,
+  scala: buildScalaGenerator,
 }
 
 export const ModelinaArgs = {
@@ -91,14 +91,23 @@ export const ModelinaFlags = {
 
 /**
  * Function for generating models from the CLI arguments, flags and inputs
+ * 
+ * @param flags 
+ * @param document 
+ * @param logger 
+ * @param language 
+ * @returns 
  */
 export async function generateModels(flags: any, document: any, logger: any, language: Languages) {
   const { output } = flags;
   Logger.setLogger(logger);
-  if (!buildMapper[language]) {
+  // eslint-disable-next-line security/detect-object-injection
+  const mapper = buildMapper[language]
+  if (!mapper) {
     throw new Error(`Could not determine generator for language ${language}, are you using one of the following values ${possibleLanguageValues}?`);
   }
-  const { fileGenerator, fileOptions } = buildMapper[language](flags);
+
+  const { fileGenerator, fileOptions } = mapper(flags);
 
   if (output) {
     const models = await fileGenerator.generateToFiles(

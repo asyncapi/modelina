@@ -1,5 +1,5 @@
 import ModelinaCommand from '../base';
-import { readFile } from 'fs/promises';
+import { readFile } from 'node:fs/promises';
 import { Languages, ModelinaArgs, ModelinaFlags, generateModels } from '../helpers/generate';
 
 export default class Models extends ModelinaCommand {
@@ -16,6 +16,7 @@ export default class Models extends ModelinaCommand {
     } catch {
       throw new Error('Unable to read input file content.');
     }
+    
     const logger = {
       info: (message: string) => {
         this.log(message);

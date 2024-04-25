@@ -1,11 +1,12 @@
 import { ScalaFileGenerator } from "@asyncapi/modelina";
 
-export const ScalaOclifFlags = {
-
-}
+export const ScalaOclifFlags = { }
 
 /**
  * This function builds all the relevant information for the main generate command
+ * 
+ * @param flags 
+ * @returns 
  */
 export function buildScalaGenerator(flags: any) {
   const { packageName } = flags;

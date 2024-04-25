@@ -55,10 +55,13 @@ export const TypeScriptOclifFlags = {
 
 /**
  * This function builds all the relevant information for the main generate command
+ * 
+ * @param flags 
+ * @returns 
  */
 export function buildTypeScriptGenerator(flags: any): BuilderReturnType {
   const { tsModelType, tsEnumType, tsIncludeComments, tsModuleSystem, tsExportType, tsJsonBinPack, tsMarshalling, tsExampleInstance } = flags;
-  let presets = [];
+  const presets = [];
   const options = {
     marshalling: tsMarshalling,
     example: tsExampleInstance,

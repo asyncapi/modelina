@@ -22,10 +22,13 @@ export const JavaOclifFlags = {
 
 /**
  * This function builds all the relevant information for the main generate command
+ * 
+ * @param flags 
+ * @returns 
  */
 export function buildJavaGenerator(flags: any): BuilderReturnType {
   const { packageName, javaIncludeComments, javaJackson, javaConstraints } = flags;
-  let presets = []
+  const presets = []
   
   if (packageName === undefined) {
     throw new Error('In order to generate models to Java, we need to know which package they are under. Add `--packageName=PACKAGENAME` to set the desired package name.');

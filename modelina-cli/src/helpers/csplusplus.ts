@@ -1,12 +1,13 @@
 import { CplusplusFileGenerator } from "@asyncapi/modelina";
 import { BuilderReturnType } from "./generate";
 
-export const CplusplusOclifFlags = {
-
-}
+export const CplusplusOclifFlags = { }
 
 /**
  * This function builds all the relevant information for the main generate command
+ * 
+ * @param flags 
+ * @returns 
  */
 export function buildCplusplusGenerator(flags: any): BuilderReturnType {
   const { namespace } = flags;
