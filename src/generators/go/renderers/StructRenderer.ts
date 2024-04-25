@@ -27,10 +27,7 @@ export class StructRenderer extends GoRenderer<ConstrainedObjectModel> {
 
     let discriminator = '';
 
-    if (
-      this.model.options.parents?.length &&
-      this.model.options.discriminator?.discriminator
-    ) {
+    if (this.model.options.parents?.length) {
       discriminator = await this.runDiscriminatorFuncPreset();
     }
 
@@ -84,18 +81,25 @@ export const GO_DEFAULT_STRUCT_PRESET: StructPresetType<GoOptions> = {
     return `${field.propertyName} ${fieldType}`;
   },
   discriminator({ model }) {
-    const { discriminator, parents } = model.options;
+    const { parents } = model.options;
 
-    if (discriminator?.discriminator && parents?.length) {
-      return parents
-        .map((parent) => {
-          return `func (r ${model.name}) Is${FormatHelpers.toPascalCase(
-            parent.name
-          )}${FormatHelpers.toPascalCase(discriminator.discriminator)}() {}`;
-        })
-        .join('\n\n');
+    if (!parents?.length) {
+      return '';
     }
 
-    return '';
+    return parents
+      .map((parent) => {
+        if (!parent.options.discriminator) {
+          return undefined;
+        }
+
+        return `func (r ${model.name}) Is${FormatHelpers.toPascalCase(
+          parent.name
+        )}${FormatHelpers.toPascalCase(
+          parent.options.discriminator.discriminator
+        )}() {}`;
+      })
+      .filter((parent) => !!parent)
+      .join('\n\n');
   }
 };
