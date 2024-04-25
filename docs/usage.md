@@ -114,9 +114,9 @@ See the below example to get started with Avro Schema for generating models.
 
 - [Generate from an Avro Schema JS Object](../examples/avro-schema-from-object)
 
-The Avro input processor expects the `type` property, as per [Avro Schema specs](https://avro.apache.org/docs/1.11.1/specification/#schema-declaration), in the input object in order to proceed successfully.
+The Avro input processor expects the `name` and `type` property, as per [Avro Schema specs](https://avro.apache.org/docs/1.11.1/specification/#schema-declaration), in the input object in order to proceed successfully.
 
-> Note: Currently, we support `record` datatype for generating the `Object Model`.
+> Note: Currently, we do not have a support for `map`, `fixed` and `byte` data type. It would be introduced soon.
 
 ## Generate models from Swagger 2.0 documents
 
