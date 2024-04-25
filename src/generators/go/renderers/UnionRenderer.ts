@@ -9,12 +9,15 @@ import {
 import { GoOptions } from '../GoGenerator';
 import { FormatHelpers } from '../../../helpers/FormatHelpers';
 
-const unionIncludesPrimitives = (model: ConstrainedUnionModel): boolean => {
-  return !model.union.every(
-    (union) =>
-      union instanceof ConstrainedObjectModel ||
-      (union instanceof ConstrainedReferenceModel &&
-        union.ref instanceof ConstrainedObjectModel)
+const unionIncludesDiscriminator = (model: ConstrainedUnionModel): boolean => {
+  return (
+    !!model.options.discriminator &&
+    model.union.every(
+      (union) =>
+        union instanceof ConstrainedObjectModel ||
+        (union instanceof ConstrainedReferenceModel &&
+          union.ref instanceof ConstrainedObjectModel)
+    )
   );
 };
 
@@ -29,10 +32,7 @@ export class UnionRenderer extends GoRenderer<ConstrainedUnionModel> {
       `${this.model.name} represents a ${this.model.name} model.`
     );
 
-    if (
-      !unionIncludesPrimitives(this.model) &&
-      this.model.options.discriminator
-    ) {
+    if (unionIncludesDiscriminator(this.model)) {
       const content: string[] = [await this.runDiscriminatorAccessorPreset()];
 
       return `${doc}
@@ -98,7 +98,9 @@ export const GO_DEFAULT_UNION_PRESET: UnionPresetType<GoOptions> = {
     }
 
     return `Is${FormatHelpers.toPascalCase(
+      model.name
+    )}${FormatHelpers.toPascalCase(
       model.options.discriminator.discriminator
-    )}() bool`;
+    )}()`;
   }
 };

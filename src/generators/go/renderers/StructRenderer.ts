@@ -3,7 +3,8 @@ import { StructPresetType } from '../GoPreset';
 import {
   ConstrainedObjectModel,
   ConstrainedObjectPropertyModel,
-  ConstrainedReferenceModel
+  ConstrainedReferenceModel,
+  ConstrainedUnionModel
 } from '../../../models';
 import { GoOptions } from '../GoGenerator';
 import { FormatHelpers } from '../../../helpers/FormatHelpers';
@@ -26,10 +27,7 @@ export class StructRenderer extends GoRenderer<ConstrainedObjectModel> {
 
     let discriminator = '';
 
-    if (
-      this.model.options.parents?.length &&
-      this.model.options.discriminator?.discriminator
-    ) {
+    if (this.model.options.parents?.length) {
       discriminator = await this.runDiscriminatorFuncPreset();
     }
 
@@ -71,20 +69,37 @@ export const GO_DEFAULT_STRUCT_PRESET: StructPresetType<GoOptions> = {
   },
   field({ field }) {
     let fieldType = field.property.type;
-    if (field.property instanceof ConstrainedReferenceModel) {
+    if (
+      field.property instanceof ConstrainedReferenceModel &&
+      !(
+        field.property.ref instanceof ConstrainedUnionModel &&
+        field.property.ref.options.discriminator
+      )
+    ) {
       fieldType = `*${fieldType}`;
     }
     return `${field.propertyName} ${fieldType}`;
   },
   discriminator({ model }) {
-    if (!model.options.discriminator?.discriminator) {
+    const { parents } = model.options;
+
+    if (!parents?.length) {
       return '';
     }
 
-    return `func (serdp ${model.name}) Is${FormatHelpers.toPascalCase(
-      model.options.discriminator.discriminator
-    )}() bool {
-  return true
-}`;
+    return parents
+      .map((parent) => {
+        if (!parent.options.discriminator) {
+          return undefined;
+        }
+
+        return `func (r ${model.name}) Is${FormatHelpers.toPascalCase(
+          parent.name
+        )}${FormatHelpers.toPascalCase(
+          parent.options.discriminator.discriminator
+        )}() {}`;
+      })
+      .filter((parent) => !!parent)
+      .join('\n\n');
   }
 };

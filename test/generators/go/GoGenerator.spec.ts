@@ -95,75 +95,167 @@ describe('GoGenerator', () => {
     expect(result).toMatchSnapshot();
   });
 
-  test('should render interfaces for objects with discriminator', async () => {
-    const asyncapiDoc = {
-      asyncapi: '2.6.0',
-      info: {
-        title: 'Vehicle example',
-        version: '1.0.0'
-      },
-      channels: {},
-      components: {
-        messages: {
-          Cargo: {
-            payload: {
-              title: 'Cargo',
+  describe('oneOf/discriminator', () => {
+    test('should render interfaces for objects with discriminator', async () => {
+      const asyncapiDoc = {
+        asyncapi: '2.6.0',
+        info: {
+          title: 'Vehicle example',
+          version: '1.0.0'
+        },
+        channels: {},
+        components: {
+          messages: {
+            Cargo: {
+              payload: {
+                title: 'Cargo',
+                type: 'object',
+                properties: {
+                  vehicle: {
+                    $ref: '#/components/schemas/Vehicle'
+                  }
+                }
+              }
+            }
+          },
+          schemas: {
+            Vehicle: {
+              title: 'Vehicle',
+              type: 'object',
+              discriminator: 'vehicleType',
+              properties: {
+                vehicleType: {
+                  title: 'VehicleType',
+                  type: 'string'
+                },
+                registrationPlate: {
+                  title: 'RegistrationPlate',
+                  type: 'string'
+                }
+              },
+              required: ['vehicleType', 'registrationPlate'],
+              oneOf: [
+                {
+                  $ref: '#/components/schemas/Car'
+                },
+                {
+                  $ref: '#/components/schemas/Truck'
+                }
+              ]
+            },
+            Car: {
               type: 'object',
               properties: {
-                vehicle: {
-                  $ref: '#/components/schemas/Vehicle'
+                vehicleType: {
+                  const: 'Car'
+                }
+              }
+            },
+            Truck: {
+              type: 'object',
+              properties: {
+                vehicleType: {
+                  const: 'Truck'
                 }
               }
             }
           }
+        }
+      };
+
+      const models = await generator.generate(asyncapiDoc);
+      expect(models.map((model) => model.result)).toMatchSnapshot();
+    });
+
+    test('handle setting title with const', async () => {
+      const asyncapiDoc = {
+        asyncapi: '2.5.0',
+        info: {
+          title: 'CloudEvent example',
+          version: '1.0.0'
         },
-        schemas: {
-          Vehicle: {
-            title: 'Vehicle',
-            type: 'object',
-            discriminator: 'vehicleType',
-            properties: {
-              vehicleType: {
-                title: 'VehicleType',
-                type: 'string'
-              },
-              registrationPlate: {
-                title: 'RegistrationPlate',
-                type: 'string'
+        channels: {
+          pet: {
+            publish: {
+              message: {
+                oneOf: [
+                  {
+                    $ref: '#/components/messages/Dog'
+                  },
+                  {
+                    $ref: '#/components/messages/Cat'
+                  }
+                ]
+              }
+            }
+          }
+        },
+        components: {
+          messages: {
+            Dog: {
+              payload: {
+                title: 'Dog',
+                allOf: [
+                  {
+                    $ref: '#/components/schemas/CloudEvent'
+                  },
+                  {
+                    $ref: '#/components/schemas/Dog'
+                  }
+                ]
               }
             },
-            required: ['vehicleType', 'registrationPlate'],
-            oneOf: [
-              {
-                $ref: '#/components/schemas/Car'
-              },
-              {
-                $ref: '#/components/schemas/Truck'
-              }
-            ]
-          },
-          Car: {
-            type: 'object',
-            properties: {
-              vehicleType: {
-                const: 'Car'
+            Cat: {
+              payload: {
+                title: 'Cat',
+                allOf: [
+                  {
+                    $ref: '#/components/schemas/CloudEvent'
+                  },
+                  {
+                    $ref: '#/components/schemas/Cat'
+                  }
+                ]
               }
             }
           },
-          Truck: {
-            type: 'object',
-            properties: {
-              vehicleType: {
-                const: 'Truck'
+          schemas: {
+            CloudEvent: {
+              title: 'CloudEvent',
+              type: 'object',
+              discriminator: 'type',
+              properties: {
+                type: {
+                  type: 'string'
+                }
+              },
+              required: ['type']
+            },
+            Dog: {
+              type: 'object',
+              properties: {
+                type: {
+                  title: 'DogType',
+                  const: 'Dog'
+                }
+              }
+            },
+            Cat: {
+              type: 'object',
+              properties: {
+                type: {
+                  title: 'CatType',
+                  const: 'Cat'
+                }
               }
             }
           }
         }
-      }
-    };
+      };
 
-    const models = await generator.generate(asyncapiDoc);
-    expect(models.map((model) => model.result)).toMatchSnapshot();
+      const models = await generator.generate(asyncapiDoc);
+      expect(models.map((model) => model.result)).toMatchSnapshot();
+    });
   });
 
   test('should work custom preset for `struct` type', async () => {

@@ -261,7 +261,7 @@ While the above changes work for primitives, it's problematic for objects with a
 
 ```go
 type Vehicle interface {
-  IsVehicleType() bool
+  IsVehicleVehicleType()
 }
 
 type Car struct {
@@ -270,9 +270,7 @@ type Car struct {
   AdditionalProperties map[string]interface{}
 }
 
-func (serdp Car) IsVehicleType() bool {
-  return true
-}
+func (r Car) IsVehicleVehicleType() {}
 
 type Truck struct {
   VehicleType *VehicleType
@@ -280,9 +278,7 @@ type Truck struct {
   AdditionalProperties map[string]interface{}
 }
 
-func (serdp Truck) IsVehicleType() bool {
-  return true
-}
+func (r Truck) IsVehicleVehicleType() {}
 
 type VehicleType uint
 
@@ -313,7 +309,7 @@ Modelina now has support for nullable and required properties in go structs. Thi
 ```go
 type info struct {
   name string // required
-  description *string // nullable 
+  description *string // nullable
   version *float64
   isDevelopment *bool
 }
