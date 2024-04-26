@@ -40,22 +40,27 @@ const PYTHON_PYDANTIC_CLASS_PRESET: ClassPresetType<PythonOptions> = {
       propertyType: type
     });
 
-    const description = property.property.originalInput['description']
-      ? `description='''${property.property.originalInput['description']}'''`
-      : undefined;
-    const defaultValue = property.required ? undefined : 'default=None';
-    const jsonAlias = `serialization_alias='${property.unconstrainedPropertyName}'`;
-    let exclude = undefined;
+    const decoratorArgs: string[] = [];
+
+    if (property.property.originalInput['description']) {
+      decoratorArgs.push(
+        `description='''${property.property.originalInput['description']}'''`
+      );
+    }
     if (
       property.property instanceof ConstrainedDictionaryModel &&
       property.property.serializationType === 'unwrap'
     ) {
-      exclude = 'exclude=True';
+      decoratorArgs.push('exclude=True');
     }
-    const fieldTags = [description, defaultValue, jsonAlias, exclude].filter(
-      (value) => value
-    );
-    return `${propertyName}: ${type} = Field(${fieldTags.join(', ')})`;
+    if (!property.required) {
+      decoratorArgs.push('default=None');
+    }
+    if (property.propertyName !== property.unconstrainedPropertyName) {
+      decoratorArgs.push(`alias='''${property.unconstrainedPropertyName}'''`);
+    }
+
+    return `${propertyName}: ${type} = Field(${decoratorArgs.join(', ')})`;
   },
   ctor: () => '',
   getter: () => '',

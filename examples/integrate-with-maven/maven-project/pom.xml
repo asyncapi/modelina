@@ -97,6 +97,16 @@
             </configuration>
           </execution>
           <execution>
+            <id>Dependencies</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>npm</goal>
+            </goals>
+            <configuration>
+              <arguments>install</arguments>
+            </configuration>
+          </execution>
+          <execution>
             <id>Generate sources</id>
             <phase>generate-sources</phase>
             <goals>
