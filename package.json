@@ -124,7 +124,7 @@
     "generate:runtime:scala": "cross-env CI=true ts-node ./test/runtime/runtime-scala.ts",
     "test:watch": "jest --watch",
     "docs": "npm run docs:api",
-    "docs:api": "typedoc src/index.ts --out ./modelina-website/public/apidocs/generated --name Modelina",
+    "docs:api": "typedoc --sourceLinkExternal src/index.ts --out ./modelina-website/public/apidocs/generated --name Modelina",
     "lint": "npm run lint:modelina && npm run lint:cli",
     "lint:modelina": "eslint --max-warnings 0 --config .eslintrc .",
     "lint:cli": "cd modelina-cli && npm run lint",
