@@ -1,0 +1,284 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AvroSchemaInputProcessor process() should process Avro Schema 1`] = `
+InputMetaModel {
+  "models": Object {
+    "Person": ObjectModel {
+      "name": "Person",
+      "options": Object {
+        "isNullable": false,
+      },
+      "originalInput": undefined,
+      "properties": Object {
+        "address": ObjectPropertyModel {
+          "property": ObjectModel {
+            "name": "Address",
+            "options": Object {
+              "isNullable": false,
+            },
+            "originalInput": undefined,
+            "properties": Object {
+              "country": ObjectPropertyModel {
+                "property": StringModel {
+                  "name": "country",
+                  "options": Object {
+                    "isNullable": true,
+                  },
+                  "originalInput": undefined,
+                },
+                "propertyName": "country",
+                "required": true,
+              },
+              "zipcode": ObjectPropertyModel {
+                "property": IntegerModel {
+                  "name": "zipcode",
+                  "options": Object {
+                    "isNullable": false,
+                  },
+                  "originalInput": undefined,
+                },
+                "propertyName": "zipcode",
+                "required": true,
+              },
+            },
+          },
+          "propertyName": "address",
+          "required": true,
+        },
+        "age": ObjectPropertyModel {
+          "property": IntegerModel {
+            "name": "age",
+            "options": Object {
+              "isNullable": true,
+            },
+            "originalInput": undefined,
+          },
+          "propertyName": "age",
+          "required": true,
+        },
+        "certifications": ObjectPropertyModel {
+          "property": ArrayModel {
+            "name": "undefined",
+            "options": Object {
+              "isNullable": false,
+            },
+            "originalInput": undefined,
+            "valueModel": StringModel {
+              "name": "undefined_string",
+              "options": Object {
+                "isNullable": false,
+              },
+              "originalInput": undefined,
+            },
+          },
+          "propertyName": "certifications",
+          "required": true,
+        },
+        "email": ObjectPropertyModel {
+          "property": StringModel {
+            "name": "email",
+            "options": Object {
+              "isNullable": true,
+            },
+            "originalInput": undefined,
+          },
+          "propertyName": "email",
+          "required": true,
+        },
+        "favoriteProgrammingLanguage": ObjectPropertyModel {
+          "property": EnumModel {
+            "name": "ProgrammingLanguage",
+            "options": Object {
+              "isNullable": false,
+            },
+            "originalInput": undefined,
+            "values": Array [
+              EnumValueModel {
+                "key": "JS",
+                "value": "JS",
+              },
+              EnumValueModel {
+                "key": "Java",
+                "value": "Java",
+              },
+              EnumValueModel {
+                "key": "Go",
+                "value": "Go",
+              },
+              EnumValueModel {
+                "key": "Rust",
+                "value": "Rust",
+              },
+              EnumValueModel {
+                "key": "C",
+                "value": "C",
+              },
+            ],
+          },
+          "propertyName": "favoriteProgrammingLanguage",
+          "required": true,
+        },
+        "height": ObjectPropertyModel {
+          "property": FloatModel {
+            "name": "height",
+            "options": Object {
+              "isNullable": false,
+            },
+            "originalInput": undefined,
+          },
+          "propertyName": "height",
+          "required": true,
+        },
+        "name": ObjectPropertyModel {
+          "property": StringModel {
+            "name": "name",
+            "options": Object {
+              "isNullable": false,
+            },
+            "originalInput": undefined,
+          },
+          "propertyName": "name",
+          "required": true,
+        },
+        "serialNo": ObjectPropertyModel {
+          "property": StringModel {
+            "name": "serialNo",
+            "options": Object {
+              "isNullable": false,
+            },
+            "originalInput": undefined,
+          },
+          "propertyName": "serialNo",
+          "required": true,
+        },
+        "someid": ObjectPropertyModel {
+          "property": StringModel {
+            "name": "someid",
+            "options": Object {
+              "isNullable": false,
+            },
+            "originalInput": undefined,
+          },
+          "propertyName": "someid",
+          "required": true,
+        },
+        "weight": ObjectPropertyModel {
+          "property": FloatModel {
+            "name": "weight",
+            "options": Object {
+              "isNullable": false,
+            },
+            "originalInput": undefined,
+          },
+          "propertyName": "weight",
+          "required": true,
+        },
+      },
+    },
+  },
+  "originalInput": Object {
+    "fields": Array [
+      Object {
+        "example": "Donkey",
+        "minLength": 0,
+        "name": "name",
+        "type": "string",
+      },
+      Object {
+        "maxLength": 50,
+        "minLength": 0,
+        "name": "serialNo",
+        "type": "string",
+      },
+      Object {
+        "example": "donkey@asyncapi.com",
+        "name": "email",
+        "pattern": "^[\\\\w-\\\\.]+@([\\\\w-]+\\\\.)+[\\\\w-]{2,4}$",
+        "type": Array [
+          "null",
+          "string",
+        ],
+      },
+      Object {
+        "default": null,
+        "example": 123,
+        "exclusiveMaximum": 200,
+        "exclusiveMinimum": 0,
+        "name": "age",
+        "type": Array [
+          "null",
+          "int",
+        ],
+      },
+      Object {
+        "name": "favoriteProgrammingLanguage",
+        "type": Object {
+          "default": "JS",
+          "name": "ProgrammingLanguage",
+          "symbols": Array [
+            "JS",
+            "Java",
+            "Go",
+            "Rust",
+            "C",
+          ],
+          "type": "enum",
+        },
+      },
+      Object {
+        "name": "certifications",
+        "type": Object {
+          "items": "string",
+          "maxItems": 500,
+          "minItems": 1,
+          "type": "array",
+          "uniqueItems": true,
+        },
+      },
+      Object {
+        "name": "address",
+        "type": Object {
+          "fields": Array [
+            Object {
+              "example": 53003,
+              "name": "zipcode",
+              "type": "int",
+            },
+            Object {
+              "name": "country",
+              "type": Array [
+                "null",
+                "string",
+              ],
+            },
+          ],
+          "name": "Address",
+          "type": "record",
+        },
+      },
+      Object {
+        "example": 65.1,
+        "maximum": 500,
+        "minimum": 0,
+        "name": "weight",
+        "type": "float",
+      },
+      Object {
+        "example": 1.85,
+        "maximum": 3,
+        "minimum": 0,
+        "name": "height",
+        "type": "double",
+      },
+      Object {
+        "logicalType": "uuid",
+        "name": "someid",
+        "type": "string",
+      },
+    ],
+    "name": "Person",
+    "namespace": "com.company",
+    "type": "record",
+  },
+}
+`;
