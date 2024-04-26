@@ -5,6 +5,7 @@ exports[`JSON serializer preset should render serialize and deserialize converte
 public partial class Test
 {
   private string stringProp;
+  private const string? constStringProp = \\"abc\\";
   private double? numberProp;
   private EnumTest? enumProp;
   private NestedTest? objectProp;
@@ -14,6 +15,11 @@ public partial class Test
   {
     get { return stringProp; }
     set { this.stringProp = value; }
+  }
+
+  public string? ConstStringProp 
+  {
+    get { return constStringProp; }
   }
 
   public double? NumberProp 
@@ -118,6 +124,11 @@ internal class TestConverter : JsonConverter<Test>
       // write property name and let the serializer serialize the value itself
       writer.WritePropertyName(\\"string prop\\");
       JsonSerializer.Serialize(writer, value.StringProp, options);
+    }
+    if(value.ConstStringProp != null) {
+      // write property name and let the serializer serialize the value itself
+      writer.WritePropertyName(\\"const string prop\\");
+      JsonSerializer.Serialize(writer, value.ConstStringProp, options);
     }
     if(value.NumberProp != null) {
       // write property name and let the serializer serialize the value itself

@@ -77,7 +77,20 @@ export class FormatHelpers {
    * @param {string} value to transform
    * @returns {string}
    */
-  static toCamelCase = camelCase;
+  static toCamelCase(renderName: string): string {
+    const splt = renderName.split(/([0-9]_)/g);
+    if (splt.length > 1) {
+      return splt
+        .map((part) => {
+          if (part.match(/[0-9]_/g)) {
+            return part;
+          }
+          return camelCase(part);
+        })
+        .join('');
+    }
+    return camelCase(renderName);
+  }
 
   /**
    * Transform into a string of capitalized words without separators.
@@ -158,8 +171,8 @@ export class FormatHelpers {
   /**
    * Ensures indentations are prepended to content.
    * @param {string} content to prepend the indentation.
-   * @param {number} size the number of indendations to use. 1 by default
-   * @param {IndentationTypes} type the type of indendations to use. SPACES by default.
+   * @param {number} size the number of indentations to use. 1 by default
+   * @param {IndentationTypes} type the type of indentations to use. SPACES by default.
    * @returns {string}
    */
   static indent(
@@ -186,10 +199,10 @@ export class FormatHelpers {
   }
 
   /**
-   * Get the indendation string based on how many and which type of indentation are requested.
+   * Get the indentation string based on how many and which type of indentation are requested.
    * @private
-   * @param {number} size the number of indendations to use
-   * @param {IndentationTypes} type the type of indendations to use. SPACES by default.
+   * @param {number} size the number of indentations to use
+   * @param {IndentationTypes} type the type of indentations to use. SPACES by default.
    * @returns {string}
    */
   private static getIndentation(

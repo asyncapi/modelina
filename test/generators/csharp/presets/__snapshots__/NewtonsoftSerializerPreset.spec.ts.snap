@@ -5,6 +5,7 @@ exports[`Newtonsoft JSON serializer preset should render serialize and deseriali
 public partial class Test
 {
   private string stringProp;
+  private const string? constStringProp = \\"abc\\";
   private double? numberProp;
   private EnumTest? enumProp;
   private NestedTest? objectProp;
@@ -14,6 +15,11 @@ public partial class Test
   {
     get { return stringProp; }
     set { this.stringProp = value; }
+  }
+
+  public string? ConstStringProp 
+  {
+    get { return constStringProp; }
   }
 
   public double? NumberProp 
@@ -61,7 +67,7 @@ if(jo[\\"objectProp\\"] != null) {
   value.ObjectProp = jo[\\"objectProp\\"].ToObject<NestedTest?>(serializer);
 }
 
-  var additionalProperties = jo.Properties().Where((prop) => prop.Name != \\"string prop\\" || prop.Name != \\"numberProp\\" || prop.Name != \\"enumProp\\" || prop.Name != \\"objectProp\\");
+  var additionalProperties = jo.Properties().Where((prop) => prop.Name != \\"string prop\\" || prop.Name != \\"const string prop\\" || prop.Name != \\"numberProp\\" || prop.Name != \\"enumProp\\" || prop.Name != \\"objectProp\\");
   value.AdditionalProperties = new Dictionary<string, dynamic>();
 
   foreach (var additionalProperty in additionalProperties)
@@ -77,6 +83,10 @@ if(jo[\\"objectProp\\"] != null) {
   if (value.StringProp != null)
 {
   jo.Add(\\"string prop\\", JToken.FromObject(value.StringProp, serializer));
+}
+if (value.ConstStringProp != null)
+{
+  jo.Add(\\"const string prop\\", JToken.FromObject(value.ConstStringProp, serializer));
 }
 if (value.NumberProp != null)
 {

@@ -14,9 +14,10 @@ export const PythonDefaultTypeMapping: PythonTypeMapping = {
     return constrainedModel.name;
   },
   Reference({ constrainedModel }): string {
-    return constrainedModel.name;
+    return `${constrainedModel.name}.${constrainedModel.name}`;
   },
-  Any(): string {
+  Any({ dependencyManager }): string {
+    dependencyManager.addDependency('from typing import Any');
     return 'Any';
   },
   Float(): string {
@@ -37,8 +38,9 @@ export const PythonDefaultTypeMapping: PythonTypeMapping = {
     });
     return `tuple[${tupleTypes.join(', ')}]`;
   },
-  Array({ constrainedModel }): string {
-    return `list[${constrainedModel.valueModel.type}]`;
+  Array({ constrainedModel, dependencyManager }): string {
+    dependencyManager.addDependency('from typing import List');
+    return `List[${constrainedModel.valueModel.type}]`;
   },
   Enum({ constrainedModel }): string {
     //Returning name here because all enum models have been split out
@@ -51,7 +53,7 @@ export const PythonDefaultTypeMapping: PythonTypeMapping = {
     return unionTypes.join(' | ');
   },
   Dictionary({ constrainedModel }): string {
-    return `dict[${constrainedModel.value.type}, ${constrainedModel.value.type}]`;
+    return `dict[${constrainedModel.key.type}, ${constrainedModel.value.type}]`;
   }
 };
 

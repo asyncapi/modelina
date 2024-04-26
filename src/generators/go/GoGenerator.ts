@@ -11,6 +11,7 @@ import {
   ConstrainedObjectModel,
   ConstrainedEnumModel,
   ConstrainedMetaModel,
+  ConstrainedUnionModel,
   MetaModel
 } from '../../models';
 import {
@@ -32,10 +33,20 @@ import { Logger } from '../../utils/LoggingInterface';
 import { GoDefaultConstraints, GoDefaultTypeMapping } from './GoConstrainer';
 import { DeepPartial, mergePartialAndDefault } from '../../utils/Partials';
 import { GoDependencyManager } from './GoDependencyManager';
+import { UnionRenderer } from './renderers/UnionRenderer';
 
+/**
+ * @typedef GoOptions
+ * @prop {string} unionAnyModelName  Change default name for any models.
+ * @prop {string} unionDictModelName Change default name for Dictionary Models.
+ * @prop {string} unionArrModelName  Change default name for Array models.
+ */
 export interface GoOptions extends CommonGeneratorOptions<GoPreset> {
   typeMapping: TypeMapping<GoOptions, GoDependencyManager>;
   constraints: Constraints<GoOptions>;
+  unionAnyModelName: string;
+  unionDictModelName: string;
+  unionArrModelName: string;
 }
 export type GoConstantConstraint = ConstantConstraint<GoOptions>;
 export type GoEnumKeyConstraint = EnumKeyConstraint<GoOptions>;
@@ -48,9 +59,6 @@ export interface GoRenderCompleteModelOptions {
   packageName: string;
 }
 
-/**
- * Generator for Go
- */
 export class GoGenerator extends AbstractGenerator<
   GoOptions,
   GoRenderCompleteModelOptions
@@ -59,7 +67,10 @@ export class GoGenerator extends AbstractGenerator<
     ...defaultGeneratorOptions,
     defaultPreset: GO_DEFAULT_PRESET,
     typeMapping: GoDefaultTypeMapping,
-    constraints: GoDefaultConstraints
+    constraints: GoDefaultConstraints,
+    unionAnyModelName: 'ModelinaAnyType',
+    unionDictModelName: 'ModelinaDictType',
+    unionArrModelName: 'ModelinaArrType'
   };
 
   static defaultCompleteModelOptions: GoRenderCompleteModelOptions = {
@@ -99,7 +110,8 @@ export class GoGenerator extends AbstractGenerator<
     //These are the models that we have separate renderers for
     const metaModelsToSplit: SplitOptions = {
       splitEnum: true,
-      splitObject: true
+      splitObject: true,
+      splitUnion: true
     };
     return split(model, metaModelsToSplit);
   }
@@ -138,6 +150,12 @@ export class GoGenerator extends AbstractGenerator<
       );
     } else if (args.constrainedModel instanceof ConstrainedEnumModel) {
       return this.renderEnum(
+        args.constrainedModel,
+        args.inputModel,
+        optionsToUse
+      );
+    } else if (args.constrainedModel instanceof ConstrainedUnionModel) {
+      return this.renderUnion(
         args.constrainedModel,
         args.inputModel,
         optionsToUse
@@ -241,6 +259,32 @@ ${outputModel.result}`;
     const dependencyManagerToUse = this.getDependencyManager(optionsToUse);
     const presets = this.getPresets('struct');
     const renderer = new StructRenderer(
+      optionsToUse,
+      this,
+      presets,
+      model,
+      inputModel,
+      dependencyManagerToUse
+    );
+    const result = await renderer.runSelfPreset();
+    return RenderOutput.toRenderOutput({
+      result,
+      renderedName: model.name,
+      dependencies: dependencyManagerToUse.dependencies
+    });
+  }
+  async renderUnion(
+    model: ConstrainedUnionModel,
+    inputModel: InputMetaModel,
+    options?: DeepPartial<GoOptions>
+  ): Promise<RenderOutput> {
+    const optionsToUse = GoGenerator.getGoOptions({
+      ...this.options,
+      ...options
+    });
+    const dependencyManagerToUse = this.getDependencyManager(optionsToUse);
+    const presets = this.getPresets('union');
+    const renderer = new UnionRenderer(
       optionsToUse,
       this,
       presets,
