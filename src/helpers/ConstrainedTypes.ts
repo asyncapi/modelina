@@ -1,4 +1,4 @@
-import { Logger } from 'utils';
+import { Logger } from '../utils';
 import { AbstractDependencyManager } from '../generators/AbstractDependencyManager';
 import {
   ConstrainedAnyModel,

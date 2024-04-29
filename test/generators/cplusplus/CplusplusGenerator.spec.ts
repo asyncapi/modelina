@@ -84,15 +84,9 @@ describe('CplusplusGenerator', () => {
           members: {
             oneOf: [{ type: 'string' }, { type: 'number' }, { type: 'boolean' }]
           },
-          tuple_type: {
-            type: 'array',
-            items: [{ type: 'string' }, { type: 'number' }]
-          },
           array_type: {
             type: 'array',
-            items: {
-              oneOf: [{ type: 'string' }, { type: 'number' }]
-            }
+            items: [{ type: 'string' }, { type: 'number' }]
           }
         },
         patternProperties: {
