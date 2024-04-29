@@ -4,49 +4,14 @@ exports[`PythonGenerator Class should handle self reference models 1`] = `
 "class Address: 
   def __init__(self, input: Dict):
     if 'self_model' in input:
-      self._self_model: Address.Address = Address.Address(input['self_model'])
+      self._self_model: Address = Address(input['self_model'])
     if 'array_model' in input:
-      self._array_model: List[Address.Address] = input['array_model']
+      self._array_model: List[Address] = input['array_model']
     if 'tuple_model' in input:
-      self._tuple_model: tuple[Address.Address] = input['tuple_mode
+      self._tuple_model: tuple[Address, str] = input['tuple_model']
     if 'map_model' in input:
-      self._map_model: dict[str, Address.Address] = input['map_model']
+      self._map_model: dict[str, Address] = input['map_model']
     if 'union_model' in input:
-      self._union_model: Address.Address = input['union_model']
-
-  @property
-  def self_model(self) -> 'Address'.Address:
-    return self._self_model
-  @self_model.setter
-  def self_model(self, self_model: 'Address'.Address):
-    self._self_model = self_model
-
-  @property
-  def array_model(self) -> List['Address'.Address]:
-    return self._array_model
-  @array_model.setter
-  def array_model(self, array_model: List['Address'.Address]):
-    self._array_model = array_model
-
-  @property
-  def tuple_model(self) -> tuple['Address'.Address]:
-    return self._tuple_model
-  @tuple_model.setter
-  def tuple_model(self, tuple_model: tuple['Address'.Address]):
-    self._tuple_model = tuple_model
-
-  @property
-  def map_model(self) -> dict[str, 'Address'.Address]:
-    return self._map_model
-  @map_model.setter
-  def map_model(self, map_model: dict[str, 'Address'.Address]):
-    self._map_model = map_model
-
-  @property
-  def union_model(self) -> 'Address'.Address:
-    return self._union_model
-  @union_model.setter
-  def union_model(self, union_model: 'Address'.Address):
       self._union_model: Address | str = input['union_model']
 
   @property
@@ -122,24 +87,24 @@ Array [
   "class CoreSchemaMetaMinusSchemaObject: 
   def __init__(self, input: Dict):
     if 'additional_items' in input:
-      self._additional_items: CoreSchemaMetaMinusSchemaObject.CoreSchemaMetaMinusSchemaObject | bool = input['additional_items']
+      self._additional_items: CoreSchemaMetaMinusSchemaObject | bool = input['additional_items']
     if 'items' in input:
-      self._items: CoreSchemaMetaMinusSchemaObject.CoreSchemaMetaMinusSchemaObject | bool | List[CoreSchemaMetaMinusSchemaObject.CoreSchemaMetaMinusSchemaObject | bool] = input['items']
+      self._items: CoreSchemaMetaMinusSchemaObject | bool | List[CoreSchemaMetaMinusSchemaObject | bool] = input['items']
     if 'additional_properties' in input:
       self._additional_properties: dict[str, Any] = input['additional_properties']
 
   @property
-  def additional_items(self) -> CoreSchemaMetaMinusSchemaObject.CoreSchemaMetaMinusSchemaObject | bool:
+  def additional_items(self) -> CoreSchemaMetaMinusSchemaObject | bool:
     return self._additional_items
   @additional_items.setter
-  def additional_items(self, additional_items: CoreSchemaMetaMinusSchemaObject.CoreSchemaMetaMinusSchemaObject | bool):
+  def additional_items(self, additional_items: CoreSchemaMetaMinusSchemaObject | bool):
     self._additional_items = additional_items
 
   @property
-  def items(self) -> CoreSchemaMetaMinusSchemaObject.CoreSchemaMetaMinusSchemaObject | bool | List[CoreSchemaMetaMinusSchemaObject.CoreSchemaMetaMinusSchemaObject | bool]:
+  def items(self) -> CoreSchemaMetaMinusSchemaObject | bool | List[CoreSchemaMetaMinusSchemaObject | bool]:
     return self._items
   @items.setter
-  def items(self, items: CoreSchemaMetaMinusSchemaObject.CoreSchemaMetaMinusSchemaObject | bool | List[CoreSchemaMetaMinusSchemaObject.CoreSchemaMetaMinusSchemaObject | bool]):
+  def items(self, items: CoreSchemaMetaMinusSchemaObject | bool | List[CoreSchemaMetaMinusSchemaObject | bool]):
     self._items = items
 
   @property

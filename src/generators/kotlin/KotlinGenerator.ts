@@ -75,10 +75,8 @@ const SAFE_MODEL_TYPES: any[] = [
   ConstrainedStringModel,
   ConstrainedBooleanModel,
   ConstrainedTupleModel,
-  ConstrainedArrayModel,
   ConstrainedEnumModel,
-  ConstrainedUnionModel,
-  ConstrainedDictionaryModel
+  ConstrainedUnionModel
 ];
 
 export class KotlinGenerator extends AbstractGenerator<
