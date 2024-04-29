@@ -289,7 +289,6 @@ describe('ConstrainHelpers', () => {
       expect(mockedTypeMapping.Boolean).toHaveBeenCalledTimes(1);
     });
   });
-
   describe('constrain TupleModel', () => {
     test('should constrain correctly', () => {
       const stringModel = new StringModel('', undefined, {});
@@ -439,7 +438,7 @@ describe('ConstrainHelpers', () => {
         }
       );
       expect(constrainedModel instanceof ConstrainedUnionModel).toEqual(true);
-      expect(constrainedModel.options.discriminator?.type).toEqual('test');
+      expect(constrainedModel.options.discriminator?.type).toEqual('string');
     });
   });
   describe('constrain EnumModel', () => {
@@ -529,6 +528,49 @@ describe('ConstrainHelpers', () => {
       expect(constrainedModel instanceof ConstrainedDictionaryModel).toEqual(
         true
       );
+    });
+  });
+
+  describe('constrain circular models', () => {
+    test('should handle recursive models', () => {
+      const stringModel = new StringModel('c', undefined, {});
+      const unionA = new UnionModel('a', undefined, {}, [stringModel]);
+      const unionB = new UnionModel('b', undefined, {}, [stringModel]);
+      unionA.union.push(unionB);
+      unionB.union.push(unionA);
+      const constrainedModel = constrainMetaModel(
+        {
+          ...mockedTypeMapping,
+          Union: ({ constrainedModel }) => {
+            return constrainedModel.union
+              .map((value) => value.type)
+              .join(' and ');
+          }
+        },
+        mockedConstraints,
+        {
+          metaModel: unionA,
+          options: {},
+          constrainedName: '',
+          dependencyManager: undefined as never
+        },
+        [
+          ConstrainedAnyModel,
+          ConstrainedBooleanModel,
+          ConstrainedFloatModel,
+          ConstrainedIntegerModel,
+          ConstrainedStringModel,
+          ConstrainedReferenceModel,
+          ConstrainedObjectModel,
+          ConstrainedEnumModel,
+          ConstrainedObjectModel,
+          ConstrainedArrayModel,
+          ConstrainedDictionaryModel,
+          ConstrainedTupleModel
+        ]
+      );
+      expect(constrainedModel instanceof ConstrainedUnionModel).toEqual(true);
+      expect(constrainedModel.type).toEqual('string and string and any');
     });
   });
 });

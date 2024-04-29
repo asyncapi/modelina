@@ -48,7 +48,7 @@ export interface ApplyingTypesOptions<
  *  Model a: Union model with Model b
  *  Model b: Union model with any model
  *
- * Additionally (regretfully, but for now) we also apply `constant` values here, because they depend on types in most cases.
+ * Additionally (regretfully, but for now) we also constrain `constant` and `discriminator` values here, because they depend on types in most cases and cant be determined before then.
  */
 export function applyTypesAndConst<
   GeneratorOptions,
@@ -93,9 +93,7 @@ export function applyTypesAndConst<
     //With the same information as the node we are currently on.
     //This is to open up the cycle so we can finish determining types.
     Logger.warn(
-      `Cyclic models detected, we have to replace ${JSON.stringify(
-        constrainedModel
-      )} with AnyModel...`
+      `Cyclic models detected, we have to replace ${constrainedModel.originalInput} with AnyModel...`
     );
     const anyModel = new ConstrainedAnyModel(
       constrainedModel.name,
