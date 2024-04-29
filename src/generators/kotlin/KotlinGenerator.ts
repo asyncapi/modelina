@@ -7,9 +7,7 @@ import {
 } from '../AbstractGenerator';
 import {
   ConstrainedAnyModel,
-  ConstrainedArrayModel,
   ConstrainedBooleanModel,
-  ConstrainedDictionaryModel,
   ConstrainedEnumModel,
   ConstrainedFloatModel,
   ConstrainedIntegerModel,

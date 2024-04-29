@@ -1,3 +1,4 @@
+import { Logger } from 'utils';
 import { AbstractDependencyManager } from '../generators/AbstractDependencyManager';
 import {
   ConstrainedAnyModel,
@@ -20,7 +21,7 @@ export interface ApplyingTypesOptions<
 > {
   /**
    * Constrained Model types that are safe to constrain the type for.
-   * This varies per language as they are split out differently from each other.
+   * This varies per language as they are split out differently from each other, and which types depend on the types of others.
    *
    * A safe type, means that it does not depend on other meta models to determine it's type.
    */
@@ -31,20 +32,25 @@ export interface ApplyingTypesOptions<
   generatorOptions: GeneratorOptions;
   partOfProperty?: ConstrainedObjectPropertyModel;
   dependencyManager: DependencyManager;
-  shouldWalkNode?: boolean;
   constrainRules: Constraints<GeneratorOptions>;
 }
 
 /**
- * Applying types through cyclic analysis (https://en.wikipedia.org/wiki/Cycle_(graph_theory))
- * to detect and adapt unmanageable models that are cyclic where needed.
+ * Applying types and const through cyclic analysis (https://en.wikipedia.org/wiki/Cycle_(graph_theory))
+ * to detect and adapt unmanageable cyclic models where we cant determine types as normal.
  *
  * For example;
  *  Model a: Union model with Model b
  *  Model b: Union model with Model a
- * In such case we are unable to render the type, cause
+ * In such case we are unable to render the type, cause each depend on each other to determine the type.
+ *
+ * The algorithm currently adapts the models so we end up with;
+ *  Model a: Union model with Model b
+ *  Model b: Union model with any model
+ *
+ * Additionally (regretfully, but for now) we also apply `constant` values here, because they depend on types in most cases.
  */
-export function applyTypes<
+export function applyTypesAndConst<
   GeneratorOptions,
   DependencyManager extends AbstractDependencyManager
 >(
@@ -58,75 +64,70 @@ export function applyTypes<
     dependencyManager,
     generatorOptions,
     alreadySeenModels,
-    shouldWalkNode = true,
     constrainRules
   } = context;
   const isCyclicModel =
     alreadySeenModels.has(constrainedModel) &&
     alreadySeenModels.get(constrainedModel) === undefined;
   const hasBeenSolved = alreadySeenModels.has(constrainedModel);
+  const applyTypeAndConst = (model: ConstrainedMetaModel) => {
+    model.type = getTypeFromMapping(typeMapping, {
+      constrainedModel: model,
+      options: generatorOptions,
+      partOfProperty,
+      dependencyManager
+    });
+
+    if (model.options.const) {
+      const constrainedConstant = constrainRules.constant({
+        constrainedMetaModel: model,
+        options: generatorOptions
+      });
+      model.options.const.value = constrainedConstant;
+    }
+    alreadySeenModels.set(model, model.type);
+  };
 
   if (isCyclicModel) {
-    //Cyclic models detected, having to make the edge (right before cyclic occur) to use any meta model (most open type)
-    //With the same information as the node we walk to
+    //Cyclic models detected, having to make the edge (right before cyclic occur) to use AnyModel (most open type we have)
+    //With the same information as the node we are currently on.
+    //This is to open up the cycle so we can finish determining types.
+    Logger.warn(
+      `Cyclic models detected, we have to replace ${JSON.stringify(
+        constrainedModel
+      )} with AnyModel...`
+    );
     const anyModel = new ConstrainedAnyModel(
       constrainedModel.name,
       constrainedModel.originalInput,
       constrainedModel.options,
       ''
     );
-    anyModel.type = getTypeFromMapping(typeMapping, {
-      constrainedModel: anyModel,
-      options: generatorOptions,
-      partOfProperty,
-      dependencyManager
-    });
-
-    if (anyModel.options.const) {
-      const constrainedConstant = constrainRules.constant({
-        constrainedMetaModel: anyModel,
-        options: generatorOptions
-      });
-      anyModel.options.const.value = constrainedConstant;
-    }
-
-    alreadySeenModels.set(anyModel, anyModel.type);
+    applyTypeAndConst(anyModel);
     return anyModel;
   } else if (hasBeenSolved) {
     return undefined;
   }
 
-  //Mark the model as having been walked but does not have a type yet
+  //Mark the model as having been walked but has not been given a type yet
   alreadySeenModels.set(constrainedModel, undefined);
 
   //Walk over all safe models that can determine it's type right away
   for (const safeType of safeTypes) {
     if (constrainedModel instanceof safeType) {
-      constrainedModel.type = getTypeFromMapping(typeMapping, {
-        constrainedModel,
-        options: generatorOptions,
-        partOfProperty,
-        dependencyManager
-      });
-
-      if (constrainedModel.options.const) {
-        const constrainedConstant = constrainRules.constant({
-          constrainedMetaModel: constrainedModel,
-          options: generatorOptions
-        });
-        constrainedModel.options.const.value = constrainedConstant;
-      }
-      alreadySeenModels.set(constrainedModel, constrainedModel.type);
+      applyTypeAndConst(constrainedModel);
       break;
     }
   }
-  if (shouldWalkNode) {
-    walkNode(context);
-  }
+
+  //Walk over all nested models
+  walkNode(context);
 }
 
 /**
- * A node is a model that can contain other models and is not a safe type to constrain i.e. a meta model that is not split out.
+ * A node is a model that can contain other models.
+ *
+ * This function walks over all of them, and if cyclic models are detected open up it up.
  */
 function walkNode<
   GeneratorOptions,
@@ -157,20 +158,20 @@ function walkNode<
     context.alreadySeenModels.set(constrainedModel, constrainedModel.type);
   }
 
-  if (constrainedModel instanceof ConstrainedReferenceModel) {
-    if (constrainedModel.options.const) {
-      const constrainedConstant = constrainRules.constant({
-        constrainedMetaModel: constrainedModel,
-        options: generatorOptions
-      });
-      constrainedModel.options.const.value = constrainedConstant;
-    }
+  if (
+    constrainedModel instanceof ConstrainedReferenceModel &&
+    constrainedModel.options.const
+  ) {
+    const constrainedConstant = constrainRules.constant({
+      constrainedMetaModel: constrainedModel,
+      options: generatorOptions
+    });
+    constrainedModel.options.const.value = constrainedConstant;
   }
 
   if (constrainedModel instanceof ConstrainedUnionModel) {
     addDiscriminatorTypeToUnionModel(constrainedModel);
   }
-
 }
 
 function walkObjectNode<
@@ -182,7 +183,7 @@ function walkObjectNode<
   for (const [propertyKey, propertyModel] of Object.entries({
     ...objectModel.properties
   })) {
-    const overWriteModel = applyTypes({
+    const overWriteModel = applyTypesAndConst({
       ...context,
       constrainedModel: propertyModel.property,
       partOfProperty: propertyModel
@@ -201,7 +202,7 @@ function walkDictionaryNode<
   const dictionaryModel =
     context.constrainedModel as ConstrainedDictionaryModel;
 
-  const overwriteKeyModel = applyTypes({
+  const overwriteKeyModel = applyTypesAndConst({
     ...context,
     constrainedModel: dictionaryModel.key,
     partOfProperty: undefined
@@ -209,7 +210,7 @@ function walkDictionaryNode<
   if (overwriteKeyModel) {
     dictionaryModel.key = overwriteKeyModel;
   }
-  const overWriteValueModel = applyTypes({
+  const overWriteValueModel = applyTypesAndConst({
     ...context,
     constrainedModel: dictionaryModel.value,
     partOfProperty: undefined
@@ -225,7 +226,7 @@ function walkTupleNode<
   const tupleModel = context.constrainedModel as ConstrainedTupleModel;
 
   for (const [index, tupleMetaModel] of [...tupleModel.tuple].entries()) {
-    const overwriteTupleModel = applyTypes({
+    const overwriteTupleModel = applyTypesAndConst({
       ...context,
       constrainedModel: tupleMetaModel.value,
       partOfProperty: undefined
@@ -242,11 +243,10 @@ function walkArrayNode<
   DependencyManager extends AbstractDependencyManager
 >(context: ApplyingTypesOptions<GeneratorOptions, DependencyManager>) {
   const arrayModel = context.constrainedModel as ConstrainedArrayModel;
-  const overWriteArrayModel = applyTypes({
+  const overWriteArrayModel = applyTypesAndConst({
     ...context,
     constrainedModel: arrayModel.valueModel,
-    partOfProperty: undefined,
-    shouldWalkNode: true
+    partOfProperty: undefined
   });
 
   if (overWriteArrayModel) {
@@ -261,11 +261,10 @@ function walkUnionNode<
   const unionModel = context.constrainedModel as ConstrainedUnionModel;
   //If all union value models have type, we can go ahead and get the type for the union as well.
   for (const [index, unionValueModel] of [...unionModel.union].entries()) {
-    const overwriteUnionModel = applyTypes({
+    const overwriteUnionModel = applyTypesAndConst({
       ...context,
       constrainedModel: unionValueModel,
-      partOfProperty: undefined,
-      shouldWalkNode: true
+      partOfProperty: undefined
     });
 
     if (overwriteUnionModel) {
@@ -280,7 +279,7 @@ function walkReferenceNode<
   DependencyManager extends AbstractDependencyManager
 >(context: ApplyingTypesOptions<GeneratorOptions, DependencyManager>) {
   const referenceModel = context.constrainedModel as ConstrainedReferenceModel;
-  const overwriteReference = applyTypes({
+  const overwriteReference = applyTypesAndConst({
     ...context,
     constrainedModel: referenceModel.ref,
     partOfProperty: undefined

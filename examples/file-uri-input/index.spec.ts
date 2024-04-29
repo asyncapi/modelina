@@ -25,5 +25,4 @@ describe('Should be able to render models using file URI as input', () => {
       expect(spy.mock.calls[0]).toMatchSnapshot();
     });
   });
-
 });

@@ -21,7 +21,7 @@ import {
   MetaModel,
   ObjectPropertyModel
 } from '../models/MetaModel';
-import { applyTypes } from './ConstrainedTypes';
+import { applyTypesAndConst } from './ConstrainedTypes';
 import { metaModelFactory } from './MetaModelToConstrained';
 import { TypeMapping } from './TypeHelpers';
 
@@ -118,7 +118,7 @@ export function constrainMetaModel<
   ]
 ): ConstrainedMetaModel {
   const constrainedModel = metaModelFactory(constrainRules, context, new Map());
-  applyTypes({
+  applyTypesAndConst({
     constrainedModel,
     generatorOptions: context.options,
     typeMapping,
