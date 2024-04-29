@@ -12,7 +12,6 @@ import {
   ConstrainedUnionModel
 } from '../models/ConstrainedMetaModel';
 import { Constraints } from './MetaModelToConstrained';
-
 import { TypeMapping, getTypeFromMapping } from './TypeHelpers';
 
 export interface ApplyingTypesOptions<
@@ -36,6 +35,42 @@ export interface ApplyingTypesOptions<
 }
 
 /**
+ * Apply const and type to models from the constraint rules
+ */
+function applyTypeAndConst<
+  GeneratorOptions,
+  DependencyManager extends AbstractDependencyManager
+>(context: ApplyingTypesOptions<GeneratorOptions, DependencyManager>) {
+  const {
+    constrainedModel,
+    typeMapping,
+    partOfProperty,
+    dependencyManager,
+    generatorOptions,
+    alreadySeenModels,
+    constrainRules
+  } = context;
+  if (constrainedModel.type !== '') {
+    return;
+  }
+  constrainedModel.type = getTypeFromMapping(typeMapping, {
+    constrainedModel,
+    options: generatorOptions,
+    partOfProperty,
+    dependencyManager
+  });
+
+  if (constrainedModel.options.const) {
+    const constrainedConstant = constrainRules.constant({
+      constrainedMetaModel: constrainedModel,
+      options: generatorOptions
+    });
+    constrainedModel.options.const.value = constrainedConstant;
+  }
+  alreadySeenModels.set(constrainedModel, constrainedModel.type);
+}
+
+/**
  * Applying types and const through cyclic analysis (https://en.wikipedia.org/wiki/Cycle_(graph_theory))
  * to detect and adapt unmanageable cyclic models where we cant determine types as normal.
  *
@@ -56,37 +91,11 @@ export function applyTypesAndConst<
 >(
   context: ApplyingTypesOptions<GeneratorOptions, DependencyManager>
 ): ConstrainedMetaModel | undefined {
-  const {
-    constrainedModel,
-    safeTypes,
-    typeMapping,
-    partOfProperty,
-    dependencyManager,
-    generatorOptions,
-    alreadySeenModels,
-    constrainRules
-  } = context;
+  const { constrainedModel, safeTypes, alreadySeenModels } = context;
   const isCyclicModel =
     alreadySeenModels.has(constrainedModel) &&
     alreadySeenModels.get(constrainedModel) === undefined;
   const hasBeenSolved = alreadySeenModels.has(constrainedModel);
-  const applyTypeAndConst = (model: ConstrainedMetaModel) => {
-    model.type = getTypeFromMapping(typeMapping, {
-      constrainedModel: model,
-      options: generatorOptions,
-      partOfProperty,
-      dependencyManager
-    });
-
-    if (model.options.const) {
-      const constrainedConstant = constrainRules.constant({
-        constrainedMetaModel: model,
-        options: generatorOptions
-      });
-      model.options.const.value = constrainedConstant;
-    }
-    alreadySeenModels.set(model, model.type);
-  };
 
   if (isCyclicModel) {
     //Cyclic models detected, having to make the edge (right before cyclic occur) to use AnyModel (most open type we have)
@@ -101,7 +110,7 @@ export function applyTypesAndConst<
       constrainedModel.options,
       ''
     );
-    applyTypeAndConst(anyModel);
+    applyTypeAndConst({ ...context, constrainedModel: anyModel });
     return anyModel;
   } else if (hasBeenSolved) {
     return undefined;
@@ -113,7 +122,7 @@ export function applyTypesAndConst<
   //Walk over all safe models that can determine it's type right away
   for (const safeType of safeTypes) {
     if (constrainedModel instanceof safeType) {
-      applyTypeAndConst(constrainedModel);
+      applyTypeAndConst({ ...context, constrainedModel });
       break;
     }
   }
@@ -131,7 +140,7 @@ function walkNode<
   GeneratorOptions,
   DependencyManager extends AbstractDependencyManager
 >(context: ApplyingTypesOptions<GeneratorOptions, DependencyManager>) {
-  const { constrainedModel, constrainRules, generatorOptions } = context;
+  const { constrainedModel } = context;
 
   if (constrainedModel instanceof ConstrainedObjectModel) {
     walkObjectNode(context);
@@ -146,26 +155,8 @@ function walkNode<
   } else if (constrainedModel instanceof ConstrainedReferenceModel) {
     walkReferenceNode(context);
   }
-  if (constrainedModel.type === '') {
-    constrainedModel.type = getTypeFromMapping(context.typeMapping, {
-      constrainedModel,
-      options: context.generatorOptions,
-      partOfProperty: context.partOfProperty,
-      dependencyManager: context.dependencyManager
-    });
-    context.alreadySeenModels.set(constrainedModel, constrainedModel.type);
-  }
 
-  if (
-    constrainedModel instanceof ConstrainedReferenceModel &&
-    constrainedModel.options.const
-  ) {
-    const constrainedConstant = constrainRules.constant({
-      constrainedMetaModel: constrainedModel,
-      options: generatorOptions
-    });
-    constrainedModel.options.const.value = constrainedConstant;
-  }
+  applyTypeAndConst({ ...context, constrainedModel });
 
   if (constrainedModel instanceof ConstrainedUnionModel) {
     addDiscriminatorTypeToUnionModel(constrainedModel);

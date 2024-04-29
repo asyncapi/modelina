@@ -2,13 +2,6 @@
 
 This document contain all the breaking changes and migrations guidelines for adapting your code to the new version.
 
-## Rewrite of how types are determined
-
-In v3 and below, there was a edge case where a type could not be determined IF it was a cyclic model that was NOT split out into separate models. This change affects all generators to various degrees.
-
-For example 
-
-
 ## Deprecation of `processor.interpreter`
 
 Since the early days we had the option to set `processorOptions.interpreter` options to change how JSON Schema is interpreted to Meta models. However, these options are more accurately part of the `processorOptions.jsonSchema` options.
