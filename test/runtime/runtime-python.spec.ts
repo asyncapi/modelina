@@ -1,4 +1,4 @@
-import { execCommand } from "../blackbox/utils/Utils";
+import { execCommand } from "../TestUtils/GeneralUtils";
 import path from "path";
 
 
