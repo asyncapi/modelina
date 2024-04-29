@@ -143,7 +143,7 @@ exports[`PythonGenerator Class should render \`class\` type 1`] = `
       self._marriage: bool = input['marriage']
     if 'members' in input:
       self._members: str | float | bool = input['members']
-    self._array_type: tuple[str, float] = input['array_type']
+    self._array_type: List[str | float | Any] = input['array_type']
     if 'additional_properties' in input:
       self._additional_properties: dict[str, Any | str] = input['additional_properties']
 
@@ -190,10 +190,10 @@ exports[`PythonGenerator Class should render \`class\` type 1`] = `
     self._members = members
 
   @property
-  def array_type(self) -> tuple[str, float]:
+  def array_type(self) -> List[str | float | Any]:
     return self._array_type
   @array_type.setter
-  def array_type(self, array_type: tuple[str, float]):
+  def array_type(self, array_type: List[str | float | Any]):
     self._array_type = array_type
 
   @property

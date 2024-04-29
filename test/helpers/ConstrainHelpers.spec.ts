@@ -146,7 +146,7 @@ describe('ConstrainHelpers', () => {
         constrainedModel.options.extend?.at(0) instanceof ConstrainedObjectModel
       ).toEqual(true);
       expect(mockedConstraints.modelName).toHaveBeenCalledTimes(2);
-      expect(mockedTypeMapping.Object).toHaveBeenCalledTimes(2);
+      expect(mockedTypeMapping.Object).toHaveBeenCalledTimes(1);
     });
   });
   describe('constrain ReferenceModel', () => {

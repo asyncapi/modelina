@@ -106,9 +106,8 @@ describe('CplusplusGenerator', () => {
         '#include <string>',
         '#include <optional>',
         '#include <variant>',
-        '#include <tuple>',
-        '#include <vector>',
         '#include <any>',
+        '#include <vector>',
         '#include <map>'
       ];
       const models = await generator.generate(doc);

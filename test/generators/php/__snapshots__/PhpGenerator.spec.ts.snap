@@ -24,7 +24,7 @@ exports[`PhpGenerator Class should render \`class\` type 1`] = `
   private float $houseNumber;
   private ?bool $marriage;
   private mixed $members;
-  private mixed $arrayType;
+  private array $arrayType;
   private mixed $additionalProperties;
 
   public function getStreetName(): string { return $this->streetName; }
@@ -45,8 +45,8 @@ exports[`PhpGenerator Class should render \`class\` type 1`] = `
   public function getMembers(): mixed { return $this->members; }
   public function setMembers(mixed $members): void { $this->members = $members; }
 
-  public function getArrayType(): mixed { return $this->arrayType; }
-  public function setArrayType(mixed $arrayType): void { $this->arrayType = $arrayType; }
+  public function getArrayType(): array { return $this->arrayType; }
+  public function setArrayType(array $arrayType): void { $this->arrayType = $arrayType; }
 
   public function getAdditionalProperties(): mixed { return $this->additionalProperties; }
   public function setAdditionalProperties(mixed $additionalProperties): void { $this->additionalProperties = $additionalProperties; }
