@@ -84,9 +84,15 @@ describe('CplusplusGenerator', () => {
           members: {
             oneOf: [{ type: 'string' }, { type: 'number' }, { type: 'boolean' }]
           },
-          array_type: {
+          tuple_type: {
             type: 'array',
             items: [{ type: 'string' }, { type: 'number' }]
+          },
+          array_type: {
+            type: 'array',
+            items: {
+              oneOf: [{ type: 'string' }, { type: 'number' }]
+            }
           }
         },
         patternProperties: {
@@ -100,8 +106,9 @@ describe('CplusplusGenerator', () => {
         '#include <string>',
         '#include <optional>',
         '#include <variant>',
-        '#include <any>',
+        '#include <tuple>',
         '#include <vector>',
+        '#include <any>',
         '#include <map>'
       ];
       const models = await generator.generate(doc);
