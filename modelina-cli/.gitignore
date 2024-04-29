@@ -10,3 +10,6 @@ node_modules
 oclif.lock
 oclif.manifest.json
 dist
+
+# Because we cant use local references (bug with windows build), we have to pack the dependency ourself
+scripts/modelina-package

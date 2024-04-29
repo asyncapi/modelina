@@ -14,7 +14,7 @@ public partial class Test
   public string StringProp 
   {
     get { return stringProp; }
-    set { stringProp = value; }
+    set { this.stringProp = value; }
   }
 
   public string? ConstStringProp 
@@ -25,25 +25,25 @@ public partial class Test
   public double? NumberProp 
   {
     get { return numberProp; }
-    set { numberProp = value; }
+    set { this.numberProp = value; }
   }
 
   public EnumTest? EnumProp 
   {
     get { return enumProp; }
-    set { enumProp = value; }
+    set { this.enumProp = value; }
   }
 
   public NestedTest? ObjectProp 
   {
     get { return objectProp; }
-    set { objectProp = value; }
+    set { this.objectProp = value; }
   }
 
   public Dictionary<string, dynamic>? AdditionalProperties 
   {
     get { return additionalProperties; }
-    set { additionalProperties = value; }
+    set { this.additionalProperties = value; }
   }
 }
 
@@ -170,13 +170,13 @@ public partial class NestedTest
   public string? StringProp 
   {
     get { return stringProp; }
-    set { stringProp = value; }
+    set { this.stringProp = value; }
   }
 
   public Dictionary<string, dynamic>? AdditionalProperties 
   {
     get { return additionalProperties; }
-    set { additionalProperties = value; }
+    set { this.additionalProperties = value; }
   }
 }
 

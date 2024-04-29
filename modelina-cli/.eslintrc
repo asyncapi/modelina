@@ -22,6 +22,7 @@
     "unicorn/no-await-expression-member": "off",
     "security/detect-non-literal-fs-filename": "off",
     "no-underscore-dangle": "off",
-    "unicorn/prefer-module": "off"
+    "unicorn/prefer-module": "off",
+    "valid-jsdoc": "off"
   }
 }

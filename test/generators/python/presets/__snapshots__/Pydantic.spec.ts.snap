@@ -5,8 +5,8 @@ exports[`PYTHON_PYDANTIC_PRESET should render pydantic for class 1`] = `
   prop: Optional[str] = Field(description='''test
     multi
     line
-    description''', default=None, serialization_alias='prop')
-  additional_properties: Optional[dict[str, Any]] = Field(default=None, serialization_alias='additionalProperties', exclude=True)
+    description''', default=None)
+  additional_properties: Optional[dict[str, Any]] = Field(exclude=True, default=None, alias='''additionalProperties''')
 "
 `;
 
@@ -17,12 +17,12 @@ Array [
   additional_properties: Optional[dict[str, Any]] = Field(default=None, serialization_alias='additionalProperties', exclude=True)
 ",
   "class Union1(BaseModel): 
-  test_prop1: Optional[str] = Field(default=None, serialization_alias='testProp1')
-  additional_properties: Optional[dict[str, Any]] = Field(default=None, serialization_alias='additionalProperties', exclude=True)
+  test_prop1: Optional[str] = Field(default=None, alias='''testProp1''')
+  additional_properties: Optional[dict[str, Any]] = Field(exclude=True, default=None, alias='''additionalProperties''')
 ",
   "class Union2(BaseModel): 
-  test_prop2: Optional[str] = Field(default=None, serialization_alias='testProp2')
-  additional_properties: Optional[dict[str, Any]] = Field(default=None, serialization_alias='additionalProperties', exclude=True)
+  test_prop2: Optional[str] = Field(default=None, alias='''testProp2''')
+  additional_properties: Optional[dict[str, Any]] = Field(exclude=True, default=None, alias='''additionalProperties''')
 ",
 ]
 `;

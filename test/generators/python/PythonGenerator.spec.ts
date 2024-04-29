@@ -90,7 +90,7 @@ describe('PythonGenerator', () => {
           array_model: { type: 'array', items: { $ref: '#' } },
           tuple_model: {
             type: 'array',
-            items: [{ $ref: '#' }],
+            items: [{ $ref: '#' }, { type: 'string' }],
             additionalItems: false
           },
           map_model: {
@@ -100,7 +100,7 @@ describe('PythonGenerator', () => {
             }
           },
           union_model: {
-            oneOf: [{ $ref: '#' }]
+            oneOf: [{ $ref: '#' }, { type: 'string' }]
           }
         },
         additionalProperties: false

@@ -22,7 +22,8 @@ async function checkAndRenameFile(generatedPath, newPath) {
 }
 
 async function createDirectory(directoryPath) {
-  if (await fileExists(directoryPath)) {
+  const exists = await fileExists(directoryPath);
+  if (!exists) {
     await mkdir(directoryPath);
   }
 }

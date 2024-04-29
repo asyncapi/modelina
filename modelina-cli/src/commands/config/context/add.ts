@@ -1,4 +1,4 @@
-import { Flags } from '@oclif/core';
+import { Args, Flags } from '@oclif/core';
 import Command from '../../../base';
 import { addContext, setCurrentContext } from '../../../models/Context';
 import {
@@ -18,14 +18,10 @@ export default class ContextAdd extends Command {
     })
   };
 
-  static args = [
-    { name: 'context-name', description: 'context name', required: true },
-    {
-      name: 'spec-file-path',
-      description: 'file path of the input document',
-      required: true,
-    },
-  ];
+  static args = {
+    'context-name': Args.string({description: 'context name', required: true}),
+    'spec-file-path': Args.string({description: 'file path of the spec file', required: true}),
+  };
 
   async run() {
     const { args, flags } = await this.parse(ContextAdd);

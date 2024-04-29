@@ -8,6 +8,12 @@ const basicDoc = JSON.parse(
     'utf8'
   )
 );
+const circularDoc = JSON.parse(
+  fs.readFileSync(
+    path.resolve(__dirname, './OpenAPIInputProcessor/references_circular.json'),
+    'utf8'
+  )
+);
 jest.mock('../../src/utils/LoggingInterface');
 const processorSpy = jest.spyOn(
   OpenAPIInputProcessor,
@@ -133,6 +139,12 @@ describe('OpenAPIInputProcessor', () => {
         { type: 'string' },
         'test_parameters_header_path_parameter'
       ]);
+    });
+    test('should be able to use $ref when circular', async () => {
+      const processor = new OpenAPIInputProcessor();
+      const commonInputModel = await processor.process(circularDoc);
+      expect(commonInputModel).toMatchSnapshot();
+      expect(processorSpy.mock.calls).toMatchSnapshot();
     });
   });
 });

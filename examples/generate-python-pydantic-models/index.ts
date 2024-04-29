@@ -26,7 +26,8 @@ const jsonSchemaDraft7 = {
       $id: 'options',
       type: ['integer', 'boolean', 'string'],
       enum: [123, 213, true, 'Run']
-    }
+    },
+    'content-type': { type: 'string' }
   }
 };
 

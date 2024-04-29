@@ -105,6 +105,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
     input = JsonSchemaInputProcessor.reflectSchemaNames(
       input,
       {},
+      new Set(),
       'root',
       true
     );
@@ -134,6 +135,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
     input = JsonSchemaInputProcessor.reflectSchemaNames(
       input,
       {},
+      new Set(),
       'root',
       true
     );
@@ -163,6 +165,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
     input = JsonSchemaInputProcessor.reflectSchemaNames(
       input,
       {},
+      new Set(),
       'root',
       true
     );
@@ -259,7 +262,8 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
    * This reflects all the common keywords that are shared between draft-4, draft-7 and Swagger 2.0 Schema
    *
    * @param schema to process
-   * @param namesStack is a aggegator of previous used names
+   * @param namesStack is a aggregator of previous used names
+   * @param seenSchemas is a set of schema already seen and named
    * @param name to infer
    * @param isRoot indicates if performed schema is a root schema
    */
@@ -273,6 +277,13 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
       | OpenapiV3Schema
       | boolean,
     namesStack: Record<string, number>,
+    seenSchemas: Set<
+      | Draft4Schema
+      | Draft6Schema
+      | Draft7Schema
+      | SwaggerV2Schema
+      | OpenapiV3Schema
+    >,
     name?: string,
     isRoot?: boolean
   ): any {
@@ -280,7 +291,14 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
       return schema;
     }
 
+    // short-circuit circular references
+    if (seenSchemas.has(schema)) {
+      return schema;
+    }
+    seenSchemas.add(schema);
+
     schema = { ...schema };
+
     if (isRoot) {
       namesStack[String(name)] = 0;
       (schema as any)[this.MODELGEN_INFFERED_NAME] = name;
@@ -305,6 +323,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
         this.reflectSchemaNames(
           item,
           namesStack,
+          seenSchemas,
           this.ensureNamePattern(name, 'allOf', idx)
         )
       );
@@ -314,6 +333,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
         this.reflectSchemaNames(
           item,
           namesStack,
+          seenSchemas,
           this.ensureNamePattern(name, 'oneOf', idx)
         )
       );
@@ -323,6 +343,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
         this.reflectSchemaNames(
           item,
           namesStack,
+          seenSchemas,
           this.ensureNamePattern(name, 'anyOf', idx)
         )
       );
@@ -331,6 +352,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
       schema.not = this.reflectSchemaNames(
         schema.not,
         namesStack,
+        seenSchemas,
         this.ensureNamePattern(name, 'not')
       );
     }
@@ -341,6 +363,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
       schema.additionalItems = this.reflectSchemaNames(
         schema.additionalItems,
         namesStack,
+        seenSchemas,
         this.ensureNamePattern(name, 'additionalItem')
       );
     }
@@ -351,6 +374,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
       schema.additionalProperties = this.reflectSchemaNames(
         schema.additionalProperties,
         namesStack,
+        seenSchemas,
         this.ensureNamePattern(name, 'additionalProperty')
       );
     }
@@ -361,6 +385,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
             this.reflectSchemaNames(
               item,
               namesStack,
+              seenSchemas,
               this.ensureNamePattern(name, 'item', idx)
             )
         );
@@ -368,6 +393,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
         schema.items = this.reflectSchemaNames(
           schema.items,
           namesStack,
+          seenSchemas,
           this.ensureNamePattern(name, 'item')
         );
       }
@@ -381,6 +407,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
         properties[String(propertyName)] = this.reflectSchemaNames(
           propertySchema,
           namesStack,
+          seenSchemas,
           this.ensureNamePattern(name, propertyName)
         );
       }
@@ -395,6 +422,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
           dependencies[String(dependencyName)] = this.reflectSchemaNames(
             dependency as any,
             namesStack,
+            seenSchemas,
             this.ensureNamePattern(name, dependencyName)
           );
         } else {
@@ -413,6 +441,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
           this.reflectSchemaNames(
             patternProperty as any,
             namesStack,
+            seenSchemas,
             this.ensureNamePattern(name, 'pattern_property', idx)
           );
       }
@@ -426,6 +455,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
         definitions[String(definitionName)] = this.reflectSchemaNames(
           definition,
           namesStack,
+          seenSchemas,
           this.ensureNamePattern(name, definitionName)
         );
       }
@@ -438,6 +468,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
         schema.contains = this.reflectSchemaNames(
           schema.contains,
           namesStack,
+          seenSchemas,
           this.ensureNamePattern(name, 'contain')
         );
       }
@@ -445,6 +476,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
         schema.propertyNames = this.reflectSchemaNames(
           schema.propertyNames,
           namesStack,
+          seenSchemas,
           this.ensureNamePattern(name, 'propertyName')
         );
       }
@@ -454,6 +486,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
           schema.if = this.reflectSchemaNames(
             schema.if,
             namesStack,
+            seenSchemas,
             this.ensureNamePattern(name, 'if')
           );
         }
@@ -461,6 +494,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
           schema.then = this.reflectSchemaNames(
             schema.then,
             namesStack,
+            seenSchemas,
             this.ensureNamePattern(name, 'then')
           );
         }
@@ -468,6 +502,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
           schema.else = this.reflectSchemaNames(
             schema.else,
             namesStack,
+            seenSchemas,
             this.ensureNamePattern(name, 'else')
           );
         }

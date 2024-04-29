@@ -21,37 +21,46 @@ const PYTHON_PYDANTIC_CLASS_PRESET: ClassPresetType<PythonOptions> = {
       `class ${model.name}(BaseModel):`
     );
   },
-  property(params) {
-    let type = params.property.property.type;
-    const propertyName = params.property.propertyName;
+  property({ property, model, renderer }) {
+    let type = property.property.type;
+    const propertyName = property.propertyName;
 
-    if (params.property.property instanceof ConstrainedUnionModel) {
-      const unionTypes = params.property.property.union.map(
+    if (property.property instanceof ConstrainedUnionModel) {
+      const unionTypes = property.property.union.map(
         (unionModel) => unionModel.type
       );
       type = `Union[${unionTypes.join(', ')}]`;
     }
 
-    if (!params.property.required) {
+    if (!property.required) {
       type = `Optional[${type}]`;
     }
+    type = renderer.renderPropertyType({
+      modelType: model.type,
+      propertyType: type
+    });
 
-    const description = params.property.property.originalInput['description']
-      ? `description='''${params.property.property.originalInput['description']}'''`
-      : undefined;
-    const defaultValue = params.property.required ? undefined : 'default=None';
-    const jsonAlias = `serialization_alias='${params.property.unconstrainedPropertyName}'`;
-    let exclude = undefined;
-    if (
-      params.property.property instanceof ConstrainedDictionaryModel &&
-      params.property.property.serializationType === 'unwrap'
-    ) {
-      exclude = 'exclude=True';
+    const decoratorArgs: string[] = [];
+
+    if (property.property.originalInput['description']) {
+      decoratorArgs.push(
+        `description='''${property.property.originalInput['description']}'''`
+      );
     }
-    const fieldTags = [description, defaultValue, jsonAlias, exclude].filter(
-      (value) => value
-    );
-    return `${propertyName}: ${type} = Field(${fieldTags.join(', ')})`;
+    if (
+      property.property instanceof ConstrainedDictionaryModel &&
+      property.property.serializationType === 'unwrap'
+    ) {
+      decoratorArgs.push('exclude=True');
+    }
+    if (!property.required) {
+      decoratorArgs.push('default=None');
+    }
+    if (property.propertyName !== property.unconstrainedPropertyName) {
+      decoratorArgs.push(`alias='''${property.unconstrainedPropertyName}'''`);
+    }
+
+    return `${propertyName}: ${type} = Field(${decoratorArgs.join(', ')})`;
   },
   ctor: () => '',
   getter: () => '',

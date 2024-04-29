@@ -12,25 +12,25 @@ Array [
   public bool RequiredBoolean 
   {
     get { return requiredBoolean; }
-    set { requiredBoolean = value; }
+    set { this.requiredBoolean = value; }
   }
 
   public bool? NotRequiredBoolean 
   {
     get { return notRequiredBoolean; }
-    set { notRequiredBoolean = value; }
+    set { this.notRequiredBoolean = value; }
   }
 
   public string RequiredString 
   {
     get { return requiredString; }
-    set { requiredString = value; }
+    set { this.requiredString = value; }
   }
 
   public string? NotRequiredString 
   {
     get { return notRequiredString; }
-    set { notRequiredString = value; }
+    set { this.notRequiredString = value; }
   }
 }",
 ]

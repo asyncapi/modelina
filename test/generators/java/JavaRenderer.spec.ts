@@ -11,7 +11,7 @@ describe('JavaRenderer', () => {
       JavaGenerator.defaultOptions,
       new JavaGenerator(),
       [],
-      new ConstrainedObjectModel('', undefined, '', {}),
+      new ConstrainedObjectModel('', undefined, {}, '', {}),
       new InputMetaModel(),
       new JavaDependencyManager(JavaGenerator.defaultOptions)
     );

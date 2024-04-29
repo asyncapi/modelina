@@ -7,7 +7,8 @@ import {
   SchemaInterface as AsyncAPISchemaInterface,
   SchemaV2 as AsyncAPISchema,
   fromFile,
-  createAsyncAPIDocument
+  createAsyncAPIDocument,
+  MessagesInterface
 } from '@asyncapi/parser';
 
 import { AbstractInputProcessor } from './AbstractInputProcessor';
@@ -122,37 +123,50 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
     if (channels.length) {
       for (const channel of doc.channels()) {
         for (const operation of channel.operations()) {
-          const operationMessages = operation.messages();
+          const handleMessages = (messages: MessagesInterface) => {
+            // treat multiple messages as oneOf
+            if (messages.length > 1) {
+              const oneOf: any[] = [];
 
-          // treat multiple messages as oneOf
-          if (operationMessages.length > 1) {
-            const oneOf: any[] = [];
+              for (const message of messages) {
+                const payload = message.payload();
 
-            for (const message of operationMessages) {
-              const payload = message.payload();
+                if (!payload) {
+                  continue;
+                }
 
-              if (!payload) {
-                continue;
+                oneOf.push(payload.json());
               }
 
-              oneOf.push(payload.json());
-            }
+              const payload = new AsyncAPISchema(
+                {
+                  $id: channel.id(),
+                  oneOf
+                },
+                channel.meta()
+              );
 
-            const payload = new AsyncAPISchema(
-              {
-                $id: channel.id(),
-                oneOf
-              },
-              channel.meta()
-            );
-
-            addToInputModel(payload);
-          } else if (operationMessages.length === 1) {
-            const payload = operationMessages[0].payload();
-            if (payload) {
               addToInputModel(payload);
+            } else if (messages.length === 1) {
+              const payload = messages[0].payload();
+              if (payload) {
+                addToInputModel(payload);
+              }
+            }
+          };
+          const replyOperation = operation.reply();
+          if (replyOperation !== undefined) {
+            const replyMessages = replyOperation.messages();
+            if (replyMessages.length > 0) {
+              handleMessages(replyMessages);
+            } else {
+              const replyChannelMessages = replyOperation.channel()?.messages();
+              if (replyChannelMessages) {
+                handleMessages(replyChannelMessages);
+              }
             }
           }
+          handleMessages(operation.messages());
         }
       }
     } else {
