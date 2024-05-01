@@ -1,8 +1,8 @@
 import unittest
 import sys
 sys.path.insert(1, '../src/main/')
-from Address import Address
-from NestedObject import NestedObject
+from src.main.Address import Address
+from src.main.NestedObject import NestedObject
 import json
     
 class TestAddress(unittest.TestCase):
@@ -18,8 +18,6 @@ class TestAddress(unittest.TestCase):
             'enumTest' : 'TEST',
             'houseType' : 'DETACHED',
             'roofType' : 'TILE',
-            
-
         })) 
    
 
@@ -30,9 +28,6 @@ class TestAddress(unittest.TestCase):
     def test_should_not_contain_additional_properties_when_serialized(self):
         json_str = self.address.serializeToJson()
         self.assertNotIn('additionalProperties', json_str)
-
-   
-
 
 if __name__ == '__main__':
     unittest.main()
