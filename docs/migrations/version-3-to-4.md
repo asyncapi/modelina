@@ -95,6 +95,10 @@ Console.WriteLine(dateTime2);
 
 Models are aiming to be >= v3.7 compliant.
 
+### Unique types in unions
+
+In v4, unions types are rendered unique, meaning you will never see `str | str` but just `str`.
+
 ### Pydantic now follows v2 instead of v1
 
 Reference: https://docs.pydantic.dev/2.6/migration/
