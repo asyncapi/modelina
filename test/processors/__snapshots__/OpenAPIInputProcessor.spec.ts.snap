@@ -5,7 +5,7 @@ InputMetaModel {
   "models": Object {
     "": AnyModel {
       "name": "",
-      "options": undefined,
+      "options": Object {},
       "originalInput": undefined,
     },
   },
@@ -138,26 +138,28 @@ InputMetaModel {
   "models": Object {
     "": AnyModel {
       "name": "",
-      "options": undefined,
+      "options": Object {},
       "originalInput": undefined,
     },
   },
   "originalInput": Object {
     "components": Object {
-      "ApiResponse": Object {
-        "properties": Object {
-          "code": Object {
-            "format": "int32",
-            "type": "integer",
+      "schemas": Object {
+        "ApiResponse": Object {
+          "properties": Object {
+            "code": Object {
+              "format": "int32",
+              "type": "integer",
+            },
+            "message": Object {
+              "type": "string",
+            },
+            "type": Object {
+              "type": "string",
+            },
           },
-          "message": Object {
-            "type": "string",
-          },
-          "type": Object {
-            "type": "string",
-          },
+          "type": "object",
         },
-        "type": "object",
       },
     },
     "info": Object {
@@ -930,6 +932,67 @@ Array [
       "type": "string",
     },
     "test_parameters_header_Authorization",
+  ],
+]
+`;
+
+exports[`OpenAPIInputProcessor process() should process the OpenAPI document with no paths 1`] = `
+InputMetaModel {
+  "models": Object {
+    "": AnyModel {
+      "name": "",
+      "options": Object {},
+      "originalInput": undefined,
+    },
+  },
+  "originalInput": Object {
+    "components": Object {
+      "schemas": Object {
+        "ApiResponse": Object {
+          "properties": Object {
+            "code": Object {
+              "format": "int32",
+              "type": "integer",
+            },
+            "message": Object {
+              "type": "string",
+            },
+            "type": Object {
+              "type": "string",
+            },
+          },
+          "type": "object",
+        },
+      },
+    },
+    "info": Object {
+      "title": "Simple basic api with no paths",
+    },
+    "openapi": "3.0.3",
+    "paths": Object {},
+  },
+}
+`;
+
+exports[`OpenAPIInputProcessor process() should process the OpenAPI document with no paths 2`] = `
+Array [
+  Array [
+    Object {
+      "properties": Object {
+        "code": Object {
+          "format": "int32",
+          "type": "integer",
+        },
+        "message": Object {
+          "type": "string",
+        },
+        "type": Object {
+          "type": "string",
+        },
+      },
+      "type": "object",
+    },
+    "ApiResponse",
   ],
 ]
 `;

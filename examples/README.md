@@ -50,6 +50,9 @@ These examples show a specific input and how they can be used:
 - [json-schema-single-enum-as-const](./json-schema-single-enum-as-const) - An advanced example that shows how to change how `enum` are interpreted when containing a single value.
 - [json-schema-additional-properties-representation](./json-schema-additional-properties-representation) - An advanced example that shows how to change the property name for additional properties
 - [swagger2.0-from-object](./swagger2.0-from-object) - A basic example where a Swagger 2.0 JS object is used to generate models.
+- [openapi-from-object](./openapi-from-object) - A basic example where an OpenAPI v3.0 JS object is used to generate models.
+- [openapi-include-components](./openapi-include-components) - A basic example where an OpenAPI document without paths is used to generate models by iterating the components.
+- [openapi-v3_1-from-object](./openapi-v3_1-from-object) - A basic example where an OpenAPI v3.1 JS object is used to generate models.
 - [meta-model](./meta-model) - A basic example how to provide a meta model for the generator
 
 ## General examples
