@@ -1,6 +1,7 @@
 import { TS_COMMON_PRESET, TS_JSONBINPACK_PRESET, TypeScriptFileGenerator } from '../../';
 import path from 'path';
-import input from './generic-input.json';
+import input from './generic-input-all.json';
+import simpleInput from './generic-input-simple.json';
 
 async function generateNamedExport() {
   const generator = new TypeScriptFileGenerator({});
@@ -52,6 +53,7 @@ async function generateMarshalling() {
     { exportType: 'named' }
   );
 }
+
 async function generateJsonBinPack() {
   const generator = new TypeScriptFileGenerator({
     presets: [
@@ -64,29 +66,8 @@ async function generateJsonBinPack() {
       TS_JSONBINPACK_PRESET
     ]
   });
-  const simplifiedInput = {
-    "$id": "Address",
-    "description": "This object contains all types of MetaModel generations",
-    "type": "object",
-    "properties": {
-      "street_name": {
-        "type": "string"
-      },
-      "house_number": {
-        "type": "number"
-      },
-      "marriage": {
-        "type": "boolean",
-        "description": "Status if marriage live in given house"
-      },
-    },
-    "required": [
-      "street_name",
-      "house_number",
-    ]
-  }
   await generator.generateToFiles(
-    simplifiedInput,
+    simpleInput,
     path.resolve(
       // eslint-disable-next-line no-undef
       __dirname,
@@ -96,14 +77,11 @@ async function generateJsonBinPack() {
   );
 }
 
-async function generateEverything() {
-  await Promise.all(
-    [
-      generateNamedExport(),
-      generateDefaultExport(),
-      generateMarshalling(),
-      generateJsonBinPack()
-    ]
-  )
-}
-generateEverything();
+Promise.all(
+  [
+    generateNamedExport(),
+    generateDefaultExport(),
+    generateMarshalling(),
+    generateJsonBinPack()
+  ]
+)
