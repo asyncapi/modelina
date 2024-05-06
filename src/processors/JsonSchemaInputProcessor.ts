@@ -227,6 +227,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
       dereference: {
         circular: true,
         excludedPathMatcher: (path: string) => {
+          // References inside examples should not be de-referenced, unless they are a property.
           return (
             path.includes('/examples/') &&
             !path.includes('/properties/examples/')

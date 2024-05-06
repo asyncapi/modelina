@@ -11,8 +11,15 @@ import {
   ConstrainedObjectModel,
   ConstrainedEnumModel,
   ConstrainedMetaModel,
-  ConstrainedUnionModel,
-  MetaModel
+  MetaModel,
+  ConstrainedAnyModel,
+  ConstrainedBooleanModel,
+  ConstrainedFloatModel,
+  ConstrainedIntegerModel,
+  ConstrainedReferenceModel,
+  ConstrainedStringModel,
+  ConstrainedTupleModel,
+  ConstrainedUnionModel
 } from '../../models';
 import {
   ConstantConstraint,
@@ -59,6 +66,24 @@ export interface GoRenderCompleteModelOptions {
   packageName: string;
 }
 
+/**
+ * All the constrained models that do not depend on others to determine the type
+ */
+const SAFE_MODEL_TYPES: any[] = [
+  ConstrainedObjectModel,
+  ConstrainedReferenceModel,
+  ConstrainedAnyModel,
+  ConstrainedFloatModel,
+  ConstrainedIntegerModel,
+  ConstrainedStringModel,
+  ConstrainedBooleanModel,
+  ConstrainedTupleModel,
+  ConstrainedEnumModel
+];
+
+/**
+ * Generator for Go
+ */
 export class GoGenerator extends AbstractGenerator<
   GoOptions,
   GoRenderCompleteModelOptions
@@ -133,7 +158,8 @@ export class GoGenerator extends AbstractGenerator<
         dependencyManager: dependencyManagerToUse,
         options: this.options,
         constrainedName: '' //This is just a placeholder, it will be constrained within the function
-      }
+      },
+      SAFE_MODEL_TYPES
     );
   }
 

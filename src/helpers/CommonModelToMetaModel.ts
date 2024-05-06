@@ -421,6 +421,7 @@ export function convertToEnumModel(
 
   return metaModel;
 }
+
 export function convertToBooleanModel(
   context: ConverterContext
 ): BooleanModel | undefined {
