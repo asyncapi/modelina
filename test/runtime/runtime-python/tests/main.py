@@ -1,8 +1,6 @@
 import unittest
-import sys
-sys.path.insert(1, '../src/main/')
-from Address import Address
-from NestedObject import NestedObject
+from src.main.Address import Address
+from src.main.NestedObject import NestedObject
 import json
     
 class TestAddress(unittest.TestCase):

@@ -209,6 +209,29 @@ describe('PythonConstrainer', () => {
         'test',
         undefined,
         {},
+        'str2'
+      );
+      const model = new ConstrainedUnionModel('test', undefined, {}, '', [
+        unionModel1,
+        unionModel2
+      ]);
+      const type = PythonDefaultTypeMapping.Union({
+        constrainedModel: model,
+        ...defaultOptions
+      });
+      expect(type).toEqual('str | str2');
+    });
+    test('should render unique types', () => {
+      const unionModel1 = new ConstrainedStringModel(
+        'test',
+        undefined,
+        {},
+        'str'
+      );
+      const unionModel2 = new ConstrainedStringModel(
+        'test',
+        undefined,
+        {},
         'str'
       );
       const model = new ConstrainedUnionModel('test', undefined, {}, '', [
@@ -219,7 +242,7 @@ describe('PythonConstrainer', () => {
         constrainedModel: model,
         ...defaultOptions
       });
-      expect(type).toEqual('str | str');
+      expect(type).toEqual('str');
     });
   });
 

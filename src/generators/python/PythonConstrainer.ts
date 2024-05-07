@@ -50,7 +50,8 @@ export const PythonDefaultTypeMapping: PythonTypeMapping = {
     const unionTypes = constrainedModel.union.map((unionModel) => {
       return unionModel.type;
     });
-    return unionTypes.join(' | ');
+    const uniqueSet = new Set(unionTypes);
+    return [...uniqueSet].join(' | ');
   },
   Dictionary({ constrainedModel }): string {
     return `dict[${constrainedModel.key.type}, ${constrainedModel.value.type}]`;

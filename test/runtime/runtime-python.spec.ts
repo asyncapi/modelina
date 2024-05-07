@@ -9,8 +9,8 @@ test("Python runtime testing", async () => {
 
     const compileCommand = `cd ${path.resolve(
         __dirname,
-        "./runtime-python/test/"
-    )} && python3 main.py`;
+        "./runtime-python"
+    )} && python3 -m unittest discover ./tests`;
     await execCommand(compileCommand,true);
   
 });
