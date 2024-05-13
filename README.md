@@ -9,7 +9,7 @@
 [![Discussions](https://img.shields.io/github/discussions/asyncapi/modelina)](https://github.com/asyncapi/modelina/discussions)
 [![Website](https://img.shields.io/website?label=website&url=https%3A%2F%2Fwww.modelina.org)](https://www.modelina.org)
 [![Playground](https://img.shields.io/website?label=playground&url=https%3A%2F%2Fwww.modelina.org%2Fplayground)](https://www.modelina.org/playground) <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-86-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-87-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 Your one-stop tool for generating accurate and well-tested models for representing the message payloads. Use it as a tool in your development workflow, or a library in a larger integrations, entirely in your control.
@@ -434,6 +434,7 @@ Thanks go out to these wonderful people ([emoji key](https://allcontributors.org
     <tr>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/ahem"><img src="https://avatars.githubusercontent.com/u/163283?v=4?s=100" width="100px;" alt="Anders Hellerup Madsen"/><br /><sub><b>Anders Hellerup Madsen</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/commits?author=ahem" title="Code">💻</a> <a href="https://github.com/asyncapi/modelina/commits?author=ahem" title="Tests">⚠️</a> <a href="https://github.com/asyncapi/modelina/issues?q=author%3Aahem" title="Bug reports">🐛</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/rquinio1A"><img src="https://avatars.githubusercontent.com/u/58322910?v=4?s=100" width="100px;" alt="rquinio1A"/><br /><sub><b>rquinio1A</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/commits?author=rquinio1A" title="Code">💻</a> <a href="#example-rquinio1A" title="Examples">💡</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/gitankit7"><img src="https://avatars.githubusercontent.com/u/34441936?v=4?s=100" width="100px;" alt="gitankit7"/><br /><sub><b>gitankit7</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/commits?author=gitankit7" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
