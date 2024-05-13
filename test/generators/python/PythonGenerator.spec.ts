@@ -68,6 +68,47 @@ describe('PythonGenerator', () => {
       expect(models[0].result).toMatchSnapshot();
     });
 
+    test('should render constant types', async () => {
+      const doc = {
+        $id: 'Address',
+        type: 'object',
+        properties: {
+          street_name: { type: 'string', const: 'someAddress' }
+        },
+        additionalProperties: false
+      };
+      const models = await generator.generate(doc);
+      expect(models).toHaveLength(1);
+      expect(models[0].result).toMatchSnapshot();
+    });
+    test('should handle self reference models', async () => {
+      const doc = {
+        $id: 'Address',
+        type: 'object',
+        properties: {
+          self_model: { $ref: '#' },
+          array_model: { type: 'array', items: { $ref: '#' } },
+          tuple_model: {
+            type: 'array',
+            items: [{ $ref: '#' }, { type: 'string' }],
+            additionalItems: false
+          },
+          map_model: {
+            type: 'object',
+            additionalProperties: {
+              $ref: '#'
+            }
+          },
+          union_model: {
+            oneOf: [{ $ref: '#' }, { type: 'string' }]
+          }
+        },
+        additionalProperties: false
+      };
+      const models = await generator.generate(doc);
+      expect(models).toHaveLength(1);
+      expect(models[0].result).toMatchSnapshot();
+    });
     test('should render `class` type', async () => {
       const doc = {
         $id: 'Address',
@@ -96,11 +137,9 @@ describe('PythonGenerator', () => {
         },
         required: ['street_name', 'city', 'state', 'house_number', 'array_type']
       };
-      const expectedDependencies: string[] = [];
       const models = await generator.generate(doc);
       expect(models).toHaveLength(1);
       expect(models[0].result).toMatchSnapshot();
-      expect(models[0].dependencies).toEqual(expectedDependencies);
     });
 
     test('should work with custom preset for `class` type', async () => {
@@ -131,12 +170,10 @@ describe('PythonGenerator', () => {
           }
         ]
       });
-      const expectedDependencies: string[] = [];
 
       const models = await generator.generate(doc);
       expect(models).toHaveLength(1);
       expect(models[0].result).toMatchSnapshot();
-      expect(models[0].dependencies).toEqual(expectedDependencies);
     });
     test('should work with empty objects', async () => {
       const doc = {
@@ -145,12 +182,10 @@ describe('PythonGenerator', () => {
         additionalProperties: false
       };
       generator = new PythonGenerator();
-      const expectedDependencies: string[] = [];
 
       const models = await generator.generate(doc);
       expect(models).toHaveLength(1);
       expect(models[0].result).toMatchSnapshot();
-      expect(models[0].dependencies).toEqual(expectedDependencies);
     });
   });
 });

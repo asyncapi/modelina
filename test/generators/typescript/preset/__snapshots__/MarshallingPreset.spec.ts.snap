@@ -104,14 +104,14 @@ exports[`Marshalling preset should render un/marshal code 1`] = `
       json += \`\\"arrayTest\\": [\${arrayTestJsonValues.join(',')}],\`;
     }
     if(this.tupleTest !== undefined) {
-      const serializedTuple = [];
+      const serializedTuple: any[] = [];
     if(this.tupleTest[0]) {
-      serializedTuple[0] = \${this.tupleTest[0].marshal()}
+      serializedTuple[0] = \`\${this.tupleTest[0].marshal()}\`
     } else {
       serializedTuple[0] = null;
     }
     if(this.tupleTest[1]) {
-      serializedTuple[1] = \${typeof this.tupleTest[1] === 'number' || typeof this.tupleTest[1] === 'boolean' ? this.tupleTest[1] : JSON.stringify(this.tupleTest[1])}
+      serializedTuple[1] = \`\${typeof this.tupleTest[1] === 'number' || typeof this.tupleTest[1] === 'boolean' ? this.tupleTest[1] : JSON.stringify(this.tupleTest[1])}\`
     } else {
       serializedTuple[1] = null;
     }

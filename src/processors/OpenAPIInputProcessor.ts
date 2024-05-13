@@ -4,16 +4,18 @@ import { InputMetaModel, OpenapiV3Schema, ProcessorOptions } from '../models';
 import { Logger } from '../utils';
 import SwaggerParser from '@apidevtools/swagger-parser';
 import { OpenAPIV3, OpenAPIV3_1 } from 'openapi-types';
-import { convertToMetaModel } from '../helpers';
+export interface OpenAPIInputProcessorOptions {
+  includeComponentSchemas?: boolean;
+}
 
 /**
- * Class for processing OpenAPI V3.0 inputs
+ * Class for processing OpenAPI inputs
  */
 export class OpenAPIInputProcessor extends AbstractInputProcessor {
   static supportedVersions = ['3.0.0', '3.0.1', '3.0.2', '3.0.3', '3.1.0'];
 
   /**
-   * Process the input as a OpenAPI V3.0 document
+   * Process the input as a OpenAPI document
    *
    * @param input
    */
@@ -33,10 +35,23 @@ export class OpenAPIInputProcessor extends AbstractInputProcessor {
     const api = (await SwaggerParser.dereference(input as any)) as unknown as
       | OpenAPIV3.Document
       | OpenAPIV3_1.Document;
-
     if (api && api.paths) {
       for (const [path, pathObject] of Object.entries(api.paths)) {
         this.processPath(pathObject, path, inputModel, options);
+      }
+    }
+    if (options?.openapi?.includeComponentSchemas) {
+      for (const [schemaName, schemaObject] of Object.entries(
+        api.components?.schemas ?? {}
+      )) {
+        if ((schemaObject as any)['$ref'] === undefined) {
+          this.includeSchema(
+            schemaObject as OpenAPIV3.SchemaObject | OpenAPIV3_1.SchemaObject,
+            schemaName,
+            inputModel,
+            options
+          );
+        }
       }
     }
     return inputModel;
@@ -246,22 +261,17 @@ export class OpenAPIInputProcessor extends AbstractInputProcessor {
       schema,
       name
     );
-    const newCommonModel = JsonSchemaInputProcessor.convertSchemaToCommonModel(
+    const newMetaModel = JsonSchemaInputProcessor.convertSchemaToMetaModel(
       internalSchema,
       options
     );
-    if (newCommonModel.$id !== undefined) {
-      if (inputModel.models[newCommonModel.$id] !== undefined) {
-        Logger.warn(
-          `Overwriting existing model with $id ${newCommonModel.$id}, are there two models with the same id present?`,
-          newCommonModel
-        );
-      }
-      const metaModel = convertToMetaModel(newCommonModel);
-      inputModel.models[metaModel.name] = metaModel;
-    } else {
-      Logger.warn('Model did not have $id, ignoring.', newCommonModel);
+    if (inputModel.models[newMetaModel.name] !== undefined) {
+      Logger.warn(
+        `Overwriting existing model with name ${newMetaModel.name}, are there two models with the same name present? Overwriting the old model.`,
+        newMetaModel.name
+      );
     }
+    inputModel.models[newMetaModel.name] = newMetaModel;
   }
 
   /**
@@ -277,6 +287,7 @@ export class OpenAPIInputProcessor extends AbstractInputProcessor {
     const namedSchema = JsonSchemaInputProcessor.reflectSchemaNames(
       schema,
       {},
+      new Set(),
       name,
       true
     );

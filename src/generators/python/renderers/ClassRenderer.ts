@@ -1,7 +1,8 @@
 import { PythonRenderer } from '../PythonRenderer';
 import {
   ConstrainedObjectModel,
-  ConstrainedObjectPropertyModel
+  ConstrainedObjectPropertyModel,
+  ConstrainedReferenceModel
 } from '../../../models';
 import { PythonOptions } from '../PythonGenerator';
 import { ClassPresetType } from '../PythonPreset';
@@ -19,6 +20,7 @@ export class ClassRenderer extends PythonRenderer<ConstrainedObjectModel> {
       await this.renderAccessors(),
       await this.runAdditionalContentPreset()
     ];
+    this.dependencyManager.addDependency('from __future__ import annotations');
 
     return `class ${this.model.name}: 
 ${this.indent(this.renderBlock(content, 2))}
@@ -71,6 +73,22 @@ ${this.indent(this.renderBlock(content, 2))}
   runSetterPreset(property: ConstrainedObjectPropertyModel): Promise<string> {
     return this.runPreset('setter', { property });
   }
+
+  /**
+   * Self-referencing property types should not use the default constrained `type`, instead it should use the type as is.
+   *
+   * We cant change the default type, because we dont have access to "parents" of a model.
+   */
+  renderPropertyType({
+    modelType,
+    propertyType
+  }: {
+    modelType: string;
+    propertyType: string;
+  }): string {
+    // Use forward references for getters and setters
+    return propertyType.replaceAll(`${modelType}.${modelType}`, `${modelType}`);
+  }
 }
 
 export const PYTHON_DEFAULT_CLASS_PRESET: ClassPresetType<PythonOptions> = {
@@ -81,27 +99,61 @@ export const PYTHON_DEFAULT_CLASS_PRESET: ClassPresetType<PythonOptions> = {
     const properties = model.properties || {};
     let body = '';
     if (Object.keys(properties).length > 0) {
-      const assigments = Object.values(properties).map((property) => {
-        if (!property.required) {
-          return `if hasattr(input, '${property.propertyName}'):\n\tself._${property.propertyName} = input.${property.propertyName}`;
+      const assignments = Object.values(properties).map((property) => {
+        const propertyType = renderer.renderPropertyType({
+          modelType: model.type,
+          propertyType: property.property.type
+        });
+        if (property.property.options.const) {
+          return `self._${property.propertyName}: ${propertyType} = ${property.property.options.const.value}`;
         }
-        return `self._${property.propertyName} = input.${property.propertyName}`;
+        let assignment: string;
+        if (property.property instanceof ConstrainedReferenceModel) {
+          assignment = `self._${property.propertyName}: ${propertyType} = ${propertyType}(input['${property.propertyName}'])`;
+        } else {
+          assignment = `self._${property.propertyName}: ${propertyType} = input['${property.propertyName}']`;
+        }
+        if (!property.required) {
+          return `if '${property.propertyName}' in input:
+${renderer.indent(assignment, 2)}`;
+        }
+        return assignment;
       });
-      body = renderer.renderBlock(assigments);
+      body = renderer.renderBlock(assignments);
     } else {
       body = `"""
 No properties
 """`;
     }
-    return `def __init__(self, input):
-${renderer.indent(body)}`;
+    renderer.dependencyManager.addDependency(`from typing import Dict`);
+    return `def __init__(self, input: Dict):
+${renderer.indent(body, 2)}`;
   },
-  getter({ property }) {
+  getter({ property, renderer, model }) {
+    const propertyType = renderer.renderPropertyType({
+      modelType: model.type,
+      propertyType: property.property.type
+    });
+    const propAssignment = `return self._${property.propertyName}`;
     return `@property
-def ${property.propertyName}(self):\n\treturn self._${property.propertyName}`;
+def ${property.propertyName}(self) -> ${propertyType}:
+${renderer.indent(propAssignment, 2)}`;
   },
-  setter({ property }) {
+  setter({ property, renderer, model }) {
+    // if const value exists we should not render a setter
+    if (property.property.options.const?.value) {
+      return '';
+    }
+    const propertyType = renderer.renderPropertyType({
+      modelType: model.type,
+      propertyType: property.property.type
+    });
+
+    const propAssignment = `self._${property.propertyName} = ${property.propertyName}`;
+    const propArgument = `${property.propertyName}: ${propertyType}`;
+
     return `@${property.propertyName}.setter
-def ${property.propertyName}(self, ${property.propertyName}):\n\tself._${property.propertyName} = ${property.propertyName}`;
+def ${property.propertyName}(self, ${propArgument}):
+${renderer.indent(propAssignment, 2)}`;
   }
 };

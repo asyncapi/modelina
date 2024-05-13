@@ -6,8 +6,19 @@ import {
   defaultGeneratorOptions
 } from '../AbstractGenerator';
 import {
+  ConstrainedAnyModel,
+  ConstrainedArrayModel,
+  ConstrainedBooleanModel,
+  ConstrainedDictionaryModel,
+  ConstrainedEnumModel,
+  ConstrainedFloatModel,
+  ConstrainedIntegerModel,
   ConstrainedMetaModel,
   ConstrainedObjectModel,
+  ConstrainedReferenceModel,
+  ConstrainedStringModel,
+  ConstrainedTupleModel,
+  ConstrainedUnionModel,
   InputMetaModel,
   MetaModel,
   RenderOutput
@@ -54,6 +65,24 @@ export type JavaScriptTypeMapping = TypeMapping<
 >;
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface JavaScriptRenderCompleteModelOptions {}
+
+/**
+ * All the constrained models that do not depend on others to determine the type
+ */
+const SAFE_MODEL_TYPES: any[] = [
+  ConstrainedObjectModel,
+  ConstrainedReferenceModel,
+  ConstrainedAnyModel,
+  ConstrainedFloatModel,
+  ConstrainedIntegerModel,
+  ConstrainedStringModel,
+  ConstrainedBooleanModel,
+  ConstrainedTupleModel,
+  ConstrainedArrayModel,
+  ConstrainedEnumModel,
+  ConstrainedUnionModel,
+  ConstrainedDictionaryModel
+];
 
 /**
  * Generator for JavaScript
@@ -210,7 +239,8 @@ ${modelCode}`;
         dependencyManager: dependencyManagerToUse,
         options: this.options,
         constrainedName: '' //This is just a placeholder, it will be constrained within the function
-      }
+      },
+      SAFE_MODEL_TYPES
     );
   }
 

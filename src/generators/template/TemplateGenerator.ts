@@ -6,9 +6,16 @@ import {
   defaultGeneratorOptions
 } from '../AbstractGenerator';
 import {
+  ConstrainedAnyModel,
+  ConstrainedBooleanModel,
   ConstrainedEnumModel,
+  ConstrainedFloatModel,
+  ConstrainedIntegerModel,
   ConstrainedMetaModel,
   ConstrainedObjectModel,
+  ConstrainedReferenceModel,
+  ConstrainedStringModel,
+  ConstrainedUnionModel,
   InputMetaModel,
   MetaModel,
   RenderOutput
@@ -49,6 +56,22 @@ export type TemplatePropertyKeyConstraint =
 export interface TemplateRenderCompleteModelOptions {
   packageName: string;
 }
+
+/**
+ * All the constrained models that do not depend on others to determine the type
+ */
+const SAFE_MODEL_TYPES: any[] = [
+  ConstrainedAnyModel,
+  ConstrainedBooleanModel,
+  ConstrainedFloatModel,
+  ConstrainedIntegerModel,
+  ConstrainedStringModel,
+  ConstrainedReferenceModel,
+  ConstrainedObjectModel,
+  ConstrainedUnionModel,
+  ConstrainedEnumModel
+];
+
 export class TemplateGenerator extends AbstractGenerator<
   TemplateOptions,
   TemplateRenderCompleteModelOptions
@@ -126,7 +149,8 @@ export class TemplateGenerator extends AbstractGenerator<
         dependencyManager: dependencyManagerToUse,
         options: this.options,
         constrainedName: '' //This is just a placeholder, it will be constrained within the function
-      }
+      },
+      SAFE_MODEL_TYPES
     );
   }
 

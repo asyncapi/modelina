@@ -193,16 +193,18 @@ export const JavaDefaultTypeMapping: JavaTypeMapping = {
       type: 'boolean'
     });
   },
-  Tuple({ options }): string {
+  Tuple({ options, dependencyManager }): string {
     //Because Java have no notion of tuples (and no custom implementation), we have to render it as a list of any value.
     const tupleType = 'Object';
     if (options.collectionType && options.collectionType === 'List') {
+      dependencyManager.addDependency('import java.util.List;');
       return `List<${tupleType}>`;
     }
     return `${tupleType}[]`;
   },
-  Array({ constrainedModel, options }): string {
+  Array({ constrainedModel, options, dependencyManager }): string {
     if (options.collectionType && options.collectionType === 'List') {
+      dependencyManager.addDependency('import java.util.List;');
       return `List<${constrainedModel.valueModel.type}>`;
     }
     return `${constrainedModel.valueModel.type}[]`;
@@ -230,11 +232,12 @@ export const JavaDefaultTypeMapping: JavaTypeMapping = {
     }
     return constrainedModel.name;
   },
-  Dictionary({ constrainedModel }): string {
+  Dictionary({ constrainedModel, dependencyManager }): string {
     //Limitations to Java is that maps cannot have specific value types...
     if (constrainedModel.value.type === 'int') {
       constrainedModel.value.type = 'Integer';
     }
+    dependencyManager.addDependency('import java.util.Map;');
     return `Map<${constrainedModel.key.type}, ${constrainedModel.value.type}>`;
   }
 };

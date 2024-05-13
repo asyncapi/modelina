@@ -11,7 +11,15 @@ import {
   MetaModel,
   ConstrainedObjectModel,
   ConstrainedEnumModel,
-  InputMetaModel
+  InputMetaModel,
+  ConstrainedAnyModel,
+  ConstrainedBooleanModel,
+  ConstrainedFloatModel,
+  ConstrainedIntegerModel,
+  ConstrainedReferenceModel,
+  ConstrainedStringModel,
+  ConstrainedTupleModel,
+  ConstrainedUnionModel
 } from '../../models';
 import {
   ConstantConstraint,
@@ -51,6 +59,22 @@ export type DartTypeMapping = TypeMapping<DartOptions, DartDependencyManager>;
 export interface DartRenderCompleteModelOptions {
   packageName: string;
 }
+
+/**
+ * All the constrained models that do not depend on others to determine the type
+ */
+const SAFE_MODEL_TYPES: any[] = [
+  ConstrainedObjectModel,
+  ConstrainedReferenceModel,
+  ConstrainedAnyModel,
+  ConstrainedFloatModel,
+  ConstrainedIntegerModel,
+  ConstrainedStringModel,
+  ConstrainedBooleanModel,
+  ConstrainedTupleModel,
+  ConstrainedEnumModel,
+  ConstrainedUnionModel
+];
 
 export class DartGenerator extends AbstractGenerator<
   DartOptions,
@@ -123,7 +147,8 @@ export class DartGenerator extends AbstractGenerator<
         dependencyManager: dependencyManagerToUse,
         options: this.options,
         constrainedName: '' //This is just a placeholder, it will be constrained within the function
-      }
+      },
+      SAFE_MODEL_TYPES
     );
   }
   /**

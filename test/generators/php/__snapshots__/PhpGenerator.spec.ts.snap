@@ -54,6 +54,28 @@ exports[`PhpGenerator Class should render \`class\` type 1`] = `
 "
 `;
 
+exports[`PhpGenerator Class should render complete model 1`] = `
+"<?php
+declare(strict_types=1);
+
+namespace Asyncapi;
+
+
+
+final class CustomClass
+{
+  private ?string $property;
+  private mixed $additionalProperties;
+
+  public function getProperty(): ?string { return $this->property; }
+  public function setProperty(?string $property): void { $this->property = $property; }
+
+  public function getAdditionalProperties(): mixed { return $this->additionalProperties; }
+  public function setAdditionalProperties(mixed $additionalProperties): void { $this->additionalProperties = $additionalProperties; }
+}
+"
+`;
+
 exports[`PhpGenerator Class should render optional/nullable properties 1`] = `
 "final class Address
 {
@@ -93,28 +115,6 @@ exports[`PhpGenerator Class should work with custom preset for \`class\` type 1`
   test2
   public function getAdditionalProperties(): mixed { return $this->additionalProperties; }
   test3
-  public function setAdditionalProperties(mixed $additionalProperties): void { $this->additionalProperties = $additionalProperties; }
-}
-"
-`;
-
-exports[`PhpGenerator Class should render complete model 1`] = `
-"<?php
-declare(strict_types=1);
-
-namespace Asyncapi;
-
-
-
-final class CustomClass
-{
-  private ?string $property;
-  private mixed $additionalProperties;
-
-  public function getProperty(): ?string { return $this->property; }
-  public function setProperty(?string $property): void { $this->property = $property; }
-
-  public function getAdditionalProperties(): mixed { return $this->additionalProperties; }
   public function setAdditionalProperties(mixed $additionalProperties): void { $this->additionalProperties = $additionalProperties; }
 }
 "

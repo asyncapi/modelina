@@ -23,7 +23,7 @@ export class TestRenderer extends AbstractRenderer {
       testOptions,
       new TestGenerator(),
       presets,
-      new ConstrainedAnyModel('', undefined, ''),
+      new ConstrainedAnyModel('', undefined, {}, ''),
       new InputMetaModel()
     );
   }

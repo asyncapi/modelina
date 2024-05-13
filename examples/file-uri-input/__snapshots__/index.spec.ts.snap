@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Should be able to generate models using file URI as input to output folder and should log expected output to console 1`] = `
+exports[`Should be able to render models using file URI as input with file generator and should log expected output to console 1`] = `
 Array [
   "class AnonymousSchema_1 {
   private _displayName?: string;
@@ -29,7 +29,7 @@ Array [
 ]
 `;
 
-exports[`Should be able to render models using file URI as input and should log expected output to console 1`] = `
+exports[`Should be able to render models using file URI as input with regular generator and should log expected output to console 1`] = `
 Array [
   "class AnonymousSchema_1 {
   private _displayName?: string;

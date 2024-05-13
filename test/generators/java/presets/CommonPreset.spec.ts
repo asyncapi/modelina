@@ -52,8 +52,8 @@ describe('JAVA_COMMON_PRESET', () => {
       expect(models).toHaveLength(1);
       expect(models[0].result).toMatchSnapshot();
       expect(models[0].dependencies).toEqual([
-        'import java.util.Objects;',
-        'import java.util.Map;'
+        'import java.util.Map;',
+        'import java.util.Objects;'
       ]);
     });
     test('should not render any functions when all 4 options are disabled', async () => {
@@ -94,8 +94,8 @@ describe('JAVA_COMMON_PRESET', () => {
       expect(models).toHaveLength(1);
       expect(models[0].result).toMatchSnapshot();
       expect(models[0].dependencies).toEqual([
-        'import java.util.Objects;',
-        'import java.util.Map;'
+        'import java.util.Map;',
+        'import java.util.Objects;'
       ]);
     });
     test('should render hashCode', async () => {
@@ -116,8 +116,8 @@ describe('JAVA_COMMON_PRESET', () => {
       expect(models).toHaveLength(1);
       expect(models[0].result).toMatchSnapshot();
       expect(models[0].dependencies).toEqual([
-        'import java.util.Objects;',
-        'import java.util.Map;'
+        'import java.util.Map;',
+        'import java.util.Objects;'
       ]);
     });
     test('should render classToString', async () => {
@@ -157,9 +157,9 @@ describe('JAVA_COMMON_PRESET', () => {
       expect(models).toHaveLength(1);
       expect(models[0].result).toMatchSnapshot();
       expect(models[0].dependencies).toEqual([
+        'import java.util.Map;',
         'import java.util.stream;',
-        'import org.json.JSONObject;',
-        'import java.util.Map;'
+        'import org.json.JSONObject;'
       ]);
     });
     test('should not render anything when isExtended is true', async () => {

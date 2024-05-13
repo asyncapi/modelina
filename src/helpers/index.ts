@@ -8,3 +8,4 @@ export * from './ConstrainHelpers';
 export * from './PresetHelpers';
 export * from './DependencyHelpers';
 export * from './FilterHelpers';
+export * from './AvroToMetaModel';

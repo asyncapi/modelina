@@ -45,7 +45,7 @@ describe('JAVA_DESCRIPTION_PRESET', () => {
     expect(models[0].dependencies).toEqual([]);
   });
 
-  test('should not render anything when isExtended is true and model is discriminator or dictionary', async () => {
+  test('should not render anything when allowInheritance is true and model is discriminator or dictionary', async () => {
     const asyncapiDoc = {
       asyncapi: '2.6.0',
       info: {

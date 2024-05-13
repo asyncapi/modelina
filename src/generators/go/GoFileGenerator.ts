@@ -2,7 +2,7 @@ import { GoGenerator, GoRenderCompleteModelOptions } from './GoGenerator';
 import { InputMetaModel, OutputModel } from '../../models';
 import * as path from 'path';
 import { AbstractFileGenerator } from '../AbstractFileGenerator';
-import { FileHelpers } from '../../helpers';
+import { FileHelpers, FormatHelpers } from '../../helpers';
 
 export class GoFileGenerator
   extends GoGenerator
@@ -28,10 +28,8 @@ export class GoFileGenerator
       return outputModel.modelName !== '';
     });
     for (const outputModel of generatedModels) {
-      const filePath = path.resolve(
-        outputDirectory,
-        `${outputModel.modelName}.go`
-      );
+      const fileName = FormatHelpers.toSnakeCase(outputModel.modelName);
+      const filePath = path.resolve(outputDirectory, `${fileName}.go`);
       await FileHelpers.writerToFileSystem(
         outputModel.result,
         filePath,

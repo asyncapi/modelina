@@ -1,5 +1,5 @@
 import path from 'path';
-import { execCommand } from '../blackbox/utils/Utils';
+import { execCommand } from '../TestUtils/GeneralUtils';
 
 jest.setTimeout(500000);
 

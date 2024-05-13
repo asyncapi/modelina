@@ -47,7 +47,7 @@ describe('ConstrainedMetaModel', () => {
     const constrainedTestModel = new ConstrainedTestModel(
       '',
       undefined,
-      metaModel.options,
+      metaModel.options as any,
       ''
     );
 

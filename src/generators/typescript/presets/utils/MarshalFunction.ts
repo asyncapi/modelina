@@ -33,6 +33,7 @@ function renderMarshalProperty(
 
   return realizePropertyFactory(modelInstanceVariable);
 }
+
 /**
  * Render marshalling logic for tuples
  */
@@ -47,12 +48,12 @@ function renderTupleSerialization(
       tupleEntry.value
     );
     return `if(${modelInstanceVariable}[${tupleEntry.index}]) {
-  serializedTuple[${tupleEntry.index}] = ${temp}
+  serializedTuple[${tupleEntry.index}] = \`${temp}\`
 } else {
   serializedTuple[${tupleEntry.index}] = null;
 }`;
   });
-  return `const serializedTuple = [];
+  return `const serializedTuple: any[] = [];
 ${t.join('\n')}
 json += \`"${unconstrainedProperty}": [\${serializedTuple.join(',')}],\`;`;
 }

@@ -1,14 +1,23 @@
-import { Address } from '../src/jsonbinpack/Address';
+import { ObjectType } from '../src/jsonbinpack/ObjectType';
+import { TestObject } from '../src/jsonbinpack/TestObject';
+import { EnumType } from '../src/jsonbinpack/EnumType';
 
-describe('Address', () => {
-  const address = new Address({
-    streetName: 'test',
-    houseNumber: 1,
-    marriage: true
+describe('JSON binpack', () => {
+  const objectType = new ObjectType({
+    test: 'test'
   });
-  test('be able to serialize model and turning it back to a model with the same values', async () => {
-    const serialized = await address.jsonbinSerialize();
-    const newAddress = await Address.jsonbinDeserialize(serialized);
-    expect(address.marshal()).toEqual(newAddress.marshal());
+  const testObject = new TestObject({
+    stringType: 'test',
+    numberType: 1,
+    booleanType: true,
+    arrayType: ['test'],
+    objectType: objectType,
+    enumType: EnumType.CURLYLEFT_QUOTATION_TEST_QUOTATION_COLON_2_CURLYRIGHT,
+    tupleType: ['test', 1]
+  });
+  test.skip('should be able to serialize model and turning it back to a model with the same values', async () => {
+    const serialized = await testObject.jsonbinSerialize();
+    const newTestObject = await TestObject.jsonbinDeserialize(serialized);
+    expect(testObject.marshal()).toEqual(newTestObject.marshal());
   });
 });

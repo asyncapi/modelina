@@ -1,4 +1,7 @@
-import { ConstrainedUnionModel } from '../../../models';
+import {
+  ConstrainedDictionaryModel,
+  ConstrainedUnionModel
+} from '../../../models';
 import { PythonOptions } from '../PythonGenerator';
 import { ClassPresetType, PythonPreset } from '../PythonPreset';
 
@@ -18,37 +21,43 @@ const PYTHON_PYDANTIC_CLASS_PRESET: ClassPresetType<PythonOptions> = {
       `class ${model.name}(BaseModel):`
     );
   },
-  property(params) {
-    let type = params.property.property.type;
-    const propertyName = params.property.propertyName;
+  property({ property, model, renderer }) {
+    let type = property.property.type;
+    const propertyName = property.propertyName;
 
-    if (params.property.property instanceof ConstrainedUnionModel) {
-      const unionTypes = params.property.property.union.map(
+    if (property.property instanceof ConstrainedUnionModel) {
+      const unionTypes = property.property.union.map(
         (unionModel) => unionModel.type
       );
       type = `Union[${unionTypes.join(', ')}]`;
     }
 
-    if (!params.property.required) {
+    if (!property.required) {
       type = `Optional[${type}]`;
     }
+    type = renderer.renderPropertyType({
+      modelType: model.type,
+      propertyType: type
+    });
 
     const decoratorArgs: string[] = [];
 
-    if (params.property.property.originalInput['description']) {
+    if (property.property.originalInput['description']) {
       decoratorArgs.push(
-        `description='''${params.property.property.originalInput['description']}'''`
+        `description='''${property.property.originalInput['description']}'''`
       );
-    }
-    if (!params.property.required) {
-      decoratorArgs.push('default=None');
     }
     if (
-      params.property.propertyName !== params.property.unconstrainedPropertyName
+      property.property instanceof ConstrainedDictionaryModel &&
+      property.property.serializationType === 'unwrap'
     ) {
-      decoratorArgs.push(
-        `alias='''${params.property.unconstrainedPropertyName}'''`
-      );
+      decoratorArgs.push('exclude=True');
+    }
+    if (!property.required) {
+      decoratorArgs.push('default=None');
+    }
+    if (property.propertyName !== property.unconstrainedPropertyName) {
+      decoratorArgs.push(`alias='''${property.unconstrainedPropertyName}'''`);
     }
 
     return `${propertyName}: ${type} = Field(${decoratorArgs.join(', ')})`;

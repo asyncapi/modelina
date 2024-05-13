@@ -7,9 +7,15 @@ import {
   defaultGeneratorOptions
 } from '../AbstractGenerator';
 import {
+  ConstrainedAnyModel,
+  ConstrainedBooleanModel,
   ConstrainedEnumModel,
+  ConstrainedFloatModel,
+  ConstrainedIntegerModel,
   ConstrainedMetaModel,
   ConstrainedObjectModel,
+  ConstrainedReferenceModel,
+  ConstrainedStringModel,
   InputMetaModel,
   MetaModel,
   RenderOutput
@@ -39,6 +45,9 @@ export interface PythonOptions
   extends CommonGeneratorOptions<PythonPreset, PythonDependencyManager> {
   typeMapping: TypeMapping<PythonOptions, PythonDependencyManager>;
   constraints: Constraints<PythonOptions>;
+  /**
+   * @deprecated no longer in use - we had to switch to using explicit import style, always to support circular model dependencies.
+   */
   importsStyle: 'explicit' | 'implicit';
 }
 export type PythonConstantConstraint = ConstantConstraint<PythonOptions>;
@@ -53,6 +62,20 @@ export type PythonTypeMapping = TypeMapping<
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface PythonRenderCompleteModelOptions {}
 
+/**
+ * All the constrained models that do not depend on others to determine the type
+ */
+const SAFE_MODEL_TYPES: any[] = [
+  ConstrainedAnyModel,
+  ConstrainedBooleanModel,
+  ConstrainedFloatModel,
+  ConstrainedIntegerModel,
+  ConstrainedStringModel,
+  ConstrainedReferenceModel,
+  ConstrainedObjectModel,
+  ConstrainedEnumModel
+];
+
 export class PythonGenerator extends AbstractGenerator<
   PythonOptions,
   PythonRenderCompleteModelOptions
@@ -62,7 +85,7 @@ export class PythonGenerator extends AbstractGenerator<
     defaultPreset: PYTHON_DEFAULT_PRESET,
     typeMapping: PythonDefaultTypeMapping,
     constraints: PythonDefaultConstraints,
-    importsStyle: 'implicit',
+    importsStyle: 'explicit',
     // Temporarily set
     dependencyManager: () => {
       return {} as PythonDependencyManager;
@@ -131,7 +154,8 @@ export class PythonGenerator extends AbstractGenerator<
         dependencyManager: dependencyManagerToUse,
         options: { ...this.options },
         constrainedName: '' //This is just a placeholder, it will be constrained within the function
-      }
+      },
+      SAFE_MODEL_TYPES
     );
   }
 
@@ -206,8 +230,8 @@ export class PythonGenerator extends AbstractGenerator<
       .map((model) => {
         return dependencyManagerToUse.renderDependency(model);
       });
-    const outputContent = `${modelDependencies.join('\n')}
-${outputModel.dependencies.join('\n')}
+    const outputContent = `${outputModel.dependencies.join('\n')}
+${modelDependencies.join('\n')}
 ${outputModel.result}`;
     return RenderOutput.toRenderOutput({
       result: outputContent,
@@ -239,7 +263,7 @@ ${outputModel.result}`;
     return RenderOutput.toRenderOutput({
       result,
       renderedName: model.name,
-      dependencies: dependencyManagerToUse.dependencies
+      dependencies: dependencyManagerToUse.renderDependencies()
     });
   }
 
@@ -266,7 +290,7 @@ ${outputModel.result}`;
     return RenderOutput.toRenderOutput({
       result,
       renderedName: model.name,
-      dependencies: dependencyManagerToUse.dependencies
+      dependencies: dependencyManagerToUse.renderDependencies()
     });
   }
 }
