@@ -65,4 +65,33 @@ describe('PYTHON_PYDANTIC_PRESET', () => {
     const models = await generator.generate(doc);
     expect(models.map((model) => model.result)).toMatchSnapshot();
   });
+
+  test('should render nullable union', async () => {
+    const doc = {
+      title: 'NullableUnionTest',
+      type: 'object',
+      required: ['nullableUnionTest'],
+      properties: {
+        nullableUnionTest: {
+          anyOf: [
+            {
+              title: 'Union1',
+              type: 'object',
+              properties: {
+                testProp1: {
+                  type: 'string'
+                }
+              }
+            },
+            {
+              type: 'null'
+            }
+          ]
+        }
+      }
+    };
+
+    const models = await generator.generate(doc);
+    expect(models.map((model) => model.result)).toMatchSnapshot();
+  });
 });

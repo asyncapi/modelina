@@ -1,5 +1,18 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`PYTHON_PYDANTIC_PRESET should render nullable union 1`] = `
+Array [
+  "class NullableUnionTest(BaseModel): 
+  nullableUnionTest: Optional[Union[Union1]] = Field(default=None)
+  additionalProperties: Optional[dict[Any, Any]] = Field(default=None)
+",
+  "class Union1(BaseModel): 
+  testProp1: Optional[str] = Field(default=None)
+  additionalProperties: Optional[dict[Any, Any]] = Field(default=None)
+",
+]
+`;
+
 exports[`PYTHON_PYDANTIC_PRESET should render pydantic for class 1`] = `
 "class Test(BaseModel): 
   prop: Optional[str] = Field(description='''test
