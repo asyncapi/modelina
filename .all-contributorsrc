@@ -950,6 +950,17 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "janne-slamcore",
+      "name": "Janne Husberg",
+      "avatar_url": "https://avatars.githubusercontent.com/u/112867847?v=4",
+      "profile": "https://github.com/janne-slamcore",
+      "contributions": [
+        "code",
+        "test",
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,
