@@ -958,7 +958,8 @@
       "profile": "https://github.com/janne-slamcore",
       "contributions": [
         "code",
-        "test"
+        "test",
+        "bug"
       ]
     }
   ],
