@@ -29,7 +29,10 @@ const PYTHON_PYDANTIC_CLASS_PRESET: ClassPresetType<PythonOptions> = {
       type = `Union[${unionTypes.join(', ')}]`;
     }
 
-    if (!params.property.required) {
+    const isOptional =
+      !params.property.required ||
+      params.property.property.options.isNullable === true;
+    if (isOptional) {
       type = `Optional[${type}]`;
     }
 
@@ -40,7 +43,7 @@ const PYTHON_PYDANTIC_CLASS_PRESET: ClassPresetType<PythonOptions> = {
         `description='''${params.property.property.originalInput['description']}'''`
       );
     }
-    if (!params.property.required) {
+    if (isOptional) {
       decoratorArgs.push('default=None');
     }
     if (
