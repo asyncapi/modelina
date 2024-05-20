@@ -7,7 +7,10 @@ import {
 describe('GO_COMMON_PRESET', () => {
   let generator: GoGenerator;
   beforeEach(() => {
-    const options: GoCommonPresetOptions = { addJsonTag: true };
+    const options: GoCommonPresetOptions = {
+      addJsonTag: true,
+      addOmitEmpty: true
+    };
     generator = new GoGenerator({
       presets: [{ preset: GO_COMMON_PRESET, options }]
     });

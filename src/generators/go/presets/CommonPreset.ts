@@ -8,12 +8,15 @@ import {
 
 export interface GoCommonPresetOptions {
   addJsonTag: boolean;
+  addOmitEmpty?: boolean;
 }
 
 function renderJSONTag({
-  field
+  field,
+  omitempty
 }: {
   field: ConstrainedObjectPropertyModel;
+  omitempty?: boolean;
 }): string {
   if (
     field.property instanceof ConstrainedDictionaryModel &&
@@ -21,7 +24,9 @@ function renderJSONTag({
   ) {
     return `json:"-"`;
   }
-  return `json:"${field.unconstrainedPropertyName}"`;
+  return `json:"${field.unconstrainedPropertyName}${
+    omitempty ? ', omitempty' : ''
+  }"`;
 }
 
 function renderMarshallingFunctions({
@@ -52,7 +57,7 @@ export const GO_COMMON_PRESET: GoPreset<GoCommonPresetOptions> = {
     field: ({ content, field, options }) => {
       const blocks: string[] = [];
       if (options.addJsonTag) {
-        blocks.push(renderJSONTag({ field }));
+        blocks.push(renderJSONTag({ field, omitempty: options.addOmitEmpty }));
       }
       return `${content} \`${blocks.join(' ')}\``;
     }
