@@ -51,6 +51,11 @@ export const TypeScriptOclifFlags = {
     required: false,
     default: false,
   }),
+  tsRawPropertyNames: Flags.boolean({
+    description: 'Typescript specific, generate the models using raw property names.',
+    required: false,
+    default: false,
+  }),
 }
 
 /**
@@ -60,7 +65,7 @@ export const TypeScriptOclifFlags = {
  * @returns 
  */
 export function buildTypeScriptGenerator(flags: any): BuilderReturnType {
-  const { tsModelType, tsEnumType, tsIncludeComments, tsModuleSystem, tsExportType, tsJsonBinPack, tsMarshalling, tsExampleInstance } = flags;
+  const { tsModelType, tsEnumType, tsIncludeComments, tsModuleSystem, tsExportType, tsJsonBinPack, tsMarshalling, tsExampleInstance, tsRawPropertyNames } = flags;
   const presets = [];
   const options = {
     marshalling: tsMarshalling,
@@ -82,6 +87,7 @@ export function buildTypeScriptGenerator(flags: any): BuilderReturnType {
   const fileGenerator = new TypeScriptFileGenerator({
     modelType: tsModelType as 'class' | 'interface',
     enumType: tsEnumType as 'enum' | 'union',
+    rawPropertyNames: tsRawPropertyNames,
     presets
   });
   const fileOptions = {
