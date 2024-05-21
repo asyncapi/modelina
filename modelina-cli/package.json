@@ -45,7 +45,8 @@
     "/assets",
     "/npm-shrinkwrap.json",
     "/oclif.manifest.json",
-    "/README.md"
+    "/README.md",
+    "./scripts/modelina-package/asyncapi-modelina.tgz"
   ],
   "homepage": "https://github.com/asyncapi/modelina",
   "keywords": [
