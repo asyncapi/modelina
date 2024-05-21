@@ -104,7 +104,7 @@ describe('models', () => {
     test
       .stderr()
       .stdout()
-      .command([...generalOptions,'typescript', './test/fixtures/specification.yml', '--tsRawPropertyNames'])
+      .command([...generalOptions, 'typescript', ASYNCAPI_V2_DOCUMENT, '--tsRawPropertyNames'])
       .it('works when tsRawPropertyNames is set', (ctx, done) => {
         expect(ctx.stdout).to.contain(
           'Successfully generated the following models: '
