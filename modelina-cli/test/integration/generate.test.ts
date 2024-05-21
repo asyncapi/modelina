@@ -94,8 +94,18 @@ describe('models', () => {
     test
       .stderr()
       .stdout()
-      .command([...generalOptions,'typescript', ASYNCAPI_V2_DOCUMENT, '--tsIncludeComments'])
+      .command([...generalOptions, 'typescript', ASYNCAPI_V2_DOCUMENT, '--tsIncludeComments'])
       .it('works when tsExampleInstance is set', (ctx, done) => {
+        expect(ctx.stdout).to.contain(
+          'Successfully generated the following models: '
+        );
+        done();
+      });
+    test
+      .stderr()
+      .stdout()
+      .command([...generalOptions,'typescript', './test/fixtures/specification.yml', '--tsRawPropertyNames'])
+      .it('works when tsRawPropertyNames is set', (ctx, done) => {
         expect(ctx.stdout).to.contain(
           'Successfully generated the following models: '
         );
