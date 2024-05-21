@@ -110,23 +110,13 @@ export async function generateModels(flags: any, document: any, logger: any, lan
   const { fileGenerator, fileOptions } = mapper(flags);
 
   if (output) {
-    const models = await fileGenerator.generateToFiles(
+    return fileGenerator.generateToFiles(
       document,
       output,
       { ...fileOptions, });
-    const generatedModels = models.map((model) => { return model.modelName; });
-    logger.info(`Successfully generated the following models: ${generatedModels.join(', ')}`);
-    return;
   }
 
-  const models = await fileGenerator.generateCompleteModels(
+  return fileGenerator.generateCompleteModels(
     document,
     { ...fileOptions });
-  const generatedModels = models.map((model) => {
-    return `
-  ## Model name: ${model.modelName}
-  ${model.result}
-  `;
-  });
-  logger.info(`Successfully generated the following models: ${generatedModels.join('\n')}`);
 }
