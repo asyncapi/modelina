@@ -21,7 +21,7 @@ function renderJSONTag({
   ) {
     return `json:"-"`;
   }
-  return `json:"${field.unconstrainedPropertyName}"`;
+  return `json:"${field.unconstrainedPropertyName}, omitempty"`;
 }
 
 function renderMarshallingFunctions({
