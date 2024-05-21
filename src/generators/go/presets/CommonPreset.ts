@@ -11,7 +11,7 @@ export interface GoCommonPresetOptions {
 }
 
 function renderJSONTag({
-  field,
+  field
 }: {
   field: ConstrainedObjectPropertyModel;
 }): string {

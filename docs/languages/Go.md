@@ -28,7 +28,6 @@ To generate go models that work correctly with JSON marshal functions we need to
 
 check out this [example for a live demonstration](../../examples/go-json-tags/)
 
-
 ### To and from XML
 Currently not supported, [let everyone know you need it](https://github.com/asyncapi/modelina/issues/new?assignees=&labels=enhancement&template=enhancement.md)!
 
