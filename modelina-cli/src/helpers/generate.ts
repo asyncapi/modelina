@@ -110,13 +110,13 @@ export async function generateModels(flags: any, document: any, logger: any, lan
   const { fileGenerator, fileOptions } = mapper(flags);
 
   if (output) {
-    return await fileGenerator.generateToFiles(
+    return fileGenerator.generateToFiles(
       document,
       output,
       { ...fileOptions, });
   }
 
-  return await fileGenerator.generateCompleteModels(
+  return fileGenerator.generateCompleteModels(
     document,
     { ...fileOptions });
 }
