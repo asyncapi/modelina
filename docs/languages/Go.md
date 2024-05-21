@@ -21,19 +21,12 @@ As you normally only need one library to do this, we developers can never get en
 Here are all the supported presets and the libraries they use for converting to and from JSON:
 
 - [JSON Tags](#json-tags)
-  - [omitempty tag](#omitempty-tag)
 
 #### JSON Tags
 
 To generate go models that work correctly with JSON marshal functions we need to generate appropriate JSON `struct-tags`, use the preset `GO_COMMON_PRESET` and provide the option `addJsonTag: true`.
 
 check out this [example for a live demonstration](../../examples/go-json-tags/)
-
-##### omitempty tag
-
-To add `omitempty` parameter to JSON `struct-tags`, use the preset `GO_COMMON_PRESET` and provide the option `addOmitEmpty: true` along with `addJsonTag: true`. 
-
-check out this [example for a live demonstration](../../examples/go-omitepty-tag/)
 
 
 ### To and from XML
