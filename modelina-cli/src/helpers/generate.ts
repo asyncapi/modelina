@@ -114,19 +114,11 @@ export async function generateModels(flags: any, document: any, logger: any, lan
       document,
       output,
       { ...fileOptions, });
-    const generatedModels = models.map((model) => { return model.modelName; });
-    logger.info(`Successfully generated the following models: ${generatedModels.join(', ')}`);
-    return;
+    return models;
   }
 
   const models = await fileGenerator.generateCompleteModels(
     document,
     { ...fileOptions });
-  const generatedModels = models.map((model) => {
-    return `
-  ## Model name: ${model.modelName}
-  ${model.result}
-  `;
-  });
-  logger.info(`Successfully generated the following models: ${generatedModels.join('\n')}`);
+  return models;
 }
