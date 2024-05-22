@@ -45,7 +45,5 @@ ${model.result}
       });
       logger.info(`Successfully generated the following models: ${generatedModelsString.join('\n')}`);
     }
-
-
   }
 }

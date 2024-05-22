@@ -3,11 +3,11 @@
   "description": "CLI to work with Modelina",
   "version": "4.0.0-next.43",
   "bin": {
-    "modelina": "./bin/run"
+    "modelina": "./bin/run_bin"
   },
   "bugs": "https://github.com/asyncapi/modelina/issues",
   "dependencies": {
-    "@asyncapi/modelina": "file:scripts/modelina-package/asyncapi-modelina.tgz",
+    "@asyncapi/modelina": "file://./scripts/modelina-package/asyncapi-modelina.tgz",
     "@oclif/core": "^3.26.0",
     "@oclif/errors": "^1.3.6",
     "@oclif/plugin-not-found": "^3.1.1",
