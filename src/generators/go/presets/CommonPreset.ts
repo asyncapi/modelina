@@ -19,9 +19,9 @@ function renderJSONTag({
     field.property instanceof ConstrainedDictionaryModel &&
     field.property.serializationType === 'unwrap'
   ) {
-    return `json:"-"`;
+    return `json:"-",omitempty`;
   }
-  return `json:"${field.unconstrainedPropertyName}, omitempty"`;
+  return `json:"${field.unconstrainedPropertyName},omitempty"`;
 }
 
 function renderMarshallingFunctions({
