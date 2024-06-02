@@ -76,7 +76,7 @@
     "build:cjs": "tsc",
     "build:esm": "tsc --project tsconfig.json --module ESNext --outDir ./lib/esm",
     "build:types": "tsc --project tsconfig.json --declaration --emitDeclarationOnly --declarationMap --outDir ./lib/types",
-    "build:cli": "npm pack --pack-destination modelina-cli && node modelina-cli/scripts/renameModelinaPack.js && cd modelina-cli && npm i && npm run build",
+    "build:cli": "cd modelina-cli && npm i && npm run build",
     "docker:build": "docker compose run --build modelina npm install",
     "docker:test": "docker compose run modelina npm run test",
     "test": "npm run test:library && npm run test:examples && npm run test:cli",

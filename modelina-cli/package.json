@@ -7,7 +7,7 @@
   },
   "bugs": "https://github.com/asyncapi/modelina/issues",
   "dependencies": {
-    "@asyncapi/modelina": "file:scripts/modelina-package/asyncapi-modelina.tgz",
+    "@asyncapi/modelina": "^4.0.0-next.45",
     "@oclif/core": "^3.26.0",
     "@oclif/errors": "^1.3.6",
     "@oclif/plugin-not-found": "^3.1.1",
