@@ -1,9 +1,9 @@
 {
   "name": "@asyncapi/modelina-cli",
   "description": "CLI to work with Modelina",
-  "version": "4.0.0-next.45",
+  "version": "4.0.0-next.46",
   "bin": {
-    "modelina": "./bin/run"
+    "modelina": "./bin/run_bin"
   },
   "bugs": "https://github.com/asyncapi/modelina/issues",
   "dependencies": {
