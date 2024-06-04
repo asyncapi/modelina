@@ -42,6 +42,10 @@ jobs:
             dist_folder: macos
             extension: x64.pkg
     steps:
+      - name: Set git to use LF #to once and for all finish neverending fight between Unix and Windows
+        run: |
+          git config --global core.autocrlf false
+          git config --global core.eol lf
       - name: Checkout repository
         uses: actions/checkout@v3
       - name: Check package-lock version
