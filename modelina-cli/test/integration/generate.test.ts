@@ -3,22 +3,12 @@
  
 import path from 'node:path';
 import { expect, test } from '@oclif/test';
-import { createMockServer, stopMockServer } from '../helpers';
-import {rimrafSync} from 'rimraf';
 const generalOptions = ['generate'];
 const outputDir = './test/fixtures/generate/models';
 const ASYNCAPI_V2_DOCUMENT = path.resolve(__dirname, '../fixtures/asyncapi_v2.yml')
 const ASYNCAPI_V3_DOCUMENT = path.resolve(__dirname, '../fixtures/asyncapi_v3.yml')
 
 describe('models', () => {
-  before(() => {
-    createMockServer();
-  });
-  after(() => {
-    stopMockServer();
-    rimrafSync(outputDir);
-  });
-
   test
     .stderr()
     .stdout()

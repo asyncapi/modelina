@@ -105,7 +105,7 @@
     "pack:windows": "oclif pack win && npm run pack:rename",
     "pack:rename": "node scripts/releasePackagesRename.js",
     "prepublishOnly": "npm run build",
-    "test": "cross-env NODE_ENV=development CUSTOM_CONTEXT_FILENAME=\"test.asyncapi-modelina\" CUSTOM_CONTEXT_FILE_LOCATION=\"\" nyc --extension .ts mocha --require ts-node/register --require test/helpers/init.js --reporter spec --timeout 100000 \"test/**/*.test.ts\"",
+    "test": "cross-env NODE_ENV=development CUSTOM_CONTEXT_FILENAME=\"test.asyncapi-modelina\" CUSTOM_CONTEXT_FILE_LOCATION=\"\" nyc --extension .ts mocha \"test/**/*.test.ts\"",
     "bump:version": "npm --no-git-tag-version --allow-same-version version $VERSION"
   }
 }
