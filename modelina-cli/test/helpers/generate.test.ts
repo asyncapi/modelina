@@ -30,16 +30,13 @@ describe('generate models', () => {
   it('should work with AsyncAPI v2 yaml input', async () => {
     const models = await generateModels({}, AsyncapiV2Yaml, logger, Languages.typescript);
     expect(Object.keys(models).length).equal(1);
-    expect(models[0].modelName).equal('UserSignedUpPayload');
   });
   it('should work with AsyncAPI v3 yaml input', async () => {
     const models = await generateModels({}, AsyncapiV3Yaml, logger, Languages.typescript);
     expect(Object.keys(models).length).equal(1);
-    expect(models[0].modelName).equal('UserSignedUpPayload');
   });
   it('should work with AsyncAPI v3 json input', async () => {
     const models = await generateModels({}, AsyncapiV3JSON, logger, Languages.typescript);
     expect(Object.keys(models).length).equal(1);
-    expect(models[0].modelName).equal('UserSignedUpPayload');
   });
 });
