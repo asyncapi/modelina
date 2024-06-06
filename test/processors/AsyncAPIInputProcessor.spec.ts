@@ -164,6 +164,12 @@ describe('AsyncAPIInputProcessor', () => {
       expect(commonInputModel).toMatchSnapshot();
     });
 
+    test('should be able to process YAML file', async () => {
+      const processor = new AsyncAPIInputProcessor();
+      const commonInputModel = await processor.process(yamlDocString);
+      expect(commonInputModel instanceof InputMetaModel).toBeTruthy();
+      expect(commonInputModel.models).toMatchSnapshot();
+    });
     test('should be able to process file', async () => {
       const processor = new AsyncAPIInputProcessor();
       const commonInputModel = await processor.process(ymlFileURI);

@@ -69,7 +69,7 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
       doc = ConvertDocumentParserAPIVersion(rawInput, 2) as any;
     } else {
       const parserOptions = options?.asyncapi || {};
-      const parser = NewParser(2, {
+      const parser = NewParser(3, {
         parserOptions,
         includeSchemaParsers: true
       });
