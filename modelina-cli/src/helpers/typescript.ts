@@ -1,4 +1,4 @@
-import { TS_COMMON_PRESET, TS_DESCRIPTION_PRESET, TS_JSONBINPACK_PRESET, TypeScriptFileGenerator } from "@asyncapi/modelina";
+import { TS_COMMON_PRESET, TS_DESCRIPTION_PRESET, TS_JSONBINPACK_PRESET, TypeScriptFileGenerator, TypeScriptRenderCompleteModelOptions } from "@asyncapi/modelina";
 import { Flags } from "@oclif/core";
 import { BuilderReturnType } from "./generate";
 
@@ -67,32 +67,38 @@ export const TypeScriptOclifFlags = {
 export function buildTypeScriptGenerator(flags: any): BuilderReturnType {
   const { tsModelType, tsEnumType, tsIncludeComments, tsModuleSystem, tsExportType, tsJsonBinPack, tsMarshalling, tsExampleInstance, tsRawPropertyNames } = flags;
   const presets = [];
-  const options = {
-    marshalling: tsMarshalling,
-    example: tsExampleInstance,
-  };
-  presets.push({
-    preset: TS_COMMON_PRESET,
-    options
-  });
+
   if (tsIncludeComments) { presets.push(TS_DESCRIPTION_PRESET); }
   if (tsJsonBinPack) {
+    if(!tsMarshalling) {
+      presets.push({
+        preset: TS_COMMON_PRESET,
+        options: {marshalling: true}
+      });
+    }
+
+    presets.push(
+      TS_JSONBINPACK_PRESET
+    );
+  } else if(tsMarshalling || tsExampleInstance){
     presets.push({
       preset: TS_COMMON_PRESET,
-      options
-    },
-      TS_JSONBINPACK_PRESET);
+      options: {
+        marshalling: tsMarshalling ?? false,
+        example: tsExampleInstance ?? false,
+      }
+    });
   }
 
   const fileGenerator = new TypeScriptFileGenerator({
-    modelType: tsModelType as 'class' | 'interface',
-    enumType: tsEnumType as 'enum' | 'union',
-    rawPropertyNames: tsRawPropertyNames,
+    modelType: (tsModelType ?? 'class') as 'class' | 'interface',
+    enumType: (tsEnumType ?? 'enum') as 'enum' | 'union',
+    moduleSystem: tsModuleSystem ?? 'ESM',
+    rawPropertyNames: tsRawPropertyNames ?? false,
     presets
   });
-  const fileOptions = {
-    moduleSystem: tsModuleSystem,
-    exportType: tsExportType
+  const fileOptions: TypeScriptRenderCompleteModelOptions = {
+    exportType: tsExportType ?? 'named'
   };
   return {
     fileOptions,

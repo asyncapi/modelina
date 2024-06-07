@@ -10,7 +10,7 @@ import {
   createAsyncAPIDocument,
   MessagesInterface
 } from '@asyncapi/parser';
-
+import yaml from 'js-yaml';
 import { AbstractInputProcessor } from './AbstractInputProcessor';
 import { JsonSchemaInputProcessor } from './JsonSchemaInputProcessor';
 import { InputMetaModel, ProcessorOptions } from '../models';
@@ -69,7 +69,7 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
       doc = ConvertDocumentParserAPIVersion(rawInput, 2) as any;
     } else {
       const parserOptions = options?.asyncapi || {};
-      const parser = NewParser(2, {
+      const parser = NewParser(3, {
         parserOptions,
         includeSchemaParsers: true
       });
@@ -407,6 +407,20 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
   tryGetVersionOfDocument(input?: any): string | undefined {
     if (!input) {
       return;
+    }
+    if (typeof input === 'string') {
+      //If string input, it could be stringified JSON or YAML format, lets check
+      let loadedObj;
+      try {
+        loadedObj = yaml.load(input);
+      } catch (e) {
+        try {
+          loadedObj = JSON.parse(input);
+        } catch (e) {
+          return undefined;
+        }
+      }
+      return loadedObj?.asyncapi;
     }
     if (AsyncAPIInputProcessor.isFromParser(input)) {
       return input.version();

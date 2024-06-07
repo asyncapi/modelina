@@ -1,5 +1,102 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`AsyncAPIInputProcessor process() should be able to process YAML file 1`] = `
+Object {
+  "anonymous_schema_1": ObjectModel {
+    "name": "anonymous_schema_1",
+    "options": Object {
+      "isNullable": false,
+    },
+    "originalInput": AsyncapiV2Schema {
+      "properties": Object {
+        "displayName": AsyncapiV2Schema {
+          "description": "Name of the user",
+          "type": "string",
+          "x-modelgen-inferred-name": "anonymous_schema_2",
+          "x-parser-schema-id": "<anonymous-schema-2>",
+        },
+        "email": AsyncapiV2Schema {
+          "description": "Email of the user",
+          "format": "email",
+          "type": "string",
+          "x-modelgen-inferred-name": "anonymous_schema_3",
+          "x-parser-schema-id": "<anonymous-schema-3>",
+        },
+      },
+      "type": "object",
+      "x-modelgen-inferred-name": "anonymous_schema_1",
+      "x-parser-schema-id": "<anonymous-schema-1>",
+    },
+    "properties": Object {
+      "additionalProperties": ObjectPropertyModel {
+        "property": DictionaryModel {
+          "key": StringModel {
+            "name": "additionalProperties",
+            "options": Object {
+              "isNullable": false,
+            },
+            "originalInput": Array [
+              true,
+            ],
+          },
+          "name": "additionalProperties",
+          "options": Object {
+            "isNullable": false,
+          },
+          "originalInput": Array [
+            true,
+          ],
+          "serializationType": "unwrap",
+          "value": AnyModel {
+            "name": "undefined",
+            "options": Object {
+              "isNullable": true,
+            },
+            "originalInput": true,
+          },
+        },
+        "propertyName": "additionalProperties",
+        "required": false,
+      },
+      "displayName": ObjectPropertyModel {
+        "property": StringModel {
+          "name": "anonymous_schema_2",
+          "options": Object {
+            "isNullable": false,
+          },
+          "originalInput": AsyncapiV2Schema {
+            "description": "Name of the user",
+            "type": "string",
+            "x-modelgen-inferred-name": "anonymous_schema_2",
+            "x-parser-schema-id": "<anonymous-schema-2>",
+          },
+        },
+        "propertyName": "displayName",
+        "required": false,
+      },
+      "email": ObjectPropertyModel {
+        "property": StringModel {
+          "name": "anonymous_schema_3",
+          "options": Object {
+            "format": "email",
+            "isNullable": false,
+          },
+          "originalInput": AsyncapiV2Schema {
+            "description": "Email of the user",
+            "format": "email",
+            "type": "string",
+            "x-modelgen-inferred-name": "anonymous_schema_3",
+            "x-parser-schema-id": "<anonymous-schema-3>",
+          },
+        },
+        "propertyName": "email",
+        "required": false,
+      },
+    },
+  },
+}
+`;
+
 exports[`AsyncAPIInputProcessor process() should be able to process file 1`] = `
 Object {
   "anonymous_schema_1": ObjectModel {
@@ -4413,7 +4510,7 @@ InputMetaModel {
         "title": "Signup service example (internal)",
         "version": "0.1.0",
       },
-      "x-parser-api-version": 2,
+      "x-parser-api-version": 3,
       "x-parser-spec-parsed": true,
     },
     "_meta": Object {
@@ -4470,7 +4567,7 @@ InputMetaModel {
             "title": "Signup service example (internal)",
             "version": "0.1.0",
           },
-          "x-parser-api-version": 2,
+          "x-parser-api-version": 3,
           "x-parser-spec-parsed": true,
         },
         "semver": Object {
@@ -4580,8 +4677,10 @@ InputMetaModel {
                 "x-parser-schema-id": "<anonymous-schema-1>",
               },
               "x-parser-message-name": "userSignUpMessage",
+              "x-parser-unique-object-id": "userSignUpMessage",
             },
           },
+          "x-parser-unique-object-id": "userSignedUp",
         },
       },
       "defaultContentType": "application/json",
@@ -4608,12 +4707,15 @@ InputMetaModel {
                   "x-parser-schema-id": "<anonymous-schema-1>",
                 },
                 "x-parser-message-name": "userSignUpMessage",
+                "x-parser-unique-object-id": "userSignUpMessage",
               },
             },
+            "x-parser-unique-object-id": "userSignedUp",
           },
+          "x-parser-unique-object-id": "userSignup",
         },
       },
-      "x-parser-api-version": 2,
+      "x-parser-api-version": 3,
       "x-parser-spec-parsed": true,
     },
     "_meta": Object {
@@ -4671,8 +4773,10 @@ InputMetaModel {
                     "x-parser-schema-id": "<anonymous-schema-1>",
                   },
                   "x-parser-message-name": "userSignUpMessage",
+                  "x-parser-unique-object-id": "userSignUpMessage",
                 },
               },
+              "x-parser-unique-object-id": "userSignedUp",
             },
           },
           "defaultContentType": "application/json",
@@ -4699,12 +4803,15 @@ InputMetaModel {
                       "x-parser-schema-id": "<anonymous-schema-1>",
                     },
                     "x-parser-message-name": "userSignUpMessage",
+                    "x-parser-unique-object-id": "userSignUpMessage",
                   },
                 },
+                "x-parser-unique-object-id": "userSignedUp",
               },
+              "x-parser-unique-object-id": "userSignup",
             },
           },
-          "x-parser-api-version": 2,
+          "x-parser-api-version": 3,
           "x-parser-spec-parsed": true,
         },
         "semver": Object {

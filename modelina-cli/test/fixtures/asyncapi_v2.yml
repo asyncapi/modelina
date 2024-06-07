@@ -1,4 +1,4 @@
-asyncapi: 2.2.0
+asyncapi: '2.6.0'
 info:
   title: Account Service
   version: 1.0.0
@@ -12,12 +12,15 @@ components:
   messages:
     UserSignedUp:
       payload:
-        type: object
-        properties:
-          displayName:
-            type: string
-            description: Name of the user
-          email:
-            type: string
-            format: email
-            description: Email of the user
+        $ref: '#/components/schemas/UserSignedUpPayload'
+  schemas: 
+    UserSignedUpPayload:
+      type: object
+      properties:
+        displayName:
+          type: string
+          description: Name of the user
+        email:
+          type: string
+          format: email
+          description: Email of the user
