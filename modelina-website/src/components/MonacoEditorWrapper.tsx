@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import Editor, { useMonaco } from '@monaco-editor/react';
 import { debounce } from 'lodash';
@@ -16,6 +16,7 @@ export default function MonacoEditorWrapper({
   editorDidMount,
   ...props
 }: any) {
+  const [currentTheme, setTheme] = useState('vs-dark');
   const monacoInstance = useMonaco();
   const previousValue = useRef(value);
   const debouncedOnChange = debounce(onChange, 500);
@@ -34,8 +35,9 @@ export default function MonacoEditorWrapper({
 
     editorDidMount(editor.getValue, editor);
   };
+
   //Alias because Modelina uses cplusplus
-  if(language === 'cplusplus') {
+  if (language === 'cplusplus') {
     language = 'cpp';
   }
 
@@ -55,6 +57,7 @@ export default function MonacoEditorWrapper({
         },
         rules: [{ token: '', background: '#252f3f' }]
       });
+      setTheme('asyncapi-theme');
     }
   }, [monacoInstance]);
 
@@ -62,7 +65,7 @@ export default function MonacoEditorWrapper({
     <Editor
       onMount={handleEditorDidMount}
       language={language}
-      theme={theme}
+      theme={currentTheme}
       value={value}
       options={options}
       {...props}

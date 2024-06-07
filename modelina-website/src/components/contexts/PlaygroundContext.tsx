@@ -100,7 +100,7 @@ export const PlaygroundContextProvider: React.FC<{
     kotlinPackageName: 'asyncapi.models'
   };
 
-  const [showInputEditor, setShowInputEditor] = useState(false);
+  const [showInputEditor, setShowInputEditor] = useState(true);
   const [showOptions, setShowOptions] = useState(false);
   const [showOutputNavigation, setShowOutputNavigation] = useState(false);
   const [config, setConfig] = useState<ModelinaOptions>(defaultConfig);
