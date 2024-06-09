@@ -101,8 +101,8 @@ export const PlaygroundContextProvider: React.FC<{
   };
 
   const [showInputEditor, setShowInputEditor] = useState(true);
-  const [showOptions, setShowOptions] = useState(false);
-  const [showOutputNavigation, setShowOutputNavigation] = useState(false);
+  const [showOptions, setShowOptions] = useState(true);
+  const [showOutputNavigation, setShowOutputNavigation] = useState(true);
   const [config, setConfig] = useState<ModelinaOptions>(defaultConfig);
   const [input, setInput] = useState(
     JSON.stringify(defaultAsyncapiDocument, null, 4)

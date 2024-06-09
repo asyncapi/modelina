@@ -352,19 +352,13 @@ const Playground: React.FC<ModelinaPlaygroundProps> = (props) => {
           Loading Modelina Playground. Rendering playground components...
         </div>
       ) : (
-        <div className="flex h-[90vh] w-full py-2">
-          <div className="flex overflow-hidden h-full w-full">
-            <div className="h-full w-[50px]">
-              <Sidebar />
-            </div>
-            <div className="h-full w-[100%]">
-              <Content
-                setNewConfig={setNewConfig}
-                setNewQuery={setNewQuery}
-                generateNewCode={generateNewCode}
-              />
-            </div>
-          </div>
+        <div className="grid grid-cols-with-sidebar h-[90vh] w-full overflow-hidden">
+          <Sidebar />
+          <Content
+            setNewConfig={setNewConfig}
+            setNewQuery={setNewQuery}
+            generateNewCode={generateNewCode}
+          />
         </div>
       )}
     </div>

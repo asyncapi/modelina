@@ -4,12 +4,14 @@ import { VscListSelection } from 'react-icons/vsc';
 import { LuFileInput, LuFileOutput } from 'react-icons/lu';
 import { Tooltip } from './Tooltip';
 import { usePlaygroundContext } from '../contexts/PlaygroundContext';
+import clsx from 'clsx';
 
 interface SidebarItem {
   name: string;
   title: string;
   isActive: boolean;
   isShow: boolean;
+  mobileOnly: boolean;
   onClick: () => void;
   icon: React.ReactNode;
   tooltip: React.ReactNode;
@@ -32,9 +34,11 @@ export const Sidebar: React.FunctionComponent<SidebarProps> = () => {
       title: 'Input Editor',
       isActive: false,
       isShow: true,
+      mobileOnly: true,
       onClick: () => {
         setShowInputEditor((prevShowOptions) => !prevShowOptions);
         setShowOutputNavigation(false);
+        setShowOptions(false);
       },
       icon: showInputEditor ? (
         <LuFileInput className="w-5 h-5" />
@@ -49,9 +53,9 @@ export const Sidebar: React.FunctionComponent<SidebarProps> = () => {
       title: 'Options',
       isActive: showOptions,
       isShow: true,
+      mobileOnly: false,
       onClick: () => {
         setShowOptions((prevShowOptions) => !prevShowOptions);
-        setShowOutputNavigation(false);
       },
       icon: <IoOptionsOutline className="w-5 h-5" />,
       tooltip: 'Show or hide all the options'
@@ -61,12 +65,12 @@ export const Sidebar: React.FunctionComponent<SidebarProps> = () => {
       name: 'outputExplorer',
       title: 'Output',
       isActive: false,
-      isShow: !showInputEditor,
+      isShow: showInputEditor,
+      mobileOnly: false,
       onClick: () => {
         setShowOutputNavigation(
           (prevShowOutputNavigation) => !prevShowOutputNavigation
         );
-        setShowOptions(false);
       },
       icon: <VscListSelection className="w-5 h-5" />,
       tooltip: 'Show or hide the list of output models'
@@ -76,33 +80,37 @@ export const Sidebar: React.FunctionComponent<SidebarProps> = () => {
   return (
     <div className="flex flex-col h-full w-full bg-[#1f2937] shadow-lg border-r border-gray-700 justify-start">
       <div className="flex flex-col">
-        {sidebarItems
-          .filter(({ isShow }) => isShow === true)
-          .map((item) => (
-            <Tooltip
-              content={item.tooltip}
-              placement="right"
-              hideOnClick={true}
-              key={item.name}
+        {sidebarItems.map((item) => (
+          <Tooltip
+            content={item.tooltip}
+            placement="right"
+            hideOnClick={true}
+            key={item.name}
+          >
+            <button
+              title={item.title}
+              onClick={() => item.onClick()}
+              className={clsx(
+                'flex text-sm focus:outline-none border-box p-2',
+                {
+                  'md:hidden': item.mobileOnly,
+                  'hidden md:block': !item.isShow
+                }
+              )}
+              type="button"
             >
-              <button
-                title={item.title}
-                onClick={() => item.onClick()}
-                className="flex text-sm focus:outline-none border-box p-2"
-                type="button"
+              <div
+                className={
+                  item.isActive
+                    ? 'bg-gray-900 p-2 rounded text-white'
+                    : 'p-2 text-gray-700 hover:text-white'
+                }
               >
-                <div
-                  className={
-                    item.isActive
-                      ? 'bg-gray-900 p-2 rounded text-white'
-                      : 'p-2 text-gray-700 hover:text-white'
-                  }
-                >
-                  {item.icon}
-                </div>
-              </button>
-            </Tooltip>
-          ))}
+                {item.icon}
+              </div>
+            </button>
+          </Tooltip>
+        ))}
       </div>
     </div>
   );
