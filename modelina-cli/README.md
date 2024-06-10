@@ -406,7 +406,7 @@ USAGE
     [--tsModelType class|interface] [--tsEnumType enum|union] [--tsModuleSystem ESM|CJS] [--tsIncludeComments]
     [--tsExportType default|named] [--tsJsonBinPack] [--tsMarshalling] [--tsExampleInstance] [--tsRawPropertyNames]
     [--csharpAutoImplement] [--csharpNewtonsoft] [--csharpArrayType Array|List] [--csharpHashcode] [--csharpEqual]
-    [--csharpSystemJson] [--javaIncludeComments] [--javaJackson] [--javaConstraints]
+    [--csharpSystemJson] [--javaIncludeComments] [--javaJackson] [--javaConstraints] [--javaArrayType Array|List]
 
 ARGUMENTS
   LANGUAGE  (typescript|csharp|golang|java|javascript|dart|python|rust|kotlin|php|cplusplus|scala) The language you want
@@ -424,6 +424,8 @@ FLAGS
       --csharpHashcode            C# specific, generate the models with the GetHashCode method overwritten
       --csharpNewtonsoft          C# specific, generate the models with newtonsoft serialization support
       --csharpSystemJson          C# specific, generate the models with System.Text.Json serialization support
+      --javaArrayType             [default: Array] Java specific, define which type of array needs to be generated.
+                                  <options: Array|List>
       --javaConstraints           Java specific, generate the models with constraints
       --javaIncludeComments       Java specific, if enabled add comments while generating models.
       --javaJackson               Java specific, generate the models with Jackson serialization support
