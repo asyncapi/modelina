@@ -61,7 +61,7 @@ export const Content: FunctionComponent<ContentProps> = ({
         <OptionsNavigation setNewConfig={setNewConfig} />
       </div>
       <div
-        className={clsx('h-full col-span-2 lg:col-start-7 lg:col-end-9', {
+        className={clsx('h-full col-span-2 lg:col-start-8 lg:col-end-10', {
           hidden: !showOutputNavigation
         })}
       >
@@ -69,7 +69,7 @@ export const Content: FunctionComponent<ContentProps> = ({
       </div>
       <div
         className={clsx(
-          'h-full col-span-full md:col-span-3 lg:row-start-1 lg:col-end-7',
+          'h-full col-span-full md:col-span-3 lg:row-start-1 lg:col-end-8',
           {
             'hidden md:block': showInputEditor && !showOptions,
             'lg:col-start-4': showOptions,
@@ -93,11 +93,14 @@ export const Content: FunctionComponent<ContentProps> = ({
         </div>
       </div>
       <div
-        className={clsx('h-full col-span-2 md:col-span-3 lg:col-end-13', {
-          'hidden md:block': !showInputEditor && !showOptions,
-          'col-span-full md:col-span-4 lg:col-start-7': !showOutputNavigation,
-          'lg:col-span-4 lg:row-start-1 lg:col-start-9': showOutputNavigation
-        })}
+        className={clsx(
+          'h-full col-span-2 md:col-span-3 lg:row-start-1 lg:col-end-13',
+          {
+            'hidden md:block': !showInputEditor && !showOptions,
+            'col-span-full md:col-span-4 lg:col-start-8': !showOutputNavigation,
+            'lg:col-span-4 lg:col-start-10': showOutputNavigation
+          }
+        )}
       >
         {error ? (
           <CustomError statusCode={statusCode} errorMessage={errorMessage} />
