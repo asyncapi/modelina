@@ -175,7 +175,7 @@ module.exports = {
         120: '37rem'
       },
       gridTemplateColumns: {
-        'with-sidebar': 'minmax(50px, 5%) 1fr'
+        'with-sidebar': 'minmax(50px, 3%) 1fr'
       },
       margin: {
         36: '9rem'
