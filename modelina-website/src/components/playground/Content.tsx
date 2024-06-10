@@ -52,7 +52,7 @@ export const Content: FunctionComponent<ContentProps> = ({
     <div className="grid h-full w-full grid-cols-4 md:grid-cols-8 lg:grid-cols-12 overflow-visible">
       <div
         className={clsx(
-          'bg-[#1f2937] text-white h-[90vh] w-full col-span-full  lg:col-span-3',
+          'bg-[#1f2937] text-white h-[90vh] w-full col-span-full lg:col-span-3',
           {
             hidden: !showOptions
           }
@@ -61,22 +61,19 @@ export const Content: FunctionComponent<ContentProps> = ({
         <OptionsNavigation setNewConfig={setNewConfig} />
       </div>
       <div
-        className={clsx(
-          'h-full col-span-1 md:col-span-2 lg:col-start-7 lg:col-end-9',
-          {
-            hidden: !showOutputNavigation
-          }
-        )}
+        className={clsx('h-full col-span-2 lg:col-start-7 lg:col-end-9', {
+          hidden: !showOutputNavigation
+        })}
       >
         <OutputNavigation />
       </div>
       <div
         className={clsx(
-          'h-full col-span-full lg:row-start-1 lg:col-end-7 md:col-span-3',
+          'h-full col-span-full md:col-span-3 lg:row-start-1 lg:col-end-7',
           {
-            'hidden md:flex': showInputEditor && !showOptions,
-            'lg:col-start-4 lg:col-span-4': showOptions,
-            'lg:col-start-1 lg:col-span-6': !showOptions,
+            'hidden md:block': showInputEditor && !showOptions,
+            'lg:col-start-4': showOptions,
+            'lg:col-start-1': !showOptions,
             'md:col-span-4': !showOutputNavigation
           }
         )}
@@ -96,12 +93,10 @@ export const Content: FunctionComponent<ContentProps> = ({
         </div>
       </div>
       <div
-        className={clsx('h-full col-span-3 md:col-span-3', {
-          'hidden md:flex': !showInputEditor && !showOptions,
-          'lg:col-span-6 lg:col-start-7 lg:col-end-13': !showOutputNavigation,
-          'col-span-3 lg:col-span-4 lg:col-start-9 lg:col-end-13 lg:row-start-1':
-            showOutputNavigation,
-          'col-span-full md:col-span-4': !showOutputNavigation
+        className={clsx('h-full col-span-2 md:col-span-3 lg:col-end-13', {
+          'hidden md:block': !showInputEditor && !showOptions,
+          'col-span-full md:col-span-4 lg:col-start-7': !showOutputNavigation,
+          'lg:col-span-4 lg:row-start-1 lg:col-start-9': showOutputNavigation
         })}
       >
         {error ? (
