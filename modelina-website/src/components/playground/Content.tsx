@@ -49,7 +49,7 @@ export const Content: FunctionComponent<ContentProps> = ({
   );
 
   return (
-    <div className="grid h-full w-full grid-cols-4 md:grid-cols-8 lg:grid-cols-12 overflow-visible">
+    <div className="grid h-full w-full grid-cols-4 md:grid-cols-8 lg:grid-cols-12">
       <div
         className={clsx(
           'bg-[#1f2937] text-white h-[90vh] w-full col-span-full lg:col-span-3',
