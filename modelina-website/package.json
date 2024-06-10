@@ -8,6 +8,7 @@
     "export": "next export",
     "start": "next start",
     "lint": "next lint -c ./.eslintrc",
+    "lint:fix": "next lint -c ./.eslintrc --fix",
     "build:resources": "npm run build:examples && npm run build:docs && npm run copy:docs:img",
     "build:examples": "node scripts/build-examples.js",
     "build:docs": "node scripts/build-docs.js",
