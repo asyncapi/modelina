@@ -266,6 +266,16 @@ describe('models', () => {
         expect(ctx.stderr).to.contain('Error: In order to generate models to Java, we need to know which package they are under. Add `--packageName=PACKAGENAME` to set the desired package name.\n');
         done();
       });
+    test
+      .stderr()
+      .stdout()
+      .command([...generalOptions, 'java', ASYNCAPI_V2_DOCUMENT, `-o=${ path.resolve(outputDir, './java')}`, '--packageName', 'test.pkg', '--javaArrayType=List'])
+      .it('works when array type is provided', (ctx, done) => {
+        expect(ctx.stdout).to.contain(
+          'Successfully generated the following models: '
+        );
+        done();
+      });
   });
 
   describe('for Go', () => {
