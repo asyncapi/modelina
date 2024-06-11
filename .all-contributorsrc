@@ -961,6 +961,16 @@
         "test",
         "bug"
       ]
+    },
+    {
+      "login": "borrull",
+      "name": "borrull",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5275400?v=4",
+      "profile": "https://github.com/borrull",
+      "contributions": [
+        "code",
+        "test"
+      ]
     }
   ],
   "contributorsPerLine": 7,
