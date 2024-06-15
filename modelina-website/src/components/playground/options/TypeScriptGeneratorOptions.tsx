@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react';
 import Select from '../../Select';
 import { PlaygroundTypeScriptConfigContext } from '@/components/contexts/PlaygroundConfigContext';
 import InfoModal from '@/components/InfoModal';
+import { usePlaygroundContext } from '../../contexts/PlaygroundContext';
 
 interface TypeScriptGeneratorOptionsProps {
   setNewConfig?: (queryKey: string, queryValue: any, updateCode?: boolean) => void;
@@ -14,35 +15,46 @@ export const defaultState: TypeScriptGeneratorState = {};
 const TypeScriptGeneratorOptions: React.FC<TypeScriptGeneratorOptionsProps> = ({ setNewConfig }) => {
   const context = useContext(PlaygroundTypeScriptConfigContext);
   const [state, setState] = useState<TypeScriptGeneratorState>(defaultState);
+  const {
+    setOutputLoading
+  } = usePlaygroundContext();
+
 
   const onChangeMarshalling = (event: React.ChangeEvent<HTMLInputElement>) => {
     setNewConfig && setNewConfig('tsMarshalling', event.target.checked);
+    setOutputLoading(true);
   };
 
   const onChangeIncludeDescriptions = (event: React.ChangeEvent<HTMLInputElement>) => {
     setNewConfig && setNewConfig('tsIncludeDescriptions', event.target.checked);
+    setOutputLoading(true);
   };
 
   const onChangeVariant = (variant: string) => {
     setNewConfig && setNewConfig('tsModelType', variant);
+    setOutputLoading(true);
   };
 
   const onChangeModuleSystem = (moduleSystem: string) => {
     setNewConfig && setNewConfig('tsModuleSystem', moduleSystem);
+    setOutputLoading(true);
   };
 
   const onChangeEnumType = (enumType: string) => {
     setNewConfig && setNewConfig('tsEnumType', enumType);
+    setOutputLoading(true);
   };
 
   const onChangeMapType = (mapType: string) => {
     setNewConfig && setNewConfig('tsMapType', mapType);
+    setOutputLoading(true);
   };
 
   const onChangeIncludeJsonBinPack = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (setNewConfig) {
       const shouldIncludeMarshalling = context?.tsMarshalling === false && event.target.checked === true;
       setNewConfig('tsIncludeJsonBinPack', event.target.checked, !shouldIncludeMarshalling);
+      setOutputLoading(true);
 
       if (shouldIncludeMarshalling) {
         setNewConfig('tsMarshalling', event.target.checked);
@@ -52,6 +64,7 @@ const TypeScriptGeneratorOptions: React.FC<TypeScriptGeneratorOptionsProps> = ({
 
   const onChangeIncludeExampleFunction = (event: React.ChangeEvent<HTMLInputElement>) => {
     setNewConfig && setNewConfig('tsIncludeExampleFunction', event.target.checked);
+    setOutputLoading(true);
   };
 
   return (

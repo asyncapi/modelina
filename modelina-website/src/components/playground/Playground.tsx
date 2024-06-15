@@ -45,6 +45,8 @@ const Playground: React.FC<ModelinaPlaygroundProps> = (props) => {
     setIsLoaded,
     hasLoadedQuery,
     setHasLoadedQuery,
+    outputLoading,
+    setOutputLoading
   } = usePlaygroundContext();
 
   // To avoid hydration error
@@ -263,10 +265,12 @@ const Playground: React.FC<ModelinaPlaygroundProps> = (props) => {
           setError(false);
           setStatusCode(200);
           setErrorMessage('');
+          setOutputLoading(false);
         }).catch(error => {
           console.error(error);
           setError(true);
           setErrorMessage("Input is not a correct AsyncAPI document, so it cannot be processed.");
+          setOutputLoading(true);
           setStatusCode(500);
         });
       }
@@ -274,6 +278,7 @@ const Playground: React.FC<ModelinaPlaygroundProps> = (props) => {
       console.error(e);
       setError(true);
       setErrorMessage("Input is not a correct AsyncAPI document, so it cannot be processed.");
+      setOutputLoading(true);
       setStatusCode(400);
     }
   };

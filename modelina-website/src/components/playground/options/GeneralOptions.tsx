@@ -4,6 +4,7 @@ import { modelinaLanguageOptions } from '@/types';
 import { PlaygroundGeneralConfigContext } from '@/components/contexts/PlaygroundConfigContext';
 import InfoModal from '@/components/InfoModal';
 import Select from '../../Select';
+import { usePlaygroundContext } from '../../contexts/PlaygroundContext';
 
 interface GeneralOptionsProps {
   setNewConfig?: (queryKey: string, queryValue: any) => void;
@@ -13,32 +14,44 @@ interface GeneralOptionsState { }
 
 export const defaultState: GeneralOptionsState = {};
 
+
 const GeneralOptions: React.FC<GeneralOptionsProps> = ({ setNewConfig }) => {
   const context = useContext(PlaygroundGeneralConfigContext);
   const [state, setState] = useState<GeneralOptionsState>(defaultState);
 
+  const {
+    setOutputLoading
+  } = usePlaygroundContext();
+
+
   const onChangeLanguage = (language: any) => {
       setNewConfig?.('language', String(language));
+      setOutputLoading(true);
   };
 
   const onChangeShowTypeMappingExample = (event: React.ChangeEvent<HTMLInputElement>) => {
       setNewConfig?.('showTypeMappingExample', event.target.checked);
+      setOutputLoading(true);
   };
 
   const onChangeIndentationType = (value: any) => {
       setNewConfig?.('indentationType', String(value));
+      setOutputLoading(true);
   };
 
   const onChangePropertyNamingFormat = (value: any) => {
       setNewConfig?.('propertyNamingFormat', String(value));
+      setOutputLoading(true);
   };
 
   const onChangeModelNamingFormat = (value: any) => {
       setNewConfig?.('modelNamingFormat', String(value));
+      setOutputLoading(true);
   };
 
   const onChangeEnumKeyNamingFormat = (value: any) => {
       setNewConfig?.('enumKeyNamingFormat', String(value));
+      setOutputLoading(true);
   };
 
   return (
