@@ -66,5 +66,10 @@ export const GO_COMMON_PRESET: GoPreset<GoCommonPresetOptions> = {
 
       return `${content}\n ${blocks.join('\n')}`;
     }
+  },
+  union: {
+    field: ({content}) => {
+      return `${content} \`json:"-,omitempty\``
+    },
   }
 };
