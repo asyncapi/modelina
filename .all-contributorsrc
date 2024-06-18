@@ -961,6 +961,25 @@
         "test",
         "bug"
       ]
+    },
+    {
+      "login": "borrull",
+      "name": "borrull",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5275400?v=4",
+      "profile": "https://github.com/borrull",
+      "contributions": [
+        "code",
+        "test"
+      ]
+    },
+    {
+      "login": "kamaz",
+      "name": "Kamil Zuzda",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2106178?v=4",
+      "profile": "http://www.yokeplatform.com",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
