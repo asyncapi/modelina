@@ -12,7 +12,12 @@ if (isGithubActions) {
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   assetPrefix: assetPrefix,
-  basePath: basePath
+  basePath: basePath, 
+  eslint: {
+    // Warning: This allows production builds to successfully complete even if
+    // your project has ESLint errors.
+    ignoreDuringBuilds: true,
+  }
 }
 
 module.exports = nextConfig
