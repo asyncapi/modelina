@@ -2,8 +2,8 @@
   "root": true,
   "extends": [
     "airbnb-base",
-    "eslint:recommended",
     "next/core-web-vitals",
+    "eslint:recommended",
     "plugin:prettier/recommended"
   ],
   "env": {
@@ -11,10 +11,7 @@
     "es2021": true,
     "node": true
   },
-  "plugins": [
-    "react",
-    "jsx-a11y"
-  ],
+  "plugins": ["react", "jsx-a11y"],
   "rules": {
     "prettier/prettier": [
       "error",
@@ -90,6 +87,12 @@
         "simple-import-sort/imports": "error", // Import configuration for `eslint-plugin-simple-import-sort`
         "simple-import-sort/exports": "error", // Export configuration for `eslint-plugin-simple-import-sort`
         "@typescript-eslint/no-unused-vars": "off",
+        "@typescript-eslint/no-unused-expressions": [
+          "error",
+          {
+            "allowShortCircuit": true
+          }
+        ],
         "class-methods-use-this": "off",
         "unused-imports/no-unused-imports": "error",
         "unused-imports/no-unused-vars": [
@@ -123,10 +126,7 @@
         ],
         "camelcase": "off",
         "capitalized-comments": "off",
-        "comma-dangle": [
-          "error",
-          "never"
-        ],
+        "comma-dangle": ["error", "never"],
         "comma-spacing": [
           2,
           {
@@ -134,26 +134,17 @@
             "after": true
           }
         ],
-        "comma-style": [
-          "error",
-          "last"
-        ],
+        "comma-style": ["error", "last"],
         "eol-last": "error",
         "func-call-spacing": "error",
         "func-name-matching": "error",
         "func-names": "off",
         "func-style": "off",
-        "jsx-quotes": [
-          "error",
-          "prefer-single"
-        ],
+        "jsx-quotes": ["error", "prefer-single"],
         "key-spacing": "error",
         "keyword-spacing": "error",
         "line-comment-position": "off",
-        "linebreak-style": [
-          "error",
-          "unix"
-        ],
+        "linebreak-style": ["error", "unix"],
         "lines-around-comment": [
           "error",
           {
@@ -216,15 +207,9 @@
         "no-whitespace-before-property": "error",
         "nonblock-statement-body-position": "error",
         "object-curly-newline": "off",
-        "object-curly-spacing": [
-          "error",
-          "always"
-        ],
+        "object-curly-spacing": ["error", "always"],
         "object-property-newline": "off",
-        "padded-blocks": [
-          "error",
-          "never"
-        ],
+        "padded-blocks": ["error", "never"],
         "padding-line-between-statements": [
           "error",
           {
@@ -234,31 +219,16 @@
           },
           {
             "blankLine": "always",
-            "prev": [
-              "const",
-              "let",
-              "var"
-            ],
+            "prev": ["const", "let", "var"],
             "next": "*"
           },
           {
             "blankLine": "any",
-            "prev": [
-              "const",
-              "let",
-              "var"
-            ],
-            "next": [
-              "const",
-              "let",
-              "var"
-            ]
+            "prev": ["const", "let", "var"],
+            "next": ["const", "let", "var"]
           }
         ],
-        "quote-props": [
-          "error",
-          "as-needed"
-        ],
+        "quote-props": ["error", "as-needed"],
         "quotes": [
           "error",
           "single",
@@ -269,10 +239,7 @@
         "require-jsdoc": "warn",
         "semi": "error",
         "semi-spacing": "error",
-        "semi-style": [
-          "error",
-          "last"
-        ],
+        "semi-style": ["error", "last"],
         "sort-keys": "off",
         "sort-vars": "off",
         "space-before-blocks": "error",
@@ -285,9 +252,7 @@
           "always",
           {
             "block": {
-              "exceptions": [
-                "!"
-              ]
+              "exceptions": ["!"]
             }
           }
         ],

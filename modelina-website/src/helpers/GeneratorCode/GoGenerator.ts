@@ -1,14 +1,17 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { ModelinaGoOptions } from '../../types';
+import type { ModelinaGoOptions } from '../../types';
 import { getGeneralGeneratorCode, renderGeneratorInstanceCode } from './GeneralGenerator';
 
-export function getGoGeneratorCode(
-  generatorOptions: ModelinaGoOptions
-) {
-  const optionString: string[] = getGeneralGeneratorCode(generatorOptions, 'goDefaultEnumKeyConstraints', 'goDefaultPropertyKeyConstraints', 'goDefaultModelNameConstraints');
+export function getGoGeneratorCode(generatorOptions: ModelinaGoOptions) {
+  const optionString: string[] = getGeneralGeneratorCode(
+    generatorOptions,
+    'goDefaultEnumKeyConstraints',
+    'goDefaultPropertyKeyConstraints',
+    'goDefaultModelNameConstraints'
+  );
   const optionStringPresets: string[] = [];
 
-  if(generatorOptions.showTypeMappingExample === true) {
+  if (generatorOptions.showTypeMappingExample === true) {
     optionString.push(`typeMapping: {
   Integer: ({ dependencyManager, constrainedModel, options, partOfProperty }) => {
     // Add custom dependency for your type if required.

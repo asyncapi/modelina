@@ -1,11 +1,6 @@
 import { twMerge } from 'tailwind-merge';
 
-export default function Select({
-  className = '',
-  onChange = () => {},
-  options = [],
-  value
-}: any) {
+export default function Select({ className = '', onChange = () => {}, options = [], value }: any) {
   return (
     <select
       onChange={(ev: any) => onChange(ev.target.value)}

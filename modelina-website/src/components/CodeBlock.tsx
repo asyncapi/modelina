@@ -1,9 +1,10 @@
-/* eslint-disable no-useless-escape, security/detect-object-injection, sonarjs/no-duplicate-string */
+/* eslint-disable no-useless-escape */
+import { registerLanguage } from 'lowlight';
 import { useState } from 'react';
 import Highlight from 'react-syntax-highlighter';
-import { registerLanguage } from 'lowlight';
-import IconClipboard from './icons/Clipboard';
+
 import Caption from './Caption';
+import IconClipboard from './icons/Clipboard';
 
 const theme = {
   hljs: {
@@ -164,6 +165,8 @@ export default function CodeBlock({
 }: any) {
   const [activeBlock, setActiveBlock] = useState(0);
   const [showIsCopied, setShowIsCopied] = useState(false);
+
+  // eslint-disable-next-line no-param-reassign
   codeBlocks = codeBlocks?.length ? codeBlocks : [{ code: children.replace(/\n$/, '') }];
 
   const tabItemsCommonClassNames =
@@ -185,19 +188,15 @@ export default function CodeBlock({
 
   function renderHighlight() {
     return (
-      <div className="h-full max-h-screen">
+      <div className='h-full max-h-screen'>
         {codeBlocks.length > 1 && (
-          <div className="text-xs pb-3 pt-0 pl-1">
+          <div className='pb-3 pl-1 pt-0 text-xs'>
             <nav>
               <ul>
                 {codeBlocks.map((block: any, index: any) => (
                   <li
                     key={index}
-                    className={
-                      activeBlock === index
-                        ? tabItemsActiveClassNames
-                        : tabItemsClassNames
-                    }
+                    className={activeBlock === index ? tabItemsActiveClassNames : tabItemsClassNames}
                     onClick={() => setActiveBlock(index)}
                   >
                     {block.title ? block.title : block.language}
@@ -207,16 +206,12 @@ export default function CodeBlock({
             </nav>
           </div>
         )}
-        <div className={`pr-8 relative overflow-y-auto ${highlightClassName}`}>
+        <div className={`relative overflow-y-auto pr-8 ${highlightClassName}`}>
           <Highlight
-            className={`pt-px pb-0 text-sm font-medium font-ligatures-contextual ${
+            className={`pb-0 pt-px text-sm font-medium font-ligatures-contextual ${
               showLineNumbers ? 'ml-0' : 'ml-3'
             } ${textSizeClassName}`}
-            language={
-              codeBlocks[activeBlock].language
-                ? codeBlocks[activeBlock].language
-                : language
-            }
+            language={codeBlocks[activeBlock].language ? codeBlocks[activeBlock].language : language}
             style={theme}
             showLineNumbers={showLineNumbers}
             startingLineNumber={startingLineNumber}
@@ -226,23 +221,19 @@ export default function CodeBlock({
             }}
             linenumberprops={(lineNumber: any) => {
               const isHighlighted = highlightedLines?.includes(lineNumber) || false;
+
               return {
                 className: `${
-                  isHighlighted
-                    ? 'bg-code-editor-dark-highlight text-gray-500'
-                    : 'text-gray-600'
+                  isHighlighted ? 'bg-code-editor-dark-highlight text-gray-500' : 'text-gray-600'
                 } block pl-2 pr-2`
               };
             }}
             wrapLines={true}
             lineProps={(lineNumber) => {
               const isHighlighted = highlightedLines?.includes(lineNumber) || false;
+
               return {
-                className: `${
-                  isHighlighted
-                    ? 'bg-code-editor-dark-highlight block ml-10 w-full'
-                    : ''
-                } pr-8`
+                className: `${isHighlighted ? 'bg-code-editor-dark-highlight block ml-10 w-full' : ''} pr-8`
               };
             }}
             codeTagProps={{
@@ -258,35 +249,30 @@ export default function CodeBlock({
 
   return (
     <>
-      <div
-        className={`relative max-w-full rounded overflow-y-auto overflow-x-auto py-2 bg-code-editor-dark z-10 ${className}`}
-      >
+      <div className={`relative z-10 max-w-full overflow-auto rounded bg-code-editor-dark py-2 ${className}`}>
         {hasWindow && (
-          <div className="pl-4 pb-2">
-            <span className="inline-block rounded-full w-2.5 h-2.5 bg-mac-window-close mr-2"></span>
-            <span className="inline-block rounded-full w-2.5 h-2.5 bg-mac-window-minimize mr-2"></span>
-            <span className="inline-block rounded-full w-2.5 h-2.5 bg-mac-window-maximize mr-2"></span>
+          <div className='pb-2 pl-4'>
+            <span className='mr-2 inline-block size-2.5 rounded-full bg-mac-window-close'></span>
+            <span className='mr-2 inline-block size-2.5 rounded-full bg-mac-window-minimize'></span>
+            <span className='mr-2 inline-block size-2.5 rounded-full bg-mac-window-maximize'></span>
           </div>
         )}
         {showCopy && (
           <div
             className={`${
-              !showLineNumbers &&
-              codeBlocks[activeBlock].code.split('/n').length < 2
-                ? 'absolute top-0 bottom-0 right-0 pl-5 pr-2 bg-code-editor-dark'
+              !showLineNumbers && codeBlocks[activeBlock].code.split('/n').length < 2
+                ? 'absolute inset-y-0 right-0 bg-code-editor-dark pl-5 pr-2'
                 : ''
             } z-10`}
           >
             <button
               onClick={onClickCopy}
-              className="absolute bg-code-editor-dark z-50 text-xs text-gray-500 right-2 top-1 cursor-pointer hover:text-gray-300 focus:outline-none"
-              title="Copy to clipboard"
+              className='absolute right-2 top-1 z-50 cursor-pointer bg-code-editor-dark text-xs text-gray-500 hover:text-gray-300 focus:outline-none'
+              title='Copy to clipboard'
             >
-              {showIsCopied && (
-                <span className="inline-block pl-2 pt-1 mr-2">Copied!</span>
-              )}
-              <span className="inline-block pt-1">
-                <IconClipboard className="inline-block w-4 h-4 -mt-0.5" />
+              {showIsCopied && <span className='mr-2 inline-block pl-2 pt-1'>Copied!</span>}
+              <span className='inline-block pt-1'>
+                <IconClipboard className='-mt-0.5 inline-block size-4' />
               </span>
             </button>
           </div>
@@ -336,22 +322,14 @@ registerLanguage('asyncapi+yaml', (hljs: any) => {
   const STRING = {
     className: 'string',
     relevance: 0,
-    variants: [
-      { begin: /'/, end: /'/ },
-      { begin: /"/, end: /"/ },
-      { begin: /\S+/ }
-    ],
+    variants: [{ begin: /'/, end: /'/ }, { begin: /"/, end: /"/ }, { begin: /\S+/ }],
     contains: [hljs.BACKSLASH_ESCAPE, TEMPLATE_VARIABLES]
   };
 
   // Strings inside of value containers (objects) can't contain braces,
   // brackets, or commas
   const CONTAINER_STRING = hljs.inherit(STRING, {
-    variants: [
-      { begin: /'/, end: /'/ },
-      { begin: /"/, end: /"/ },
-      { begin: /[^\s,{}[\]]+/ }
-    ]
+    variants: [{ begin: /'/, end: /'/ }, { begin: /"/, end: /"/ }, { begin: /[^\s,{}[\]]+/ }]
   });
 
   const DATE_RE = '[0-9]{4}(-[0-9][0-9]){0,2}';
@@ -467,6 +445,7 @@ registerLanguage('asyncapi+yaml', (hljs: any) => {
   ];
 
   const VALUE_MODES = [...MODES];
+
   VALUE_MODES.pop();
   VALUE_MODES.push(CONTAINER_STRING);
   VALUE_CONTAINER.contains = VALUE_MODES as any;

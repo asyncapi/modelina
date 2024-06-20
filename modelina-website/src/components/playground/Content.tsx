@@ -1,13 +1,15 @@
 'use client';
 
-import { FunctionComponent, useMemo } from 'react';
-import { PlaygroundGeneratedContext } from '../contexts/PlaygroundGeneratedContext';
+import type { FunctionComponent } from 'react';
+import { useMemo } from 'react';
+
 import { usePlaygroundContext } from '../contexts/PlaygroundContext';
-import MonacoEditorWrapper from '../MonacoEditorWrapper';
+import { PlaygroundGeneratedContext } from '../contexts/PlaygroundGeneratedContext';
 import CustomError from '../CustomError';
-import OutputNavigation from './OutputNavigation';
-import { OptionsNavigation } from './OptionsNavigation';
+import MonacoEditorWrapper from '../MonacoEditorWrapper';
 import GeneratedModelsComponent from './GeneratedModels';
+import { OptionsNavigation } from './OptionsNavigation';
+import OutputNavigation from './OutputNavigation';
 
 interface ContentProps {
   setNewConfig: (config: string, configValue: any, updateCode?: boolean) => void;
@@ -27,26 +29,29 @@ export const Content: FunctionComponent<ContentProps> = ({ setNewConfig, setNewQ
     statusCode,
     errorMessage,
     showOptions,
-    showOutputNavigation,
+    showOutputNavigation
   } = usePlaygroundContext();
 
-  const PlaygroundGeneratedContextValue = useMemo(() => ({
-    language: config.language,
-    models: models
-  }), [config.language, models]);
+  const PlaygroundGeneratedContextValue = useMemo(
+    () => ({
+      language: config.language,
+      models
+    }),
+    [config.language, models]
+  );
 
   return (
-    <div className="h-full w-full flex">
+    <div className='flex size-full'>
       {/* OPTIONS & EDITOR */}
-      <div className="h-full w-[50%] flex">
-        {
-          showOptions && <div className={`bg-[#1f2937] text-white h-full w-[100%] md:w-[40%]`}>
+      <div className='flex h-full w-[50%]'>
+        {showOptions && (
+          <div className={'size-full bg-[#1f2937] text-white md:w-2/5'}>
             <OptionsNavigation setNewConfig={setNewConfig} />
           </div>
-        }
-        <div className={`h-full ${showOptions ? "w-[60%]" : "w-full"}`}>
-          <div className="max-xl:col-span-2 xl:grid-cols-1 h-full">
-            <div className="h-full bg-code-editor-dark text-white rounded-b shadow-lg font-bold">
+        )}
+        <div className={`h-full ${showOptions ? 'w-3/5' : 'w-full'}`}>
+          <div className='h-full max-xl:col-span-2 xl:grid-cols-1'>
+            <div className='h-full rounded-b bg-code-editor-dark font-bold text-white shadow-lg'>
               <MonacoEditorWrapper
                 value={input}
                 onChange={(_, change) => {
@@ -56,7 +61,7 @@ export const Content: FunctionComponent<ContentProps> = ({ setNewConfig, setNewQ
                 editorDidMount={() => {
                   setLoaded({ ...loaded, editorLoaded: true });
                 }}
-                language="json"
+                language='json'
               />
             </div>
           </div>
@@ -64,20 +69,18 @@ export const Content: FunctionComponent<ContentProps> = ({ setNewConfig, setNewQ
       </div>
 
       {/* OUTPUT NAVIGATION AND OUTPUTS */}
-      <div className="h-full w-[50%] flex">
-        {
-          showOutputNavigation && <div className='h-full w-[100%] md:w-[30%]'>
+      <div className='flex h-full w-[50%]'>
+        {showOutputNavigation && (
+          <div className='size-full md:w-[30%]'>
             <OutputNavigation />
           </div>
-        }
-        <div className={`h-full ${showOutputNavigation ? "w-[70%]" : "w-full"}`}>
-          <div className={`h-full`}>
+        )}
+        <div className={`h-full ${showOutputNavigation ? 'w-[70%]' : 'w-full'}`}>
+          <div className={'h-full'}>
             {error ? (
               <CustomError statusCode={statusCode} errorMessage={errorMessage} />
             ) : (
-              <PlaygroundGeneratedContext.Provider
-                value={PlaygroundGeneratedContextValue}
-              >
+              <PlaygroundGeneratedContext.Provider value={PlaygroundGeneratedContextValue}>
                 <GeneratedModelsComponent setNewQuery={setNewQuery} />
               </PlaygroundGeneratedContext.Provider>
             )}

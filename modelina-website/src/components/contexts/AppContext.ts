@@ -1,5 +1,6 @@
 import { createContext } from 'react';
-export interface AppContext {
+
+export interface IAppContext {
   path: string;
 }
-export default createContext<AppContext>({ path: '' });
+export default createContext<IAppContext>({ path: '' });

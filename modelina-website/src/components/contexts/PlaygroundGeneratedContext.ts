@@ -5,5 +5,4 @@ export interface PlaygroundGenerated {
   language: string;
 }
 
-export const PlaygroundGeneratedContext =
-  createContext<PlaygroundGenerated | null>(null);
+export const PlaygroundGeneratedContext = createContext<PlaygroundGenerated | null>(null);
