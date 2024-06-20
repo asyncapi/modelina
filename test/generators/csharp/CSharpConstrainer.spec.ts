@@ -84,7 +84,12 @@ describe('CSharpConstrainer', () => {
       expect(type).toEqual('int');
     });
     test('should render long', () => {
-      const model = new ConstrainedIntegerModel('test', undefined, { format: 'int64' }, '');
+      const model = new ConstrainedStringModel(
+        'test',
+        undefined,
+        { format: 'int64' },
+        ''
+      );
       const type = CSharpDefaultTypeMapping.Integer({
         constrainedModel: model,
         ...defaultOptions
