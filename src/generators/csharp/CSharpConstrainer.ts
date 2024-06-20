@@ -51,8 +51,13 @@ export const CSharpDefaultTypeMapping: CSharpTypeMapping = {
   Float({ partOfProperty }): string {
     return getFullTypeDefinition('double', partOfProperty);
   },
-  Integer({ partOfProperty }): string {
-    return getFullTypeDefinition('int', partOfProperty);
+  Integer({ constrainedModel, partOfProperty }): string {
+    switch (constrainedModel.options.format) {
+      case 'int64':
+        return getFullTypeDefinition('long', partOfProperty);
+      default:
+        return getFullTypeDefinition('int', partOfProperty);
+    }
   },
   String({ constrainedModel, partOfProperty }): string {
     switch (constrainedModel.options.format) {
