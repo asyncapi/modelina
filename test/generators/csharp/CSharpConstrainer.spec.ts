@@ -75,13 +75,26 @@ describe('CSharpConstrainer', () => {
     });
   });
   describe('Integer', () => {
-    test('should render type', () => {
+    test('should render int', () => {
       const model = new ConstrainedIntegerModel('test', undefined, {}, '');
       const type = CSharpDefaultTypeMapping.Integer({
         constrainedModel: model,
         ...defaultOptions
       });
       expect(type).toEqual('int');
+    });
+    test('should render long', () => {
+      const model = new ConstrainedStringModel(
+        'test',
+        undefined,
+        { format: 'int64' },
+        ''
+      );
+      const type = CSharpDefaultTypeMapping.Integer({
+        constrainedModel: model,
+        ...defaultOptions
+      });
+      expect(type).toEqual('long');
     });
   });
   describe('String', () => {
