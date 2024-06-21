@@ -15,7 +15,7 @@ const GeneratedModelsComponent: React.FC<GeneratedModelsComponentProps> = ({
   const context = useContext(PlaygroundGeneratedContext);
   const [selectedModel, setSelectedModel] = useState<string>('');
   const { setRenderModels, generatorCode, showGeneratorCode, setShowGeneratorCode } = usePlaygroundContext();
-
+  const { outputLoading } = usePlaygroundContext();
   const toShow = () => {
     let selectedCode = '';
     let updatedSelectedModel = selectedModel;
@@ -74,6 +74,14 @@ const GeneratedModelsComponent: React.FC<GeneratedModelsComponentProps> = ({
     const modelsToRender = renderModels(updatedSelectedModel);
     setRenderModels(modelsToRender);
   }, [updatedSelectedModel, showGeneratorCode]);
+
+  if (outputLoading) {
+    return (
+      <div className="h-full flex items-center justify-center bg-code-editor-dark transition-opacity">
+        <div className="text-white opacity-0">Loading...</div>
+      </div>
+    );
+  }
 
   if (showAllInOneFile === true) {
     return (
