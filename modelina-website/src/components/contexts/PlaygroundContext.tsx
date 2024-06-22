@@ -17,6 +17,8 @@ interface LoadedState {
 }
 
 interface PlaygroundContextProps {
+  showInputEditor: boolean;
+  setShowInputEditor: Dispatch<SetStateAction<boolean>>;
   showOptions: boolean;
   setShowOptions: Dispatch<SetStateAction<boolean>>;
   showOutputNavigation: boolean;
@@ -91,6 +93,7 @@ export const PlaygroundContextProvider: React.FC<{ children: React.ReactNode }> 
     kotlinPackageName: 'asyncapi.models'
   };
 
+  const [showInputEditor, setShowInputEditor] = useState(true);
   const [showOptions, setShowOptions] = useState(true);
   const [showOutputNavigation, setShowOutputNavigation] = useState(true);
   const [config, setConfig] = useState<ModelinaOptions>(defaultConfig);
@@ -111,6 +114,8 @@ export const PlaygroundContextProvider: React.FC<{ children: React.ReactNode }> 
 
   const contextValue = useMemo(
     () => ({
+      showInputEditor,
+      setShowInputEditor,
       showOptions,
       setShowOptions,
       showOutputNavigation,
@@ -141,6 +146,8 @@ export const PlaygroundContextProvider: React.FC<{ children: React.ReactNode }> 
       setRenderModels
     }),
     [
+      showInputEditor,
+      setShowInputEditor,
       showOptions,
       setShowOptions,
       showOutputNavigation,

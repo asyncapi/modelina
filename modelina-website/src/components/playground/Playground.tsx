@@ -151,16 +151,28 @@ const Playground: React.FC<ModelinaPlaygroundProps> = (props) => {
       setConfig({ ...config, language: query.language as any });
     }
     if (query.enumKeyNamingFormat !== undefined) {
-      setConfig({ ...config, enumKeyNamingFormat: query.enumKeyNamingFormat as any });
+      setConfig({
+        ...config,
+        enumKeyNamingFormat: query.enumKeyNamingFormat as any
+      });
     }
     if (query.propertyNamingFormat !== undefined) {
-      setConfig({ ...config, propertyNamingFormat: query.propertyNamingFormat as any });
+      setConfig({
+        ...config,
+        propertyNamingFormat: query.propertyNamingFormat as any
+      });
     }
     if (query.modelNamingFormat !== undefined) {
-      setConfig({ ...config, modelNamingFormat: query.modelNamingFormat as any });
+      setConfig({
+        ...config,
+        modelNamingFormat: query.modelNamingFormat as any
+      });
     }
     if (query.showTypeMappingExample !== undefined) {
-      setConfig({ ...config, showTypeMappingExample: query.showTypeMappingExample === 'true' });
+      setConfig({
+        ...config,
+        showTypeMappingExample: query.showTypeMappingExample === 'true'
+      });
     }
     if (query.indentationType !== undefined) {
       setConfig({ ...config, indentationType: query.indentationType as any });
@@ -178,37 +190,64 @@ const Playground: React.FC<ModelinaPlaygroundProps> = (props) => {
       setConfig({ ...config, tsMapType: query.tsMapType as any });
     }
     if (query.tsIncludeDescriptions !== undefined) {
-      setConfig({ ...config, tsIncludeDescriptions: query.tsIncludeDescriptions === 'true' });
+      setConfig({
+        ...config,
+        tsIncludeDescriptions: query.tsIncludeDescriptions === 'true'
+      });
     }
     if (query.tsIncludeJsonBinPack !== undefined) {
-      setConfig({ ...config, tsIncludeJsonBinPack: query.tsIncludeJsonBinPack === 'true' });
+      setConfig({
+        ...config,
+        tsIncludeJsonBinPack: query.tsIncludeJsonBinPack === 'true'
+      });
     }
     if (query.tsIncludeExampleFunction !== undefined) {
-      setConfig({ ...config, tsIncludeExampleFunction: query.tsIncludeExampleFunction === 'true' });
+      setConfig({
+        ...config,
+        tsIncludeExampleFunction: query.tsIncludeExampleFunction === 'true'
+      });
     }
     if (query.csharpArrayType !== undefined) {
       setConfig({ ...config, csharpArrayType: query.csharpArrayType as any });
     }
     if (query.csharpAutoImplemented !== undefined) {
-      setConfig({ ...config, csharpAutoImplemented: query.csharpAutoImplemented === 'true' });
+      setConfig({
+        ...config,
+        csharpAutoImplemented: query.csharpAutoImplemented === 'true'
+      });
     }
     if (query.csharpOverwriteHashcode !== undefined) {
-      setConfig({ ...config, csharpOverwriteHashcode: query.csharpOverwriteHashcode === 'true' });
+      setConfig({
+        ...config,
+        csharpOverwriteHashcode: query.csharpOverwriteHashcode === 'true'
+      });
     }
     if (query.phpIncludeDescriptions !== undefined) {
-      setConfig({ ...config, phpIncludeDescriptions: query.phpIncludeDescriptions === 'true' });
+      setConfig({
+        ...config,
+        phpIncludeDescriptions: query.phpIncludeDescriptions === 'true'
+      });
     }
     if (query.phpNamespace !== undefined) {
       setConfig({ ...config, phpNamespace: query.phpNamespace });
     }
     if (query.csharpIncludeJson !== undefined) {
-      setConfig({ ...config, csharpIncludeJson: query.csharpIncludeJson === 'true' });
+      setConfig({
+        ...config,
+        csharpIncludeJson: query.csharpIncludeJson === 'true'
+      });
     }
     if (query.csharpOverwriteEqual !== undefined) {
-      setConfig({ ...config, csharpOverwriteEqual: query.csharpOverwriteEqual === 'true' });
+      setConfig({
+        ...config,
+        csharpOverwriteEqual: query.csharpOverwriteEqual === 'true'
+      });
     }
     if (query.csharpIncludeNewtonsoft !== undefined) {
-      setConfig({ ...config, csharpIncludeNewtonsoft: query.csharpIncludeNewtonsoft === 'true' });
+      setConfig({
+        ...config,
+        csharpIncludeNewtonsoft: query.csharpIncludeNewtonsoft === 'true'
+      });
     }
     if (query.csharpNamespace !== undefined) {
       setConfig({ ...config, csharpNamespace: query.csharpNamespace });
@@ -223,28 +262,46 @@ const Playground: React.FC<ModelinaPlaygroundProps> = (props) => {
       setConfig({ ...config, javaPackageName: query.javaPackageName });
     }
     if (query.javaIncludeJackson !== undefined) {
-      setConfig({ ...config, javaIncludeJackson: query.javaIncludeJackson === 'true' });
+      setConfig({
+        ...config,
+        javaIncludeJackson: query.javaIncludeJackson === 'true'
+      });
     }
     if (query.javaIncludeMarshaling !== undefined) {
-      setConfig({ ...config, javaIncludeMarshaling: query.javaIncludeMarshaling === 'true' });
+      setConfig({
+        ...config,
+        javaIncludeMarshaling: query.javaIncludeMarshaling === 'true'
+      });
     }
     if (query.javaArrayType !== undefined) {
       setConfig({ ...config, javaArrayType: query.javaArrayType as any });
     }
     if (query.javaOverwriteHashcode !== undefined) {
-      setConfig({ ...config, javaOverwriteHashcode: query.javaOverwriteHashcode === 'true' });
+      setConfig({
+        ...config,
+        javaOverwriteHashcode: query.javaOverwriteHashcode === 'true'
+      });
     }
     if (query.javaOverwriteEqual !== undefined) {
-      setConfig({ ...config, javaOverwriteEqual: query.javaOverwriteEqual === 'true' });
+      setConfig({
+        ...config,
+        javaOverwriteEqual: query.javaOverwriteEqual === 'true'
+      });
     }
     if (query.javaOverwriteToString !== undefined) {
-      setConfig({ ...config, javaOverwriteToString: query.javaOverwriteToString === 'true' });
+      setConfig({
+        ...config,
+        javaOverwriteToString: query.javaOverwriteToString === 'true'
+      });
     }
     if (query.javaJavaDocs !== undefined) {
       setConfig({ ...config, javaJavaDocs: query.javaJavaDocs === 'true' });
     }
     if (query.javaJavaxAnnotation !== undefined) {
-      setConfig({ ...config, javaJavaxAnnotation: query.javaJavaxAnnotation === 'true' });
+      setConfig({
+        ...config,
+        javaJavaxAnnotation: query.javaJavaxAnnotation === 'true'
+      });
     }
     if (query.goPackageName !== undefined) {
       setConfig({ ...config, goPackageName: query.goPackageName });
@@ -291,15 +348,9 @@ const Playground: React.FC<ModelinaPlaygroundProps> = (props) => {
           Loading Modelina Playground. Rendering playground components...
         </div>
       ) : (
-        <div className='flex h-[90vh] w-full py-2'>
-          <div className='flex size-full overflow-hidden'>
-            <div className='h-full w-[50px]'>
-              <Sidebar />
-            </div>
-            <div className='size-full'>
-              <Content setNewConfig={setNewConfig} setNewQuery={setNewQuery} generateNewCode={generateNewCode} />
-            </div>
-          </div>
+        <div className='grid h-[90vh] w-full grid-cols-with-sidebar overflow-hidden'>
+          <Sidebar />
+          <Content setNewConfig={setNewConfig} setNewQuery={setNewQuery} generateNewCode={generateNewCode} />
         </div>
       )}
     </div>

@@ -1,5 +1,6 @@
 'use client';
 
+import clsx from 'clsx';
 import type { FunctionComponent } from 'react';
 import { useMemo } from 'react';
 
@@ -21,6 +22,7 @@ export const Content: FunctionComponent<ContentProps> = ({ setNewConfig, setNewQ
   const {
     config,
     input,
+    showInputEditor,
     setInput,
     models,
     loaded,
@@ -41,51 +43,57 @@ export const Content: FunctionComponent<ContentProps> = ({ setNewConfig, setNewQ
   );
 
   return (
-    <div className='flex size-full'>
-      {/* OPTIONS & EDITOR */}
-      <div className='flex h-full w-[50%]'>
-        {showOptions && (
-          <div className={'size-full bg-[#1f2937] text-white md:w-2/5'}>
-            <OptionsNavigation setNewConfig={setNewConfig} />
-          </div>
-        )}
-        <div className={`h-full ${showOptions ? 'w-3/5' : 'w-full'}`}>
-          <div className='h-full max-xl:col-span-2 xl:grid-cols-1'>
-            <div className='h-full rounded-b bg-code-editor-dark font-bold text-white shadow-lg'>
-              <MonacoEditorWrapper
-                value={input}
-                onChange={(_, change) => {
-                  setInput(change);
-                  generateNewCode(change);
-                }}
-                editorDidMount={() => {
-                  setLoaded({ ...loaded, editorLoaded: true });
-                }}
-                language='json'
-              />
-            </div>
-          </div>
+    <div className='grid size-full grid-cols-4 md:grid-cols-8 lg:grid-cols-12'>
+      <div
+        className={clsx('col-span-full h-[90vh] w-full bg-[#1f2937] text-white lg:col-span-3', {
+          hidden: !showOptions
+        })}
+      >
+        <OptionsNavigation setNewConfig={setNewConfig} />
+      </div>
+      <div
+        className={clsx('col-span-2 h-full lg:col-start-8 lg:col-end-10', {
+          hidden: !showOutputNavigation
+        })}
+      >
+        <OutputNavigation />
+      </div>
+      <div
+        className={clsx('col-span-full h-full md:col-span-3 lg:col-end-8 lg:row-start-1', {
+          'hidden md:block': showInputEditor && !showOptions,
+          'lg:col-start-4': showOptions,
+          'lg:col-start-1': !showOptions,
+          'md:col-span-4': !showOutputNavigation
+        })}
+      >
+        <div className='size-full rounded-b bg-code-editor-dark font-bold text-white shadow-lg'>
+          <MonacoEditorWrapper
+            value={input}
+            onChange={(_, change) => {
+              setInput(change);
+              generateNewCode(change);
+            }}
+            editorDidMount={() => {
+              setLoaded({ ...loaded, editorLoaded: true });
+            }}
+            language='json'
+          />
         </div>
       </div>
-
-      {/* OUTPUT NAVIGATION AND OUTPUTS */}
-      <div className='flex h-full w-[50%]'>
-        {showOutputNavigation && (
-          <div className='size-full md:w-[30%]'>
-            <OutputNavigation />
-          </div>
+      <div
+        className={clsx('col-span-2 h-full md:col-span-3 lg:col-end-13 lg:row-start-1', {
+          'hidden md:block': !showInputEditor && !showOptions,
+          'col-span-full md:col-span-4 lg:col-start-8': !showOutputNavigation,
+          'lg:col-span-4 lg:col-start-10': showOutputNavigation
+        })}
+      >
+        {error ? (
+          <CustomError statusCode={statusCode} errorMessage={errorMessage} />
+        ) : (
+          <PlaygroundGeneratedContext.Provider value={PlaygroundGeneratedContextValue}>
+            <GeneratedModelsComponent setNewQuery={setNewQuery} />
+          </PlaygroundGeneratedContext.Provider>
         )}
-        <div className={`h-full ${showOutputNavigation ? 'w-[70%]' : 'w-full'}`}>
-          <div className={'h-full'}>
-            {error ? (
-              <CustomError statusCode={statusCode} errorMessage={errorMessage} />
-            ) : (
-              <PlaygroundGeneratedContext.Provider value={PlaygroundGeneratedContextValue}>
-                <GeneratedModelsComponent setNewQuery={setNewQuery} />
-              </PlaygroundGeneratedContext.Provider>
-            )}
-          </div>
-        </div>
       </div>
     </div>
   );

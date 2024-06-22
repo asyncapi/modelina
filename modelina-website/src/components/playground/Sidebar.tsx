@@ -1,5 +1,7 @@
+import clsx from 'clsx';
 import React from 'react';
 import { IoOptionsOutline } from 'react-icons/io5';
+import { LuFileInput, LuFileOutput } from 'react-icons/lu';
 import { VscListSelection } from 'react-icons/vsc';
 
 import { usePlaygroundContext } from '../contexts/PlaygroundContext';
@@ -9,6 +11,8 @@ interface SidebarItem {
   name: string;
   title: string;
   isActive: boolean;
+  isShow: boolean;
+  mobileOnly: boolean;
   onClick: () => void;
   icon: React.ReactNode;
   tooltip: React.ReactNode;
@@ -17,13 +21,31 @@ interface SidebarItem {
 interface SidebarProps {}
 
 export const Sidebar: React.FunctionComponent<SidebarProps> = () => {
-  const { setShowOptions, setShowOutputNavigation } = usePlaygroundContext();
+  const { setShowOptions, setShowOutputNavigation, setShowInputEditor, showInputEditor, showOptions } =
+    usePlaygroundContext();
   const sidebarItems: SidebarItem[] = [
+    // Input/Output Editor
+    {
+      name: 'input-editor',
+      title: 'Input Editor',
+      isActive: false,
+      isShow: true,
+      mobileOnly: true,
+      onClick: () => {
+        setShowInputEditor((prevShowOptions) => !prevShowOptions);
+        setShowOutputNavigation(false);
+        setShowOptions(false);
+      },
+      icon: showInputEditor ? <LuFileInput className='size-5' /> : <LuFileOutput className='size-5' />,
+      tooltip: `Show ${showInputEditor ? 'Input Editor' : 'Output Editor'}`
+    },
     // Options
     {
       name: 'options',
       title: 'Options',
-      isActive: false,
+      isActive: showOptions,
+      isShow: true,
+      mobileOnly: false,
       onClick: () => {
         setShowOptions((prevShowOptions) => !prevShowOptions);
       },
@@ -35,6 +57,8 @@ export const Sidebar: React.FunctionComponent<SidebarProps> = () => {
       name: 'outputExplorer',
       title: 'Output',
       isActive: false,
+      isShow: showInputEditor,
+      mobileOnly: false,
       onClick: () => {
         setShowOutputNavigation((prevShowOutputNavigation) => !prevShowOutputNavigation);
       },
@@ -51,7 +75,10 @@ export const Sidebar: React.FunctionComponent<SidebarProps> = () => {
             <button
               title={item.title}
               onClick={() => item.onClick()}
-              className='border-box flex p-2 text-sm focus:outline-none'
+              className={clsx('border-box flex p-2 text-sm focus:outline-none', {
+                'md:hidden': item.mobileOnly,
+                'hidden md:block': !item.isShow
+              })}
               type='button'
             >
               <div
