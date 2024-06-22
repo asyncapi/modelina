@@ -990,6 +990,16 @@
         "code",
         "test"
       ]
+    },
+    {
+      "login": "Pike",
+      "name": "Axel Hecht",
+      "avatar_url": "https://avatars.githubusercontent.com/u/43494?v=4",
+      "profile": "https://pike.github.io/",
+      "contributions": [
+        "code",
+        "test"
+      ]
     }
   ],
   "contributorsPerLine": 7,
