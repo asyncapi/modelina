@@ -980,6 +980,16 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "jespitae",
+      "name": "jespitae",
+      "avatar_url": "https://avatars.githubusercontent.com/u/23041146?v=4",
+      "profile": "https://github.com/jespitae",
+      "contributions": [
+        "code",
+        "test"
+      ]
     }
   ],
   "contributorsPerLine": 7,
