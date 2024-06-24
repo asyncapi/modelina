@@ -4,8 +4,8 @@ exports[`Should be able to render json-tags in struct and should log expected ou
 Array [
   "// Root represents a Root model.
 type Root struct {
-  Cities *Cities \`json:\\"cities\\"\`
-  Options *Options \`json:\\"options\\"\`
+  Cities *Cities \`json:\\"cities,omitempty\\"\`
+  Options *Options \`json:\\"options,omitempty\\"\`
 }",
 ]
 `;

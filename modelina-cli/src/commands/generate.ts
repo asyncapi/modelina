@@ -32,6 +32,18 @@ export default class Models extends ModelinaCommand {
       },
     }
 
-    await generateModels(flags, document, logger, language as Languages);
+    const generatedModels = await generateModels(flags, document, logger, language as Languages);
+
+    if (flags.output) {
+      const generatedModelsString = generatedModels.map((model) => { return model.modelName; });
+      logger.info(`Successfully generated the following models: ${generatedModelsString.join(', ')}`);
+    } else {
+      const generatedModelsString = generatedModels.map((model) => {
+        return `## Model name: ${model.modelName}
+${model.result}
+`;
+      });
+      logger.info(`Successfully generated the following models: ${generatedModelsString.join('\n')}`);
+    }
   }
 }

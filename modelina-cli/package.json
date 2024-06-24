@@ -1,16 +1,20 @@
 {
   "name": "@asyncapi/modelina-cli",
   "description": "CLI to work with Modelina",
-  "version": "4.0.0-next.39",
+  "version": "4.0.0-next.52",
   "bin": {
-    "modelina": "./bin/run"
+    "modelina": "./bin/run_bin"
   },
   "bugs": "https://github.com/asyncapi/modelina/issues",
   "dependencies": {
-    "@asyncapi/modelina": "file:scripts/modelina-package/asyncapi-modelina.tgz",
+    "@asyncapi/modelina": "^4.0.0-next.47",
     "@oclif/core": "^3.26.0",
     "@oclif/errors": "^1.3.6",
     "@oclif/plugin-not-found": "^3.1.1",
+    "@oclif/plugin-autocomplete": "^3.0.16",
+    "@oclif/plugin-help": "^6.0.21",
+    "@oclif/plugin-plugins": "^5.0.16",
+    "@oclif/plugin-version": "^2.0.17",
     "js-yaml": "^4.1.0",
     "node-fetch": "^2.0.0"
   },
@@ -32,17 +36,17 @@
     "eslint-plugin-unicorn": "^51.0.1",
     "mocha": "^10",
     "nyc": "^15.1.0",
-    "oclif": "^4.4.7",
+    "oclif": "^4.12.3",
     "rimraf": "^5.0.5",
     "shx": "^0.3.4",
     "simple-git": "^3.16.0",
     "ts-node": "^10.9.2",
-    "typescript": "4.6.4"
+    "typescript": "4.6.4",
+    "markdown-toc": "^1.2.0"
   },
   "files": [
     "/bin",
     "/lib",
-    "/assets",
     "/npm-shrinkwrap.json",
     "/oclif.manifest.json",
     "/README.md"
@@ -55,10 +59,16 @@
   ],
   "license": "Apache-2.0",
   "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "oclif": {
     "commands": "./lib/commands",
     "bin": "modelina",
-    "plugins": [],
+    "plugins": [
+      "@oclif/plugin-help",
+      "@oclif/plugin-plugins",
+      "@oclif/plugin-autocomplete",
+      "@oclif/plugin-version"
+    ],
     "macos": {
       "identifier": "com.asyncapi.modelina"
     },
@@ -83,9 +93,8 @@
   "scripts": {
     "build": "rimraf lib && tsc && oclif manifest && echo \"Build Completed\"",
     "dev": "tsc --watch",
-    "generate:readme:commands": "oclif readme --readme-path=\"./README.md\" --output-dir=\"./\" --repository-prefix=\"<%- repo %>/blob/v<%- version %>/modelina-cli/<%- commandPath %>\"",
-    "generate:assets": "npm run generate:commands && npm run generate:readme:toc",
-    "generate:commands": "npm run generate:readme:commands",
+    "generate:assets": "npm run generate:commands",
+    "generate:commands": "oclif readme --readme-path=\"./README.md\" --output-dir=\"./\" --repository-prefix=\"<%- repo %>/blob/v<%- version %>/modelina-cli/<%- commandPath %>\"",
     "generate:readme:toc": "markdown-toc -i README.md",
     "lint": "eslint --max-warnings 0 --config .eslintrc .",
     "lint:fix": "npm run lint -- --fix",
@@ -96,8 +105,7 @@
     "pack:windows": "oclif pack win && npm run pack:rename",
     "pack:rename": "node scripts/releasePackagesRename.js",
     "prepublishOnly": "npm run build",
-    "test": "cross-env NODE_ENV=development CUSTOM_CONTEXT_FILENAME=\"test.asyncapi-modelina\" CUSTOM_CONTEXT_FILE_LOCATION=\"\" nyc --extension .ts mocha --require ts-node/register --require test/helpers/init.js --reporter spec --timeout 100000 \"test/**/*.test.ts\"",
+    "test": "cross-env NODE_ENV=development CUSTOM_CONTEXT_FILENAME=\"test.asyncapi-modelina\" CUSTOM_CONTEXT_FILE_LOCATION=\"\" nyc --extension .ts mocha \"test/**/*.test.ts\"",
     "bump:version": "npm --no-git-tag-version --allow-same-version version $VERSION"
-  },
-  "types": "lib/index.d.ts"
+  }
 }

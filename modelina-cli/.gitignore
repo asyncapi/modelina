@@ -13,3 +13,5 @@ dist
 
 # Because we cant use local references (bug with windows build), we have to pack the dependency ourself
 scripts/modelina-package
+test/fixtures/generate
+coverage

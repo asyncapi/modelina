@@ -2,7 +2,7 @@
 
 import path from 'node:path';
 import { expect, test } from '@oclif/test';
-import TestHelper from '../helpers';
+import TestHelper from '../test_helpers';
 import { CONTEXT_FILE_PATH } from '../../src/models/Context';
 import { rmSync } from 'node:fs';
 import * as os from 'node:os';

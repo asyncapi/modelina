@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
-process.env.NODE_ENV = 'development';
+// Only the binary installed through NPM is considered production environment. See "bin" in package.json.
+process.env.NODE_ENV = 'production';
 
 const oclif = require('@oclif/core');
 

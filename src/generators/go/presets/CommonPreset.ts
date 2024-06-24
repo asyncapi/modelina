@@ -19,9 +19,9 @@ function renderJSONTag({
     field.property instanceof ConstrainedDictionaryModel &&
     field.property.serializationType === 'unwrap'
   ) {
-    return `json:"-"`;
+    return `json:"-,omitempty"`;
   }
-  return `json:"${field.unconstrainedPropertyName}"`;
+  return `json:"${field.unconstrainedPropertyName},omitempty"`;
 }
 
 function renderMarshallingFunctions({
@@ -65,6 +65,11 @@ export const GO_COMMON_PRESET: GoPreset<GoCommonPresetOptions> = {
       }
 
       return `${content}\n ${blocks.join('\n')}`;
+    }
+  },
+  union: {
+    field: ({ content }) => {
+      return `${content} \`json:"-,omitempty\``;
     }
   }
 };

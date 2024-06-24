@@ -28,6 +28,10 @@ const ymlFileURI = `file://${path.resolve(
   __dirname,
   './AsyncAPIInputProcessor/testasyncapi.yml'
 )}`;
+const yamlDocString = fs.readFileSync(
+  path.resolve(__dirname, './AsyncAPIInputProcessor/testasyncapi.yml'),
+  'utf8'
+);
 
 jest.mock('../../src/utils/LoggingInterface');
 
@@ -44,8 +48,11 @@ describe('AsyncAPIInputProcessor', () => {
       const { document } = await parser.parse(basicDocString);
       expect(processor.shouldProcess(document)).toEqual(true);
     });
-    test('should be able to detect file', () => {
+    test('should be able to detect file input', () => {
       expect(processor.shouldProcess(ymlFileURI)).toEqual(true);
+    });
+    test('should be able to work with yaml input', () => {
+      expect(processor.shouldProcess(yamlDocString)).toEqual(true);
     });
     test('should be able to process AsyncAPI 2.0.0', () => {
       const parsedObject = { asyncapi: '2.0.0' };
@@ -157,6 +164,12 @@ describe('AsyncAPIInputProcessor', () => {
       expect(commonInputModel).toMatchSnapshot();
     });
 
+    test('should be able to process YAML file', async () => {
+      const processor = new AsyncAPIInputProcessor();
+      const commonInputModel = await processor.process(yamlDocString);
+      expect(commonInputModel instanceof InputMetaModel).toBeTruthy();
+      expect(commonInputModel.models).toMatchSnapshot();
+    });
     test('should be able to process file', async () => {
       const processor = new AsyncAPIInputProcessor();
       const commonInputModel = await processor.process(ymlFileURI);

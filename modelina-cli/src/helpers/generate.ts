@@ -1,4 +1,4 @@
-import { AbstractFileGenerator, AbstractGenerator, Logger } from "@asyncapi/modelina";
+import { AbstractFileGenerator, AbstractGenerator, Logger, ModelLoggingInterface } from "@asyncapi/modelina";
 import { TypeScriptOclifFlags, buildTypeScriptGenerator } from "./typescript";
 import { CplusplusOclifFlags, buildCplusplusGenerator } from "./csplusplus";
 import { CSharpOclifFlags, buildCSharpGenerator } from "./csharp";
@@ -98,7 +98,7 @@ export const ModelinaFlags = {
  * @param language 
  * @returns 
  */
-export async function generateModels(flags: any, document: any, logger: any, language: Languages) {
+export async function generateModels(flags: any, document: any, logger: ModelLoggingInterface, language: Languages) {
   const { output } = flags;
   Logger.setLogger(logger);
   // eslint-disable-next-line security/detect-object-injection
@@ -110,23 +110,15 @@ export async function generateModels(flags: any, document: any, logger: any, lan
   const { fileGenerator, fileOptions } = mapper(flags);
 
   if (output) {
-    const models = await fileGenerator.generateToFiles(
+    return fileGenerator.generateToFiles(
       document,
       output,
-      { ...fileOptions, });
-    const generatedModels = models.map((model) => { return model.modelName; });
-    logger.info(`Successfully generated the following models: ${generatedModels.join(', ')}`);
-    return;
+      fileOptions
+    );
   }
 
-  const models = await fileGenerator.generateCompleteModels(
+  return fileGenerator.generateCompleteModels(
     document,
-    { ...fileOptions });
-  const generatedModels = models.map((model) => {
-    return `
-  ## Model name: ${model.modelName}
-  ${model.result}
-  `;
-  });
-  logger.info(`Successfully generated the following models: ${generatedModels.join('\n')}`);
+    fileOptions
+  );
 }

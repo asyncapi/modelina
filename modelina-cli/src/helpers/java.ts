@@ -18,6 +18,13 @@ export const JavaOclifFlags = {
     required: false,
     default: false
   }),
+  javaArrayType: Flags.string({
+    type: 'option',
+    description: 'Java specific, define which type of array needs to be generated.',
+    options: ['Array', 'List'],
+    required: false,
+    default: 'Array'
+  })
 }
 
 /**
@@ -27,7 +34,7 @@ export const JavaOclifFlags = {
  * @returns 
  */
 export function buildJavaGenerator(flags: any): BuilderReturnType {
-  const { packageName, javaIncludeComments, javaJackson, javaConstraints } = flags;
+  const { packageName, javaIncludeComments, javaJackson, javaConstraints, javaArrayType } = flags;
   const presets = []
   
   if (packageName === undefined) {
@@ -40,7 +47,10 @@ export function buildJavaGenerator(flags: any): BuilderReturnType {
   if (javaIncludeComments) {presets.push(JAVA_DESCRIPTION_PRESET);}
   if (javaJackson) {presets.push(JAVA_JACKSON_PRESET);}
   if (javaConstraints) {presets.push(JAVA_CONSTRAINTS_PRESET);}
-  const fileGenerator = new JavaFileGenerator({ presets });
+  const fileGenerator = new JavaFileGenerator({
+    presets,
+    collectionType: javaArrayType as 'Array' | 'List'
+  });
   const fileOptions = {
     packageName
   };

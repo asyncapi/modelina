@@ -3,22 +3,12 @@
  
 import path from 'node:path';
 import { expect, test } from '@oclif/test';
-import { createMockServer, stopMockServer } from '../helpers';
-import {rimrafSync} from 'rimraf';
 const generalOptions = ['generate'];
 const outputDir = './test/fixtures/generate/models';
 const ASYNCAPI_V2_DOCUMENT = path.resolve(__dirname, '../fixtures/asyncapi_v2.yml')
 const ASYNCAPI_V3_DOCUMENT = path.resolve(__dirname, '../fixtures/asyncapi_v3.yml')
 
 describe('models', () => {
-  before(() => {
-    createMockServer();
-  });
-  after(() => {
-    stopMockServer();
-    rimrafSync(outputDir);
-  });
-
   test
     .stderr()
     .stdout()
@@ -94,8 +84,18 @@ describe('models', () => {
     test
       .stderr()
       .stdout()
-      .command([...generalOptions,'typescript', ASYNCAPI_V2_DOCUMENT, '--tsIncludeComments'])
+      .command([...generalOptions, 'typescript', ASYNCAPI_V2_DOCUMENT, '--tsIncludeComments'])
       .it('works when tsExampleInstance is set', (ctx, done) => {
+        expect(ctx.stdout).to.contain(
+          'Successfully generated the following models: '
+        );
+        done();
+      });
+    test
+      .stderr()
+      .stdout()
+      .command([...generalOptions, 'typescript', ASYNCAPI_V2_DOCUMENT, '--tsRawPropertyNames'])
+      .it('works when tsRawPropertyNames is set', (ctx, done) => {
         expect(ctx.stdout).to.contain(
           'Successfully generated the following models: '
         );
@@ -122,6 +122,16 @@ describe('models', () => {
       .stdout()
       .command([...generalOptions, 'python', ASYNCAPI_V2_DOCUMENT, `-o=${ path.resolve(outputDir, './python')}`])
       .it('works when file path is passed', (ctx, done) => {
+        expect(ctx.stdout).to.contain(
+          'Successfully generated the following models: '
+        );
+        done();
+      });
+    test
+      .stderr()
+      .stdout()
+      .command([...generalOptions, 'python', ASYNCAPI_V2_DOCUMENT, '--pyDantic'])
+      .it('works when --pyDantic is set', (ctx, done) => {
         expect(ctx.stdout).to.contain(
           'Successfully generated the following models: '
         );
@@ -264,6 +274,16 @@ describe('models', () => {
       .command([...generalOptions, 'java', ASYNCAPI_V2_DOCUMENT, `-o=${ path.resolve(outputDir, './java')}`])
       .it('fails when no package defined', (ctx, done) => {
         expect(ctx.stderr).to.contain('Error: In order to generate models to Java, we need to know which package they are under. Add `--packageName=PACKAGENAME` to set the desired package name.\n');
+        done();
+      });
+    test
+      .stderr()
+      .stdout()
+      .command([...generalOptions, 'java', ASYNCAPI_V2_DOCUMENT, `-o=${ path.resolve(outputDir, './java')}`, '--packageName', 'test.pkg', '--javaArrayType=List'])
+      .it('works when array type is provided', (ctx, done) => {
+        expect(ctx.stdout).to.contain(
+          'Successfully generated the following models: '
+        );
         done();
       });
   });
