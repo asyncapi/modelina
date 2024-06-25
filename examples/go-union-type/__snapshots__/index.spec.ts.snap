@@ -8,7 +8,8 @@ type AdditionalProperty struct {
   AdditionalPropertyOneOf_1
   string
   float64
-  ModelinaArrType
+  ModelinaArrType []string
+  ModelinaArrType []Union
   AdditionalPropertyOneOf_6
 }",
 ]
@@ -20,7 +21,7 @@ Array [
 type Union struct {
   string
   float64
-  ModelinaAnyType
+  ModelinaAnyType interface{}
 }",
 ]
 `;
