@@ -127,6 +127,16 @@ describe('models', () => {
         );
         done();
       });
+    test
+      .stderr()
+      .stdout()
+      .command([...generalOptions, 'python', ASYNCAPI_V2_DOCUMENT, '--pyDantic'])
+      .it('works when --pyDantic is set', (ctx, done) => {
+        expect(ctx.stdout).to.contain(
+          'Successfully generated the following models: '
+        );
+        done();
+      });
   });
 
   describe('for Rust', () => {
