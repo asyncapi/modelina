@@ -20,7 +20,7 @@ Array [
 type Union struct {
   string
   float64
-  ModelinaAnyType
+  ModelinaAnyType 
 }",
 ]
 `;

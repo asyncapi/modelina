@@ -82,13 +82,13 @@ export const GO_DEFAULT_UNION_PRESET: UnionPresetType<GoOptions> = {
     const fieldType = field.type;
 
     if (fieldType === 'interface{}') {
-      return `${options.unionAnyModelName}`;
+      return `${options.unionAnyModelName} ${fieldType}`;
     }
     if (fieldType.includes('map')) {
-      return `${options.unionDictModelName}`;
+      return `${options.unionDictModelName} ${fieldType}`;
     }
     if (fieldType.includes('[]')) {
-      return `${options.unionArrModelName}`;
+      return `${options.unionArrModelName} ${fieldType}`;
     }
     return `${fieldType}`;
   },
