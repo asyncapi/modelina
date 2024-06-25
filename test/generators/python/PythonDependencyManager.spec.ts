@@ -12,10 +12,10 @@ describe('PythonDependencyManager', () => {
     test('should render unique dependency', () => {
       const dependencyManager = new PythonDependencyManager(
         PythonGenerator.defaultOptions,
-        ['from x import y', 'from x import y2']
+        ['from x import y', 'from x import y2', 'from x import y_2']
       );
       expect(dependencyManager.renderDependencies()).toEqual([
-        'from x import y, y2'
+        'from x import y, y2, y_2'
       ]);
     });
     test('should render __future__ dependency first', () => {
