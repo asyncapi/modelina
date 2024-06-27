@@ -110,9 +110,7 @@ export function getGeneralGeneratorCode(
   if (constraints.length > 0) {
     optionString.push(`constraints: {
 ${constraints
-  .map((value) => {
-    return indent(value, 2, IndentationTypes.SPACES);
-  })
+  .map((value) => indent(value, 2, IndentationTypes.SPACES))
   .join(',\n')}
 }`);
   }
@@ -146,9 +144,7 @@ export function renderGeneratorInstanceCode(
   generatorName: string
 ) {
   const renderedPresets = optionStringPresets
-    .map((value) => {
-      return indent(value, 2, IndentationTypes.SPACES);
-    })
+    .map((value) => indent(value, 2, IndentationTypes.SPACES))
     .join(', \n');
   const spacer = optionString.length > 0 ? ',' : '';
   const presetOptions =
@@ -161,9 +157,7 @@ ${renderedPresets}
 
   if (optionStringPresets.length > 0 || optionString.length > 0) {
     const renderedOptions = optionString
-      .map((value) => {
-        return indent(value, 2, IndentationTypes.SPACES);
-      })
+      .map((value) => indent(value, 2, IndentationTypes.SPACES))
       .join(',\n');
 
     fullOptions = `{

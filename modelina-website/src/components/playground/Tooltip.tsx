@@ -9,10 +9,8 @@ export const Tooltip: React.FunctionComponent<TippyProps> = ({
   hideOnClick = false,
   children,
   ...rest
-}) => {
-  return (
+}) => (
     <Tippy placement={placement} animation={animation} className={className} hideOnClick={hideOnClick} {...rest}>
       {children}
     </Tippy>
   );
-};

@@ -7,9 +7,7 @@ import AppContext from '../components/contexts/AppContext';
 import Footer from '../components/layouts/Footer';
 
 export default function App({ Component, pageProps, router }: any) {
-  const contextValue = useMemo(() => {
-    return { path: router.asPath };
-  }, [router.asPath]);
+  const contextValue = useMemo(() => ({ path: router.asPath }), [router.asPath]);
 
   return (
     <AppContext.Provider value={contextValue}>

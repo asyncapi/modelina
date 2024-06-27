@@ -1,11 +1,6 @@
 {
   "root": true,
-  "extends": [
-    "airbnb-base",
-    "next/core-web-vitals",
-    "eslint:recommended",
-    "plugin:prettier/recommended"
-  ],
+  "extends": ["airbnb-base", "next/core-web-vitals", "eslint:recommended", "prettier"],
   "env": {
     "browser": true,
     "es2021": true,
@@ -13,27 +8,8 @@
   },
   "plugins": ["react", "jsx-a11y"],
   "rules": {
-    "prettier/prettier": [
-      "error",
-      {
-        "singleQuote": true,
-        "endOfLine": "auto",
-        "semi": true,
-        "tabWidth": 2,
-        "trailingComma": "none",
-        "arrowParens": "always",
-        "bracketSpacing": true,
-        "jsxBracketSameLine": false,
-        "useTabs": false,
-        "quoteProps": "as-needed",
-        "insertPragma": false,
-        "requirePragma": false,
-        "jsxSingleQuote": true,
-        "printWidth": 120
-      }
-    ],
     "max-len": [
-      "error",
+      "warn",
       {
         "code": 120,
         "ignoreUrls": true,
@@ -51,18 +27,9 @@
     // Configuration for TypeScript files
     {
       "files": ["**/*.ts", "**/*.tsx", "netlify/*.ts"],
-      "plugins": [
-        "@typescript-eslint",
-        "tailwindcss",
-        "unused-imports",
-        "simple-import-sort"
-      ],
-      "extends": [
-        "plugin:tailwindcss/recommended",
-        "airbnb-typescript",
-        "next/core-web-vitals",
-        "plugin:prettier/recommended"
-      ],
+      "plugins": ["@typescript-eslint", "tailwindcss", "unused-imports", "simple-import-sort"],
+      "extends": ["plugin:tailwindcss/recommended", "airbnb-typescript", "next/core-web-vitals"],
+      "parser": "@typescript-eslint/parser",
       "parserOptions": {
         "project": "./tsconfig.json"
       },
@@ -76,12 +43,7 @@
         "@typescript-eslint/comma-dangle": "off", // Avoid conflict rule between Eslint and Prettier
         "@typescript-eslint/indent": "off", // Avoid conflict rule between Eslint and Prettier
         "@typescript-eslint/consistent-type-imports": "error", // Ensure `import type` is used when it's necessary
-        "no-restricted-syntax": [
-          "error",
-          "ForInStatement",
-          "LabeledStatement",
-          "WithStatement"
-        ], // Overrides Airbnb configuration and enable no-restricted-syntax
+        "no-restricted-syntax": ["error", "ForInStatement", "LabeledStatement", "WithStatement"], // Overrides Airbnb configuration and enable no-restricted-syntax
         "import/prefer-default-export": "off", // Named export is easier to refactor automatically
         "tailwindcss/no-custom-classname": "off", // Disabled otherwise nightmare to allow each custom tailwind classes
         "simple-import-sort/imports": "error", // Import configuration for `eslint-plugin-simple-import-sort`
@@ -95,10 +57,7 @@
         ],
         "class-methods-use-this": "off",
         "unused-imports/no-unused-imports": "error",
-        "unused-imports/no-unused-vars": [
-          "error",
-          { "argsIgnorePattern": "^_" }
-        ],
+        "unused-imports/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
         // Variables
         "init-declarations": "off",
         "no-catch-shadow": "off",

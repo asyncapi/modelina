@@ -18,8 +18,7 @@ export default function InfoModal(props: InfoModalProps) {
     document.body.style.overflowY = 'scroll';
   };
 
-  const MyModal = () => {
-    return (
+  const MyModal = () => (
       <>
         <div className='fixed inset-0 bg-black bg-opacity-10' onClick={onCloseModal} style={{ zIndex: 1000 }}></div>
         <div
@@ -41,7 +40,6 @@ export default function InfoModal(props: InfoModalProps) {
         </div>
       </>
     );
-  };
 
   return (
     <>

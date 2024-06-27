@@ -51,7 +51,9 @@ interface PlaygroundContextProps {
 
 const PlaygroundContext = createContext<PlaygroundContextProps | undefined>(undefined);
 
-export const PlaygroundContextProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const PlaygroundContextProvider: React.FC<{
+  children: React.ReactNode;
+}> = ({ children }) => {
   const defaultConfig: ModelinaOptions = {
     language: 'typescript',
     propertyNamingFormat: 'default',
