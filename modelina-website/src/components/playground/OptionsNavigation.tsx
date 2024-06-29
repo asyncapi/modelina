@@ -1,20 +1,21 @@
-import React from "react";
+import React from 'react';
+
 import {
-  PlaygroundTypeScriptConfigContext,
+  PlaygroundCplusplusConfigContext,
   PlaygroundCSharpConfigContext,
   PlaygroundDartConfigContext,
+  PlaygroundGeneralConfigContext,
   PlaygroundGoConfigContext,
   PlaygroundJavaConfigContext,
   PlaygroundJavaScriptConfigContext,
   PlaygroundKotlinConfigContext,
+  PlaygroundPhpConfigContext,
   PlaygroundPythonConfigContext,
-  PlaygroundScalaConfigContext,
   PlaygroundRustConfigContext,
-  PlaygroundCplusplusConfigContext,
-  PlaygroundGeneralConfigContext,
-  PlaygroundPhpConfigContext
+  PlaygroundScalaConfigContext,
+  PlaygroundTypeScriptConfigContext
 } from '../contexts/PlaygroundConfigContext';
-import { usePlaygroundContext } from "../contexts/PlaygroundContext";
+import { usePlaygroundContext } from '../contexts/PlaygroundContext';
 import PlaygroundOptions from './PlaygroundOptions';
 
 interface OptionsNavigationProps {
@@ -23,8 +24,9 @@ interface OptionsNavigationProps {
 
 export const OptionsNavigation: React.FunctionComponent<OptionsNavigationProps> = ({ setNewConfig }) => {
   const { config } = usePlaygroundContext();
+
   return (
-    <div className="options w-full h-full overflow-y-auto">
+    <div className='options size-full overflow-y-auto'>
       <PlaygroundGeneralConfigContext.Provider value={config}>
         <PlaygroundTypeScriptConfigContext.Provider value={config}>
           <PlaygroundJavaScriptConfigContext.Provider value={config}>
@@ -53,5 +55,5 @@ export const OptionsNavigation: React.FunctionComponent<OptionsNavigationProps> 
         </PlaygroundTypeScriptConfigContext.Provider>
       </PlaygroundGeneralConfigContext.Provider>
     </div>
-  )
-}
+  );
+};

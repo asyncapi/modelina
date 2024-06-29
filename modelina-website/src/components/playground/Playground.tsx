@@ -1,22 +1,25 @@
-import React, { useEffect, useState } from 'react';
-import Router, { withRouter, NextRouter } from 'next/router';
 import { encode } from 'js-base64';
-import { ModelinaQueryOptions, GenerateMessage, UpdateMessage } from '@/types';
-import { getTypeScriptGeneratorCode } from '@/helpers/GeneratorCode/TypeScriptGenerator';
-import { getJavaScriptGeneratorCode } from '@/helpers/GeneratorCode/JavaScriptGenerator';
-import { getJavaGeneratorCode } from '@/helpers/GeneratorCode/JavaGenerator';
-import { getGoGeneratorCode } from '@/helpers/GeneratorCode/GoGenerator';
-import { getCSharpGeneratorCode } from '@/helpers/GeneratorCode/CSharpGenerator';
-import { getRustGeneratorCode } from '@/helpers/GeneratorCode/RustGenerator';
-import { getScalaGeneratorCode } from '@/helpers/GeneratorCode/ScalaGenerator';
-import { getPythonGeneratorCode } from '@/helpers/GeneratorCode/PythonGenerator';
-import { getDartGeneratorCode } from '@/helpers/GeneratorCode/DartGenerator';
+import type { NextRouter } from 'next/router';
+import Router, { withRouter } from 'next/router';
+import React, { useEffect, useState } from 'react';
+
 import { getCplusplusGeneratorCode } from '@/helpers/GeneratorCode/CplusplusGenerator';
+import { getCSharpGeneratorCode } from '@/helpers/GeneratorCode/CSharpGenerator';
+import { getDartGeneratorCode } from '@/helpers/GeneratorCode/DartGenerator';
+import { getGoGeneratorCode } from '@/helpers/GeneratorCode/GoGenerator';
+import { getJavaGeneratorCode } from '@/helpers/GeneratorCode/JavaGenerator';
+import { getJavaScriptGeneratorCode } from '@/helpers/GeneratorCode/JavaScriptGenerator';
 import { getKotlinGeneratorCode } from '@/helpers/GeneratorCode/KotlinGenerator';
 import { getPhpGeneratorCode } from '@/helpers/GeneratorCode/PhpGenerator';
+import { getPythonGeneratorCode } from '@/helpers/GeneratorCode/PythonGenerator';
+import { getRustGeneratorCode } from '@/helpers/GeneratorCode/RustGenerator';
+import { getScalaGeneratorCode } from '@/helpers/GeneratorCode/ScalaGenerator';
+import { getTypeScriptGeneratorCode } from '@/helpers/GeneratorCode/TypeScriptGenerator';
+import type { GenerateMessage, ModelinaQueryOptions, UpdateMessage } from '@/types';
+
 import { usePlaygroundContext } from '../contexts/PlaygroundContext';
-import { Sidebar } from './Sidebar';
 import { Content } from './Content';
+import { Sidebar } from './Sidebar';
 
 interface WithRouterProps {
   router: NextRouter;
@@ -46,6 +49,92 @@ const Playground: React.FC<ModelinaPlaygroundProps> = (props) => {
   // To avoid hydration error
   const [isMounted, setIsMounted] = useState(false);
 
+  /**
+   * Tell the socket io server that we want some code
+   */
+  const generateNewCode = (inputArgs: string) => {
+    try {
+      const message: GenerateMessage = {
+        ...config,
+        input: encode(JSON.stringify(JSON.parse(inputArgs)))
+      };
+
+      if (message.input.length > (props.maxInputSize || 30000)) {
+        console.error('Input too large, use a smaller example');
+        setError(true);
+        setErrorMessage('Input too large, use a smaller example');
+        setStatusCode(400);
+      } else {
+        const generators: { [key: string]: Function } = {
+          typescript: getTypeScriptGeneratorCode,
+          javascript: getJavaScriptGeneratorCode,
+          java: getJavaGeneratorCode,
+          go: getGoGeneratorCode,
+          csharp: getCSharpGeneratorCode,
+          rust: getRustGeneratorCode,
+          scala: getScalaGeneratorCode,
+          python: getPythonGeneratorCode,
+          dart: getDartGeneratorCode,
+          cplusplus: getCplusplusGeneratorCode,
+          kotlin: getKotlinGeneratorCode,
+          php: getPhpGeneratorCode
+        };
+
+        const generatorCode = generators[config.language](message);
+
+        fetch(`${process.env.NEXT_PUBLIC_API_PATH}/generate`, {
+          body: JSON.stringify(message),
+          method: 'POST'
+        })
+          .then(async (res) => {
+            if (!res.ok) {
+              throw new Error(res.statusText);
+            }
+
+            const response: UpdateMessage = await res.json();
+
+            setGeneratorCode(generatorCode);
+            setModels(response.models);
+            setLoaded({
+              ...loaded,
+              hasReceivedCode: true
+            });
+            setError(false);
+            setStatusCode(200);
+            setErrorMessage('');
+          })
+          .catch((error) => {
+            console.error(error);
+            setError(true);
+            setErrorMessage('Input is not a correct AsyncAPI document, so it cannot be processed.');
+            setStatusCode(500);
+          });
+      }
+    } catch (e: any) {
+      console.error(e);
+      setError(true);
+      setErrorMessage('Input is not a correct AsyncAPI document, so it cannot be processed.');
+      setStatusCode(400);
+    }
+  };
+
+  /**
+   * Set a query key and value
+   */
+  const setNewQuery = (queryKey: string, queryValue: any) => {
+    const newQuery = {
+      query: { ...props.router.query }
+    };
+
+    if (queryValue === false) {
+      delete newQuery.query[queryKey];
+    } else {
+      newQuery.query[queryKey] = String(queryValue);
+    }
+
+    Router.push(newQuery, undefined, { scroll: false });
+  };
+
   useEffect(() => {
     setIsMounted(true);
   }, []);
@@ -53,9 +142,11 @@ const Playground: React.FC<ModelinaPlaygroundProps> = (props) => {
   useEffect(() => {
     const isHardLoaded = loaded.hasReceivedCode;
     const isSoftLoaded = loaded.editorLoaded;
+
     setIsLoaded(isHardLoaded && isSoftLoaded);
 
     const query = props.router.query as ModelinaQueryOptions;
+
     if (query.language !== undefined) {
       setConfig({ ...config, language: query.language as any });
     }
@@ -238,106 +329,11 @@ const Playground: React.FC<ModelinaPlaygroundProps> = (props) => {
     }
   }, [props.router.isReady, hasLoadedQuery]);
 
-  const setNewConfig = (
-    configName: string,
-    configValue: any,
-    updateCode?: boolean
-  ) => {
+  const setNewConfig = (configName: string, configValue: any, updateCode?: boolean) => {
     setNewQuery(configName, configValue);
-    /* eslint-disable-next-line security/detect-object-injection */
     (config as any)[configName] = configValue;
     if (updateCode === true || updateCode === undefined) {
       generateNewCode(input);
-    }
-  };
-
-  /**
-   * Set a query key and value
-   */
-  const setNewQuery = (queryKey: string, queryValue: any) => {
-    const newQuery = {
-      query: { ...props.router.query }
-    };
-
-    if (queryValue === false) {
-      delete newQuery.query[queryKey];
-    } else {
-      /* eslint-disable-next-line security/detect-object-injection */
-      newQuery.query[queryKey] = String(queryValue);
-    }
-
-    Router.push(newQuery, undefined, { scroll: false });
-  };
-
-  /**
-   * Tell the socket io server that we want some code
-   */
-  const generateNewCode = (input: string) => {
-    try {
-      const message: GenerateMessage = {
-        ...config,
-        input: encode(JSON.stringify(JSON.parse(input)))
-      };
-
-      if (message.input.length > (props.maxInputSize || 30000)) {
-        console.error('Input too large, use a smaller example');
-        setError(true);
-        setErrorMessage('Input too large, use a smaller example');
-        setStatusCode(400);
-      } else {
-        const generators: { [key: string]: Function } = {
-          typescript: getTypeScriptGeneratorCode,
-          javascript: getJavaScriptGeneratorCode,
-          java: getJavaGeneratorCode,
-          go: getGoGeneratorCode,
-          csharp: getCSharpGeneratorCode,
-          rust: getRustGeneratorCode,
-          scala: getScalaGeneratorCode,
-          python: getPythonGeneratorCode,
-          dart: getDartGeneratorCode,
-          cplusplus: getCplusplusGeneratorCode,
-          kotlin: getKotlinGeneratorCode,
-          php: getPhpGeneratorCode
-        };
-
-        const generatorCode = generators[config.language](message);
-
-        fetch(`${process.env.NEXT_PUBLIC_API_PATH}/generate`, {
-          body: JSON.stringify(message),
-          method: 'POST'
-        })
-          .then(async (res) => {
-            if (!res.ok) {
-              throw new Error(res.statusText);
-            }
-
-            const response: UpdateMessage = await res.json();
-            setGeneratorCode(generatorCode);
-            setModels(response.models);
-            setLoaded({
-              ...loaded,
-              hasReceivedCode: true
-            });
-            setError(false);
-            setStatusCode(200);
-            setErrorMessage('');
-          })
-          .catch((error) => {
-            console.error(error);
-            setError(true);
-            setErrorMessage(
-              'Input is not a correct AsyncAPI document, so it cannot be processed.'
-            );
-            setStatusCode(500);
-          });
-      }
-    } catch (e: any) {
-      console.error(e);
-      setError(true);
-      setErrorMessage(
-        'Input is not a correct AsyncAPI document, so it cannot be processed.'
-      );
-      setStatusCode(400);
     }
   };
 
@@ -348,17 +344,13 @@ const Playground: React.FC<ModelinaPlaygroundProps> = (props) => {
   return (
     <div>
       {isLoaded ? (
-        <div className="text-xl text-center mt-16 lg:mt-56 md:text-2xl">
+        <div className='mt-16 text-center text-xl md:text-2xl lg:mt-56'>
           Loading Modelina Playground. Rendering playground components...
         </div>
       ) : (
-        <div className="grid grid-cols-with-sidebar h-[90vh] w-full overflow-hidden">
+        <div className='grid h-[90vh] w-full grid-cols-with-sidebar overflow-hidden'>
           <Sidebar />
-          <Content
-            setNewConfig={setNewConfig}
-            setNewQuery={setNewQuery}
-            generateNewCode={generateNewCode}
-          />
+          <Content setNewConfig={setNewConfig} setNewQuery={setNewQuery} generateNewCode={generateNewCode} />
         </div>
       )}
     </div>

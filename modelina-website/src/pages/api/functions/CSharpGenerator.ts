@@ -1,21 +1,34 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { CSharpGenerator, CSharpOptions, csharpDefaultEnumKeyConstraints, csharpDefaultModelNameConstraints, csharpDefaultPropertyKeyConstraints, CSHARP_COMMON_PRESET, CSHARP_JSON_SERIALIZER_PRESET, CSHARP_NEWTONSOFT_SERIALIZER_PRESET } from '../../../../../';
+import type { CSharpOptions } from '@/../../';
+import {
+  CSHARP_COMMON_PRESET,
+  CSHARP_JSON_SERIALIZER_PRESET,
+  CSHARP_NEWTONSOFT_SERIALIZER_PRESET,
+  csharpDefaultEnumKeyConstraints,
+  csharpDefaultModelNameConstraints,
+  csharpDefaultPropertyKeyConstraints,
+  CSharpGenerator
+} from '@/../../';
+import type { DeepPartial } from '@/../../lib/types/utils';
+
+import type { ModelinaCSharpOptions, ModelProps } from '../../../types';
 import { applyGeneralOptions, convertModelsToProps } from './Helpers';
-import { ModelinaCSharpOptions, ModelProps } from '../../../types';
-import { DeepPartial } from '../../../../../lib/types/utils';
 
 /**
  * This is the server side part of the CSharp generator, that takes input and generator parameters and generate the models.
  */
-export async function getCSharpModels(
-  input: any,
-  generatorOptions: ModelinaCSharpOptions
-): Promise<ModelProps[]> {
+export async function getCSharpModels(input: any, generatorOptions: ModelinaCSharpOptions): Promise<ModelProps[]> {
   const options: DeepPartial<CSharpOptions> = {
     presets: []
   };
 
-  applyGeneralOptions(generatorOptions, options, csharpDefaultEnumKeyConstraints, csharpDefaultPropertyKeyConstraints, csharpDefaultModelNameConstraints);
+  applyGeneralOptions(
+    generatorOptions,
+    options,
+    csharpDefaultEnumKeyConstraints,
+    csharpDefaultPropertyKeyConstraints,
+    csharpDefaultModelNameConstraints
+  );
 
   if (generatorOptions.csharpArrayType) {
     options.collectionType = generatorOptions.csharpArrayType;
@@ -31,23 +44,23 @@ export async function getCSharpModels(
         equal: false,
         hashCode: generatorOptions.csharpOverwriteHashcode
       }
-    })
+    });
   }
   if (generatorOptions.csharpIncludeJson) {
-    options.presets?.push(CSHARP_JSON_SERIALIZER_PRESET)
+    options.presets?.push(CSHARP_JSON_SERIALIZER_PRESET);
   }
 
-  if(generatorOptions.csharpOverwriteEqual){
+  if (generatorOptions.csharpOverwriteEqual) {
     options.presets?.push({
       preset: CSHARP_COMMON_PRESET,
       options: {
         equal: generatorOptions.csharpOverwriteEqual,
         hashCode: false
       }
-    })
-  }  
+    });
+  }
   if (generatorOptions.csharpIncludeNewtonsoft) {
-    options.presets?.push(CSHARP_NEWTONSOFT_SERIALIZER_PRESET)
+    options.presets?.push(CSHARP_NEWTONSOFT_SERIALIZER_PRESET);
   }
 
   if (generatorOptions.csharpNullable) {
@@ -59,9 +72,10 @@ export async function getCSharpModels(
     options.typeMapping = {
       Integer: ({ dependencyManager }) => {
         dependencyManager.addDependency('using My.Namespace;');
+
         return 'MyIntegerType';
       }
-    }
+    };
   }
 
   try {
@@ -69,10 +83,12 @@ export async function getCSharpModels(
     const generatedModels = await generator.generateCompleteModels(input, {
       namespace: generatorOptions.csharpNamespace || 'asyncapi.models'
     });
+
     return convertModelsToProps(generatedModels);
-  } catch (e : any) {
+  } catch (e: any) {
     console.error('Could not generate models');
     console.error(e);
+
     return e.message;
   }
 }

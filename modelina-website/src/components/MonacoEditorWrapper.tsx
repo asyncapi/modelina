@@ -1,17 +1,14 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { useEffect, useRef } from 'react';
-import PropTypes from 'prop-types';
 import Editor, { useMonaco } from '@monaco-editor/react';
 import { debounce } from 'lodash';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import PropTypes from 'prop-types';
+import { useEffect, useRef } from 'react';
 
 export default function MonacoEditorWrapper({
   language,
   theme = 'asyncapi-theme',
   onChange = undefined,
   value,
-  highlightedLines = [],
-  highlightedRanges = [],
-  updateHighlightOnChange = false,
   options,
   editorDidMount,
   ...props
@@ -22,28 +19,30 @@ export default function MonacoEditorWrapper({
   const handleEditorDidMount = (editor: any) => {
     editor.onDidChangeModelContent((ev: any) => {
       const currentValue = editor.getValue();
+
       if (currentValue !== previousValue.current) {
         previousValue.current = currentValue;
-        const value = debouncedOnChange(ev, currentValue);
+        const debouncedValue = debouncedOnChange(ev, currentValue);
 
-        if (typeof value === 'string' && currentValue !== value) {
-          editor.setValue(value);
+        if (typeof debouncedValue === 'string' && currentValue !== value) {
+          editor.setValue(debouncedValue);
         }
       }
     });
 
     editorDidMount(editor.getValue, editor);
   };
-  //Alias because Modelina uses cplusplus
-  if(language === 'cplusplus') {
+
+  // Alias because Modelina uses cplusplus
+
+  if (language === 'cplusplus') {
+    // eslint-disable-next-line no-param-reassign
     language = 'cpp';
   }
 
   useEffect(() => {
     // do conditional chaining
-    monacoInstance?.languages.typescript.javascriptDefaults.setEagerModelSync(
-      true
-    );
+    monacoInstance?.languages.typescript.javascriptDefaults.setEagerModelSync(true);
     // or make sure that it exists by other ways
     if (monacoInstance) {
       monacoInstance.editor.defineTheme('asyncapi-theme', {

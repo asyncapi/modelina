@@ -1,18 +1,19 @@
 import React, { useContext, useEffect, useState } from 'react';
+
 import { PlaygroundGeneralConfigContext } from '../contexts/PlaygroundConfigContext';
-import TypeScriptGeneratorOptions from './options/TypeScriptGeneratorOptions';
-import GeneralOptions from './options/GeneralOptions';
-import JavaScriptGeneratorOptions from './options/JavaScriptGeneratorOptions';
+import CplusplusGeneratorOptions from './options/CplusplusGeneratorOptions';
 import CSharpGeneratorOptions from './options/CSharpGeneratorOptions';
 import DartGeneratorOptions from './options/DartGeneratorOptions';
+import GeneralOptions from './options/GeneralOptions';
 import GoGeneratorOptions from './options/GoGeneratorOptions';
 import JavaGeneratorOptions from './options/JavaGeneratorOptions';
+import JavaScriptGeneratorOptions from './options/JavaScriptGeneratorOptions';
 import KotlinGeneratorOptions from './options/KotlinGeneratorOptions';
+import PhpGeneratorOptions from './options/PhpGeneratorOptions';
+import PythonGeneratorOptions from './options/PythonGeneratorOptions';
 import RustGeneratorOptions from './options/RustGeneratorOptions';
 import ScalaGeneratorOptions from './options/ScalaGeneratorOptions';
-import PythonGeneratorOptions from './options/PythonGeneratorOptions';
-import CplusplusGeneratorOptions from './options/CplusplusGeneratorOptions';
-import PhpGeneratorOptions from './options/PhpGeneratorOptions';
+import TypeScriptGeneratorOptions from './options/TypeScriptGeneratorOptions';
 
 interface PlaygroundOptionsProps {
   setNewConfig?: (queryKey: string, queryValue: any) => void;
@@ -25,7 +26,7 @@ const PlaygroundOptions: React.FC<PlaygroundOptionsProps> = ({ setNewConfig }) =
   const handleLanguageChange = () => {
     switch (context?.language) {
       case 'typescript':
-        setGeneratorOptions(prevOptions => <TypeScriptGeneratorOptions setNewConfig={setNewConfig} />);
+        setGeneratorOptions(() => <TypeScriptGeneratorOptions setNewConfig={setNewConfig} />);
         break;
       case 'javascript':
         setGeneratorOptions(<JavaScriptGeneratorOptions setNewConfig={setNewConfig} />);
@@ -61,21 +62,21 @@ const PlaygroundOptions: React.FC<PlaygroundOptionsProps> = ({ setNewConfig }) =
         setGeneratorOptions(<PhpGeneratorOptions setNewConfig={setNewConfig} />);
         break;
       default:
-        setGeneratorOptions(prevOptions => null);
+        setGeneratorOptions(() => null);
         break;
     }
-  }
+  };
 
   useEffect(() => {
     handleLanguageChange();
-  }, [])
+  }, []);
 
   useEffect(() => {
     handleLanguageChange();
   }, [context?.language, setNewConfig]);
 
   return (
-    <div className="w-full h-full px-2 rounded-b overflow-y-auto">
+    <div className='size-full overflow-y-auto rounded-b px-2'>
       <GeneralOptions setNewConfig={setNewConfig} />
       {generatorOptions}
     </div>

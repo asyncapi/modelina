@@ -1,11 +1,14 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { ModelinaCSharpOptions } from '../../types';
+import type { ModelinaCSharpOptions } from '../../types';
 import { getGeneralGeneratorCode, renderGeneratorInstanceCode } from './GeneralGenerator';
 
-export function getCSharpGeneratorCode(
-  generatorOptions: ModelinaCSharpOptions
-) {
-  const optionString: string[] = getGeneralGeneratorCode(generatorOptions, 'csharpDefaultEnumKeyConstraints', 'csharpDefaultPropertyKeyConstraints', 'csharpDefaultModelNameConstraints');
+export function getCSharpGeneratorCode(generatorOptions: ModelinaCSharpOptions) {
+  const optionString: string[] = getGeneralGeneratorCode(
+    generatorOptions,
+    'csharpDefaultEnumKeyConstraints',
+    'csharpDefaultPropertyKeyConstraints',
+    'csharpDefaultModelNameConstraints'
+  );
   const optionStringPresets: string[] = [];
 
   if (generatorOptions.csharpArrayType) {
@@ -13,9 +16,7 @@ export function getCSharpGeneratorCode(
   }
 
   if (generatorOptions.csharpAutoImplemented) {
-    optionString.push(
-      `autoImplementedProperties: ${generatorOptions.csharpAutoImplemented}`
-    );
+    optionString.push(`autoImplementedProperties: ${generatorOptions.csharpAutoImplemented}`);
   }
 
   if (generatorOptions.csharpNamespace) {
@@ -26,7 +27,7 @@ export function getCSharpGeneratorCode(
     optionString.push(`nullable: ${generatorOptions.csharpNullable}`);
   }
 
-  if(generatorOptions.showTypeMappingExample === true) {
+  if (generatorOptions.showTypeMappingExample === true) {
     optionString.push(`typeMapping: {
   Integer: ({ dependencyManager, constrainedModel, options, partOfProperty }) => {
     // Add custom dependency for your type if required.
@@ -45,17 +46,17 @@ export function getCSharpGeneratorCode(
     equal: false,
     hashCode: true
   }
-}`)
+}`);
   }
 
   if (generatorOptions.csharpIncludeJson) {
-    optionStringPresets.push(`CSHARP_JSON_SERIALIZER_PRESET`)
+    optionStringPresets.push('CSHARP_JSON_SERIALIZER_PRESET');
   }
   if (generatorOptions.csharpIncludeNewtonsoft) {
-    optionStringPresets.push(`CSHARP_NEWTONSOFT_SERIALIZER_PRESET`)
+    optionStringPresets.push('CSHARP_NEWTONSOFT_SERIALIZER_PRESET');
   }
 
-  if(generatorOptions.csharpOverwriteEqual){
+  if (generatorOptions.csharpOverwriteEqual) {
     optionStringPresets.push(`{
     preset: CSHARP_COMMON_PRESET,
     options: {

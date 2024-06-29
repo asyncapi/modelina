@@ -1,11 +1,14 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { ModelinaTypeScriptOptions } from '../../types';
+import type { ModelinaTypeScriptOptions } from '../../types';
 import { getGeneralGeneratorCode, renderGeneratorInstanceCode } from './GeneralGenerator';
 
-export function getTypeScriptGeneratorCode(
-  generatorOptions: ModelinaTypeScriptOptions
-) {
-  const optionString: string[] = getGeneralGeneratorCode(generatorOptions, 'typeScriptDefaultEnumKeyConstraints', 'typeScriptDefaultPropertyKeyConstraints', 'typeScriptDefaultModelNameConstraints');
+export function getTypeScriptGeneratorCode(generatorOptions: ModelinaTypeScriptOptions) {
+  const optionString: string[] = getGeneralGeneratorCode(
+    generatorOptions,
+    'typeScriptDefaultEnumKeyConstraints',
+    'typeScriptDefaultPropertyKeyConstraints',
+    'typeScriptDefaultModelNameConstraints'
+  );
   const optionStringPresets = [];
 
   if (generatorOptions.tsModelType) {
@@ -18,10 +21,10 @@ export function getTypeScriptGeneratorCode(
 }`);
   }
 
-  if (generatorOptions.tsMarshalling === true ||
-    generatorOptions.tsIncludeExampleFunction === true) {
-    let commonOptions: any = {};
-    if(generatorOptions.tsMarshalling === true) {
+  if (generatorOptions.tsMarshalling === true || generatorOptions.tsIncludeExampleFunction === true) {
+    const commonOptions: any = {};
+
+    if (generatorOptions.tsMarshalling === true) {
       commonOptions.marshalling = true;
     }
 
@@ -50,14 +53,14 @@ export function getTypeScriptGeneratorCode(
   }
 
   if (generatorOptions.tsIncludeJsonBinPack === true) {
-    optionStringPresets.push(`TS_JSONBINPACK_PRESET`);
+    optionStringPresets.push('TS_JSONBINPACK_PRESET');
   }
 
   if (generatorOptions.tsModuleSystem) {
     optionString.push(`moduleSystem: '${generatorOptions.tsModuleSystem}'`);
   }
 
-  if(generatorOptions.showTypeMappingExample === true) {
+  if (generatorOptions.showTypeMappingExample === true) {
     optionString.push(`typeMapping: {
   Integer: ({ dependencyManager, constrainedModel, options, partOfProperty }) => {
     // Add custom dependency for your type if required. 

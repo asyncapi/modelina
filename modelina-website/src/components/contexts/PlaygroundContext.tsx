@@ -1,13 +1,10 @@
 'use client';
-import React, {
-  createContext,
-  useContext,
-  Dispatch,
-  SetStateAction,
-  useState,
-  useMemo
-} from 'react';
-import { defaultAsyncapiDocument, ModelinaOptions } from '@/types';
+
+import type { Dispatch, SetStateAction } from 'react';
+import React, { createContext, useContext, useMemo, useState } from 'react';
+
+import type { ModelinaOptions } from '@/types';
+import { defaultAsyncapiDocument } from '@/types';
 
 interface ModelsGeneratorProps {
   code: string;
@@ -52,9 +49,7 @@ interface PlaygroundContextProps {
   setRenderModels: (models: React.ReactNode) => void;
 }
 
-const PlaygroundContext = createContext<PlaygroundContextProps | undefined>(
-  undefined
-);
+const PlaygroundContext = createContext<PlaygroundContextProps | undefined>(undefined);
 
 export const PlaygroundContextProvider: React.FC<{
   children: React.ReactNode;
@@ -104,9 +99,7 @@ export const PlaygroundContextProvider: React.FC<{
   const [showOptions, setShowOptions] = useState(true);
   const [showOutputNavigation, setShowOutputNavigation] = useState(true);
   const [config, setConfig] = useState<ModelinaOptions>(defaultConfig);
-  const [input, setInput] = useState(
-    JSON.stringify(defaultAsyncapiDocument, null, 4)
-  );
+  const [input, setInput] = useState(JSON.stringify(defaultAsyncapiDocument, null, 4));
   const [models, setModels] = useState<ModelsGeneratorProps[]>([]);
   const [generatorCode, setGeneratorCode] = useState('');
   const [loaded, setLoaded] = useState({
@@ -119,8 +112,7 @@ export const PlaygroundContextProvider: React.FC<{
   const [errorMessage, setErrorMessage] = useState('Bad Request');
   const [isLoaded, setIsLoaded] = useState(false);
   const [hasLoadedQuery, setHasLoadedQuery] = useState(false);
-  const [renderModels, setRenderModels] =
-    React.useState<React.ReactNode | null>(null);
+  const [renderModels, setRenderModels] = React.useState<React.ReactNode | null>(null);
 
   const contextValue = useMemo(
     () => ({
@@ -189,19 +181,15 @@ export const PlaygroundContextProvider: React.FC<{
     ]
   );
 
-  return (
-    <PlaygroundContext.Provider value={contextValue}>
-      {children}
-    </PlaygroundContext.Provider>
-  );
+  return <PlaygroundContext.Provider value={contextValue}>{children}</PlaygroundContext.Provider>;
 };
 
 export const usePlaygroundContext = () => {
   const context = useContext(PlaygroundContext);
+
   if (!context) {
-    throw new Error(
-      'Playground was unable to load the context to display, please report this problem on GitHub.'
-    );
+    throw new Error('Playground was unable to load the context to display, please report this problem on GitHub.');
   }
+
   return context;
 };
