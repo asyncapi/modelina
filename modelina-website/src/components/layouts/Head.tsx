@@ -20,7 +20,7 @@ export default function HeadComponent({
   description = 'Open source tools to easily build and maintain your event-driven architecture. All powered by the AsyncAPI specification, the industry standard for defining asynchronous APIs.',
   image = '/img/card/website-card.jpg'
 }: HeadProps) {
-  const url = 'https://modelina.org';
+  const url = process.env.NEXT_PUBLIC_DEPLOY_PRIME_URL || process.env.NEXT_PUBLIC_DEPLOY_URL;
   const { path } = useContext(AppContext);
   const permalink = `${url}${path}`;
   let type = 'website';
