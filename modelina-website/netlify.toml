@@ -9,3 +9,9 @@
 
 [functions]
   directory = ".next/server/pages/api"
+
+# Show a custom 404 for this path
+[[redirects]]
+from = "/"
+to = "/404"
+status = 404
