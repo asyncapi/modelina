@@ -11,6 +11,7 @@ import MonacoEditorWrapper from '../MonacoEditorWrapper';
 import GeneratedModelsComponent from './GeneratedModels';
 import { OptionsNavigation } from './OptionsNavigation';
 import OutputNavigation from './OutputNavigation';
+import Resizable from './Resizable';
 
 interface ContentProps {
   setNewConfig: (config: string, configValue: any, updateCode?: boolean) => void;
@@ -43,45 +44,66 @@ export const Content: FunctionComponent<ContentProps> = ({ setNewConfig, setNewQ
   );
 
   return (
-    <div className='grid size-full grid-cols-4 md:grid-cols-8 lg:grid-cols-12'>
+    <div className={clsx('grid size-full', {
+      'grid-cols-[1fr_1fr]': showOutputNavigation,
+      'md:grid-cols-[minmax(200px,_25%)_1fr]': showOptions || showOutputNavigation
+    })}>
       <div
-        className={clsx('col-span-full h-[90vh] w-full bg-[#1f2937] text-white lg:col-span-3', {
-          hidden: !showOptions
+        className={clsx('h-[90vh] w-full bg-[#1f2937] text-white', {
+          hidden: !showOptions || showOutputNavigation
         })}
       >
         <OptionsNavigation setNewConfig={setNewConfig} />
       </div>
       <div
-        className={clsx('col-span-2 h-full lg:col-start-8 lg:col-end-10', {
-          hidden: !showOutputNavigation
+        className={clsx('', {
+          hidden: !showOutputNavigation || showOptions
         })}
       >
         <OutputNavigation />
       </div>
       <div
-        className={clsx('col-span-full h-full md:col-span-3 lg:col-end-8 lg:row-start-1', {
-          'hidden md:block': showInputEditor && !showOptions,
-          'lg:col-start-4': showOptions,
-          'lg:col-start-1': !showOptions,
-          'md:col-span-4': !showOutputNavigation
+        // className={clsx('grid grid-cols-[minmax(400px,_60%)_1fr]', {
+        //   'hidden md:block': showInputEditor && !showOptions,
+        //   'lg:col-start-4': showOptions,
+        //   'lg:col-start-1': !showOptions,
+        //   'md:col-span-4': !showOutputNavigation
+        // })}
+        className={clsx('', {
+          'hidden md:block': showOptions
         })}
       >
-        <div className='size-full rounded-b bg-code-editor-dark font-bold text-white shadow-lg'>
-          <MonacoEditorWrapper
-            value={input}
-            onChange={(_, change) => {
-              setInput(change);
-              generateNewCode(change);
-            }}
-            editorDidMount={() => {
-              setLoaded({ ...loaded, editorLoaded: true });
-            }}
-            language='json'
-          />
-        </div>
+          <Resizable
+            leftComponent={<div className={clsx('h-full rounded-b bg-code-editor-dark font-bold text-white shadow-lg', {
+              'hidden md:block': showInputEditor && !showOptions
+            })}>
+                <MonacoEditorWrapper
+                  value={input}
+                  onChange={(_, change) => {
+                    setInput(change);
+                    generateNewCode(change);
+                  }}
+                  editorDidMount={() => {
+                    setLoaded({ ...loaded, editorLoaded: true });
+                  }}
+                  language='json'
+                />
+            </div>}
+            rightComponent={<div className={clsx('size-full', {
+              'hidden md:block': !showInputEditor && !showOptions
+            })}>
+            {error ? (
+              <CustomError statusCode={statusCode} errorMessage={errorMessage} />
+            ) : (
+              <PlaygroundGeneratedContext.Provider value={PlaygroundGeneratedContextValue}>
+                <GeneratedModelsComponent setNewQuery={setNewQuery} />
+              </PlaygroundGeneratedContext.Provider>
+            )}
+          </div>} />
+
       </div>
-      <div
-        className={clsx('col-span-2 h-full md:col-span-3 lg:col-end-13 lg:row-start-1', {
+      {/* <div
+        className={clsx('col-span-2 h-full md:col-span-3 lg:col-auto', {
           'hidden md:block': !showInputEditor && !showOptions,
           'col-span-full md:col-span-4 lg:col-start-8': !showOutputNavigation,
           'lg:col-span-4 lg:col-start-10': showOutputNavigation
@@ -94,7 +116,7 @@ export const Content: FunctionComponent<ContentProps> = ({ setNewConfig, setNewQ
             <GeneratedModelsComponent setNewQuery={setNewQuery} />
           </PlaygroundGeneratedContext.Provider>
         )}
-      </div>
+      </div> */}
     </div>
   );
 };

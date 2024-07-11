@@ -48,6 +48,7 @@ export const Sidebar: React.FunctionComponent<SidebarProps> = () => {
       mobileOnly: false,
       onClick: () => {
         setShowOptions((prevShowOptions) => !prevShowOptions);
+        setShowOutputNavigation(false);
       },
       icon: <IoOptionsOutline className='size-5' />,
       tooltip: 'Show or hide all the options'
@@ -61,6 +62,7 @@ export const Sidebar: React.FunctionComponent<SidebarProps> = () => {
       mobileOnly: false,
       onClick: () => {
         setShowOutputNavigation((prevShowOutputNavigation) => !prevShowOutputNavigation);
+        setShowOptions(false);
       },
       icon: <VscListSelection className='size-5' />,
       tooltip: 'Show or hide the list of output models'
