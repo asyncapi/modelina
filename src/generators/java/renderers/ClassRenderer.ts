@@ -197,10 +197,25 @@ export const JAVA_DEFAULT_CLASS_PRESET: ClassPresetType<JavaOptions> = {
     } ${getterName}() { return this.${property.propertyName}; }`;
   },
   setter({ property, model }) {
+    const setterName = FormatHelpers.toPascalCase(property.propertyName);
+
     if (property.property.options.const?.value) {
+      if (model.options.extend) {
+        return `${getOverride(model, property)}public void set${setterName}(${
+          property.property.type
+        } ${property.propertyName}) {
+  if (this.${property.propertyName} != ${property.propertyName}) {
+    throw new UnsupportedOperationException("Changing the ${
+      property.propertyName
+    } is not supported for ${model.name}");
+  }
+
+  this.${property.propertyName} = ${property.propertyName};
+}`;
+      }
+
       return '';
     }
-    const setterName = FormatHelpers.toPascalCase(property.propertyName);
 
     if (model.options.isExtended) {
       if (isDiscriminatorOrDictionary(model, property)) {

@@ -343,9 +343,6 @@ describe('JavaGenerator', () => {
                     properties: {
                       type: {
                         const: 'Cat'
-                      },
-                      test: {
-                        $ref: '#/components/schemas/Test'
                       }
                     }
                   }
@@ -379,8 +376,10 @@ describe('JavaGenerator', () => {
               title: 'Test',
               type: 'object',
               properties: {
-                testProp: {
-                  type: 'string'
+                testEnum: {
+                  title: 'TestEnum',
+                  type: 'string',
+                  enum: ['FOO', 'BAR']
                 }
               }
             },
@@ -391,6 +390,9 @@ describe('JavaGenerator', () => {
                 {
                   type: 'object',
                   properties: {
+                    testEnum: {
+                      const: 'FOO'
+                    },
                     testProp2: {
                       type: 'string'
                     }

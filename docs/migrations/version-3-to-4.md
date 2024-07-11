@@ -226,7 +226,7 @@ class Address:
 
 ### Import style deprecation
 
-All models are from this point onwards imported using explicit styles `from . import ${model.name}` to allow for circular model dependencies to work. This means that the option `importsStyle` is deprecated and is no longer in use. It will be removed at some point in the future. 
+All models are from this point onwards imported using explicit styles `from . import ${model.name}` to allow for circular model dependencies to work. This means that the option `importsStyle` is deprecated and is no longer in use. It will be removed at some point in the future.
 
 ## Go
 
@@ -318,3 +318,9 @@ type info struct {
   isDevelopment *bool
 }
 ```
+
+## Java
+
+### when allowInheritance is true, Modelina now renders a fake setter for the classes that implements interfaces when const is used
+
+In Java, when a class implements an interface, it must implement all the methods of that interface. When a schema has a `const` property, Modelina generates a fake setter for that property in the class that implements the interface to avoid compilation errors.
