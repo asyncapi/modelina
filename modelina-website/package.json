@@ -23,6 +23,7 @@
     "@tailwindcss/line-clamp": "^0.4.0",
     "@tailwindcss/typography": "^0.5.9",
     "@tippyjs/react": "^4.2.6",
+    "@uidotdev/usehooks": "^2.4.1",
     "clsx": "^2.1.1",
     "cssnano": "^5.1.14",
     "framer-motion": "^11.2.12",

@@ -56,20 +56,14 @@ export const Content: FunctionComponent<ContentProps> = ({ setNewConfig, setNewQ
         <OptionsNavigation setNewConfig={setNewConfig} />
       </div>
       <div
-        className={clsx('', {
+        className={clsx({
           hidden: !showOutputNavigation || showOptions
         })}
       >
         <OutputNavigation />
       </div>
       <div
-        // className={clsx('grid grid-cols-[minmax(400px,_60%)_1fr]', {
-        //   'hidden md:block': showInputEditor && !showOptions,
-        //   'lg:col-start-4': showOptions,
-        //   'lg:col-start-1': !showOptions,
-        //   'md:col-span-4': !showOutputNavigation
-        // })}
-        className={clsx('', {
+        className={clsx({
           'hidden md:block': showOptions
         })}
       >
@@ -102,21 +96,6 @@ export const Content: FunctionComponent<ContentProps> = ({ setNewConfig, setNewQ
           </div>} />
 
       </div>
-      {/* <div
-        className={clsx('col-span-2 h-full md:col-span-3 lg:col-auto', {
-          'hidden md:block': !showInputEditor && !showOptions,
-          'col-span-full md:col-span-4 lg:col-start-8': !showOutputNavigation,
-          'lg:col-span-4 lg:col-start-10': showOutputNavigation
-        })}
-      >
-        {error ? (
-          <CustomError statusCode={statusCode} errorMessage={errorMessage} />
-        ) : (
-          <PlaygroundGeneratedContext.Provider value={PlaygroundGeneratedContextValue}>
-            <GeneratedModelsComponent setNewQuery={setNewQuery} />
-          </PlaygroundGeneratedContext.Provider>
-        )}
-      </div> */}
     </div>
   );
 };
