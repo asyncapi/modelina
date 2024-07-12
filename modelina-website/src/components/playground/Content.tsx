@@ -68,32 +68,36 @@ export const Content: FunctionComponent<ContentProps> = ({ setNewConfig, setNewQ
         })}
       >
           <Resizable
-            leftComponent={<div className={clsx('h-full rounded-b bg-code-editor-dark font-bold text-white shadow-lg', {
-              'hidden md:block': showInputEditor && !showOptions
-            })}>
-                <MonacoEditorWrapper
-                  value={input}
-                  onChange={(_, change) => {
-                    setInput(change);
-                    generateNewCode(change);
-                  }}
-                  editorDidMount={() => {
-                    setLoaded({ ...loaded, editorLoaded: true });
-                  }}
-                  language='json'
-                />
-            </div>}
-            rightComponent={<div className={clsx('size-full', {
-              'hidden md:block': !showInputEditor && !showOptions
-            })}>
-            {error ? (
-              <CustomError statusCode={statusCode} errorMessage={errorMessage} />
-            ) : (
-              <PlaygroundGeneratedContext.Provider value={PlaygroundGeneratedContextValue}>
-                <GeneratedModelsComponent setNewQuery={setNewQuery} />
-              </PlaygroundGeneratedContext.Provider>
-            )}
-          </div>} />
+            leftComponent={
+              <div className={clsx('h-full rounded-b bg-code-editor-dark font-bold text-white shadow-lg', {
+                'hidden md:block': showInputEditor && !showOptions
+              })}>
+                  <MonacoEditorWrapper
+                    value={input}
+                    onChange={(_, change) => {
+                      setInput(change);
+                      generateNewCode(change);
+                    }}
+                    editorDidMount={() => {
+                      setLoaded({ ...loaded, editorLoaded: true });
+                    }}
+                    language='json'
+                  />
+              </div>
+            }
+            rightComponent={
+              <div className={clsx('size-full', {
+                'hidden md:block': !showInputEditor && !showOptions
+              })}>
+                {error ? (
+                  <CustomError statusCode={statusCode} errorMessage={errorMessage} />
+                ) : (
+                  <PlaygroundGeneratedContext.Provider value={PlaygroundGeneratedContextValue}>
+                    <GeneratedModelsComponent setNewQuery={setNewQuery} />
+                  </PlaygroundGeneratedContext.Provider>
+                )}
+              </div>
+            } />
 
       </div>
     </div>
