@@ -190,7 +190,7 @@ The following table provides a short summary of available features for supported
   </tr>
   <tr>
     <td><a href="./docs/usage.md#generate-models-from-asyncapi-documents">AsyncAPI</a></td>
-    <td>We support the following AsyncAPI versions: <em>2.0.0 -> 2.6.0</em>, which generates models for all the defined message payloads. It supports the following schemaFormats AsyncAPI Schema object, JSON Schema draft 7, <a href="./examples/asyncapi-avro-schema">AVRO 1.9</a>, <a href="./examples/asyncapi-raml-schema">RAML 1.0 data type</a>, and <a href="./examples/asyncapi-openapi-schema">OpenAPI 3.0 Schema</a>.</td>
+    <td>We support the following AsyncAPI versions: <em>2.0.0 -> 3.x</em>, which generates models for all the defined message payloads. It supports the following schemaFormats AsyncAPI Schema object, JSON Schema draft 7, <a href="./examples/asyncapi-avro-schema">AVRO 1.9</a>, <a href="./examples/asyncapi-raml-schema">RAML 1.0 data type</a>, and <a href="./examples/asyncapi-openapi-schema">OpenAPI 3.0 Schema</a>.</td>
   </tr>
   <tr>
     <td><a href="./docs/usage.md#generate-models-from-avro-schema-documents">Avro Schema<a></td>
