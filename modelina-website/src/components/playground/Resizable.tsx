@@ -8,7 +8,12 @@ interface ResizableComponentProps {
   rightComponent?: ReactNode;
 }
 
-// eslint-disable-next-line require-jsdoc
+/**
+ * @description This is the resizable component.
+ * @type {React.FC<ResizableComponentProps>} Props
+ * @property {React.ReactElement} leftComponent The left element which will be stretch.
+ * @property {React.ReactElement} rightComponent The right element which will be stretch.
+ */
 function Resizable({ leftComponent, rightComponent }: ResizableComponentProps) {
   const [ref, { width: containerWidth }] = useMeasure();
   const DefaultWidth = 600;
@@ -23,16 +28,17 @@ function Resizable({ leftComponent, rightComponent }: ResizableComponentProps) {
   }, [containerWidth]);
 
   return (
-    <div ref={ref} className='grid size-full bg-code-editor-dark md:grid-cols-[auto_auto]'>
-      <motion.div
+    <section ref={ref} className='grid size-full bg-code-editor-dark md:grid-cols-[auto_auto]'>
+      <motion.article
         style={{ width }}
       >
         {leftComponent}
-      </motion.div>
-      <motion.div
+      </motion.article>
+      <motion.aside
+        role='separator'
         title='drag to resize'
         style={{ x: dragableX }}
-        className={'absolute z-50 hidden h-full w-4 cursor-col-resize hover:bg-gray-300/20 active:bg-gray-300/25 md:block'}
+        className={'absolute z-10 hidden h-[90vh] w-4 cursor-col-resize hover:bg-gray-300/20 focus:cursor-col-resize active:bg-gray-300/25 md:block'}
         dragMomentum={false}
         drag='x'
         dragElastic={0}
@@ -41,10 +47,10 @@ function Resizable({ leftComponent, rightComponent }: ResizableComponentProps) {
           right: containerWidth === null ? DefaultWidth * .8 : containerWidth * .8
         }}
       />
-       <motion.div className='overflow-x-scroll'>
+       <motion.article className='h-full overflow-y-hidden'>
         {rightComponent}
-       </motion.div>
-    </div>
+       </motion.article>
+    </section>
   );
 }
 
