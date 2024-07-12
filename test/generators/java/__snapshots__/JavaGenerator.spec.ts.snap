@@ -38,17 +38,9 @@ public interface Pet {
   public void setId(String id) { this.id = id; }
 
   public CloudEventType getType() { return this.type; }
-  public void setType(CloudEventType type) {
-    if (this.type != type) {
-      throw new UnsupportedOperationException(\\"Changing the type is not supported for Dog\\");
-    }
-
-    this.type = type;
-  }
 
   @Override
   public CloudEventDotSequenceType getSequencetype() { return this.sequencetype; }
-  @Override
   public void setSequencetype(CloudEventDotSequenceType sequencetype) { this.sequencetype = sequencetype; }
 
   public String getData() { return this.data; }
@@ -176,14 +168,6 @@ public interface Pet {
 
   @Override
   public TestEnum getTestEnum() { return this.testEnum; }
-  @Override
-  public void setTestEnum(TestEnum testEnum) {
-    if (this.testEnum != testEnum) {
-      throw new UnsupportedOperationException(\\"Changing the testEnum is not supported for TestAllOf\\");
-    }
-
-    this.testEnum = testEnum;
-  }
 
   public String getTestProp2() { return this.testProp2; }
   public void setTestProp2(String testProp2) { this.testProp2 = testProp2; }
@@ -262,14 +246,12 @@ public interface Pet {
 }",
   "public interface Test {
   public TestEnum getTestEnum();
-  public void setTestEnum(TestEnum testEnum);
 }",
   "public interface CloudEvent {
   public String getId();
   public void setId(String id);
 
   public CloudEventDotSequenceType getSequencetype();
-  public void setSequencetype(CloudEventDotSequenceType sequencetype);
 }",
   "public class Cat implements Pet, CloudEvent {
   @NotNull
@@ -290,17 +272,9 @@ public interface Pet {
   public void setId(String id) { this.id = id; }
 
   public CloudEventType getType() { return this.type; }
-  public void setType(CloudEventType type) {
-    if (this.type != type) {
-      throw new UnsupportedOperationException(\\"Changing the type is not supported for Cat\\");
-    }
-
-    this.type = type;
-  }
 
   @Override
   public CloudEventDotSequenceType getSequencetype() { return this.sequencetype; }
-  @Override
   public void setSequencetype(CloudEventDotSequenceType sequencetype) { this.sequencetype = sequencetype; }
 
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }

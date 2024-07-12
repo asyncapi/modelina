@@ -321,6 +321,6 @@ type info struct {
 
 ## Java
 
-### when allowInheritance is true, Modelina now renders a fake setter for the classes that implements interfaces when const is used
+### when allowInheritance is true, Modelina now don't render the setter for enums in interfaces because the classes that implement the interface might use a constant value
 
-In Java, when a class implements an interface, it must implement all the methods of that interface. When a schema has a `const` property, Modelina generates a fake setter for that property in the class that implements the interface to avoid compilation errors.
+In Java, when a class implements an interface, it must implement all the methods of that interface. Because of that, Modelina now doesn't render the setter for enums in interfaces when allowInheritance is true because the classes that implement the interface might use a constant value.

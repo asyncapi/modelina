@@ -10,6 +10,7 @@ import { FormatHelpers } from '../../../helpers';
 import { JavaOptions } from '../JavaGenerator';
 import { ClassPresetType } from '../JavaPreset';
 import { unionIncludesBuiltInTypes } from '../JavaConstrainer';
+import { isEnum } from '../../csharp/Constants';
 
 /**
  * Renderer for Java's `class` type
@@ -197,38 +198,24 @@ export const JAVA_DEFAULT_CLASS_PRESET: ClassPresetType<JavaOptions> = {
     } ${getterName}() { return this.${property.propertyName}; }`;
   },
   setter({ property, model }) {
-    const setterName = FormatHelpers.toPascalCase(property.propertyName);
-
     if (property.property.options.const?.value) {
-      if (model.options.extend) {
-        return `${getOverride(model, property)}public void set${setterName}(${
-          property.property.type
-        } ${property.propertyName}) {
-  if (this.${property.propertyName} != ${property.propertyName}) {
-    throw new UnsupportedOperationException("Changing the ${
-      property.propertyName
-    } is not supported for ${model.name}");
-  }
-
-  this.${property.propertyName} = ${property.propertyName};
-}`;
-      }
-
       return '';
     }
 
+    const setterName = FormatHelpers.toPascalCase(property.propertyName);
+
     if (model.options.isExtended) {
-      if (isDiscriminatorOrDictionary(model, property)) {
+      // don't render setters for discriminator, dictionary properties, or enums (because they can be set to constants in the models that extend them)
+      if (isDiscriminatorOrDictionary(model, property) || isEnum(property)) {
         return '';
       }
 
       return `public void set${setterName}(${property.property.type} ${property.propertyName});`;
     }
 
-    return `${getOverride(model, property)}public void set${setterName}(${
-      property.property.type
-    } ${property.propertyName}) { this.${property.propertyName} = ${
-      property.propertyName
-    }; }`;
+    // don't render override for enums because enum setters in the interfaces are not rendered
+    const override = !isEnum(property) ? getOverride(model, property) : '';
+
+    return `${override}public void set${setterName}(${property.property.type} ${property.propertyName}) { this.${property.propertyName} = ${property.propertyName}; }`;
   }
 };
