@@ -226,7 +226,7 @@ class Address:
 
 ### Import style deprecation
 
-All models are from this point onwards imported using explicit styles `from . import ${model.name}` to allow for circular model dependencies to work. This means that the option `importsStyle` is deprecated and is no longer in use. It will be removed at some point in the future. 
+All models are from this point onwards imported using explicit styles `from . import ${model.name}` to allow for circular model dependencies to work. This means that the option `importsStyle` is deprecated and is no longer in use. It will be removed at some point in the future.
 
 ## Go
 
@@ -318,3 +318,9 @@ type info struct {
   isDevelopment *bool
 }
 ```
+
+## Java
+
+### when allowInheritance is true, Modelina now don't render the setter for enums in interfaces because the classes that implement the interface might use a constant value
+
+In Java, when a class implements an interface, it must implement all the methods of that interface. Because of that, Modelina now doesn't render the setter for enums in interfaces when allowInheritance is true because the classes that implement the interface might use a constant value.
