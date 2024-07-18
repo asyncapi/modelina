@@ -1,7 +1,7 @@
 
 import { useMeasure } from '@uidotdev/usehooks';
 import { motion, useMotionValue, useTransform } from 'framer-motion';
-import { type ReactNode, useEffect } from 'react';
+import { memo, type ReactNode, useEffect } from 'react';
 
 interface ResizableComponentProps {
   leftComponent?: ReactNode;
@@ -16,19 +16,19 @@ interface ResizableComponentProps {
  */
 function Resizable({ leftComponent, rightComponent }: ResizableComponentProps) {
   const [ref, { width: containerWidth }] = useMeasure();
-  const DefaultWidth = 600;
+  const DefaultWidth = 640;
 
   const dragableX = useMotionValue(DefaultWidth);
   const width = useTransform(dragableX, (value) => `${value + 0.5 * 4}px`);
 
   useEffect(() => {
-    if (containerWidth !== null) {
+    if (containerWidth !== null && containerWidth >= 640) {
       dragableX.set(Math.round(containerWidth / 2));
     }
   }, [containerWidth]);
 
   return (
-    <section ref={ref} className='grid size-full bg-code-editor-dark md:grid-cols-[auto_auto]'>
+    <section ref={ref} className='grid size-full  bg-code-editor-dark md:grid-cols-[auto_auto]'>
       <motion.article
         style={{ width }}
       >
@@ -56,4 +56,4 @@ function Resizable({ leftComponent, rightComponent }: ResizableComponentProps) {
 
 Resizable.displayName = 'Resizable Component';
 
-export default Resizable;
+export default memo(Resizable);

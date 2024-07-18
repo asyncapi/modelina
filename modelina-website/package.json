@@ -27,6 +27,7 @@
     "clsx": "^2.1.1",
     "cssnano": "^5.1.14",
     "framer-motion": "^11.2.12",
+    "immer": "^10.1.1",
     "js-base64": "^3.7.4",
     "lodash": "^4.17.21",
     "lowlight": "^1.12.1",

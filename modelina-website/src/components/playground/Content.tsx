@@ -6,6 +6,7 @@ import { useMemo } from 'react';
 
 import { usePlaygroundContext } from '../contexts/PlaygroundContext';
 import { PlaygroundGeneratedContext } from '../contexts/PlaygroundGeneratedContext';
+import { usePlaygroundLayout } from '../contexts/PlaygroundLayoutContext';
 import CustomError from '../CustomError';
 import MonacoEditorWrapper from '../MonacoEditorWrapper';
 import GeneratedModelsComponent from './GeneratedModels';
@@ -23,17 +24,20 @@ export const Content: FunctionComponent<ContentProps> = ({ setNewConfig, setNewQ
   const {
     config,
     input,
-    showInputEditor,
     setInput,
     models,
     loaded,
     setLoaded,
     error,
     statusCode,
-    errorMessage,
-    showOptions,
-    showOutputNavigation
+    errorMessage
   } = usePlaygroundContext();
+  const { state } = usePlaygroundLayout();
+
+  const hasInputOptionsOpen = state.sidebarItems.get('general-options')?.isOpen;
+  const hasOutputOptionsOpen = state.sidebarItems.get('output-options')?.isOpen;
+  const hasInputEditorOpen = state.sidebarItems.get('input-editor')?.isOpen;
+  const hasOutputEditorOpen = state.sidebarItems.get('output-editor')?.isOpen;
 
   const PlaygroundGeneratedContextValue = useMemo(
     () => ({
@@ -45,32 +49,32 @@ export const Content: FunctionComponent<ContentProps> = ({ setNewConfig, setNewQ
 
   return (
     <div className={clsx('grid size-full', {
-      'grid-cols-[1fr_1fr]': showOutputNavigation,
-      'md:grid-cols-[minmax(200px,_25%)_1fr]': showOptions || showOutputNavigation
+      'grid-cols-[1fr_1fr]': hasOutputOptionsOpen,
+      'md:grid-cols-[minmax(200px,_25%)_1fr]': hasInputOptionsOpen || hasOutputOptionsOpen
     })}>
       <div
         className={clsx('h-[90vh] w-full bg-[#1f2937] text-white', {
-          hidden: !showOptions || showOutputNavigation
+          hidden: !hasInputOptionsOpen
         })}
       >
         <OptionsNavigation setNewConfig={setNewConfig} />
       </div>
       <div
         className={clsx({
-          hidden: !showOutputNavigation || showOptions
+          hidden: !hasOutputOptionsOpen
         })}
       >
         <OutputNavigation />
       </div>
       <div
         className={clsx({
-          'hidden md:block': showOptions
+          'hidden md:block': hasInputOptionsOpen
         })}
       >
           <Resizable
             leftComponent={
-              <div className={clsx('h-full rounded-b bg-code-editor-dark font-bold text-white shadow-lg', {
-                'hidden md:block': showInputEditor && !showOptions
+              <div className={clsx('size-full rounded-b bg-code-editor-dark font-bold text-white shadow-lg', {
+                'hidden md:block': !hasInputEditorOpen && !hasInputOptionsOpen
               })}>
                   <MonacoEditorWrapper
                     value={input}
@@ -87,7 +91,7 @@ export const Content: FunctionComponent<ContentProps> = ({ setNewConfig, setNewQ
             }
             rightComponent={
               <div className={clsx('size-full', {
-                'hidden md:block': !showInputEditor && !showOptions
+                'hidden md:block': !hasOutputEditorOpen && !hasInputOptionsOpen
               })}>
                 {error ? (
                   <CustomError statusCode={statusCode} errorMessage={errorMessage} />

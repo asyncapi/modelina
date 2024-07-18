@@ -17,12 +17,6 @@ interface LoadedState {
 }
 
 interface PlaygroundContextProps {
-  showInputEditor: boolean;
-  setShowInputEditor: Dispatch<SetStateAction<boolean>>;
-  showOptions: boolean;
-  setShowOptions: Dispatch<SetStateAction<boolean>>;
-  showOutputNavigation: boolean;
-  setShowOutputNavigation: Dispatch<SetStateAction<boolean>>;
   config: ModelinaOptions;
   setConfig: Dispatch<SetStateAction<ModelinaOptions>>;
   input: string;
@@ -95,9 +89,6 @@ export const PlaygroundContextProvider: React.FC<{
     kotlinPackageName: 'asyncapi.models'
   };
 
-  const [showInputEditor, setShowInputEditor] = useState(true);
-const [showOptions, setShowOptions] = useState(true);
-  const [showOutputNavigation, setShowOutputNavigation] = useState(false);
   const [config, setConfig] = useState<ModelinaOptions>(defaultConfig);
   const [input, setInput] = useState(JSON.stringify(defaultAsyncapiDocument, null, 4));
   const [models, setModels] = useState<ModelsGeneratorProps[]>([]);
@@ -116,12 +107,6 @@ const [showOptions, setShowOptions] = useState(true);
 
   const contextValue = useMemo(
     () => ({
-      showInputEditor,
-      setShowInputEditor,
-      showOptions,
-      setShowOptions,
-      showOutputNavigation,
-      setShowOutputNavigation,
       config,
       setConfig,
       input,
@@ -148,12 +133,6 @@ const [showOptions, setShowOptions] = useState(true);
       setRenderModels
     }),
     [
-      showInputEditor,
-      setShowInputEditor,
-      showOptions,
-      setShowOptions,
-      showOutputNavigation,
-      setShowOutputNavigation,
       config,
       setConfig,
       input,
