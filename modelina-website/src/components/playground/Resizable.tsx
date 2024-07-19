@@ -3,6 +3,8 @@ import { useMeasure } from '@uidotdev/usehooks';
 import { motion, useMotionValue, useTransform } from 'framer-motion';
 import { memo, type ReactNode, useEffect } from 'react';
 
+import { usePlaygroundLayout } from '../contexts/PlaygroundLayoutContext';
+
 interface ResizableComponentProps {
   leftComponent?: ReactNode;
   rightComponent?: ReactNode;
@@ -15,20 +17,37 @@ interface ResizableComponentProps {
  * @property {React.ReactElement} rightComponent The right element which will be stretch.
  */
 function Resizable({ leftComponent, rightComponent }: ResizableComponentProps) {
+  const { state, dispatch } = usePlaygroundLayout();
+
   const [ref, { width: containerWidth }] = useMeasure();
   const DefaultWidth = 640;
 
   const dragableX = useMotionValue(DefaultWidth);
-  const width = useTransform(dragableX, (value) => `${value + 0.5 * 4}px`);
+  const width = useTransform(dragableX, (value) => {
+    if (containerWidth !== null) {
+      const visibleView = value / containerWidth;
+
+      dispatch({ type: 'resizable-size', total: visibleView });
+    }
+
+    return `${value + 0.5 * 4}px`;
+  });
 
   useEffect(() => {
-    if (containerWidth !== null && containerWidth >= 640) {
-      dragableX.set(Math.round(containerWidth / 2));
+    if (containerWidth !== null) {
+      dragableX.set(Math.round(containerWidth * state.editorSize));
     }
   }, [containerWidth]);
 
+  if (state.device === 'mobile') {
+    return <section className='grid size-full'>
+      {leftComponent}
+      {rightComponent}
+    </section>;
+  }
+
   return (
-    <section ref={ref} className='grid size-full  bg-code-editor-dark md:grid-cols-[auto_auto]'>
+    <section ref={ref} className='grid size-full bg-code-editor-dark md:grid-cols-[auto_auto]'>
       <motion.article
         style={{ width }}
       >

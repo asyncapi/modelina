@@ -19,14 +19,14 @@ export const Sidebar: React.FunctionComponent = () => {
             <button
               title={item.title}
               onClick={() => handleClick({ name: item.name })}
-              className={clsx('border-box flex p-2 text-sm focus:outline-none', {
+              className={clsx('border-box flex p-2 text-sm focus:outline-none disabled:opacity-25', {
                 'md:hidden': item.devices === 'mobile'
               })}
               disabled={item.name === 'output-options' && state.open === 'general-options' && state.device === 'mobile'}
               type='button'
             >
               <div
-                className={item.isOpen ? 'rounded bg-gray-900 p-2 text-white' : 'p-2 text-gray-700 hover:text-white'}
+                className={item.isOpen ? 'rounded bg-slate-200/25 p-2 text-white' : 'p-2 text-gray-700 hover:text-white'}
               >
                 {item.icon}
               </div>
