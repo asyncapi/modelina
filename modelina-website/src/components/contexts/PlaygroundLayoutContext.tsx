@@ -6,11 +6,27 @@ import { createContext, useContext, useEffect, useReducer } from 'react';
 import type { Dispatch, State } from '@/store/useLayoutStore';
 import { initialState, playgroundLayoutReducer } from '@/store/useLayoutStore';
 
+const LocalStorageKey = 'PlaygroundLayout';
+
 type PlaygroundtProviderProps = { children: React.ReactNode };
 
 const PlaygroundtLayoutContext = createContext<
   { state: State; dispatch: Dispatch } | undefined
 >(undefined);
+
+const localStorageInitializer = (initialValue = initialState) => {
+  if (typeof window !== 'undefined') {
+    const resizablePercentageOpen = JSON.parse(localStorage.getItem(LocalStorageKey)!) ?? 0.5;
+    const newValue = {
+      ...initialValue,
+      editorSize: resizablePercentageOpen
+    };
+
+    return newValue;
+  }
+
+  return initialValue;
+};
 
 /**
  * This component to consume Plaground Layout State.
@@ -34,10 +50,14 @@ function usePlaygroundLayout() {
  * @returns {ReactNode} A React element that share context state.
  */
 function PlaygroundLayoutProvider({ children }: PlaygroundtProviderProps) {
-  const [state, dispatch] = useReducer(playgroundLayoutReducer, initialState);
+  const [state, dispatch] = useReducer(playgroundLayoutReducer, initialState, localStorageInitializer);
   const value = { state, dispatch };
 
   const [ref, { width }] = useMeasure();
+
+  useEffect(() => {
+    localStorage.setItem(LocalStorageKey, JSON.stringify({ editorSize: state.editorSize }));
+  }, [state]);
 
   useEffect(() => {
     if (width  !== null) {
