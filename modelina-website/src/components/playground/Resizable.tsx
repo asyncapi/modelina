@@ -27,7 +27,7 @@ function Resizable({ leftComponent, rightComponent }: ResizableComponentProps) {
     if (containerWidth !== null) {
       const visibleView = value / containerWidth;
 
-      dispatch({ type: 'resizable-size', total: visibleView });
+      dispatch({ type: 'resizable-size', total: parseFloat(visibleView.toFixed(2)) });
     }
 
     return `${value + 0.5 * 4}px`;

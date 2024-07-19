@@ -16,13 +16,17 @@ const PlaygroundtLayoutContext = createContext<
 
 const localStorageInitializer = (initialValue = initialState) => {
   if (typeof window !== 'undefined') {
-    const resizablePercentageOpen = JSON.parse(localStorage.getItem(LocalStorageKey)!) ?? 0.5;
-    const newValue = {
-      ...initialValue,
-      editorSize: resizablePercentageOpen
-    };
+    const resizablePercentageOpen = localStorage.getItem(LocalStorageKey);
 
-    return newValue;
+    if (resizablePercentageOpen !== null) {
+      const size = JSON.parse(resizablePercentageOpen);
+      const newValue = {
+        ...initialValue,
+        editorSize: parseFloat(size.editorSize)
+      };
+
+      return newValue;
+    }
   }
 
   return initialValue;
@@ -57,7 +61,7 @@ function PlaygroundLayoutProvider({ children }: PlaygroundtProviderProps) {
 
   useEffect(() => {
     localStorage.setItem(LocalStorageKey, JSON.stringify({ editorSize: state.editorSize }));
-  }, [state]);
+  }, [state.editorSize]);
 
   useEffect(() => {
     if (width  !== null) {
