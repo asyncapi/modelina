@@ -85,7 +85,7 @@ internal class TestConverter : JsonConverter<Test>
         }
       if (propertyName == \\"enumProp\\")
         {
-          var value = EnumTestExtensions.ToEnumTest(JsonSerializer.Deserialize<dynamic>(ref reader, options));
+          var value = EnumTestExtensions.ToEnumTest(JsonSerializer.Deserialize<string>(ref reader, options));
           instance.EnumProp = value;
           continue;
         }
@@ -96,7 +96,7 @@ internal class TestConverter : JsonConverter<Test>
           continue;
         }
       if(instance.AdditionalProperties == null) { instance.AdditionalProperties = new Dictionary<string, dynamic>(); }
-            var deserializedValue = JsonSerializer.Deserialize<Dictionary<string, dynamic>?>(ref reader, options);
+            var deserializedValue = JsonSerializer.Deserialize<dynamic>(ref reader, options);
             instance.AdditionalProperties.Add(propertyName, deserializedValue);
             continue;
     }
@@ -251,7 +251,7 @@ internal class NestedTestConverter : JsonConverter<NestedTest>
           continue;
         }
       if(instance.AdditionalProperties == null) { instance.AdditionalProperties = new Dictionary<string, dynamic>(); }
-            var deserializedValue = JsonSerializer.Deserialize<Dictionary<string, dynamic>?>(ref reader, options);
+            var deserializedValue = JsonSerializer.Deserialize<dynamic>(ref reader, options);
             instance.AdditionalProperties.Add(propertyName, deserializedValue);
             continue;
     }
