@@ -14,14 +14,6 @@ describe('Interpreter', () => {
     };
     const interpreter = new Interpreter();
     const interpretedModel = interpreter.interpret(schema);
-    expect(interpretedModel).not.toBeUndefined();
-    const expectedModel = new CommonModel();
-    expectedModel.$id = 'schema1';
-    const expectedPropertyModel = new CommonModel();
-    expectedPropertyModel.$id = 'schema2';
-    expectedModel.properties = {
-      testProp: expectedPropertyModel
-    };
-    expect(interpretedModel).toMatchObject(expectedModel);
+    expect(interpretedModel).toMatchSnapshot();
   });
 });

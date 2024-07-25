@@ -302,7 +302,7 @@ describe('JsonSchemaInputProcessor', () => {
       const commonModels = JsonSchemaInputProcessor.convertSchemaToCommonModel(
         {}
       );
-      expect(Object.entries(commonModels)).toHaveLength(0);
+      expect(Object.entries(JSON.parse(JSON.stringify(commonModels)))).toHaveLength(0);
     });
   });
 

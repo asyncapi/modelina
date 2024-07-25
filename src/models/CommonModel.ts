@@ -73,11 +73,21 @@ export class CommonModel {
     const schema = new CommonModel();
     seenSchemas.set(object, schema);
     for (const [propName, prop] of Object.entries(object)) {
-      let copyProp = prop;
-
+      if(prop === undefined) continue;
+      let copyProp: any = prop;
       // Ignore value properties (those with `any` type) as they should be saved as is regardless of value
       if (propName !== 'originalInput' && propName !== 'enum') {
-        copyProp = CommonModel.internalToSchema(prop, seenSchemas);
+        if (
+          propName === 'properties' ||
+          propName === 'patternProperties'
+        ) {
+          copyProp = {};
+          for (const [propName2, prop2] of Object.entries(prop as any)) {
+            copyProp[String(propName2)] = CommonModel.internalToSchema(prop2, seenSchemas);
+          }
+        } else {
+          copyProp = CommonModel.internalToSchema(prop, seenSchemas);
+        }
       }
       (schema as any)[String(propName)] = copyProp;
     }

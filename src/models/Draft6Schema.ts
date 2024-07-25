@@ -84,7 +84,8 @@ export class Draft6Schema {
     const schema = new Draft6Schema();
     seenSchemas.set(object, schema);
     for (const [propName, prop] of Object.entries(object)) {
-      let copyProp = prop;
+      if(prop === undefined) continue;
+      let copyProp: any = prop;
 
       // Ignore value properties (those with `any` type) as they should be saved as is regardless of value
       if (
@@ -93,7 +94,20 @@ export class Draft6Schema {
         propName !== 'const' &&
         propName !== 'enum'
       ) {
-        copyProp = Draft6Schema.internalToSchema(prop, seenSchemas);
+        // Special cases are properties that should be a basic object
+        if (
+          propName === 'properties' ||
+          propName === 'patternProperties' ||
+          propName === 'definitions' ||
+          propName === 'dependencies'
+        ) {
+          copyProp = {};
+          for (const [propName2, prop2] of Object.entries(prop as any)) {
+            copyProp[String(propName2)] = Draft6Schema.internalToSchema(prop2, seenSchemas);
+          }
+        } else {
+          copyProp = Draft6Schema.internalToSchema(prop, seenSchemas);
+        }
       }
       (schema as any)[String(propName)] = copyProp;
     }

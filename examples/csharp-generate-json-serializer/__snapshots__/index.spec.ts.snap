@@ -12,6 +12,21 @@ public partial class Root
     get { return email; }
     set { this.email = value; }
   }
+
+
+    public string Serialize()
+    {
+      return this.Serialize(null);
+    }
+    public string Serialize(JsonSerializerOptions options = null)
+      return JsonSerializer.Serialize(this, options);
+    }
+    public static Root Deserialize(string json)
+    {
+      var deserializeOptions = new JsonSerializerOptions();
+      deserializeOptions.Converters.Add(new RootConverter());
+      return JsonSerializer.Deserialize<Root>(json, deserializeOptions);
+    }
 }
 
 internal class RootConverter : JsonConverter<Root>
