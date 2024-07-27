@@ -204,12 +204,28 @@ ${renderer.indent(deserializeProperties, 4)}
 }
 
 /**
- * Preset which adds `serialize` and `deserialize` functions to class.
+ * Preset which adds `Serialize` and `Deserialize` functions to the class.
  *
  * @implements {CSharpPreset}
  */
 export const CSHARP_JSON_SERIALIZER_PRESET: CSharpPreset<CSharpOptions> = {
   class: {
+    additionalContent({ renderer, content, model }) {
+      const supportFunctions = `public string Serialize()
+{
+  return this.Serialize(null);
+}
+public string Serialize(JsonSerializerOptions options = null)
+  return JsonSerializer.Serialize(this, options);
+}
+public static ${model.type} Deserialize(string json)
+{
+  var deserializeOptions = new JsonSerializerOptions();
+  deserializeOptions.Converters.Add(new ${model.name}Converter());
+  return JsonSerializer.Deserialize<${model.type}>(json, deserializeOptions);
+}`;
+      return `${content}\n${renderer.indent(supportFunctions)}`;
+    },
     self({ renderer, model, content }) {
       renderer.dependencyManager.addDependency('using System.Text.Json;');
       renderer.dependencyManager.addDependency(
