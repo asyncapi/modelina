@@ -41,7 +41,7 @@ export class PythonDependencyManager extends AbstractDependencyManager {
     const importMap: Record<string, string[]> = {};
     const dependenciesToRender = [];
     for (const dependency of individualDependencies) {
-      const regex = /from ([A-Za-z0-9]+) import ([A-Za-z0-9,\s]+)/g;
+      const regex = /from ([A-Za-z0-9]+) import ([A-Za-z0-9_\-,\s]+)/g;
       const matches = regex.exec(dependency);
 
       if (!matches) {
