@@ -1000,6 +1000,18 @@
         "code",
         "test"
       ]
+    },
+    {
+      "login": "tomdevroomen",
+      "name": "Tom de Vroomen",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4637986?v=4",
+      "profile": "https://github.com/tomdevroomen",
+      "contributions": [
+        "code",
+        "example",
+        "doc",
+        "test"
+      ]
     }
   ],
   "contributorsPerLine": 7,
