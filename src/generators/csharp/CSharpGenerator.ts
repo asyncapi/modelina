@@ -210,10 +210,11 @@ export class CSharpGenerator extends AbstractGenerator<
         ? ''
         : `${outputModel.dependencies.join('\n')}\n\n`;
 
-    const outputContent = `namespace ${completeModelOptionsToUse.namespace}
+    const outputContent = `${outputDependencies}
+namespace ${completeModelOptionsToUse.namespace}
 {
 ${FormatHelpers.indent(
-  outputDependencies + outputModel.result,
+  outputModel.result,
   optionsToUse.indentation?.size,
   optionsToUse.indentation?.type
 )}
