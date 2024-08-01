@@ -26,3 +26,20 @@ export async function execCommand(
     return Promise.reject(`${e.stack}; Stdout: ${e.stdout}`);
   }
 }
+/**
+ * Ensure object does not contain undefined properties when matching outputs
+ */
+export function removeEmptyPropertiesFromObjects(obj: any): any {
+  if(typeof obj !== 'object') return obj;
+  Object.keys(obj).forEach(key => {
+    if (obj[key] && typeof obj[key] === 'object') {
+      removeEmptyPropertiesFromObjects(obj[key]);
+      if (Object.keys(obj[key]).length === 0) {
+        delete obj[key];
+      }
+    } else if (obj[key] === undefined) {
+      delete obj[key];
+    }
+  });
+  return obj;
+}

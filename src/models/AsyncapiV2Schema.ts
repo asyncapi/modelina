@@ -82,7 +82,7 @@ export class AsyncapiV2Schema {
   deprecated?: boolean;
   //Extensions
   [k: string]: any; // eslint-disable-line no-undef
- 
+
   /**
    * Takes a deep copy of the input object and converts it to an instance of AsyncapiV2Schema.
    *
