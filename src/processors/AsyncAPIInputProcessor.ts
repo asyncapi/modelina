@@ -215,10 +215,7 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
       return alreadyIteratedSchemas.get(schemaUid) as AsyncapiV2Schema;
     }
 
-    const convertedSchema = Object.assign(
-      new AsyncapiV2Schema(),
-      schema.json()
-    );
+    const convertedSchema = AsyncapiV2Schema.toSchema(schema.json());
     convertedSchema[this.MODELGEN_INFFERED_NAME] = schemaUid;
     alreadyIteratedSchemas.set(schemaUid, convertedSchema);
 

@@ -1,4 +1,4 @@
-/* eslint-disable no-undef */
+/* eslint-disable no-undef, security/detect-object-injection */
 import { promisify } from 'util';
 import { exec } from 'child_process';
 const promiseExec = promisify(exec);
@@ -25,4 +25,23 @@ export async function execCommand(
   } catch (e: any) {
     return Promise.reject(`${e.stack}; Stdout: ${e.stdout}`);
   }
+}
+/**
+ * Ensure object does not contain undefined properties when matching outputs
+ */
+export function removeEmptyPropertiesFromObjects(obj: any): any {
+  if (typeof obj !== 'object') {
+    return obj;
+  }
+  for (const key of Object.keys(obj)) {
+    if (obj[key] && typeof obj[key] === 'object') {
+      removeEmptyPropertiesFromObjects(obj[key]);
+      if (Object.keys(obj[key]).length === 0) {
+        delete obj[key];
+      }
+    } else if (obj[key] === undefined) {
+      delete obj[key];
+    }
+  }
+  return obj;
 }

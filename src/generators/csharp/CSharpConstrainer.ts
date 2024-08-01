@@ -15,7 +15,7 @@ function getFullTypeDefinition(
   typeName: string,
   partOfProperty: ConstrainedObjectPropertyModel | undefined
 ) {
-  return partOfProperty?.required ?? true ? typeName : `${typeName}?`;
+  return (partOfProperty?.required ?? true) ? typeName : `${typeName}?`;
 }
 
 const fromEnumValueToType = (
