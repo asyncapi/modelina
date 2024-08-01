@@ -149,54 +149,70 @@ describe('AsyncAPIInputProcessor', () => {
       const basicDoc = JSON.parse(basicDocString);
       const processor = new AsyncAPIInputProcessor();
       const commonInputModel = await processor.process(basicDoc);
-      expect(removeEmptyPropertiesFromObjects(commonInputModel)).toMatchSnapshot();
+      expect(
+        removeEmptyPropertiesFromObjects(commonInputModel)
+      ).toMatchSnapshot();
     });
     test('should be able to process pure object for v3', async () => {
       const basicDoc = JSON.parse(basicV3DocString);
       const processor = new AsyncAPIInputProcessor();
       const commonInputModel = await processor.process(basicDoc);
-      expect(removeEmptyPropertiesFromObjects(commonInputModel)).toMatchSnapshot();
+      expect(
+        removeEmptyPropertiesFromObjects(commonInputModel)
+      ).toMatchSnapshot();
     });
 
     test('should be able to process parsed objects', async () => {
       const { document } = await parser.parse(basicDocString);
       const processor = new AsyncAPIInputProcessor();
       const commonInputModel = await processor.process(document);
-      expect(removeEmptyPropertiesFromObjects(commonInputModel)).toMatchSnapshot();
+      expect(
+        removeEmptyPropertiesFromObjects(commonInputModel)
+      ).toMatchSnapshot();
     });
 
     test('should be able to process YAML file', async () => {
       const processor = new AsyncAPIInputProcessor();
       const commonInputModel = await processor.process(yamlDocString);
       expect(commonInputModel instanceof InputMetaModel).toBeTruthy();
-      expect(removeEmptyPropertiesFromObjects(commonInputModel.models)).toMatchSnapshot();
+      expect(
+        removeEmptyPropertiesFromObjects(commonInputModel.models)
+      ).toMatchSnapshot();
     });
     test('should be able to process file', async () => {
       const processor = new AsyncAPIInputProcessor();
       const commonInputModel = await processor.process(ymlFileURI);
       expect(commonInputModel instanceof InputMetaModel).toBeTruthy();
-      expect(removeEmptyPropertiesFromObjects(commonInputModel.models)).toMatchSnapshot();
+      expect(
+        removeEmptyPropertiesFromObjects(commonInputModel.models)
+      ).toMatchSnapshot();
     });
     test('should be able to process operation with reply', async () => {
       const { document } = await parser.parse(operationWithReply);
       const processor = new AsyncAPIInputProcessor();
       const commonInputModel = await processor.process(document);
       expect(commonInputModel instanceof InputMetaModel).toBeTruthy();
-      expect(removeEmptyPropertiesFromObjects(commonInputModel.models)).toMatchSnapshot();
+      expect(
+        removeEmptyPropertiesFromObjects(commonInputModel.models)
+      ).toMatchSnapshot();
     });
 
     test('should be able to process operation with oneOf #1', async () => {
       const { document } = await parser.parse(operationOneOf1DocString);
       const processor = new AsyncAPIInputProcessor();
       const commonInputModel = await processor.process(document);
-      expect(removeEmptyPropertiesFromObjects(commonInputModel)).toMatchSnapshot();
+      expect(
+        removeEmptyPropertiesFromObjects(commonInputModel)
+      ).toMatchSnapshot();
     });
 
     test('should be able to process operation with oneOf #2', async () => {
       const { document } = await parser.parse(operationOneOf2DocString);
       const processor = new AsyncAPIInputProcessor();
       const commonInputModel = await processor.process(document);
-      expect(removeEmptyPropertiesFromObjects(commonInputModel)).toMatchSnapshot();
+      expect(
+        removeEmptyPropertiesFromObjects(commonInputModel)
+      ).toMatchSnapshot();
     });
   });
 

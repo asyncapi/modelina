@@ -1,4 +1,3 @@
-import { CommonModel } from '../../src';
 import { Interpreter } from '../../src/interpreter/Interpreter';
 import { removeEmptyPropertiesFromObjects } from '../TestUtils/GeneralUtils';
 
@@ -15,6 +14,8 @@ describe('Interpreter', () => {
     };
     const interpreter = new Interpreter();
     const interpretedModel = interpreter.interpret(schema);
-    expect(removeEmptyPropertiesFromObjects(interpretedModel)).toMatchSnapshot();
+    expect(
+      removeEmptyPropertiesFromObjects(interpretedModel)
+    ).toMatchSnapshot();
   });
 });
