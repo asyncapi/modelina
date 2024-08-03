@@ -21,7 +21,7 @@ import { fileURLToPath } from 'url';
 import {
   ConvertDocumentParserAPIVersion,
   NewParser
-} from '@smoya/multi-parser';
+} from '@asyncapi/multi-parser';
 import { createDetailedAsyncAPI } from '@asyncapi/parser/cjs/utils';
 
 /**
