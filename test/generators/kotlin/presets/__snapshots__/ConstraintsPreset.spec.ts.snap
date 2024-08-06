@@ -1,6 +1,40 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`KOTLIN_CONSTRAINTS_PRESET should render constraints annotations 1`] = `
+exports[`KOTLIN_CONSTRAINTS_PRESET should render jakarta constraints annotations when configured 1`] = `
+"data class Clazz(
+    @get:NotNull
+    @get:Min(0)
+    val minNumberProp: Double,
+    @get:NotNull
+    @get:Max(99)
+    val maxNumberProp: Double,
+    @get:Size(min=2, max=3)
+    val arrayProp: List<Any>? = null,
+    @get:Pattern(regexp=\\"^I_\\")
+    @get:Size(min=3)
+    val stringProp: String? = null,
+    val additionalProperties: Map<String, Any>? = null,
+)"
+`;
+
+exports[`KOTLIN_CONSTRAINTS_PRESET should render javax constraints annotations by default 1`] = `
+"data class Clazz(
+    @get:NotNull
+    @get:Min(0)
+    val minNumberProp: Double,
+    @get:NotNull
+    @get:Max(99)
+    val maxNumberProp: Double,
+    @get:Size(min=2, max=3)
+    val arrayProp: List<Any>? = null,
+    @get:Pattern(regexp=\\"^I_\\")
+    @get:Size(min=3)
+    val stringProp: String? = null,
+    val additionalProperties: Map<String, Any>? = null,
+)"
+`;
+
+exports[`KOTLIN_CONSTRAINTS_PRESET should render javax constraints annotations when configured 1`] = `
 "data class Clazz(
     @get:NotNull
     @get:Min(0)
