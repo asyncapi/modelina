@@ -62,8 +62,8 @@ function Resizable({ leftComponent, rightComponent }: ResizableComponentProps) {
         drag='x'
         dragElastic={0}
         dragConstraints={{
-          left: containerWidth === null ? DefaultWidth * .2 : containerWidth * .2,
-          right: containerWidth === null ? DefaultWidth * .8 : containerWidth * .8
+          left: containerWidth === null ? DefaultWidth * .3 : containerWidth * .3,
+          right: containerWidth === null ? DefaultWidth * .7 : containerWidth * .7
         }}
       />
        <motion.article className='h-full overflow-y-hidden'>
