@@ -1,5 +1,8 @@
 const isGithubActions = process.env.GITHUB_ACTIONS || false;
-
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true',
+})
+ 
 let assetPrefix = '/';
 let basePath = '';
 
@@ -20,4 +23,4 @@ const nextConfig = {
   }
 };
 
-module.exports = nextConfig;
+module.exports = withBundleAnalyzer(nextConfig);

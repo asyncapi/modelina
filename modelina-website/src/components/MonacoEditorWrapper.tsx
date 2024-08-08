@@ -59,6 +59,8 @@ export default function MonacoEditorWrapper({
 
   return (
     <Editor
+      role='figure'
+      ariaLabel='Code Editor'
       onMount={handleEditorDidMount}
       language={language}
       theme={theme}
