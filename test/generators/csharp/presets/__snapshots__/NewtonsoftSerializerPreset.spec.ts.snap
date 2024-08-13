@@ -45,6 +45,15 @@ public partial class Test
     get { return additionalProperties; }
     set { this.additionalProperties = value; }
   }
+
+    public string Serialize()
+    {
+      return JsonConvert.SerializeObject(this);
+    }
+    public static Test Deserialize(string json)
+    {
+      return JsonConvert.DeserializeObject<Test>(json);
+    }
 }
 
 public class TestConverter : JsonConverter<Test>
@@ -178,6 +187,15 @@ public partial class NestedTest
     get { return additionalProperties; }
     set { this.additionalProperties = value; }
   }
+
+    public string Serialize()
+    {
+      return JsonConvert.SerializeObject(this);
+    }
+    public static NestedTest Deserialize(string json)
+    {
+      return JsonConvert.DeserializeObject<NestedTest>(json);
+    }
 }
 
 public class NestedTestConverter : JsonConverter<NestedTest>
