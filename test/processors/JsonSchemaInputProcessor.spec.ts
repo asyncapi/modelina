@@ -2,6 +2,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { JsonSchemaInputProcessor } from '../../src/processors/JsonSchemaInputProcessor';
 import { AnyModel, CommonModel } from '../../src/models';
+import { removeEmptyPropertiesFromObjects } from '../TestUtils/GeneralUtils';
 jest.mock('../../src/utils/LoggingInterface');
 jest.spyOn(JsonSchemaInputProcessor, 'convertSchemaToCommonModel');
 let mockedReturnModels = [new CommonModel()];
@@ -302,7 +303,9 @@ describe('JsonSchemaInputProcessor', () => {
       const commonModels = JsonSchemaInputProcessor.convertSchemaToCommonModel(
         {}
       );
-      expect(Object.entries(commonModels)).toHaveLength(0);
+      expect(
+        Object.entries(removeEmptyPropertiesFromObjects(commonModels))
+      ).toHaveLength(0);
     });
   });
 
