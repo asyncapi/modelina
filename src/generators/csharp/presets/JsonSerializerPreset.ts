@@ -215,7 +215,8 @@ export const CSHARP_JSON_SERIALIZER_PRESET: CSharpPreset<CSharpOptions> = {
 {
   return this.Serialize(null);
 }
-public string Serialize(JsonSerializerOptions options = null)
+public string Serialize(JsonSerializerOptions options = null) 
+{
   return JsonSerializer.Serialize(this, options);
 }
 public static ${model.type} Deserialize(string json)

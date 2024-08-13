@@ -51,7 +51,8 @@ public partial class Test
     {
       return this.Serialize(null);
     }
-    public string Serialize(JsonSerializerOptions options = null)
+    public string Serialize(JsonSerializerOptions options = null) 
+    {
       return JsonSerializer.Serialize(this, options);
     }
     public static Test Deserialize(string json)
@@ -244,7 +245,8 @@ public partial class NestedTest
     {
       return this.Serialize(null);
     }
-    public string Serialize(JsonSerializerOptions options = null)
+    public string Serialize(JsonSerializerOptions options = null) 
+    {
       return JsonSerializer.Serialize(this, options);
     }
     public static NestedTest Deserialize(string json)

@@ -18,7 +18,8 @@ public partial class Root
     {
       return this.Serialize(null);
     }
-    public string Serialize(JsonSerializerOptions options = null)
+    public string Serialize(JsonSerializerOptions options = null) 
+    {
       return JsonSerializer.Serialize(this, options);
     }
     public static Root Deserialize(string json)
