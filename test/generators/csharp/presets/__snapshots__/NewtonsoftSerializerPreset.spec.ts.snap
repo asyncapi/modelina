@@ -70,7 +70,7 @@ if(jo[\\"numberProp\\"] != null) {
   value.NumberProp = jo[\\"numberProp\\"].ToObject<double?>(serializer);
 }
 if(jo[\\"enumProp\\"] != null) {
-  value.EnumProp = EnumTestExtensions.ToEnumTest(jo[\\"enumProp\\"].ToString());
+  value.EnumProp = EnumTestExtensions.ToEnumTest(jo[\\"enumProp\\"].ToString()) ?? 0;
 }
 if(jo[\\"objectProp\\"] != null) {
   value.ObjectProp = jo[\\"objectProp\\"].ToObject<NestedTest?>(serializer);
