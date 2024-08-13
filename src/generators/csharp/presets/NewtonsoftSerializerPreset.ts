@@ -154,7 +154,7 @@ function renderDeserialize({
 export const CSHARP_NEWTONSOFT_SERIALIZER_PRESET: CSharpPreset<CSharpOptions> =
   {
     class: {
-      additionalContent: ({content, model, renderer}) => {
+      additionalContent: ({ content, model, renderer }) => {
         return renderer.indent(`${content}
 public string Serialize()
 {
