@@ -93,7 +93,7 @@ function renderDeserialize({
         prop.property instanceof ConstrainedReferenceModel &&
         prop.property.ref instanceof ConstrainedEnumModel
       ) {
-        toValue = `${prop.property.name}Extensions.To${prop.property.name}(jo["${prop.unconstrainedPropertyName}"].ToString())`;
+        toValue = `${prop.property.name}Extensions.To${prop.property.name}(jo["${prop.unconstrainedPropertyName}"].ToString()) ?? 0`;
       }
       if (prop.property.options.const) {
         return undefined;
@@ -154,6 +154,17 @@ function renderDeserialize({
 export const CSHARP_NEWTONSOFT_SERIALIZER_PRESET: CSharpPreset<CSharpOptions> =
   {
     class: {
+      additionalContent: ({ content, model, renderer }) => {
+        return renderer.indent(`${content}
+public string Serialize()
+{
+  return JsonConvert.SerializeObject(this);
+}
+public static ${model.name} Deserialize(string json)
+{
+  return JsonConvert.DeserializeObject<${model.name}>(json);
+}`);
+      },
       self: ({ renderer, content, model }) => {
         renderer.dependencyManager.addDependency('using Newtonsoft.Json;');
         renderer.dependencyManager.addDependency('using Newtonsoft.Json.Linq;');

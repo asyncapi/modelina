@@ -226,10 +226,11 @@ public static class StatesExtensions
 `;
 
 exports[`CSharpGenerator should render models and their dependencies 1`] = `
-"namespace Test.Namespace
-{
-  using System.Collections.Generic;
+"using System.Collections.Generic;
 
+
+namespace Test.Namespace
+{
   public partial class Address
   {
     private string streetName;
@@ -300,10 +301,11 @@ exports[`CSharpGenerator should render models and their dependencies 1`] = `
 `;
 
 exports[`CSharpGenerator should render models and their dependencies 2`] = `
-"namespace Test.Namespace
-{
-  using System.Collections.Generic;
+"using System.Collections.Generic;
 
+
+namespace Test.Namespace
+{
   public partial class OtherModel
   {
     private string? streetName;
