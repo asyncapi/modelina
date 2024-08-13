@@ -209,7 +209,7 @@ public static class StatesExtensions
     return null;
   }
 
-  public static States? ToStates(string? value)
+  public static States? ToStates(dynamic? value)
   {
     switch (value)
     {
