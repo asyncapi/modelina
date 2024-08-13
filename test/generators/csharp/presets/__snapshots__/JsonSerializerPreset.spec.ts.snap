@@ -45,6 +45,22 @@ public partial class Test
     get { return additionalProperties; }
     set { this.additionalProperties = value; }
   }
+
+
+    public string Serialize()
+    {
+      return this.Serialize(null);
+    }
+    public string Serialize(JsonSerializerOptions options = null) 
+    {
+      return JsonSerializer.Serialize(this, options);
+    }
+    public static Test Deserialize(string json)
+    {
+      var deserializeOptions = new JsonSerializerOptions();
+      deserializeOptions.Converters.Add(new TestConverter());
+      return JsonSerializer.Deserialize<Test>(json, deserializeOptions);
+    }
 }
 
 internal class TestConverter : JsonConverter<Test>
@@ -223,6 +239,22 @@ public partial class NestedTest
     get { return additionalProperties; }
     set { this.additionalProperties = value; }
   }
+
+
+    public string Serialize()
+    {
+      return this.Serialize(null);
+    }
+    public string Serialize(JsonSerializerOptions options = null) 
+    {
+      return JsonSerializer.Serialize(this, options);
+    }
+    public static NestedTest Deserialize(string json)
+    {
+      var deserializeOptions = new JsonSerializerOptions();
+      deserializeOptions.Converters.Add(new NestedTestConverter());
+      return JsonSerializer.Deserialize<NestedTest>(json, deserializeOptions);
+    }
 }
 
 internal class NestedTestConverter : JsonConverter<NestedTest>
