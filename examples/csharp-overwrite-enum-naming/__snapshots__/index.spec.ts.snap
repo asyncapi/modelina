@@ -24,7 +24,7 @@ public static class OrderStatusExtensions
     return null;
   }
 
-  public static OrderStatus? ToOrderStatus(int? value)
+  public static OrderStatus? ToOrderStatus(dynamic? value)
   {
     switch (value)
     {
