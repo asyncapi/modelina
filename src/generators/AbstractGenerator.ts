@@ -150,10 +150,10 @@ export abstract class AbstractGenerator<
   }
 
   private setParentsForModels(
-    constrainedModels: ConstrainedMetaModelWithDepManager[],
+    unionConstrainedModelsWithDepManager: ConstrainedMetaModelWithDepManager[],
     constrainedModel: ConstrainedMetaModel
   ) {
-    for (const unionConstrainedModel of constrainedModels) {
+    for (const unionConstrainedModel of unionConstrainedModelsWithDepManager) {
       if (
         unionConstrainedModel.constrainedModel instanceof
           ConstrainedUnionModel &&
@@ -219,7 +219,10 @@ export abstract class AbstractGenerator<
 
     for (const { constrainedModel } of constrainedModels) {
       this.setImplementedByForModels(constrainedModels, constrainedModel);
-      this.setParentsForModels(constrainedModels, constrainedModel);
+      this.setParentsForModels(
+        unionConstrainedModelsWithDepManager,
+        constrainedModel
+      );
     }
 
     return constrainedModels;
