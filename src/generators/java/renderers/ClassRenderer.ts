@@ -228,7 +228,7 @@ export const JAVA_DEFAULT_CLASS_PRESET: ClassPresetType<JavaOptions> = {
     const setterName = FormatHelpers.toPascalCase(property.propertyName);
 
     if (model.options.isExtended) {
-      // don't render setters for discriminator, dictionary properties, or enums that are not set with a const value
+      // don't render setters for discriminator, dictionary properties, or enums that are set with a const value
       if (
         isDiscriminatorOrDictionary(model, property) ||
         isEnumImplementedByConstValue(model, property)
@@ -239,7 +239,7 @@ export const JAVA_DEFAULT_CLASS_PRESET: ClassPresetType<JavaOptions> = {
       return `public void set${setterName}(${property.property.type} ${property.propertyName});`;
     }
 
-    // don't render override for enums that are not set with a const value
+    // don't render override for enums that are set with a const value
     const override = !isEnumImplementedByConstValue(model, property)
       ? getOverride(model, property)
       : '';

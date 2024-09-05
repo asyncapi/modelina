@@ -63,6 +63,11 @@ export interface AbstractGeneratorRenderCompleteModelArgs<
   options?: DeepPartial<Options>;
 }
 
+interface ConstrainedMetaModelWithDepManager {
+  constrainedModel: ConstrainedMetaModel;
+  dependencyManager: AbstractDependencyManager;
+}
+
 /**
  * Abstract generator which must be implemented by each language
  */
@@ -117,6 +122,57 @@ export abstract class AbstractGenerator<
     return options.dependencyManager;
   }
 
+  private setImplementedByForModels(
+    constrainedModels: ConstrainedMetaModelWithDepManager[],
+    constrainedModel: ConstrainedMetaModel
+  ) {
+    if (!constrainedModel.options.extend) {
+      return;
+    }
+
+    for (const extend of constrainedModel.options.extend) {
+      const extendModel = constrainedModels.find(
+        (m) => m.constrainedModel.name === extend.name
+      );
+
+      if (!extendModel) {
+        throw new Error(
+          `Could not find the model ${extend.name} to extend in the constrained models`
+        );
+      }
+
+      if (!extendModel.constrainedModel.options.implementedBy) {
+        extendModel.constrainedModel.options.implementedBy = [];
+      }
+
+      extendModel.constrainedModel.options.implementedBy.push(constrainedModel);
+    }
+  }
+
+  private setParentsForModels(
+    constrainedModels: ConstrainedMetaModelWithDepManager[],
+    constrainedModel: ConstrainedMetaModel
+  ) {
+    for (const unionConstrainedModel of constrainedModels) {
+      if (
+        unionConstrainedModel.constrainedModel instanceof
+          ConstrainedUnionModel &&
+        unionConstrainedModel.constrainedModel.union.some(
+          (m) =>
+            m.name === constrainedModel.name && m.type === constrainedModel.type
+        )
+      ) {
+        if (!constrainedModel.options.parents) {
+          constrainedModel.options.parents = [];
+        }
+
+        constrainedModel.options.parents.push(
+          unionConstrainedModel.constrainedModel
+        );
+      }
+    }
+  }
+
   /**
    * Generates an array of ConstrainedMetaModel with its dependency manager from an InputMetaModel.
    * It also adds parents to the ConstrainedMetaModel's which can be used in renderers which needs to know what parents they belong to.
@@ -125,11 +181,6 @@ export abstract class AbstractGenerator<
     constrainedModel: ConstrainedMetaModel;
     dependencyManager: AbstractDependencyManager;
   }> {
-    interface ConstrainedMetaModelWithDepManager {
-      constrainedModel: ConstrainedMetaModel;
-      dependencyManager: AbstractDependencyManager;
-    }
-
     const getConstrainedMetaModelWithDepManager = (
       model: MetaModel
     ): ConstrainedMetaModelWithDepManager => {
@@ -161,54 +212,17 @@ export abstract class AbstractGenerator<
       );
     }
 
-    for (const { constrainedModel } of constrainedModelsWithDepManager) {
-      if (constrainedModel.options.extend) {
-        for (const extend of constrainedModel.options.extend) {
-          const extendModel = constrainedModelsWithDepManager.find(
-            (m) => m.constrainedModel.name === extend.name
-          );
-
-          if (!extendModel) {
-            throw new Error(
-              `Could not find the model ${extend.name} to extend in the constrained models`
-            );
-          }
-
-          if (!extendModel.constrainedModel.options.implementedBy) {
-            extendModel.constrainedModel.options.implementedBy = [];
-          }
-
-          extendModel.constrainedModel.options.implementedBy.push(
-            constrainedModel
-          );
-        }
-      }
-
-      for (const unionConstrainedModel of unionConstrainedModelsWithDepManager) {
-        if (
-          unionConstrainedModel.constrainedModel instanceof
-            ConstrainedUnionModel &&
-          unionConstrainedModel.constrainedModel.union.some(
-            (m) =>
-              m.name === constrainedModel.name &&
-              m.type === constrainedModel.type
-          )
-        ) {
-          if (!constrainedModel.options.parents) {
-            constrainedModel.options.parents = [];
-          }
-
-          constrainedModel.options.parents.push(
-            unionConstrainedModel.constrainedModel
-          );
-        }
-      }
-    }
-
-    return [
+    const constrainedModels = [
       ...unionConstrainedModelsWithDepManager,
       ...constrainedModelsWithDepManager
     ];
+
+    for (const { constrainedModel } of constrainedModels) {
+      this.setImplementedByForModels(constrainedModels, constrainedModel);
+      this.setParentsForModels(constrainedModels, constrainedModel);
+    }
+
+    return constrainedModels;
   }
 
   /**

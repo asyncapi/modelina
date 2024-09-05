@@ -321,6 +321,6 @@ type info struct {
 
 ## Java
 
-### When `allowInheritance` is true, Modelina no longer renders the setter for enums in interfaces if the enum is implemented by a class and has a constant value
+### When `allowInheritance` is true, Modelina no longer renders the setter for enums in interfaces if the property exist in the implemented by class with a constant value
 
-In Java, when a class implements an interface, it must implement all the methods of that interface. Therefore, if `allowInheritance` is set to true, Modelina will no longer render the setter for enums in interfaces if the enum is implemented by a class and has a constant value.
+In Java, when a class implements an interface, it must implement all the methods of that interface. Therefore, if `allowInheritance` is set to true, Modelina will no longer render the setter for enums in interfaces if the property exists in the implemented by class with a constant value.
