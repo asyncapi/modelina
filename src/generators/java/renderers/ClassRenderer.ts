@@ -165,6 +165,29 @@ export const isDiscriminatorOrDictionary = (
     property.unconstrainedPropertyName ||
   property.property instanceof ConstrainedDictionaryModel;
 
+const isEnumImplementedByConstValue = (
+  model: ConstrainedObjectModel,
+  property: ConstrainedObjectPropertyModel
+): boolean => {
+  if (!isEnum(property)) {
+    return false;
+  }
+
+  if (!model.options.implementedBy) {
+    return false;
+  }
+
+  // if the implementedBy property exist in the model options, check if the property exists in the implementedBy model and check if the property is set with a const value
+  return model.options.implementedBy.some((implementedBy) => {
+    return (
+      implementedBy instanceof ConstrainedObjectModel &&
+      implementedBy.properties[property.propertyName] &&
+      implementedBy.properties[property.propertyName].property.options.const
+        ?.value
+    );
+  });
+};
+
 export const JAVA_DEFAULT_CLASS_PRESET: ClassPresetType<JavaOptions> = {
   self({ renderer }) {
     return renderer.defaultSelf();
@@ -205,16 +228,21 @@ export const JAVA_DEFAULT_CLASS_PRESET: ClassPresetType<JavaOptions> = {
     const setterName = FormatHelpers.toPascalCase(property.propertyName);
 
     if (model.options.isExtended) {
-      // don't render setters for discriminator, dictionary properties, or enums (because they can be set to constants in the models that extend them)
-      if (isDiscriminatorOrDictionary(model, property) || isEnum(property)) {
+      // don't render setters for discriminator, dictionary properties, or enums that are set with a const value
+      if (
+        isDiscriminatorOrDictionary(model, property) ||
+        isEnumImplementedByConstValue(model, property)
+      ) {
         return '';
       }
 
       return `public void set${setterName}(${property.property.type} ${property.propertyName});`;
     }
 
-    // don't render override for enums because enum setters in the interfaces are not rendered
-    const override = !isEnum(property) ? getOverride(model, property) : '';
+    // don't render override for enums that are set with a const value
+    const override = !isEnumImplementedByConstValue(model, property)
+      ? getOverride(model, property)
+      : '';
 
     return `${override}public void set${setterName}(${property.property.type} ${property.propertyName}) { this.${property.propertyName} = ${property.propertyName}; }`;
   }
