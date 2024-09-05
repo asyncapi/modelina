@@ -162,6 +162,28 @@ export abstract class AbstractGenerator<
     }
 
     for (const { constrainedModel } of constrainedModelsWithDepManager) {
+      if (constrainedModel.options.extend) {
+        for (const extend of constrainedModel.options.extend) {
+          const extendModel = constrainedModelsWithDepManager.find(
+            (m) => m.constrainedModel.name === extend.name
+          );
+
+          if (!extendModel) {
+            throw new Error(
+              `Could not find the model ${extend.name} to extend in the constrained models`
+            );
+          }
+
+          if (!extendModel.constrainedModel.options.implementedBy) {
+            extendModel.constrainedModel.options.implementedBy = [];
+          }
+
+          extendModel.constrainedModel.options.implementedBy.push(
+            constrainedModel
+          );
+        }
+      }
+
       for (const unionConstrainedModel of unionConstrainedModelsWithDepManager) {
         if (
           unionConstrainedModel.constrainedModel instanceof

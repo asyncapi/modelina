@@ -364,10 +364,10 @@ describe('JavaGenerator', () => {
                   type: 'string',
                   description: 'test'
                 },
-                sequencetype: {
+                sequence_type: {
                   title: 'CloudEvent.SequenceType',
                   type: 'string',
-                  enum: ['Integer']
+                  enum: ['Integer', 'StringTest']
                 }
               },
               required: ['id', 'type']
@@ -376,7 +376,7 @@ describe('JavaGenerator', () => {
               title: 'Test',
               type: 'object',
               properties: {
-                testEnum: {
+                test_enum: {
                   title: 'TestEnum',
                   type: 'string',
                   enum: ['FOO', 'BAR']
@@ -390,10 +390,10 @@ describe('JavaGenerator', () => {
                 {
                   type: 'object',
                   properties: {
-                    testEnum: {
+                    test_enum: {
                       const: 'FOO'
                     },
-                    testProp2: {
+                    test_string: {
                       type: 'string'
                     }
                   }

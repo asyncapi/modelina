@@ -20,9 +20,9 @@ public interface Pet {
   @NotNull
   @JsonProperty(\\"type\\")
   private final CloudEventType type = CloudEventType.DOG;
-  @JsonProperty(\\"sequencetype\\")
+  @JsonProperty(\\"sequence_type\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
-  private CloudEventDotSequenceType sequencetype;
+  private CloudEventDotSequenceType sequenceType;
   @JsonProperty(\\"data\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private String data;
@@ -40,8 +40,9 @@ public interface Pet {
   public CloudEventType getType() { return this.type; }
 
   @Override
-  public CloudEventDotSequenceType getSequencetype() { return this.sequencetype; }
-  public void setSequencetype(CloudEventDotSequenceType sequencetype) { this.sequencetype = sequencetype; }
+  public CloudEventDotSequenceType getSequenceType() { return this.sequenceType; }
+  @Override
+  public void setSequenceType(CloudEventDotSequenceType sequenceType) { this.sequenceType = sequenceType; }
 
   public String getData() { return this.data; }
   public void setData(String data) { this.data = data; }
@@ -64,7 +65,7 @@ public interface Pet {
       return 
         Objects.equals(this.id, self.id) &&
         Objects.equals(this.type, self.type) &&
-        Objects.equals(this.sequencetype, self.sequencetype) &&
+        Objects.equals(this.sequenceType, self.sequenceType) &&
         Objects.equals(this.data, self.data) &&
         Objects.equals(this.test, self.test) &&
         Objects.equals(this.additionalProperties, self.additionalProperties);
@@ -72,7 +73,7 @@ public interface Pet {
 
   @Override
   public int hashCode() {
-    return Objects.hash((Object)id, (Object)type, (Object)sequencetype, (Object)data, (Object)test, (Object)additionalProperties);
+    return Objects.hash((Object)id, (Object)type, (Object)sequenceType, (Object)data, (Object)test, (Object)additionalProperties);
   }
 
   @Override
@@ -80,7 +81,7 @@ public interface Pet {
     return \\"class Dog {\\\\n\\" +   
       \\"    id: \\" + toIndentedString(id) + \\"\\\\n\\" +
       \\"    type: \\" + toIndentedString(type) + \\"\\\\n\\" +
-      \\"    sequencetype: \\" + toIndentedString(sequencetype) + \\"\\\\n\\" +
+      \\"    sequenceType: \\" + toIndentedString(sequenceType) + \\"\\\\n\\" +
       \\"    data: \\" + toIndentedString(data) + \\"\\\\n\\" +
       \\"    test: \\" + toIndentedString(test) + \\"\\\\n\\" +
       \\"    additionalProperties: \\" + toIndentedString(additionalProperties) + \\"\\\\n\\" +
@@ -128,7 +129,7 @@ public interface Pet {
   }
 }",
   "public enum CloudEventDotSequenceType {
-  INTEGER((String)\\"Integer\\");
+  INTEGER((String)\\"Integer\\"), STRING_TEST((String)\\"StringTest\\");
 
   private String value;
 
@@ -157,20 +158,20 @@ public interface Pet {
   }
 }",
   "public class TestAllOf implements Test {
-  @JsonProperty(\\"testEnum\\")
+  @JsonProperty(\\"test_enum\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private final TestEnum testEnum = TestEnum.FOO;
-  @JsonProperty(\\"testProp2\\")
+  @JsonProperty(\\"test_string\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
-  private String testProp2;
+  private String testString;
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
   @Override
   public TestEnum getTestEnum() { return this.testEnum; }
 
-  public String getTestProp2() { return this.testProp2; }
-  public void setTestProp2(String testProp2) { this.testProp2 = testProp2; }
+  public String getTestString() { return this.testString; }
+  public void setTestString(String testString) { this.testString = testString; }
 
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
   public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
@@ -186,20 +187,20 @@ public interface Pet {
     TestAllOf self = (TestAllOf) o;
       return 
         Objects.equals(this.testEnum, self.testEnum) &&
-        Objects.equals(this.testProp2, self.testProp2) &&
+        Objects.equals(this.testString, self.testString) &&
         Objects.equals(this.additionalProperties, self.additionalProperties);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash((Object)testEnum, (Object)testProp2, (Object)additionalProperties);
+    return Objects.hash((Object)testEnum, (Object)testString, (Object)additionalProperties);
   }
 
   @Override
   public String toString() {
     return \\"class TestAllOf {\\\\n\\" +   
       \\"    testEnum: \\" + toIndentedString(testEnum) + \\"\\\\n\\" +
-      \\"    testProp2: \\" + toIndentedString(testProp2) + \\"\\\\n\\" +
+      \\"    testString: \\" + toIndentedString(testString) + \\"\\\\n\\" +
       \\"    additionalProperties: \\" + toIndentedString(additionalProperties) + \\"\\\\n\\" +
     \\"}\\";
   }
@@ -251,7 +252,8 @@ public interface Pet {
   public String getId();
   public void setId(String id);
 
-  public CloudEventDotSequenceType getSequencetype();
+  public CloudEventDotSequenceType getSequenceType();
+  public void setSequenceType(CloudEventDotSequenceType sequenceType);
 }",
   "public class Cat implements Pet, CloudEvent {
   @NotNull
@@ -260,9 +262,9 @@ public interface Pet {
   @NotNull
   @JsonProperty(\\"type\\")
   private final CloudEventType type = CloudEventType.CAT;
-  @JsonProperty(\\"sequencetype\\")
+  @JsonProperty(\\"sequence_type\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
-  private CloudEventDotSequenceType sequencetype;
+  private CloudEventDotSequenceType sequenceType;
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
@@ -274,8 +276,9 @@ public interface Pet {
   public CloudEventType getType() { return this.type; }
 
   @Override
-  public CloudEventDotSequenceType getSequencetype() { return this.sequencetype; }
-  public void setSequencetype(CloudEventDotSequenceType sequencetype) { this.sequencetype = sequencetype; }
+  public CloudEventDotSequenceType getSequenceType() { return this.sequenceType; }
+  @Override
+  public void setSequenceType(CloudEventDotSequenceType sequenceType) { this.sequenceType = sequenceType; }
 
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
   public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
@@ -292,13 +295,13 @@ public interface Pet {
       return 
         Objects.equals(this.id, self.id) &&
         Objects.equals(this.type, self.type) &&
-        Objects.equals(this.sequencetype, self.sequencetype) &&
+        Objects.equals(this.sequenceType, self.sequenceType) &&
         Objects.equals(this.additionalProperties, self.additionalProperties);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash((Object)id, (Object)type, (Object)sequencetype, (Object)additionalProperties);
+    return Objects.hash((Object)id, (Object)type, (Object)sequenceType, (Object)additionalProperties);
   }
 
   @Override
@@ -306,7 +309,7 @@ public interface Pet {
     return \\"class Cat {\\\\n\\" +   
       \\"    id: \\" + toIndentedString(id) + \\"\\\\n\\" +
       \\"    type: \\" + toIndentedString(type) + \\"\\\\n\\" +
-      \\"    sequencetype: \\" + toIndentedString(sequencetype) + \\"\\\\n\\" +
+      \\"    sequenceType: \\" + toIndentedString(sequenceType) + \\"\\\\n\\" +
       \\"    additionalProperties: \\" + toIndentedString(additionalProperties) + \\"\\\\n\\" +
     \\"}\\";
   }
