@@ -41,7 +41,6 @@ public interface Pet {
 
   @Override
   public CloudEventDotSequenceType getSequenceType() { return this.sequenceType; }
-  @Override
   public void setSequenceType(CloudEventDotSequenceType sequenceType) { this.sequenceType = sequenceType; }
 
   public String getData() { return this.data; }
@@ -277,7 +276,6 @@ public interface Pet {
 
   @Override
   public CloudEventDotSequenceType getSequenceType() { return this.sequenceType; }
-  @Override
   public void setSequenceType(CloudEventDotSequenceType sequenceType) { this.sequenceType = sequenceType; }
 
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }

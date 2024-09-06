@@ -188,6 +188,28 @@ const isEnumImplementedByConstValue = (
   });
 };
 
+const isEnumOrEnumInExtended = (
+  model: ConstrainedObjectModel,
+  property: ConstrainedObjectPropertyModel
+): boolean => {
+  if (!isEnum(property)) {
+    return false;
+  }
+
+  if (!model.options.extend) {
+    return false;
+  }
+
+  return model.options.extend.some((extend) => {
+    return (
+      extend instanceof ConstrainedReferenceModel &&
+      extend.ref instanceof ConstrainedObjectModel &&
+      extend.ref.properties[property.propertyName] &&
+      isEnum(extend.ref.properties[property.propertyName])
+    );
+  });
+};
+
 export const JAVA_DEFAULT_CLASS_PRESET: ClassPresetType<JavaOptions> = {
   self({ renderer }) {
     return renderer.defaultSelf();
@@ -240,7 +262,7 @@ export const JAVA_DEFAULT_CLASS_PRESET: ClassPresetType<JavaOptions> = {
     }
 
     // don't render override for enums that are set with a const value
-    const override = !isEnumImplementedByConstValue(model, property)
+    const override = !isEnumOrEnumInExtended(model, property)
       ? getOverride(model, property)
       : '';
 
