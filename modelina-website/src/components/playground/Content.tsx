@@ -6,11 +6,13 @@ import { useMemo } from 'react';
 
 import { usePlaygroundContext } from '../contexts/PlaygroundContext';
 import { PlaygroundGeneratedContext } from '../contexts/PlaygroundGeneratedContext';
+import { usePlaygroundLayout } from '../contexts/PlaygroundLayoutContext';
 import CustomError from '../CustomError';
 import MonacoEditorWrapper from '../MonacoEditorWrapper';
 import GeneratedModelsComponent from './GeneratedModels';
 import { OptionsNavigation } from './OptionsNavigation';
 import OutputNavigation from './OutputNavigation';
+import Resizable from './Resizable';
 
 interface ContentProps {
   setNewConfig: (config: string, configValue: any, updateCode?: boolean) => void;
@@ -22,17 +24,20 @@ export const Content: FunctionComponent<ContentProps> = ({ setNewConfig, setNewQ
   const {
     config,
     input,
-    showInputEditor,
     setInput,
     models,
     loaded,
     setLoaded,
     error,
     statusCode,
-    errorMessage,
-    showOptions,
-    showOutputNavigation
+    errorMessage
   } = usePlaygroundContext();
+  const { state } = usePlaygroundLayout();
+
+  const hasInputOptionsOpen = state.sidebarItems.get('general-options')?.isOpen;
+  const hasOutputOptionsOpen = state.sidebarItems.get('output-options')?.isOpen;
+  const hasInputEditorOpen = state.sidebarItems.get('input-editor')?.isOpen;
+  const hasOutputEditorOpen = state.sidebarItems.get('output-editor')?.isOpen;
 
   const PlaygroundGeneratedContextValue = useMemo(
     () => ({
@@ -43,57 +48,61 @@ export const Content: FunctionComponent<ContentProps> = ({ setNewConfig, setNewQ
   );
 
   return (
-    <div className='grid size-full grid-cols-4 md:grid-cols-8 lg:grid-cols-12'>
+    <div className={clsx('grid size-full', {
+      'grid-cols-[1fr_1fr]': hasOutputOptionsOpen,
+      'md:grid-cols-[minmax(200px,_25%)_1fr]': hasInputOptionsOpen || hasOutputOptionsOpen
+    })}>
       <div
-        className={clsx('col-span-full h-[90vh] w-full bg-[#1f2937] text-white lg:col-span-3', {
-          hidden: !showOptions
+        className={clsx('h-[90vh] w-full bg-[#1f2937] text-white', {
+          hidden: !hasInputOptionsOpen
         })}
       >
         <OptionsNavigation setNewConfig={setNewConfig} />
       </div>
       <div
-        className={clsx('col-span-2 h-full lg:col-start-8 lg:col-end-10', {
-          hidden: !showOutputNavigation
+        className={clsx({
+          hidden: !hasOutputOptionsOpen
         })}
       >
         <OutputNavigation />
       </div>
       <div
-        className={clsx('col-span-full h-full md:col-span-3 lg:col-end-8 lg:row-start-1', {
-          'hidden md:block': showInputEditor && !showOptions,
-          'lg:col-start-4': showOptions,
-          'lg:col-start-1': !showOptions,
-          'md:col-span-4': !showOutputNavigation
+        className={clsx({
+          'hidden md:block': hasInputOptionsOpen
         })}
       >
-        <div className='size-full rounded-b bg-code-editor-dark font-bold text-white shadow-lg'>
-          <MonacoEditorWrapper
-            value={input}
-            onChange={(_, change) => {
-              setInput(change);
-              generateNewCode(change);
-            }}
-            editorDidMount={() => {
-              setLoaded({ ...loaded, editorLoaded: true });
-            }}
-            language='json'
-          />
-        </div>
-      </div>
-      <div
-        className={clsx('col-span-2 h-full md:col-span-3 lg:col-end-13 lg:row-start-1', {
-          'hidden md:block': !showInputEditor && !showOptions,
-          'col-span-full md:col-span-4 lg:col-start-8': !showOutputNavigation,
-          'lg:col-span-4 lg:col-start-10': showOutputNavigation
-        })}
-      >
-        {error ? (
-          <CustomError statusCode={statusCode} errorMessage={errorMessage} />
-        ) : (
-          <PlaygroundGeneratedContext.Provider value={PlaygroundGeneratedContextValue}>
-            <GeneratedModelsComponent setNewQuery={setNewQuery} />
-          </PlaygroundGeneratedContext.Provider>
-        )}
+          <Resizable
+            leftComponent={
+              <div className={clsx('size-full rounded-b bg-code-editor-dark font-bold text-white shadow-lg', {
+                'hidden md:block': !hasInputEditorOpen && !hasInputOptionsOpen
+              })}>
+                  <MonacoEditorWrapper
+                    value={input}
+                    onChange={(_, change) => {
+                      setInput(change);
+                      generateNewCode(change);
+                    }}
+                    editorDidMount={() => {
+                      setLoaded({ ...loaded, editorLoaded: true });
+                    }}
+                    language='json'
+                  />
+              </div>
+            }
+            rightComponent={
+              <div className={clsx('size-full', {
+                'hidden md:block': !hasOutputEditorOpen && !hasInputOptionsOpen
+              })}>
+                {error ? (
+                  <CustomError statusCode={statusCode} errorMessage={errorMessage} />
+                ) : (
+                  <PlaygroundGeneratedContext.Provider value={PlaygroundGeneratedContextValue}>
+                    <GeneratedModelsComponent setNewQuery={setNewQuery} />
+                  </PlaygroundGeneratedContext.Provider>
+                )}
+              </div>
+            } />
+
       </div>
     </div>
   );

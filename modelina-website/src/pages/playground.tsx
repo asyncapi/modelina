@@ -1,6 +1,7 @@
 'use client';
 
 import { PlaygroundContextProvider } from '@/components/contexts/PlaygroundContext';
+import { PlaygroundLayoutProvider } from '@/components/contexts/PlaygroundLayoutContext';
 import GenericLayout from '@/components/layouts/GenericLayout';
 import Playground from '@/components/playground/Playground';
 
@@ -11,7 +12,9 @@ export default function PlaygroundPage() {
   return (
     <GenericLayout title='Playground' description={description} image={image} wide full padding='' footerPadding='mb-0'>
       <PlaygroundContextProvider>
-        <Playground />
+        <PlaygroundLayoutProvider>
+          <Playground />
+        </PlaygroundLayoutProvider>
       </PlaygroundContextProvider>
     </GenericLayout>
   );
