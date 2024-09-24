@@ -35,6 +35,7 @@ export const JAVA_JACKSON_PRESET: JavaPreset = {
       const blocks: string[] = [];
 
       if (hasUnwrappedOptions) {
+        blocks.push(renderer.renderAnnotation('JsonAnySetter'));
         if (!property.required) {
           blocks.push(
             renderer.renderAnnotation(
@@ -67,6 +68,19 @@ export const JAVA_JACKSON_PRESET: JavaPreset = {
 
       blocks.push(content);
 
+      return renderer.renderBlock(blocks);
+    },
+    getter({ renderer, property, content, model }) {
+      if (model.options.isExtended) {
+        return content;
+      }
+      const isAdditionalProperties =
+        property.propertyName === 'additionalProperties';
+      const blocks: string[] = [];
+      if (isAdditionalProperties) {
+        blocks.push(renderer.renderAnnotation('JsonAnyGetter'));
+      }
+      blocks.push(content);
       return renderer.renderBlock(blocks);
     }
   },

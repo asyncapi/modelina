@@ -9,6 +9,7 @@ Array [
   @JsonProperty(\\"max_number_prop\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Double maxNumberProp;
+  @JsonAnySetter
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
@@ -18,6 +19,7 @@ Array [
   public Double getMaxNumberProp() { return this.maxNumberProp; }
   public void setMaxNumberProp(Double maxNumberProp) { this.maxNumberProp = maxNumberProp; }
 
+  @JsonAnyGetter
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
   public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
 }",

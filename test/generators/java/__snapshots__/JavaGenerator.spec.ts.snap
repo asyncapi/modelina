@@ -29,6 +29,7 @@ public interface Pet {
   @JsonProperty(\\"test\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private TestAllOf test;
+  @JsonAnySetter
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
@@ -49,6 +50,7 @@ public interface Pet {
   public TestAllOf getTest() { return this.test; }
   public void setTest(TestAllOf test) { this.test = test; }
 
+  @JsonAnyGetter
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
   public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
 
@@ -163,6 +165,7 @@ public interface Pet {
   @JsonProperty(\\"test_string\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private String testString;
+  @JsonAnySetter
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
@@ -172,6 +175,7 @@ public interface Pet {
   public String getTestString() { return this.testString; }
   public void setTestString(String testString) { this.testString = testString; }
 
+  @JsonAnyGetter
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
   public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
 
@@ -264,6 +268,7 @@ public interface Pet {
   @JsonProperty(\\"sequence_type\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private CloudEventDotSequenceType sequenceType;
+  @JsonAnySetter
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
@@ -278,6 +283,7 @@ public interface Pet {
   public CloudEventDotSequenceType getSequenceType() { return this.sequenceType; }
   public void setSequenceType(CloudEventDotSequenceType sequenceType) { this.sequenceType = sequenceType; }
 
+  @JsonAnyGetter
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
   public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
 
@@ -391,6 +397,7 @@ Array [
   @JsonProperty(\\"event_time\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private java.time.OffsetDateTime eventTime;
+  @JsonAnySetter
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
@@ -400,6 +407,7 @@ Array [
   public java.time.OffsetDateTime getEventTime() { return this.eventTime; }
   public void setEventTime(java.time.OffsetDateTime eventTime) { this.eventTime = eventTime; }
 
+  @JsonAnyGetter
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
   public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
 
@@ -507,6 +515,7 @@ public interface Pet {
   @JsonProperty(\\"time\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private java.time.OffsetDateTime time;
+  @JsonAnySetter
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
@@ -526,6 +535,7 @@ public interface Pet {
   public java.time.OffsetDateTime getTime() { return this.time; }
   public void setTime(java.time.OffsetDateTime time) { this.time = time; }
 
+  @JsonAnyGetter
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
   public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
 
@@ -625,6 +635,7 @@ public interface Pet {
   @JsonProperty(\\"time\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private java.time.OffsetDateTime time;
+  @JsonAnySetter
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
@@ -644,6 +655,7 @@ public interface Pet {
   public java.time.OffsetDateTime getTime() { return this.time; }
   public void setTime(java.time.OffsetDateTime time) { this.time = time; }
 
+  @JsonAnyGetter
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
   public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
 
@@ -707,6 +719,7 @@ Array [
   @NotNull
   @JsonProperty(\\"type\\")
   private final CloudEventType type = CloudEventType.DOG;
+  @JsonAnySetter
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
@@ -715,6 +728,7 @@ Array [
 
   public CloudEventType getType() { return this.type; }
 
+  @JsonAnyGetter
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
   public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
 
@@ -807,11 +821,13 @@ public interface Pet {
   @NotNull
   @JsonProperty(\\"type\\")
   private final DogType type = DogType.DOG;
+  @JsonAnySetter
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
   public DogType getType() { return this.type; }
 
+  @JsonAnyGetter
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
   public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
 
@@ -886,11 +902,13 @@ public interface Pet {
   @NotNull
   @JsonProperty(\\"type\\")
   private final CatType type = CatType.CAT;
+  @JsonAnySetter
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
   public CatType getType() { return this.type; }
 
+  @JsonAnyGetter
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
   public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
 
@@ -981,12 +999,14 @@ public interface Vehicle {
   @JsonProperty(\\"vehicle\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Vehicle vehicle;
+  @JsonAnySetter
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
   public Vehicle getVehicle() { return this.vehicle; }
   public void setVehicle(Vehicle vehicle) { this.vehicle = vehicle; }
 
+  @JsonAnyGetter
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
   public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
 
@@ -1032,11 +1052,13 @@ public interface Vehicle {
   @NotNull
   @JsonProperty(\\"vehicleType\\")
   private final VehicleType vehicleType = VehicleType.CAR;
+  @JsonAnySetter
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
   public VehicleType getVehicleType() { return this.vehicleType; }
 
+  @JsonAnyGetter
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
   public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
 
@@ -1111,11 +1133,13 @@ public interface Vehicle {
   @NotNull
   @JsonProperty(\\"vehicleType\\")
   private final VehicleType vehicleType = VehicleType.TRUCK;
+  @JsonAnySetter
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
   public VehicleType getVehicleType() { return this.vehicleType; }
 
+  @JsonAnyGetter
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
   public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
 
