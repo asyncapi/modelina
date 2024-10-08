@@ -1013,6 +1013,16 @@
         "doc",
         "test"
       ]
+    },
+    {
+      "login": "memdal",
+      "name": "memdal",
+      "avatar_url": "https://avatars.githubusercontent.com/u/77838566?v=4",
+      "profile": "https://github.com/memdal",
+      "contributions": [
+        "code",
+        "test"
+      ]
     }
   ],
   "contributorsPerLine": 7,
