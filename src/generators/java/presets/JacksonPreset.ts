@@ -74,10 +74,15 @@ export const JAVA_JACKSON_PRESET: JavaPreset = {
       if (model.options.isExtended) {
         return content;
       }
-      const isAdditionalProperties =
-        property.propertyName === 'additionalProperties';
+      //Properties that are dictionaries with unwrapped options, cannot get the annotation because it cannot be accurately unwrapped by the jackson library.
+      const isDictionary =
+        property.property instanceof ConstrainedDictionaryModel;
+      const hasUnwrappedOptions =
+        isDictionary &&
+        (property.property as ConstrainedDictionaryModel).serializationType ===
+          'unwrap';
       const blocks: string[] = [];
-      if (isAdditionalProperties) {
+      if (hasUnwrappedOptions) {
         blocks.push(renderer.renderAnnotation('JsonAnyGetter'));
       }
       blocks.push(content);
