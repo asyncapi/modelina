@@ -6,7 +6,7 @@ exports[`PYTHON_PYDANTIC_PRESET should render pydantic for class 1`] = `
     multi
     line
     description''', default=None)
-  additional_properties: Optional[dict[str, Any]] = Field(exclude=True, default=None, alias='''additionalProperties''')
+  additional_properties: Optional[dict[str, Any]] = Field(exclude=True, default=None)
 
   @model_serializer(mode='wrap')
   def custom_serializer(self, handler):
@@ -23,6 +23,8 @@ exports[`PYTHON_PYDANTIC_PRESET should render pydantic for class 1`] = `
   @model_validator(mode='before')
   @classmethod
   def unwrap_additional_properties(cls, data):
+    if not isinstance(data, dict):
+      data = data.model_dump()
     json_properties = list(data.keys())
     known_object_properties = ['prop', 'additional_properties']
     unknown_object_properties = [element for element in json_properties if element not in known_object_properties]
@@ -31,11 +33,11 @@ exports[`PYTHON_PYDANTIC_PRESET should render pydantic for class 1`] = `
       return data
   
     known_json_properties = ['prop', 'additionalProperties']
-    additional_properties = {}
+    additional_properties = data.get('additional_properties', {})
     for obj_key in list(data.keys()):
       if not known_json_properties.__contains__(obj_key):
         additional_properties[obj_key] = data.pop(obj_key, None)
-    data['additionalProperties'] = additional_properties
+    data['additional_properties'] = additional_properties
     return data
 
 "
@@ -44,8 +46,8 @@ exports[`PYTHON_PYDANTIC_PRESET should render pydantic for class 1`] = `
 exports[`PYTHON_PYDANTIC_PRESET should render union to support Python < 3.10 1`] = `
 Array [
   "class UnionTest(BaseModel): 
-  union_test: Optional[Union[Union1.Union1, Union2.Union2]] = Field(default=None, alias='''unionTest''')
-  additional_properties: Optional[dict[str, Any]] = Field(exclude=True, default=None, alias='''additionalProperties''')
+  union_test: Optional[Union[Union1.Union1, Union2.Union2]] = Field(default=None)
+  additional_properties: Optional[dict[str, Any]] = Field(exclude=True, default=None)
 
   @model_serializer(mode='wrap')
   def custom_serializer(self, handler):
@@ -62,6 +64,8 @@ Array [
   @model_validator(mode='before')
   @classmethod
   def unwrap_additional_properties(cls, data):
+    if not isinstance(data, dict):
+      data = data.model_dump()
     json_properties = list(data.keys())
     known_object_properties = ['union_test', 'additional_properties']
     unknown_object_properties = [element for element in json_properties if element not in known_object_properties]
@@ -70,17 +74,17 @@ Array [
       return data
   
     known_json_properties = ['unionTest', 'additionalProperties']
-    additional_properties = {}
+    additional_properties = data.get('additional_properties', {})
     for obj_key in list(data.keys()):
       if not known_json_properties.__contains__(obj_key):
         additional_properties[obj_key] = data.pop(obj_key, None)
-    data['additionalProperties'] = additional_properties
+    data['additional_properties'] = additional_properties
     return data
 
 ",
   "class Union1(BaseModel): 
-  test_prop1: Optional[str] = Field(default=None, alias='''testProp1''')
-  additional_properties: Optional[dict[str, Any]] = Field(exclude=True, default=None, alias='''additionalProperties''')
+  test_prop1: Optional[str] = Field(default=None)
+  additional_properties: Optional[dict[str, Any]] = Field(exclude=True, default=None)
 
   @model_serializer(mode='wrap')
   def custom_serializer(self, handler):
@@ -97,6 +101,8 @@ Array [
   @model_validator(mode='before')
   @classmethod
   def unwrap_additional_properties(cls, data):
+    if not isinstance(data, dict):
+      data = data.model_dump()
     json_properties = list(data.keys())
     known_object_properties = ['test_prop1', 'additional_properties']
     unknown_object_properties = [element for element in json_properties if element not in known_object_properties]
@@ -105,17 +111,17 @@ Array [
       return data
   
     known_json_properties = ['testProp1', 'additionalProperties']
-    additional_properties = {}
+    additional_properties = data.get('additional_properties', {})
     for obj_key in list(data.keys()):
       if not known_json_properties.__contains__(obj_key):
         additional_properties[obj_key] = data.pop(obj_key, None)
-    data['additionalProperties'] = additional_properties
+    data['additional_properties'] = additional_properties
     return data
 
 ",
   "class Union2(BaseModel): 
-  test_prop2: Optional[str] = Field(default=None, alias='''testProp2''')
-  additional_properties: Optional[dict[str, Any]] = Field(exclude=True, default=None, alias='''additionalProperties''')
+  test_prop2: Optional[str] = Field(default=None)
+  additional_properties: Optional[dict[str, Any]] = Field(exclude=True, default=None)
 
   @model_serializer(mode='wrap')
   def custom_serializer(self, handler):
@@ -132,6 +138,8 @@ Array [
   @model_validator(mode='before')
   @classmethod
   def unwrap_additional_properties(cls, data):
+    if not isinstance(data, dict):
+      data = data.model_dump()
     json_properties = list(data.keys())
     known_object_properties = ['test_prop2', 'additional_properties']
     unknown_object_properties = [element for element in json_properties if element not in known_object_properties]
@@ -140,11 +148,11 @@ Array [
       return data
   
     known_json_properties = ['testProp2', 'additionalProperties']
-    additional_properties = {}
+    additional_properties = data.get('additional_properties', {})
     for obj_key in list(data.keys()):
       if not known_json_properties.__contains__(obj_key):
         additional_properties[obj_key] = data.pop(obj_key, None)
-    data['additionalProperties'] = additional_properties
+    data['additional_properties'] = additional_properties
     return data
 
 ",
