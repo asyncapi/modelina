@@ -15,7 +15,7 @@ export function getKotlinGeneratorCode(generatorOptions: ModelinaKotlinOptions) 
     optionString.push(`typeMapping: {
   Integer: ({ dependencyManager, constrainedModel, options, partOfProperty }) => {
     // Add custom dependency for your type if required.
-    dependencyManager.addDependency('import kotlinx.datetime.*');
+    dependencyManager.addDependency('kotlinx.datetime.*');
 
     //Return the type for the integer model
     return 'LocalDate';
