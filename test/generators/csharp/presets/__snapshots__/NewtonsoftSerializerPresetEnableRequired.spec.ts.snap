@@ -1,0 +1,220 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Newtonsoft JSON serializer preset with enforceRequired option enabled should render serialize and deserialize converters 1`] = `
+"[JsonConverter(typeof(TestConverter))]
+public partial class Test
+{
+  private string stringProp;
+  private double? numberProp;
+  private EnumTest? enumProp;
+  private NestedTest? objectProp;
+  private Dictionary<string, dynamic>? additionalProperties;
+
+  public string StringProp 
+  {
+    get { return stringProp; }
+    set { this.stringProp = value; }
+  }
+
+  public double? NumberProp 
+  {
+    get { return numberProp; }
+    set { this.numberProp = value; }
+  }
+
+  public EnumTest? EnumProp 
+  {
+    get { return enumProp; }
+    set { this.enumProp = value; }
+  }
+
+  public NestedTest? ObjectProp 
+  {
+    get { return objectProp; }
+    set { this.objectProp = value; }
+  }
+
+  public Dictionary<string, dynamic>? AdditionalProperties 
+  {
+    get { return additionalProperties; }
+    set { this.additionalProperties = value; }
+  }
+}
+
+public class TestConverter : JsonConverter<Test>
+{
+  public override Test ReadJson(JsonReader reader, System.Type objectType, Test existingValue, bool hasExistingValue, JsonSerializer serializer)
+{
+  JObject jo = JObject.Load(reader);
+  Test value = new Test();
+
+  if(jo[\\"string prop\\"] is null){
+  throw new JsonSerializationException(\\"Required property 'string prop' is missing\\");
+}
+
+value.StringProp = jo[\\"string prop\\"].ToObject<string>(serializer);
+
+if(jo[\\"numberProp\\"] != null) {
+  value.NumberProp = jo[\\"numberProp\\"].ToObject<double?>(serializer);
+}
+if(jo[\\"enumProp\\"] != null) {
+  value.EnumProp = EnumTestExtensions.ToEnumTest(jo[\\"enumProp\\"].ToString());
+}
+if(jo[\\"objectProp\\"] != null) {
+  value.ObjectProp = jo[\\"objectProp\\"].ToObject<NestedTest?>(serializer);
+}
+
+  var additionalProperties = jo.Properties().Where((prop) => prop.Name != \\"string prop\\" || prop.Name != \\"numberProp\\" || prop.Name != \\"enumProp\\" || prop.Name != \\"objectProp\\");
+  value.AdditionalProperties = new Dictionary<string, dynamic>();
+
+  foreach (var additionalProperty in additionalProperties)
+  {
+    value.AdditionalProperties[additionalProperty.Name] = additionalProperty.Value.ToObject<dynamic>(serializer);
+  }
+  return value;
+}
+  public override void WriteJson(JsonWriter writer, Test value, JsonSerializer serializer)
+{
+  JObject jo = new JObject();
+
+  if (value.StringProp != null)
+{
+  jo.Add(\\"string prop\\", JToken.FromObject(value.StringProp, serializer));
+}
+if (value.NumberProp != null)
+{
+  jo.Add(\\"numberProp\\", JToken.FromObject(value.NumberProp, serializer));
+}
+if (value.EnumProp != null)
+{
+  var enumValue = EnumTestExtensions.GetValue((EnumTest)value.EnumProp);
+var stringEnumValue = enumValue.ToString();
+// C# converts booleans to uppercase True and False, which newtonsoft cannot understand
+var jsonStringCompliant = stringEnumValue == \\"True\\" || stringEnumValue == \\"False\\" ? stringEnumValue.ToLower() : stringEnumValue;
+jo.Add(\\"enumProp\\", JToken.FromObject(jsonStringCompliant, serializer));
+}
+if (value.ObjectProp != null)
+{
+  jo.Add(\\"objectProp\\", JToken.FromObject(value.ObjectProp, serializer));
+}
+  if (value.AdditionalProperties != null)
+  {
+  foreach (var unwrapProperty in value.AdditionalProperties)
+  {
+    var hasProp = jo[unwrapProperty.Key]; 
+    if (hasProp != null) continue;
+    jo.Add(unwrapProperty.Key, JToken.FromObject(unwrapProperty.Value, serializer));
+  }
+}
+
+  jo.WriteTo(writer);
+}
+
+  public override bool CanRead => true;
+  public override bool CanWrite => true;
+}"
+`;
+
+exports[`Newtonsoft JSON serializer preset with enforceRequired option enabled should render serialize and deserialize converters 2`] = `
+"public enum EnumTest
+{
+  SOME_SPACE_ENUM_SPACE_STRING,
+  RESERVED_TRUE,
+  CURLYLEFT_QUOTATION_TEST_QUOTATION_COLON_QUOTATION_TEST_QUOTATION_CURLYRIGHT,
+  NUMBER_2
+}
+
+public static class EnumTestExtensions
+{
+  public static dynamic? GetValue(this EnumTest enumValue)
+  {
+    switch (enumValue)
+    {
+      case EnumTest.SOME_SPACE_ENUM_SPACE_STRING: return \\"Some enum String\\";
+      case EnumTest.RESERVED_TRUE: return true;
+      case EnumTest.CURLYLEFT_QUOTATION_TEST_QUOTATION_COLON_QUOTATION_TEST_QUOTATION_CURLYRIGHT: return \\"{\\\\\\"test\\\\\\":\\\\\\"test\\\\\\"}\\";
+      case EnumTest.NUMBER_2: return 2;
+    }
+    return null;
+  }
+
+  public static EnumTest? ToEnumTest(dynamic? value)
+  {
+    switch (value)
+    {
+      case \\"Some enum String\\": return EnumTest.SOME_SPACE_ENUM_SPACE_STRING;
+      case true: return EnumTest.RESERVED_TRUE;
+      case \\"{\\\\\\"test\\\\\\":\\\\\\"test\\\\\\"}\\": return EnumTest.CURLYLEFT_QUOTATION_TEST_QUOTATION_COLON_QUOTATION_TEST_QUOTATION_CURLYRIGHT;
+      case 2: return EnumTest.NUMBER_2;
+    }
+    return null;
+  }
+}
+"
+`;
+
+exports[`Newtonsoft JSON serializer preset with enforceRequired option enabled should render serialize and deserialize converters 3`] = `
+"[JsonConverter(typeof(NestedTestConverter))]
+public partial class NestedTest
+{
+  private string? stringProp;
+  private Dictionary<string, dynamic>? additionalProperties;
+
+  public string? StringProp 
+  {
+    get { return stringProp; }
+    set { this.stringProp = value; }
+  }
+
+  public Dictionary<string, dynamic>? AdditionalProperties 
+  {
+    get { return additionalProperties; }
+    set { this.additionalProperties = value; }
+  }
+}
+
+public class NestedTestConverter : JsonConverter<NestedTest>
+{
+  public override NestedTest ReadJson(JsonReader reader, System.Type objectType, NestedTest existingValue, bool hasExistingValue, JsonSerializer serializer)
+{
+  JObject jo = JObject.Load(reader);
+  NestedTest value = new NestedTest();
+
+  if(jo[\\"stringProp\\"] != null) {
+  value.StringProp = jo[\\"stringProp\\"].ToObject<string?>(serializer);
+}
+
+  var additionalProperties = jo.Properties().Where((prop) => prop.Name != \\"stringProp\\");
+  value.AdditionalProperties = new Dictionary<string, dynamic>();
+
+  foreach (var additionalProperty in additionalProperties)
+  {
+    value.AdditionalProperties[additionalProperty.Name] = additionalProperty.Value.ToObject<dynamic>(serializer);
+  }
+  return value;
+}
+  public override void WriteJson(JsonWriter writer, NestedTest value, JsonSerializer serializer)
+{
+  JObject jo = new JObject();
+
+  if (value.StringProp != null)
+{
+  jo.Add(\\"stringProp\\", JToken.FromObject(value.StringProp, serializer));
+}
+  if (value.AdditionalProperties != null)
+  {
+  foreach (var unwrapProperty in value.AdditionalProperties)
+  {
+    var hasProp = jo[unwrapProperty.Key]; 
+    if (hasProp != null) continue;
+    jo.Add(unwrapProperty.Key, JToken.FromObject(unwrapProperty.Value, serializer));
+  }
+}
+
+  jo.WriteTo(writer);
+}
+
+  public override bool CanRead => true;
+  public override bool CanWrite => true;
+}"
+`;

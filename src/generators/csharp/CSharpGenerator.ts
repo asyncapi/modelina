@@ -46,6 +46,7 @@ export interface CSharpOptions extends CommonGeneratorOptions<CSharpPreset> {
   autoImplementedProperties: boolean;
   modelType: 'class' | 'record';
   handleNullable: boolean;
+  enforceRequired: boolean;
 }
 export type CSharpConstantConstraint = ConstantConstraint<CSharpOptions>;
 export type CSharpEnumKeyConstraint = EnumKeyConstraint<CSharpOptions>;
@@ -65,7 +66,7 @@ export interface CSharpRenderCompleteModelOptions {
  * Generator for CSharp
  */
 export class CSharpGenerator extends AbstractGenerator<
-  CSharpOptions,
+  CSharpOptions, 
   CSharpRenderCompleteModelOptions
 > {
   static defaultOptions: CSharpOptions = {
@@ -77,6 +78,7 @@ export class CSharpGenerator extends AbstractGenerator<
     autoImplementedProperties: false,
     handleNullable: false,
     modelType: 'class',
+    enforceRequired:false,
     // Temporarily set
     dependencyManager: () => {
       return {} as CSharpDependencyManager;
