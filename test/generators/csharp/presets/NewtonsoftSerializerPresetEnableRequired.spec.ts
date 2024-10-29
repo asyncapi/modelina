@@ -29,16 +29,18 @@ const doc = {
 describe('Newtonsoft JSON serializer preset with enforceRequired option enabled', () => {
   test('should render serialize and deserialize converters', async () => {
     const generator = new CSharpGenerator({
-      presets: [{
-        preset:CSHARP_NEWTONSOFT_SERIALIZER_PRESET,
-        options: {
-          enforceRequired:true
+      presets: [
+        {
+          preset: CSHARP_NEWTONSOFT_SERIALIZER_PRESET,
+          options: {
+            enforceRequired: true
+          }
         }
-      }]     
+      ]
     });
 
     const outputModels = await generator.generate(doc);
-    expect(outputModels).toHaveLength(3);    
+    expect(outputModels).toHaveLength(3);
     expect(outputModels[0].result).toMatchSnapshot();
     expect(outputModels[1].result).toMatchSnapshot();
     expect(outputModels[2].result).toMatchSnapshot();

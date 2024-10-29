@@ -66,7 +66,7 @@ export interface CSharpRenderCompleteModelOptions {
  * Generator for CSharp
  */
 export class CSharpGenerator extends AbstractGenerator<
-  CSharpOptions, 
+  CSharpOptions,
   CSharpRenderCompleteModelOptions
 > {
   static defaultOptions: CSharpOptions = {
@@ -78,7 +78,7 @@ export class CSharpGenerator extends AbstractGenerator<
     autoImplementedProperties: false,
     handleNullable: false,
     modelType: 'class',
-    enforceRequired:false,
+    enforceRequired: false,
     // Temporarily set
     dependencyManager: () => {
       return {} as CSharpDependencyManager;

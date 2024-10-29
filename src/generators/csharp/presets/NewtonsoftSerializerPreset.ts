@@ -71,7 +71,8 @@ jo.Add("${prop.unconstrainedPropertyName}", JToken.FromObject(jsonStringComplian
  * Render `deserialize` function based on model
  */
 function renderDeserialize({
-  model, options
+  model,
+  options
 }: {
   model: ConstrainedObjectModel;
   options: CSharpOptions;
@@ -97,8 +98,12 @@ function renderDeserialize({
         prop.unconstrainedPropertyName
       }"].ToString())${prop.required ? '.Value' : ''}`;
     }
-    
-    if(options?.enforceRequired !== undefined && options?.enforceRequired && prop.required) {
+
+    if (
+      options?.enforceRequired !== undefined &&
+      options?.enforceRequired &&
+      prop.required
+    ) {
       return `if(jo["${prop.unconstrainedPropertyName}"] is null){
   throw new JsonSerializationException("Required property '${prop.unconstrainedPropertyName}' is missing");
 }
@@ -106,7 +111,7 @@ function renderDeserialize({
 value.${propertyAccessor} = ${toValue};
 `;
     }
-    
+
     return `if(jo["${prop.unconstrainedPropertyName}"] != null) {
   value.${propertyAccessor} = ${toValue};
 }`;
