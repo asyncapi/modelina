@@ -14,42 +14,15 @@ import { CSharpOptions } from '../CSharpGenerator';
 export class EnumRenderer extends CSharpRenderer<ConstrainedEnumModel> {
   async defaultSelf(): Promise<string> {
     const enumItems = await this.renderItems();
-    const getValueCaseItemValues = this.getValueCaseItemValues();
-    const toEnumCaseItemValues = this.toEnumCaseItemValues();
-    const enumValueSwitch = `switch (enumValue)
-{
-${this.indent(getValueCaseItemValues)}
-}
-return null;`;
-    const valueSwitch = `switch (value)
-{
-${this.indent(toEnumCaseItemValues)}
-}
-return null;`;
-    const classContent = `public static ${this.model.type}? GetValue(this ${
-      this.model.name
-    } enumValue)
-{
-${this.indent(enumValueSwitch)}
-}
-
-public static ${this.model.name}? To${this.model.name}(dynamic? value)
-{
-${this.indent(valueSwitch)}
-}`;
+    const extension = await this.runExtensionPreset();
 
     return `public enum ${this.model.name}
 {
 ${this.indent(enumItems)}
 }
-
-public static class ${this.model.name}Extensions
-{
-${this.indent(classContent)}
-}
+${this.indent(extension)}
 `;
   }
-
   async renderItems(): Promise<string> {
     const enums = this.model.values || [];
     const items: string[] = [];
@@ -93,6 +66,12 @@ ${this.indent(classContent)}
   runItemPreset(item: ConstrainedEnumValueModel): Promise<string> {
     return this.runPreset('item', { item });
   }
+  runExtensionPreset(): Promise<string> {
+    return this.runPreset('extension');
+  }
+  runExtensionMethodsPreset(): Promise<string> {
+    return this.runPreset('extensionMethods');
+  }
 }
 
 export const CSHARP_DEFAULT_ENUM_PRESET: EnumPresetType<CSharpOptions> = {
@@ -101,5 +80,38 @@ export const CSHARP_DEFAULT_ENUM_PRESET: EnumPresetType<CSharpOptions> = {
   },
   item({ item }) {
     return item.key;
+  },
+  async extension({ renderer, model }) {
+    const extensionMethods = await renderer.runExtensionMethodsPreset();
+    return `public static class ${model.name}Extensions
+{
+${renderer.indent(extensionMethods)}
+}`
+  },
+  extensionMethods({ model, renderer }) {
+    const getValueCaseItemValues = renderer.getValueCaseItemValues();
+    const toEnumCaseItemValues = renderer.toEnumCaseItemValues();
+    const enumValueSwitch = `switch (enumValue)
+{
+${renderer.indent(getValueCaseItemValues)}
+}
+return null;`;
+    const valueSwitch = `switch (value)
+{
+${renderer.indent(toEnumCaseItemValues)}
+}
+return null;`;
+    const classContent = `public static ${model.type}? GetValue(this ${
+      model.name
+    } enumValue)
+{
+${renderer.indent(enumValueSwitch)}
+}
+
+public static ${model.name}? To${model.name}(dynamic? value)
+{
+${renderer.indent(valueSwitch)}
+}`;
+    return classContent;
   }
 };

@@ -13,7 +13,7 @@ const doc = {
     numberProp: { type: 'number' },
     enumProp: {
       $id: 'EnumTest',
-      enum: ['Some enum String', true, { test: 'test' }, 2]
+      enum: ['Some enum String', true, { test: 'test' }, 2, ["test", 1], null]
     },
     objectProp: {
       type: 'object',

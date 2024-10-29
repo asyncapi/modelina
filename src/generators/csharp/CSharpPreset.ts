@@ -5,7 +5,8 @@ import {
   PresetArgs,
   PropertyArgs,
   ConstrainedObjectModel,
-  InterfacePreset
+  InterfacePreset,
+  ConstrainedEnumModel
 } from '../../models';
 import { CSharpOptions } from './CSharpGenerator';
 import {
@@ -40,12 +41,18 @@ export interface CsharpRecordPreset<O>
 
 export type ClassPresetType<O> = CsharpClassPreset<O>;
 export type RecordPresetType<O> = CsharpRecordPreset<O>;
-export type EnumPresetType<O> = EnumPreset<EnumRenderer, O>;
-
+export interface EnumPresetType<O> extends EnumPreset<EnumRenderer, O> {
+  extension?: (
+    args: PresetArgs<EnumRenderer, O, ConstrainedEnumModel>
+  ) => Promise<string> | string;
+  extensionMethods?: (
+    args: PresetArgs<EnumRenderer, O, ConstrainedEnumModel>
+  ) => Promise<string> | string;
+};
 export type CSharpPreset<O = any> = Preset<{
   class: CsharpClassPreset<O>;
   record: CsharpRecordPreset<O>;
-  enum: EnumPreset<EnumRenderer, O>;
+  enum: EnumPresetType<O>;
 }>;
 
 export const CSHARP_DEFAULT_PRESET: CSharpPreset<CSharpOptions> = {

@@ -173,7 +173,7 @@ describe('CSharpGenerator', () => {
   test('should render `enum` type', async () => {
     const doc = {
       $id: 'Things',
-      enum: ['Texas', '1', 1, false, { test: 'test' }]
+      enum: ['Texas', '1', 1, false, { test: 'test' }, ["test", 1], null]
     };
     const models = await generator.generate(doc);
     expect(models).toHaveLength(1);

@@ -9,8 +9,14 @@ import { TypeScriptOptions } from '../TypeScriptGenerator';
  * @extends TypeScriptRenderer
  */
 export class TypeRenderer extends TypeScriptRenderer<ConstrainedMetaModel> {
-  defaultSelf(): string {
-    return `type ${this.model.name} = ${this.model.type};`;
+  async defaultSelf(): Promise<string> {
+    const content = [
+      await this.runAdditionalContentPreset()
+    ];
+
+    return `type ${this.model.name} = ${this.model.type};
+
+${this.renderBlock(content, 2)}`;
   }
 }
 

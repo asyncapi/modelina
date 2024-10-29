@@ -75,6 +75,11 @@ export function defaultEnumKeyConstraints(
 export function defaultEnumValueConstraints(): CSharpEnumValueConstraint {
   return ({ enumValue }) => {
     let normalizedEnumValue;
+    if(enumValue === null) return enumValue;
+    if(Array.isArray(enumValue)) return `"${JSON.stringify(enumValue).replace(
+      /"/g,
+      '\\"'
+    )}"`;
     switch (typeof enumValue) {
       case 'boolean':
       case 'bigint':

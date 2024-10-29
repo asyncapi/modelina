@@ -14,15 +14,14 @@ function renderSerializeProperty(
   modelInstanceVariable: string,
   model: ConstrainedObjectPropertyModel
 ) {
-  let value = modelInstanceVariable;
   //Special case where a referenced enum model need to be accessed
   if (
     model.property instanceof ConstrainedReferenceModel &&
     model.property.ref instanceof ConstrainedEnumModel
   ) {
-    value = `${modelInstanceVariable}${model.required ? '' : '?'}.GetValue()`;
+    return `writer.WriteRawValue(${modelInstanceVariable}${model.required ? '' : '?'}.GetRawJsonValue(), true);`;
   }
-  return `JsonSerializer.Serialize(writer, ${value}, options);`;
+  return `JsonSerializer.Serialize(writer, ${modelInstanceVariable}, options);`;
 }
 
 function renderSerializeProperties(model: ConstrainedObjectModel) {
@@ -31,7 +30,7 @@ function renderSerializeProperties(model: ConstrainedObjectModel) {
     for (const [propertyName, propertyModel] of Object.entries(
       model.properties
     )) {
-      const modelInstanceVariable = `value.${pascalCase(propertyName)}`;
+      const modelInstanceVariable = `value?.${pascalCase(propertyName)}`;
       if (
         propertyModel.property instanceof ConstrainedDictionaryModel &&
         propertyModel.property.serializationType === 'unwrap'
@@ -74,13 +73,13 @@ function renderPropertiesList(
       );
     })
     .map((value) => {
-      return `prop.Name != "${pascalCase(value.propertyName)}"`;
+      return `prop.Name != "${pascalCase(value?.propertyName)}"`;
     });
 
-  let propertiesList = 'var properties = value.GetType().GetProperties();';
+  let propertiesList = 'var properties = value?.GetType().GetProperties();';
   if (unwrappedDictionaryProperties.length > 0) {
     renderer.dependencyManager.addDependency('using System.Linq;');
-    propertiesList = `var properties = value.GetType().GetProperties().Where(prop => ${unwrappedDictionaryProperties.join(
+    propertiesList = `var properties = value?.GetType().GetProperties().Where(prop => ${unwrappedDictionaryProperties.join(
       ' && '
     )});`;
   }
@@ -103,11 +102,6 @@ function renderSerialize({
     model.name
   } value, JsonSerializerOptions options)
 {
-  if (value == null)
-  {
-    JsonSerializer.Serialize(writer, null, options);
-    return;
-  }
   ${propertiesList}
   
   writer.WriteStartObject();
@@ -124,9 +118,15 @@ function renderDeserializeProperty(model: ConstrainedObjectPropertyModel) {
     model.property instanceof ConstrainedReferenceModel &&
     model.property.ref instanceof ConstrainedEnumModel
   ) {
-    return `${model.property.name}Extensions.To${model.property.name}(JsonSerializer.Deserialize<dynamic>(ref reader, options))`;
+    return `${model.property.name}Extensions.FromJsonTo${model.property.name}(JsonSerializer.Deserialize<dynamic>(ref reader))`;
+  } else if (
+    model.property instanceof ConstrainedReferenceModel &&
+    model.property.ref instanceof ConstrainedObjectModel
+  ) {
+    return `JsonSerializer.Deserialize<${model.property.name}>(ref reader)`;
   }
-  return `JsonSerializer.Deserialize<${model.property.type}>(ref reader, options)`;
+  
+  return `JsonSerializer.Deserialize<${model.property.type}>(ref reader)`;
 }
 
 function renderDeserializeProperties(model: ConstrainedObjectModel) {
@@ -141,7 +141,7 @@ function renderDeserializeProperties(model: ConstrainedObjectModel) {
       ) {
         return `if(instance.${pascalProp} == null) { instance.${pascalProp} = new Dictionary<${
           propModel.property.key.type
-        }, ${propModel.property.value.type}>(); }
+        }, ${propModel.property.value?.type}>(); }
       var deserializedValue = ${renderDeserializeProperty(propModel)};
       instance.${pascalProp}.Add(propertyName, deserializedValue);
       continue;`;
@@ -151,8 +151,7 @@ function renderDeserializeProperties(model: ConstrainedObjectModel) {
       }
       return `if (propertyName == "${propModel.unconstrainedPropertyName}")
   {
-    var value = ${renderDeserializeProperty(propModel)};
-    instance.${pascalProp} = value;
+    instance.${pascalProp} = ${renderDeserializeProperty(propModel)};
     continue;
   }`;
     })
@@ -196,6 +195,9 @@ function renderDeserialize({
     }
 
     string propertyName = reader.GetString();
+
+    // Advance to the value token
+    reader.Read();
 ${renderer.indent(deserializeProperties, 4)}
   }
   
@@ -219,11 +221,9 @@ public string Serialize(JsonSerializerOptions options = null)
 {
   return JsonSerializer.Serialize(this, options);
 }
-public static ${model.type} Deserialize(string json)
+public static ${model.type} Deserialize(string json, JsonSerializerOptions options = null)
 {
-  var deserializeOptions = new JsonSerializerOptions();
-  deserializeOptions.Converters.Add(new ${model.name}Converter());
-  return JsonSerializer.Deserialize<${model.type}>(json, deserializeOptions);
+  return JsonSerializer.Deserialize<${model.type}>(json, options);
 }`;
       return `${content}\n${renderer.indent(supportFunctions)}`;
     },
@@ -244,16 +244,100 @@ ${content}
 
 internal class ${model.name}Converter : JsonConverter<${model.name}>
 {
-  public override bool CanConvert(System.Type objectType)
-  {
-    // this converter can be applied to any type
-    return true;
-  }
 ${renderer.indent(deserialize)}
 ${renderer.indent(serialize)}
-
-}
-`;
+}`;
     }
+  },
+  enum: {
+    self({content, renderer}) {
+      renderer.dependencyManager.addDependency('using System.Text.Json;')
+      return content;
+    },
+    extensionMethods({content, model, renderer}) {
+      const enums = model.values || [];
+      const items: string[] = [];
+      const items2: string[] = [];
+
+      for (const enumValue of enums) {
+        let jsonValue = enumValue.value;
+        const originalEnumValue = enumValue.originalInput;
+        let stringValue = jsonValue;
+        if(typeof jsonValue !== 'string') stringValue = `"${jsonValue}"`;
+        items.push(
+          `case ${model.name}.${enumValue.key}: return ${stringValue};`
+        );
+
+        if(typeof originalEnumValue === 'string'){
+          items2.push(
+            `if (value?.ValueKind == JsonValueKind.String && value?.GetString() == ${enumValue.value})
+{
+  return ${model.name}.${enumValue.key};
+}`
+          );
+        } else if(originalEnumValue === null){
+          items2.push(
+            `if (value == null || value?.ValueKind == JsonValueKind.Null && value?.GetRawText() == "null")
+{
+  return ${model.name}.${enumValue.key};
+}`
+          );
+        } else if(typeof originalEnumValue === 'boolean'){
+          items2.push(
+            `if (value?.ValueKind == JsonValueKind.True || value?.ValueKind == JsonValueKind.False && value?.GetBoolean() == ${enumValue.value})
+{
+  return ${model.name}.${enumValue.key};
+}`
+          );
+        } else if(Array.isArray(originalEnumValue)){
+          items2.push(
+            `if (value?.ValueKind == JsonValueKind.Array && value?.GetRawText() == ${enumValue.value})
+{
+  return ${model.name}.${enumValue.key};
+}`
+          );
+        } else if(typeof originalEnumValue === 'object'){
+          items2.push(
+            `if (value?.ValueKind == JsonValueKind.Object && value?.GetRawText() == ${enumValue.value})
+{
+  return ${model.name}.${enumValue.key};
+}`
+          );
+        } else if(typeof originalEnumValue === 'number'){
+          items2.push(
+            `if (value?.ValueKind == JsonValueKind.Number && value?.GetInt32() == ${enumValue.value})
+{
+  return ${model.name}.${enumValue.key};
+}`
+          );
+        } else if(typeof originalEnumValue === 'bigint'){
+          items2.push(
+            `if (value?.ValueKind == JsonValueKind.Number && value?.GetInt64() == ${enumValue.value})
+{
+  return ${model.name}.${enumValue.key};
+}`
+          );
+        }
+      }
+
+      const newstuff = items.join('\n');
+      const newstuff2 = items2.join('\n');
+      return `${content}
+
+public static string? GetRawJsonValue(this ${model.name} enumValue)
+{
+  switch (enumValue)
+  {
+${renderer.indent(newstuff, 3)}
+  }
+  return null;
+}
+
+public static ${model.type}? FromJsonTo${model.name}(JsonElement? value)
+{
+${renderer.indent(newstuff2, 2)}
+  return null;
+}`;
+    },
   }
 };
