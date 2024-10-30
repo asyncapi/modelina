@@ -22,21 +22,14 @@ public partial class Root
     {
       return JsonSerializer.Serialize(this, options);
     }
-    public static Root Deserialize(string json)
+    public static Root Deserialize(string json, JsonSerializerOptions options = null)
     {
-      var deserializeOptions = new JsonSerializerOptions();
-      deserializeOptions.Converters.Add(new RootConverter());
-      return JsonSerializer.Deserialize<Root>(json, deserializeOptions);
+      return JsonSerializer.Deserialize<Root>(json, options);
     }
 }
 
 internal class RootConverter : JsonConverter<Root>
 {
-  public override bool CanConvert(System.Type objectType)
-  {
-    // this converter can be applied to any type
-    return true;
-  }
   public override Root Read(ref Utf8JsonReader reader, System.Type typeToConvert, JsonSerializerOptions options)
   {
     if (reader.TokenType != JsonTokenType.StartObject)
@@ -60,10 +53,12 @@ internal class RootConverter : JsonConverter<Root>
       }
 
       string propertyName = reader.GetString();
+
+      // Advance to the value token
+      reader.Read();
       if (propertyName == \\"email\\")
         {
-          var value = JsonSerializer.Deserialize<string?>(ref reader, options);
-          instance.Email = value;
+          instance.Email = JsonSerializer.Deserialize<string?>(ref reader);
           continue;
         }
     }
@@ -72,26 +67,19 @@ internal class RootConverter : JsonConverter<Root>
   }
   public override void Write(Utf8JsonWriter writer, Root value, JsonSerializerOptions options)
   {
-    if (value == null)
-    {
-      JsonSerializer.Serialize(writer, null, options);
-      return;
-    }
-    var properties = value.GetType().GetProperties();
+    var properties = value?.GetType().GetProperties();
   
     writer.WriteStartObject();
 
-    if(value.Email != null) {
+    if(value?.Email != null) {
       // write property name and let the serializer serialize the value itself
       writer.WritePropertyName(\\"email\\");
-      JsonSerializer.Serialize(writer, value.Email, options);
+      JsonSerializer.Serialize(writer, value?.Email, options);
     }
 
 
     writer.WriteEndObject();
   }
-
-}
-",
+}",
 ]
 `;

@@ -139,33 +139,32 @@ exports[`Newtonsoft JSON serializer preset should render serialize and deseriali
   CURLYLEFT_QUOTATION_TEST_QUOTATION_COLON_QUOTATION_TEST_QUOTATION_CURLYRIGHT,
   NUMBER_2
 }
-
-public static class EnumTestExtensions
-{
-  public static dynamic? GetValue(this EnumTest enumValue)
+  public static class EnumTestExtensions
   {
-    switch (enumValue)
+    public static dynamic? GetValue(this EnumTest enumValue)
     {
-      case EnumTest.SOME_SPACE_ENUM_SPACE_STRING: return \\"Some enum String\\";
-      case EnumTest.RESERVED_TRUE: return true;
-      case EnumTest.CURLYLEFT_QUOTATION_TEST_QUOTATION_COLON_QUOTATION_TEST_QUOTATION_CURLYRIGHT: return \\"{\\\\\\"test\\\\\\":\\\\\\"test\\\\\\"}\\";
-      case EnumTest.NUMBER_2: return 2;
+      switch (enumValue)
+      {
+        case EnumTest.SOME_SPACE_ENUM_SPACE_STRING: return \\"Some enum String\\";
+        case EnumTest.RESERVED_TRUE: return true;
+        case EnumTest.CURLYLEFT_QUOTATION_TEST_QUOTATION_COLON_QUOTATION_TEST_QUOTATION_CURLYRIGHT: return \\"{\\\\\\"test\\\\\\":\\\\\\"test\\\\\\"}\\";
+        case EnumTest.NUMBER_2: return 2;
+      }
+      return null;
     }
-    return null;
-  }
 
-  public static EnumTest? ToEnumTest(dynamic? value)
-  {
-    switch (value)
+    public static EnumTest? ToEnumTest(dynamic? value)
     {
-      case \\"Some enum String\\": return EnumTest.SOME_SPACE_ENUM_SPACE_STRING;
-      case true: return EnumTest.RESERVED_TRUE;
-      case \\"{\\\\\\"test\\\\\\":\\\\\\"test\\\\\\"}\\": return EnumTest.CURLYLEFT_QUOTATION_TEST_QUOTATION_COLON_QUOTATION_TEST_QUOTATION_CURLYRIGHT;
-      case 2: return EnumTest.NUMBER_2;
+      switch (value)
+      {
+        case \\"Some enum String\\": return EnumTest.SOME_SPACE_ENUM_SPACE_STRING;
+        case true: return EnumTest.RESERVED_TRUE;
+        case \\"{\\\\\\"test\\\\\\":\\\\\\"test\\\\\\"}\\": return EnumTest.CURLYLEFT_QUOTATION_TEST_QUOTATION_COLON_QUOTATION_TEST_QUOTATION_CURLYRIGHT;
+        case 2: return EnumTest.NUMBER_2;
+      }
+      return null;
     }
-    return null;
   }
-}
 "
 `;
 

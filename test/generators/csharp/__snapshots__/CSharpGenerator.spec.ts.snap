@@ -135,37 +135,42 @@ exports[`CSharpGenerator should render \`enum\` type 1`] = `
   NUMBER_1,
   RESERVED_NUMBER_1,
   RESERVED_FALSE,
-  CURLYLEFT_QUOTATION_TEST_QUOTATION_COLON_QUOTATION_TEST_QUOTATION_CURLYRIGHT
+  CURLYLEFT_QUOTATION_TEST_QUOTATION_COLON_QUOTATION_TEST_QUOTATION_CURLYRIGHT,
+  SQUARELEFT_QUOTATION_TEST_QUOTATION_COMMA_1_SQUARERIGHT,
+  RESERVED_NULL
 }
-
-public static class ThingsExtensions
-{
-  public static dynamic? GetValue(this Things enumValue)
+  public static class ThingsExtensions
   {
-    switch (enumValue)
+    public static dynamic? GetValue(this Things enumValue)
     {
-      case Things.TEXAS: return \\"Texas\\";
-      case Things.NUMBER_1: return \\"1\\";
-      case Things.RESERVED_NUMBER_1: return 1;
-      case Things.RESERVED_FALSE: return false;
-      case Things.CURLYLEFT_QUOTATION_TEST_QUOTATION_COLON_QUOTATION_TEST_QUOTATION_CURLYRIGHT: return \\"{\\\\\\"test\\\\\\":\\\\\\"test\\\\\\"}\\";
+      switch (enumValue)
+      {
+        case Things.TEXAS: return \\"Texas\\";
+        case Things.NUMBER_1: return \\"1\\";
+        case Things.RESERVED_NUMBER_1: return 1;
+        case Things.RESERVED_FALSE: return false;
+        case Things.CURLYLEFT_QUOTATION_TEST_QUOTATION_COLON_QUOTATION_TEST_QUOTATION_CURLYRIGHT: return \\"{\\\\\\"test\\\\\\":\\\\\\"test\\\\\\"}\\";
+        case Things.SQUARELEFT_QUOTATION_TEST_QUOTATION_COMMA_1_SQUARERIGHT: return \\"[\\\\\\"test\\\\\\",1]\\";
+        case Things.RESERVED_NULL: return null;
+      }
+      return null;
     }
-    return null;
-  }
 
-  public static Things? ToThings(dynamic? value)
-  {
-    switch (value)
+    public static Things? ToThings(dynamic? value)
     {
-      case \\"Texas\\": return Things.TEXAS;
-      case \\"1\\": return Things.NUMBER_1;
-      case 1: return Things.RESERVED_NUMBER_1;
-      case false: return Things.RESERVED_FALSE;
-      case \\"{\\\\\\"test\\\\\\":\\\\\\"test\\\\\\"}\\": return Things.CURLYLEFT_QUOTATION_TEST_QUOTATION_COLON_QUOTATION_TEST_QUOTATION_CURLYRIGHT;
+      switch (value)
+      {
+        case \\"Texas\\": return Things.TEXAS;
+        case \\"1\\": return Things.NUMBER_1;
+        case 1: return Things.RESERVED_NUMBER_1;
+        case false: return Things.RESERVED_FALSE;
+        case \\"{\\\\\\"test\\\\\\":\\\\\\"test\\\\\\"}\\": return Things.CURLYLEFT_QUOTATION_TEST_QUOTATION_COLON_QUOTATION_TEST_QUOTATION_CURLYRIGHT;
+        case \\"[\\\\\\"test\\\\\\",1]\\": return Things.SQUARELEFT_QUOTATION_TEST_QUOTATION_COMMA_1_SQUARERIGHT;
+        case null: return Things.RESERVED_NULL;
+      }
+      return null;
     }
-    return null;
   }
-}
 "
 `;
 
@@ -193,35 +198,34 @@ exports[`CSharpGenerator should render enums with translated special characters 
   TEST_QUESTION_EXCLAMATION,
   ASTERISK_TEST
 }
-
-public static class StatesExtensions
-{
-  public static string? GetValue(this States enumValue)
+  public static class StatesExtensions
   {
-    switch (enumValue)
+    public static string? GetValue(this States enumValue)
     {
-      case States.TEST_PLUS: return \\"test+\\";
-      case States.TEST: return \\"test\\";
-      case States.TEST_MINUS: return \\"test-\\";
-      case States.TEST_QUESTION_EXCLAMATION: return \\"test?!\\";
-      case States.ASTERISK_TEST: return \\"*test\\";
+      switch (enumValue)
+      {
+        case States.TEST_PLUS: return \\"test+\\";
+        case States.TEST: return \\"test\\";
+        case States.TEST_MINUS: return \\"test-\\";
+        case States.TEST_QUESTION_EXCLAMATION: return \\"test?!\\";
+        case States.ASTERISK_TEST: return \\"*test\\";
+      }
+      return null;
     }
-    return null;
-  }
 
-  public static States? ToStates(dynamic? value)
-  {
-    switch (value)
+    public static States? ToStates(dynamic? value)
     {
-      case \\"test+\\": return States.TEST_PLUS;
-      case \\"test\\": return States.TEST;
-      case \\"test-\\": return States.TEST_MINUS;
-      case \\"test?!\\": return States.TEST_QUESTION_EXCLAMATION;
-      case \\"*test\\": return States.ASTERISK_TEST;
+      switch (value)
+      {
+        case \\"test+\\": return States.TEST_PLUS;
+        case \\"test\\": return States.TEST;
+        case \\"test-\\": return States.TEST_MINUS;
+        case \\"test?!\\": return States.TEST_QUESTION_EXCLAMATION;
+        case \\"*test\\": return States.ASTERISK_TEST;
+      }
+      return null;
     }
-    return null;
   }
-}
 "
 `;
 

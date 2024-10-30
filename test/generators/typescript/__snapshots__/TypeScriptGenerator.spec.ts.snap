@@ -2,7 +2,9 @@
 
 exports[`TypeScriptGenerator AsyncAPI with polymorphism should render 6 models (1 oneOf, 3 classes and 2 enums) 1`] = `
 Array [
-  "type AnonymousSchema_1 = Cat | Dog | StickInsect;",
+  "type AnonymousSchema_1 = Cat | Dog | StickInsect;
+
+",
   "class Cat {
   private _petType: PetType.CAT = PetType.CAT;
   private _reservedName: string;
@@ -90,7 +92,9 @@ exports[`TypeScriptGenerator AsyncAPI with polymorphism should render enum with 
 
 exports[`TypeScriptGenerator CloudEvent handle allOf with const in CloudEvent type 1`] = `
 Array [
-  "type Pet = Dog | Cat;",
+  "type Pet = Dog | Cat;
+
+",
   "class Dog {
   private _id: string;
   private _source: string;
@@ -192,7 +196,9 @@ Array [
 
 exports[`TypeScriptGenerator Combine oneOf and allOf should combine oneOf and allOf 1`] = `
 Array [
-  "type Pet = Cat | Dog;",
+  "type Pet = Cat | Dog;
+
+",
   "class Cat {
   private _animalType?: AnimalType.CAT = AnimalType.CAT;
   private _age?: number;
@@ -252,7 +258,9 @@ Array [
 
 exports[`TypeScriptGenerator Combine properties and oneOf should combine properties and oneOf 1`] = `
 Array [
-  "type Pet = Cat | Dog;",
+  "type Pet = Cat | Dog;
+
+",
   "class Cat {
   private _petType: PetType.CAT = PetType.CAT;
   private _age?: number;
@@ -564,9 +572,17 @@ exports[`TypeScriptGenerator should render \`interface\` type 1`] = `
 }"
 `;
 
-exports[`TypeScriptGenerator should render \`type\` type - array of primitive type 1`] = `"type TypeArray = string[];"`;
+exports[`TypeScriptGenerator should render \`type\` type - array of primitive type 1`] = `
+"type TypeArray = string[];
 
-exports[`TypeScriptGenerator should render \`type\` type - array of union type 1`] = `"type TypeArray = (string | number | boolean)[];"`;
+"
+`;
+
+exports[`TypeScriptGenerator should render \`type\` type - array of union type 1`] = `
+"type TypeArray = (string | number | boolean)[];
+
+"
+`;
 
 exports[`TypeScriptGenerator should render \`type\` type - enum 1`] = `
 "enum TypeEnum {
@@ -580,9 +596,17 @@ exports[`TypeScriptGenerator should render \`type\` type - enum 1`] = `
 }"
 `;
 
-exports[`TypeScriptGenerator should render \`type\` type - primitive 1`] = `"type TypePrimitive = string;"`;
+exports[`TypeScriptGenerator should render \`type\` type - primitive 1`] = `
+"type TypePrimitive = string;
 
-exports[`TypeScriptGenerator should render \`type\` type - union 1`] = `"type TypeUnion = string | number | boolean;"`;
+"
+`;
+
+exports[`TypeScriptGenerator should render \`type\` type - union 1`] = `
+"type TypeUnion = string | number | boolean;
+
+"
+`;
 
 exports[`TypeScriptGenerator should render enums with translated special characters 1`] = `
 "enum States {
