@@ -125,7 +125,7 @@ function renderDeserializeProperty(model: ConstrainedObjectPropertyModel) {
   ) {
     return `JsonSerializer.Deserialize<${model.property.name}>(ref reader)`;
   }
-  
+
   return `JsonSerializer.Deserialize<${model.property.type}>(ref reader)`;
 }
 
@@ -250,67 +250,69 @@ ${renderer.indent(serialize)}
     }
   },
   enum: {
-    self({content, renderer}) {
-      renderer.dependencyManager.addDependency('using System.Text.Json;')
+    self({ content, renderer }) {
+      renderer.dependencyManager.addDependency('using System.Text.Json;');
       return content;
     },
-    extensionMethods({content, model, renderer}) {
+    extensionMethods({ content, model, renderer }) {
       const enums = model.values || [];
       const items: string[] = [];
       const items2: string[] = [];
 
       for (const enumValue of enums) {
-        let jsonValue = enumValue.value;
+        const jsonValue = enumValue.value;
         const originalEnumValue = enumValue.originalInput;
         let stringValue = jsonValue;
-        if(typeof jsonValue !== 'string') stringValue = `"${jsonValue}"`;
+        if (typeof jsonValue !== 'string') {
+          stringValue = `"${jsonValue}"`;
+        }
         items.push(
           `case ${model.name}.${enumValue.key}: return ${stringValue};`
         );
 
-        if(typeof originalEnumValue === 'string'){
+        if (typeof originalEnumValue === 'string') {
           items2.push(
             `if (value?.ValueKind == JsonValueKind.String && value?.GetString() == ${enumValue.value})
 {
   return ${model.name}.${enumValue.key};
 }`
           );
-        } else if(originalEnumValue === null){
+        } else if (originalEnumValue === null) {
           items2.push(
             `if (value == null || value?.ValueKind == JsonValueKind.Null && value?.GetRawText() == "null")
 {
   return ${model.name}.${enumValue.key};
 }`
           );
-        } else if(typeof originalEnumValue === 'boolean'){
+        } else if (typeof originalEnumValue === 'boolean') {
           items2.push(
             `if (value?.ValueKind == JsonValueKind.True || value?.ValueKind == JsonValueKind.False && value?.GetBoolean() == ${enumValue.value})
 {
   return ${model.name}.${enumValue.key};
 }`
           );
-        } else if(Array.isArray(originalEnumValue)){
+        } else if (Array.isArray(originalEnumValue)) {
           items2.push(
             `if (value?.ValueKind == JsonValueKind.Array && value?.GetRawText() == ${enumValue.value})
 {
   return ${model.name}.${enumValue.key};
 }`
           );
-        } else if(typeof originalEnumValue === 'object'){
+        } else if (typeof originalEnumValue === 'object') {
           items2.push(
             `if (value?.ValueKind == JsonValueKind.Object && value?.GetRawText() == ${enumValue.value})
 {
   return ${model.name}.${enumValue.key};
 }`
           );
-        } else if(typeof originalEnumValue === 'number'){
+        } else if (typeof originalEnumValue === 'number') {
           items2.push(
             `if (value?.ValueKind == JsonValueKind.Number && value?.GetInt32() == ${enumValue.value})
 {
   return ${model.name}.${enumValue.key};
 }`
           );
-        } else if(typeof originalEnumValue === 'bigint'){
+        } else if (typeof originalEnumValue === 'bigint') {
           items2.push(
             `if (value?.ValueKind == JsonValueKind.Number && value?.GetInt64() == ${enumValue.value})
 {
@@ -338,6 +340,6 @@ public static ${model.type}? FromJsonTo${model.name}(JsonElement? value)
 ${renderer.indent(newstuff2, 2)}
   return null;
 }`;
-    },
+    }
   }
 };

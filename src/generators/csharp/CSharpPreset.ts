@@ -48,7 +48,7 @@ export interface EnumPresetType<O> extends EnumPreset<EnumRenderer, O> {
   extensionMethods?: (
     args: PresetArgs<EnumRenderer, O, ConstrainedEnumModel>
   ) => Promise<string> | string;
-};
+}
 export type CSharpPreset<O = any> = Preset<{
   class: CsharpClassPreset<O>;
   record: CsharpRecordPreset<O>;

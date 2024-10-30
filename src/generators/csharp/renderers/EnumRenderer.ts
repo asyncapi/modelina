@@ -86,7 +86,7 @@ export const CSHARP_DEFAULT_ENUM_PRESET: EnumPresetType<CSharpOptions> = {
     return `public static class ${model.name}Extensions
 {
 ${renderer.indent(extensionMethods)}
-}`
+}`;
   },
   extensionMethods({ model, renderer }) {
     const getValueCaseItemValues = renderer.getValueCaseItemValues();
@@ -101,9 +101,7 @@ return null;`;
 ${renderer.indent(toEnumCaseItemValues)}
 }
 return null;`;
-    const classContent = `public static ${model.type}? GetValue(this ${
-      model.name
-    } enumValue)
+    return `public static ${model.type}? GetValue(this ${model.name} enumValue)
 {
 ${renderer.indent(enumValueSwitch)}
 }
@@ -112,6 +110,5 @@ public static ${model.name}? To${model.name}(dynamic? value)
 {
 ${renderer.indent(valueSwitch)}
 }`;
-    return classContent;
   }
 };

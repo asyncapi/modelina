@@ -3,7 +3,7 @@ export * from './TypeScriptFileGenerator';
 export { TS_DEFAULT_PRESET } from './TypeScriptPreset';
 export type { TypeScriptPreset } from './TypeScriptPreset';
 export * from './presets';
-export {RESERVED_TYPESCRIPT_KEYWORDS} from './Constants';
+export { RESERVED_TYPESCRIPT_KEYWORDS } from './Constants';
 
 export {
   defaultEnumKeyConstraints as typeScriptDefaultEnumKeyConstraints,
