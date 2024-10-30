@@ -57,9 +57,6 @@ const PYTHON_PYDANTIC_CLASS_PRESET: ClassPresetType<PythonOptions> = {
     if (!property.required) {
       decoratorArgs.push('default=None');
     }
-    if (property.propertyName !== property.unconstrainedPropertyName) {
-      decoratorArgs.push(`alias='''${property.unconstrainedPropertyName}'''`);
-    }
 
     return `${propertyName}: ${type} = Field(${decoratorArgs.join(', ')})`;
   },
@@ -101,6 +98,8 @@ def custom_serializer(self, handler):
 @model_validator(mode='before')
 @classmethod
 def unwrap_${dictionaryModel?.propertyName}(cls, data):
+  if not isinstance(data, dict):
+    data = data.model_dump()
   json_properties = list(data.keys())
   known_object_properties = [${allProperties
     .map((value) => `'${value}'`)
@@ -113,11 +112,11 @@ def unwrap_${dictionaryModel?.propertyName}(cls, data):
   known_json_properties = [${Object.values(model.properties)
     .map((value) => `'${value.unconstrainedPropertyName}'`)
     .join(', ')}]
-  ${dictionaryModel?.propertyName} = {}
+  ${dictionaryModel?.propertyName} = data.get('${dictionaryModel?.propertyName}', {})
   for obj_key in list(data.keys()):
     if not known_json_properties.__contains__(obj_key):
       ${dictionaryModel?.propertyName}[obj_key] = data.pop(obj_key, None)
-  data['${dictionaryModel?.unconstrainedPropertyName}'] = ${dictionaryModel?.propertyName}
+  data['${dictionaryModel?.propertyName}'] = ${dictionaryModel?.propertyName}
   return data
 ${content}`;
   }
