@@ -1023,6 +1023,15 @@
         "code",
         "test"
       ]
+    },
+    {
+      "login": "maxplatov",
+      "name": "maxplatov",
+      "avatar_url": "https://avatars.githubusercontent.com/u/14889696?v=4",
+      "profile": "https://github.com/maxplatov",
+      "contributions": [
+        "review"
+      ]
     }
   ],
   "contributorsPerLine": 7,
