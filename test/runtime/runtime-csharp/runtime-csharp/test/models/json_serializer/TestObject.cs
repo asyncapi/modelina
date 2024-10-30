@@ -3,7 +3,7 @@ using System.Text.Json;
 
 namespace runtime_csharp.json_serializer;
 
-public class AddressTests
+public class TestObjectTest
 {
 
     [SetUp]
@@ -14,27 +14,27 @@ public class AddressTests
     [Test]
     public void TestSerializingFullModel()
     {
-        TestObject address = new();
+        TestObject testobject = new();
         ObjectType nestedObject = new();
         nestedObject.Test = "test";
-        address.ObjectType = nestedObject;
-        address.BooleanType = true;
-        address.NumberType = 1;
-        address.ArrayType = new dynamic[] { 1, "test" };
-        address.EnumType = EnumType.CURLYLEFT_QUOTATION_TEST_QUOTATION_COLON_2_CURLYRIGHT;
-        address.ArrayTypeSimple = new string[] { "test", "test2" };
-        address.DictionaryType = new Dictionary<string, string>
+        testobject.ObjectType = nestedObject;
+        testobject.BooleanType = true;
+        testobject.NumberType = 1;
+        testobject.ArrayType = new dynamic[] { 1, "test" };
+        testobject.EnumType = EnumType.CURLYLEFT_QUOTATION_TEST_QUOTATION_COLON_2_CURLYRIGHT;
+        testobject.ArrayTypeSimple = new string[] { "test", "test2" };
+        testobject.DictionaryType = new Dictionary<string, string>
         {
             { "test", "test" }
         };
-        address.TupleType = ("test", 1d);
-        address.UnionType = "test";
-        address.AdditionalProperties = new Dictionary<string, dynamic>
+        testobject.TupleType = ("test", 1d);
+        testobject.UnionType = "test";
+        testobject.AdditionalProperties = new Dictionary<string, dynamic>
         {
             { "test", "test" }
         };
 
-        string actualJsonString = JsonSerializer.Serialize(address);
+        string actualJsonString = JsonSerializer.Serialize(testobject);
         string expectedJsonString = "{\"number_type\":1,\"boolean_type\":true,\"union_type\":\"test\",\"array_type_simple\":[\"test\",\"test2\"],\"array_type\":[1,\"test\"],\"tuple_type\":[\"test\",1],\"object_type\":{\"test\":\"test\"},\"dictionary_type\":{\"test\":\"test\"},\"enum_type\":{\"test\":2},\"test\":\"test\"}";
         Assert.That(actualJsonString, Is.EqualTo(expectedJsonString));
     }

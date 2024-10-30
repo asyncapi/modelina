@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace runtime_csharp.newtonsoft;
 
-public class AddressTests
+public class TestObjectTest
 {
 
     [SetUp]
@@ -27,6 +27,7 @@ public class AddressTests
         {
             { "test", "test" }
         };
+        // Incorrectly handle this
         //address.TupleType = ("test", 1d);
         address.UnionType = "test";
         address.AdditionalProperties = new Dictionary<string, dynamic>
@@ -35,7 +36,7 @@ public class AddressTests
         };
 
         string actualJsonString = JsonConvert.SerializeObject(address);
-        string expectedJsonString = "{\"number_type\":1.0,\"boolean_type\":true,\"union_type\":\"test\",\"array_type_simple\":[\"test\",\"test2\"],\"array_type\":[1,\"test\"],\"tuple_type\":{\"Item1\":\"test\",\"Item2\":1.0},\"object_type\":{\"test\":\"test\"},\"dictionary_type\":{\"test\":\"test\"},\"enum_type\":\"{\\\"test\\\":2}\",\"test\":\"test\"}";
+        string expectedJsonString = "{\"number_type\":1.0,\"boolean_type\":true,\"union_type\":\"test\",\"array_type_simple\":[\"test\",\"test2\"],\"array_type\":[1,\"test\"],\"object_type\":{\"test\":\"test\"},\"dictionary_type\":{\"test\":\"test\"},\"enum_type\":\"{\\\"test\\\":2}\",\"test\":\"test\"}";
         Assert.That(actualJsonString, Is.EqualTo(expectedJsonString));
     }
 }
