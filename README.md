@@ -9,7 +9,7 @@
 [![Discussions](https://img.shields.io/github/discussions/asyncapi/modelina)](https://github.com/asyncapi/modelina/discussions)
 [![Website](https://img.shields.io/website?label=website&url=https%3A%2F%2Fwww.modelina.org)](https://www.modelina.org)
 [![Playground](https://img.shields.io/website?label=playground&url=https%3A%2F%2Fwww.modelina.org%2Fplayground)](https://www.modelina.org/playground) <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-94-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-95-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 Your one-stop tool for generating accurate and well-tested models for representing the message payloads. Use it as a tool in your development workflow, or a library in a larger integrations, entirely in your control.
@@ -444,6 +444,7 @@ Thanks go out to these wonderful people ([emoji key](https://allcontributors.org
       <td align="center" valign="top" width="14.28%"><a href="https://pike.github.io/"><img src="https://avatars.githubusercontent.com/u/43494?v=4?s=100" width="100px;" alt="Axel Hecht"/><br /><sub><b>Axel Hecht</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/commits?author=Pike" title="Code">💻</a> <a href="https://github.com/asyncapi/modelina/commits?author=Pike" title="Tests">⚠️</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/tomdevroomen"><img src="https://avatars.githubusercontent.com/u/4637986?v=4?s=100" width="100px;" alt="Tom de Vroomen"/><br /><sub><b>Tom de Vroomen</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/commits?author=tomdevroomen" title="Code">💻</a> <a href="#example-tomdevroomen" title="Examples">💡</a> <a href="https://github.com/asyncapi/modelina/commits?author=tomdevroomen" title="Documentation">📖</a> <a href="https://github.com/asyncapi/modelina/commits?author=tomdevroomen" title="Tests">⚠️</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/memdal"><img src="https://avatars.githubusercontent.com/u/77838566?v=4?s=100" width="100px;" alt="memdal"/><br /><sub><b>memdal</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/commits?author=memdal" title="Code">💻</a> <a href="https://github.com/asyncapi/modelina/commits?author=memdal" title="Tests">⚠️</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/maxplatov"><img src="https://avatars.githubusercontent.com/u/14889696?v=4?s=100" width="100px;" alt="maxplatov"/><br /><sub><b>maxplatov</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/pulls?q=is%3Apr+reviewed-by%3Amaxplatov" title="Reviewed Pull Requests">👀</a></td>
     </tr>
   </tbody>
 </table>
