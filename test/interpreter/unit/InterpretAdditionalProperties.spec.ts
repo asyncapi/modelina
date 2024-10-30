@@ -32,6 +32,26 @@ describe('Interpretation of additionalProperties', () => {
       schema
     );
   });
+  test('should try and interpret additionalProperties schema if no type', () => {
+    const schema: any = { additionalProperties: { type: 'string' } };
+    const model = new CommonModel();
+    const interpreter = new Interpreter();
+    const mockedReturnModel = new CommonModel();
+    (interpreter.interpret as jest.Mock).mockReturnValue(mockedReturnModel);
+
+    interpretAdditionalProperties(schema, model, interpreter);
+
+    expect(interpreter.interpret).toHaveBeenNthCalledWith(
+      1,
+      { type: 'string' },
+      Interpreter.defaultInterpreterOptions
+    );
+    expect(model.addAdditionalProperty).toHaveBeenNthCalledWith(
+      1,
+      mockedReturnModel,
+      schema
+    );
+  });
   test('should ignore model if interpreter cannot interpret additionalProperty schema', () => {
     const schema: any = {};
     const model = new CommonModel();
