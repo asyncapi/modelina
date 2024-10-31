@@ -121,7 +121,7 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
     const channels = doc.channels();
 
     if (channels.length) {
-      for (const channel of doc.channels()) {
+      for (const channel of channels) {
         for (const operation of channel.operations()) {
           const handleMessages = (messages: MessagesInterface) => {
             // treat multiple messages as oneOf

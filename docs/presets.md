@@ -446,6 +446,8 @@ This preset is a generator for the meta model `ConstrainedEnumModel` and [can be
 | Method | Description | Additional arguments |
 |---|---|---|
 | `item` | A method to extend enum's item. | `item` object as a [`ConstrainedEnumValueModel`](./internal-model.md#the-constrained-meta-model) instance, which contains the value and key of enum's item. |
+| `extension` | A method to extend the enums extension class. |  |
+| `extensionMethods` | A method to extend the enums extension class methods instead of the whole class. |  |
 
 ### Rust
 #### **Struct**

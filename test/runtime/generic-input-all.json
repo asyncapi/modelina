@@ -26,6 +26,12 @@
         }
       ]
     },
+    "array_type_simple": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
     "array_type": {
       "type": "array",
       "items": {
