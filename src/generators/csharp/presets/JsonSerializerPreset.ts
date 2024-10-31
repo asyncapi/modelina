@@ -256,8 +256,8 @@ ${renderer.indent(serialize)}
     },
     extensionMethods({ content, model, renderer }) {
       const enums = model.values || [];
-      const items: string[] = [];
-      const items2: string[] = [];
+      const switchCases: string[] = [];
+      const valueChecks: string[] = [];
 
       for (const enumValue of enums) {
         const jsonValue = enumValue.value;
@@ -266,54 +266,54 @@ ${renderer.indent(serialize)}
         if (typeof jsonValue !== 'string') {
           stringValue = `"${jsonValue}"`;
         }
-        items.push(
+        switchCases.push(
           `case ${model.name}.${enumValue.key}: return ${stringValue};`
         );
 
         if (typeof originalEnumValue === 'string') {
-          items2.push(
+          valueChecks.push(
             `if (value?.ValueKind == JsonValueKind.String && value?.GetString() == ${enumValue.value})
 {
   return ${model.name}.${enumValue.key};
 }`
           );
         } else if (originalEnumValue === null) {
-          items2.push(
+          valueChecks.push(
             `if (value == null || value?.ValueKind == JsonValueKind.Null && value?.GetRawText() == "null")
 {
   return ${model.name}.${enumValue.key};
 }`
           );
         } else if (typeof originalEnumValue === 'boolean') {
-          items2.push(
+          valueChecks.push(
             `if (value?.ValueKind == JsonValueKind.True || value?.ValueKind == JsonValueKind.False && value?.GetBoolean() == ${enumValue.value})
 {
   return ${model.name}.${enumValue.key};
 }`
           );
         } else if (Array.isArray(originalEnumValue)) {
-          items2.push(
+          valueChecks.push(
             `if (value?.ValueKind == JsonValueKind.Array && value?.GetRawText() == ${enumValue.value})
 {
   return ${model.name}.${enumValue.key};
 }`
           );
         } else if (typeof originalEnumValue === 'object') {
-          items2.push(
+          valueChecks.push(
             `if (value?.ValueKind == JsonValueKind.Object && value?.GetRawText() == ${enumValue.value})
 {
   return ${model.name}.${enumValue.key};
 }`
           );
         } else if (typeof originalEnumValue === 'number') {
-          items2.push(
+          valueChecks.push(
             `if (value?.ValueKind == JsonValueKind.Number && value?.GetInt32() == ${enumValue.value})
 {
   return ${model.name}.${enumValue.key};
 }`
           );
         } else if (typeof originalEnumValue === 'bigint') {
-          items2.push(
+          valueChecks.push(
             `if (value?.ValueKind == JsonValueKind.Number && value?.GetInt64() == ${enumValue.value})
 {
   return ${model.name}.${enumValue.key};
@@ -322,22 +322,22 @@ ${renderer.indent(serialize)}
         }
       }
 
-      const newstuff = items.join('\n');
-      const newstuff2 = items2.join('\n');
+      const allSwitchCases = switchCases.join('\n');
+      const allValueChecks = valueChecks.join('\n');
       return `${content}
 
 public static string? GetRawJsonValue(this ${model.name} enumValue)
 {
   switch (enumValue)
   {
-${renderer.indent(newstuff, 3)}
+${renderer.indent(allSwitchCases, 3)}
   }
   return null;
 }
 
 public static ${model.type}? FromJsonTo${model.name}(JsonElement? value)
 {
-${renderer.indent(newstuff2, 2)}
+${renderer.indent(allValueChecks, 2)}
   return null;
 }`;
     }
