@@ -34,13 +34,12 @@ export class StructRenderer extends GoRenderer<ConstrainedObjectModel> {
     return `${doc}
 type ${this.model.name} struct {
 ${this.indent(this.renderBlock(content, 2))}
-}${
-      discriminator &&
+}${discriminator &&
       `
 
 ${discriminator}
 `
-    }`;
+      }`;
   }
 
   async renderFields(): Promise<string> {
@@ -78,11 +77,7 @@ export const GO_DEFAULT_STRUCT_PRESET: StructPresetType<GoOptions> = {
     ) {
       fieldType = `*${fieldType}`;
     }
-    const jsonTag = field.required
-      ? `\`json:"${field.unconstrainedPropertyName},required"\``
-      : `\`json:"${field.unconstrainedPropertyName},omitempty"\``;
-
-    return `${field.propertyName} ${fieldType} ${jsonTag}`;
+    return `${field.propertyName} ${fieldType}`;
   },
   discriminator({ model }) {
     const { parents } = model.options;

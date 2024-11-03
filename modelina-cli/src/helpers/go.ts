@@ -1,4 +1,4 @@
-import { GO_DESCRIPTION_PRESET, GoFileGenerator } from "@asyncapi/modelina";
+import { GO_DESCRIPTION_PRESET, GO_COMMON_PRESET, GoCommonPresetOptions, GoFileGenerator } from "@asyncapi/modelina";
 import { BuilderReturnType } from "./generate";
 import { Flags } from "@oclif/core";
 
@@ -23,6 +23,8 @@ export function buildGoGenerator(flags: any): BuilderReturnType {
     throw new Error('In order to generate models to Go, we need to know which package they are under. Add `--packageName=PACKAGENAME` to set the desired package name.');
   }
   const presets = []
+  const options: GoCommonPresetOptions = { addJsonTag: true };
+  presets.push({ preset: GO_COMMON_PRESET, options })
   if (goIncludeComments) { presets.push(GO_DESCRIPTION_PRESET); }
   const fileGenerator = new GoFileGenerator({ presets });
   const fileOptions = {
