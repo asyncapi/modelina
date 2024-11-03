@@ -14,9 +14,18 @@ export default class Models extends ModelinaCommand {
     try {
       document = await readFile(file, 'utf8');
     } catch {
-      throw new Error('Unable to read input file content.');
+      if (flags.input) {
+        try {
+          document = await readFile(flags.input ? flags.input : "", 'utf8');
+        } catch {
+          throw new Error('Unable to read input file content: "' + flags.input + '"');
+        }
+      }
+      else {
+        throw new Error('Unable to read input file content: "' + file + '"');
+      }
     }
-    
+
     const logger = {
       info: (message: string) => {
         this.log(message);

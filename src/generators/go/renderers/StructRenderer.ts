@@ -78,7 +78,11 @@ export const GO_DEFAULT_STRUCT_PRESET: StructPresetType<GoOptions> = {
     ) {
       fieldType = `*${fieldType}`;
     }
-    return `${field.propertyName} ${fieldType}`;
+    const jsonTag = field.required
+      ? `\`json:"${field.unconstrainedPropertyName},required"\``
+      : `\`json:"${field.unconstrainedPropertyName},omitempty"\``;
+
+    return `${field.propertyName} ${fieldType} ${jsonTag}`;
   },
   discriminator({ model }) {
     const { parents } = model.options;
