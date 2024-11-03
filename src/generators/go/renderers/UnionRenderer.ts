@@ -28,10 +28,7 @@ const unionIncludesDiscriminator = (model: ConstrainedUnionModel): boolean => {
  */
 export class UnionRenderer extends GoRenderer<ConstrainedUnionModel> {
   public async defaultSelf(): Promise<string> {
-    const doc = this.renderComments(
-      `${this.model.name} represents a ${this.model.name} model.`
-    );
-
+    const doc = '';
     if (unionIncludesDiscriminator(this.model)) {
       const content: string[] = [await this.runDiscriminatorAccessorPreset()];
 

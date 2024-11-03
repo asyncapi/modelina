@@ -16,7 +16,7 @@ import { GoOptions } from '../GoGenerator';
  */
 export class EnumRenderer extends GoRenderer<ConstrainedEnumModel> {
   public async defaultSelf(): Promise<string> {
-    const doc = this.renderCommentForEnumType(this.model.name, this.model.type);
+    const doc = '';
     const enumValues = await this.renderItems();
     const valuesToEnumMap = this.model.values.map((value) => {
       return `${this.model.name}Values[${value.key}]: ${value.key},`;
