@@ -11,9 +11,12 @@ const renderDescription = ({
   content: string;
   item: ConstrainedMetaModel;
 }): string => {
-
   const desc = item.originalInput.description?.trim();
-  const formattedDesc = desc ? renderer.renderComments(desc) + '\n' : '';
+  let formattedDesc = '';
+  if (desc) {
+    formattedDesc = renderer.renderComments(desc);
+    formattedDesc += '\n';
+  }
   return formattedDesc + content;
 };
 
@@ -23,7 +26,6 @@ const renderDescription = ({
  * @implements {GoPreset}
  */
 export const GO_DESCRIPTION_PRESET: GoPreset = {
-
   struct: {
     self({ renderer, model, content }) {
       return renderDescription({ renderer, content, item: model });

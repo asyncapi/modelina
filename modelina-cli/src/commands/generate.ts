@@ -16,13 +16,18 @@ export default class Models extends ModelinaCommand {
     } catch {
       if (flags.input) {
         try {
-          document = await readFile(flags.input ? flags.input : "", 'utf8');
+          let fname = ""
+          if (flags.input) {
+            fname = flags.input
+          }
+
+          document = await readFile(fname, 'utf8');
         } catch {
-          throw new Error('Unable to read input file content: "' + flags.input + '"');
+          throw new Error(`Unable to read input file content: ${flags.input}`);
         }
       }
       else {
-        throw new Error('Unable to read input file content: "' + file + '"');
+        throw new Error(`Unable to read input file content: ${file}`);
       }
     }
 

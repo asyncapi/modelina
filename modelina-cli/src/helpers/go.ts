@@ -22,6 +22,7 @@ export function buildGoGenerator(flags: any): BuilderReturnType {
   if (packageName === undefined) {
     throw new Error('In order to generate models to Go, we need to know which package they are under. Add `--packageName=PACKAGENAME` to set the desired package name.');
   }
+
   const presets = []
   const options: GoCommonPresetOptions = { addJsonTag: true };
   presets.push({ preset: GO_COMMON_PRESET, options })
