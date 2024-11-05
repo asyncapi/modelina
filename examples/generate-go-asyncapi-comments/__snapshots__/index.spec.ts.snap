@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Should be able to render Go Models and should log expected output to console 1`] = `
+Array [
+  "// this is an object
+type ExampleStruct struct {
+  Id int \`json:\\"id,omitempty\\"\`
+  // this is example msg uid
+  MsgUid string \`json:\\"msgUid\\" binding:\\"required\\"\`
+  // this is example event name
+  EvtName string \`json:\\"evtName,omitempty\\"\`
+}",
+]
+`;

@@ -20,21 +20,20 @@ export class StructRenderer extends GoRenderer<ConstrainedObjectModel> {
       await this.renderFields(),
       await this.runAdditionalContentPreset()
     ];
-    const doc = '';
     let discriminator = '';
     if (this.model.options.parents?.length) {
       discriminator = await this.runDiscriminatorFuncPreset();
     }
 
-    return `${doc}
-    type ${this.model.name} struct {
-    ${this.indent(this.renderBlock(content, 2))}
-    }${discriminator &&
+    return `type ${this.model.name} struct {
+${this.indent(this.renderBlock(content, 2))}
+}${
+      discriminator &&
       `
-    
-    ${discriminator}
-    `
-      }`;
+
+${discriminator}
+`
+    }`;
   }
 
   async renderFields(): Promise<string> {

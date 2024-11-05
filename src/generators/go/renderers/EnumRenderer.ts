@@ -16,7 +16,6 @@ import { GoOptions } from '../GoGenerator';
  */
 export class EnumRenderer extends GoRenderer<ConstrainedEnumModel> {
   public async defaultSelf(): Promise<string> {
-    const doc = '';
     const enumValues = await this.renderItems();
     const valuesToEnumMap = this.model.values.map((value) => {
       return `${this.model.name}Values[${value.key}]: ${value.key},`;
@@ -29,8 +28,7 @@ export class EnumRenderer extends GoRenderer<ConstrainedEnumModel> {
       })
       .join(',');
 
-    return `${doc}
-type ${this.model.name} uint
+    return `type ${this.model.name} uint
 
 const (
 ${this.indent(enumValues)}
@@ -61,11 +59,6 @@ ${additionalContent}`;
     }
 
     return this.renderBlock(items);
-  }
-
-  renderCommentForEnumType(name: string, type: string): string {
-    const globalType = type === 'interface{}' ? 'mixed types' : type;
-    return this.renderComments(`${name} represents an enum of ${globalType}.`);
   }
 
   runItemPreset(

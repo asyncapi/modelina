@@ -60,11 +60,6 @@ export const ModelinaFlags = {
     description: 'The output directory where the models should be written to. Omitting this flag will write the models to `stdout`.',
     required: false
   }),
-  input: Flags.string({
-    char: 'i',
-    description: 'The input file with the API definition.',
-    required: false
-  }),
   /**
    * Go and Java specific package name to use for the generated models
    */

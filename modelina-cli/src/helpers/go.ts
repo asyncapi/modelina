@@ -8,6 +8,11 @@ export const GoOclifFlags = {
     required: false,
     default: false,
   }),
+  goIncludeTags: Flags.boolean({
+    description: 'Golang specific, if enabled add tags while generating models.',
+    required: false,
+    default: false,
+  }),
 }
 
 /**
@@ -17,15 +22,18 @@ export const GoOclifFlags = {
  * @returns 
  */
 export function buildGoGenerator(flags: any): BuilderReturnType {
-  const { packageName, goIncludeComments } = flags;
+  const { packageName, goIncludeComments, goIncludeTags } = flags;
 
   if (packageName === undefined) {
     throw new Error('In order to generate models to Go, we need to know which package they are under. Add `--packageName=PACKAGENAME` to set the desired package name.');
   }
 
   const presets = []
-  const options: GoCommonPresetOptions = { addJsonTag: true };
-  presets.push({ preset: GO_COMMON_PRESET, options })
+  if (goIncludeTags) {
+    const options: GoCommonPresetOptions = { addJsonTag: true };
+    presets.push({ preset: GO_COMMON_PRESET, options })
+  }
+
   if (goIncludeComments) { presets.push(GO_DESCRIPTION_PRESET); }
   const fileGenerator = new GoFileGenerator({ presets });
   const fileOptions = {
