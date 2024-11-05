@@ -3,7 +3,6 @@ import {
   GO_COMMON_PRESET,
   GoCommonPresetOptions
 } from '../../../src/generators';
-import { Parser } from '@asyncapi/parser';
 
 describe('GoGenerator', () => {
   let generator: GoGenerator;
@@ -52,47 +51,61 @@ describe('GoGenerator', () => {
   });
 
   test('should render `required` for required properties', async () => {
-    const AsyncAPIDocumentText = `
-asyncapi: 3.0.0
-info:
-  title: example
-  version: 0.0.1
-channels: 
-  root:
-    address: /
-    messages:
-      exampleRequest:
-        summary: example operation
-        payload:     
-          title: exampleStruct      
-          type: object
-          required:
-            - msgUid   
-          additionalProperties: false     
-          properties:
-            id:
-              type: integer
-            msgUid:
-              type: string
-            evtName:
-              type: string
-operations: 
-  exampleOperation:
-    title: This is an example operation
-    summary: To do something
-    channel:
-      $ref: '#/channels/root'
-    action: send
-    messages:
-      - $ref: '#/channels/root/messages/exampleRequest'
-`;
+    const asyncAPIDocument = {
+      asyncapi: '3.0.0',
+      info: {
+        title: 'example',
+        version: '0.0.1'
+      },
+      channels: {
+        root: {
+          address: '/',
+          messages: {
+            exampleRequest: {
+              summary: 'example operation',
+              payload: {
+                title: 'exampleStruct',
+                type: 'object',
+                required: ['msgUid'],
+                additionalProperties: false,
+                properties: {
+                  id: {
+                    type: 'integer'
+                  },
+                  msgUid: {
+                    type: 'string'
+                  },
+                  evtName: {
+                    type: 'string'
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      operations: {
+        exampleOperation: {
+          title: 'This is an example operation',
+          summary: 'To do something',
+          channel: {
+            $ref: '#/channels/root'
+          },
+          action: 'send',
+          messages: [
+            {
+              $ref: '#/channels/root/messages/exampleRequest'
+            }
+          ]
+        }
+      }
+    };
+
     const options: GoCommonPresetOptions = { addJsonTag: true };
     const generatorWithTags = new GoGenerator({
       presets: [{ preset: GO_COMMON_PRESET, options }]
     });
-    const parser = new Parser();
-    const { document } = await parser.parse(AsyncAPIDocumentText);
-    const models = await generatorWithTags.generate(document);
+    const models = await generatorWithTags.generate(asyncAPIDocument);
     expect(models).toHaveLength(1);
     expect(models[0].result).toMatchSnapshot();
   });
