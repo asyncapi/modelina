@@ -1,8 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`GO_COMMON_PRESET should render json tags for structs 1`] = `
-"// Root represents a Root model.
-type Root struct {
+"type Root struct {
   StringProp string \`json:\\"stringProp,omitempty\\"\`
   NumberProp float64 \`json:\\"numberProp,omitempty\\"\`
   BooleanProp bool \`json:\\"booleanProp,omitempty\\"\`
@@ -10,8 +9,7 @@ type Root struct {
 `;
 
 exports[`GO_COMMON_PRESET should render the marshal functions for enum 1`] = `
-"// Root represents an enum of Root.
-type Root uint
+"type Root uint
 
 const (
   RootNumber_2Dot_6Dot_0 Root = iota

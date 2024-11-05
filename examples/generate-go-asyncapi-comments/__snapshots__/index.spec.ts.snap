@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Should be able to render Go Models and should log expected output to console 1`] = `
+Array [
+  "// Payload for updating stock information
+type StockUpdatePayload struct {
+  ProductId string \`json:\\"productId\\" binding:\\"required\\"\`
+  // The updated quantity of the product
+  Quantity int \`json:\\"quantity,omitempty\\"\`
+  // Warehouse location of the product
+  Location string \`json:\\"location,omitempty\\"\`
+}",
+]
+`;
+
+exports[`Should be able to render Go Models and should log expected output to console 2`] = `
+Array [
+  "// Payload for low stock alerts
+type LowStockPayload struct {
+  ProductId string \`json:\\"productId\\" binding:\\"required\\"\`
+  // The stock level threshold
+  Threshold int \`json:\\"threshold\\" binding:\\"required\\"\`
+  // The current stock level
+  CurrentStock int \`json:\\"currentStock,omitempty\\"\`
+}",
+]
+`;
