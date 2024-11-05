@@ -5,8 +5,6 @@ import {
   GoCommonPresetOptions
 } from '../../src';
 import { Parser } from '@asyncapi/parser';
-import { TypeScriptGenerator } from '../../src';
-const generatorts = new TypeScriptGenerator();
 const options: GoCommonPresetOptions = { addJsonTag: true };
 const generator = new GoGenerator({
   presets: [GO_DESCRIPTION_PRESET, { preset: GO_COMMON_PRESET, options }]
@@ -15,40 +13,73 @@ const generator = new GoGenerator({
 const AsyncAPIDocumentText = `
 asyncapi: 3.0.0
 info:
-  title: example
-  version: 0.0.1
+  title: inventoryService
+  version: 2.1.0
 channels: 
-  root:
-    address: /
+  inventory:
+    address: /inventory
     messages:
-      exampleRequest:
-        summary: example operation
+      updateStock:
+        summary: Update stock levels
         payload:     
-          title: exampleStruct      
+          title: stockUpdatePayload      
           type: object
-          description: this is an object
+          description: Payload for updating stock information
           required:
-            - msgUid   
+            - productId   
           additionalProperties: false     
           properties:
-            id:
+            productId:
+              type: string
+            quantity:
               type: integer
-            msgUid:
+              description: The updated quantity of the product    
+            location:
               type: string
-              description: this is example msg uid    
-            evtName:
+              description: Warehouse location of the product
+  alerts:
+    address: /alerts
+    messages:
+      lowStockAlert:
+        summary: Low stock level alert
+        payload:     
+          title: lowStockPayload      
+          type: object
+          description: Payload for low stock alerts
+          required:
+            - productId   
+            - threshold   
+          additionalProperties: false     
+          properties:
+            productId:
               type: string
-              description: this is example event name
+            threshold:
+              type: integer
+              description: The stock level threshold    
+            currentStock:
+              type: integer
+              description: The current stock level
 operations: 
-  exampleOperation:
-    title: This is an example operation
-    summary: To do something
+  updateInventory:
+    title: Update Inventory Operation
+    summary: Operation to update inventory stock levels
     channel:
-      $ref: '#/channels/root'
+      $ref: '#/channels/inventory'
     action: send
     messages:
-      - $ref: '#/channels/root/messages/exampleRequest'
+      - $ref: '#/channels/inventory/messages/updateStock'
+
+  notifyLowStock:
+    title: Notify Low Stock Operation
+    summary: Operation to notify when stock is low
+    channel:
+      $ref: '#/channels/alerts'
+    action: receive
+    messages:
+      - $ref: '#/channels/alerts/messages/lowStockAlert'
 `;
+
+
 
 export async function generate(): Promise<void> {
   const parser = new Parser();
