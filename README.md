@@ -109,7 +109,7 @@ for (const model in models) {
 </td>
   </tr>
   <tr>
-    <td><b>Easily modify how models are <a href="./docs/constraints.md">constrained</a> into the output</b></td>
+    <td><b>Easily modify how models are <a href="./docs/constraints/README.md">constrained</a> into the output</b></td>
 
 <td>
 
