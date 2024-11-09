@@ -171,7 +171,7 @@ for (const model in models) {
               <td className='flex items-center justify-center px-6 py-4 text-sm font-light text-gray-900 md:w-1/2'>
                 <b>
                   Easily modify how models are{' '}
-                  <a href='./docs/constraints.md' className='italic underline underline-offset-2'>
+                  <a href='./docs/constraints/README.md' className='italic underline underline-offset-2'>
                     constrained
                   </a>{' '}
                   into the into the output

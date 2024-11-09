@@ -23,7 +23,7 @@ This document contains many of the advanced use-cases that you may stumble upon 
 
 This example shows us how to generate each model in the same file
 
-Check out this [example out for a live demonstration](../examples/generate-all-models-within-same-file).
+Check out this [example out for a live demonstration](../examples/generate-all-models-within-the-same-file).
 
 ## Generate models to separate files
 
@@ -97,7 +97,7 @@ Check out this [example out for a live demonstration](../examples/change-type-ma
 
 ## Changing the constrain rules
 
-When moving from a [MetaModel](./internal-model.md#the-meta-model) to a [ConstrainedMetaModel](./internal-model.md#the-constrained-meta-model) it means we bind the input to a specific output. That output has specific constraints that the input MUST adhere to, [read more about this here](constraints.md).
+When moving from a [MetaModel](./internal-model.md#the-meta-model) to a [ConstrainedMetaModel](./internal-model.md#the-constrained-meta-model) it means we bind the input to a specific output. That output has specific constraints that the input MUST adhere to, [read more about this here](constraints/README.md).
 
 There can be multiple reasons why you want to change the default constrain rules, and therefore you can form them to your needs.
 
