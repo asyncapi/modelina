@@ -123,7 +123,7 @@ const Playground: React.FC<ModelinaPlaygroundProps> = (props) => {
       setStatusCode(400);
       setOutputLoading(true);
     }
-    };
+  };
 
   /**
    * Set a query key and value
