@@ -13,6 +13,7 @@ const GeneratedModelsComponent: React.FC<GeneratedModelsComponentProps> = ({ sho
   const context = useContext(PlaygroundGeneratedContext);
   const [selectedModel, setSelectedModel] = useState<string>('');
   const { setRenderModels, generatorCode, showGeneratorCode, setShowGeneratorCode } = usePlaygroundContext();
+  const { outputLoading } = usePlaygroundContext();
 
   const toShow = () => {
     let selectedCode = '';
@@ -90,11 +91,17 @@ const GeneratedModelsComponent: React.FC<GeneratedModelsComponentProps> = ({ sho
   return (
     <div className='h-full'>
       <div className='col-span-2 h-full rounded-b bg-code-editor-dark font-bold text-white shadow-lg'>
-        <MonacoEditorWrapper
+     {
+       outputLoading ?
+       <div className = 'loading-text'>
+        <div>Loading...</div>
+       </div> :
+       <MonacoEditorWrapper
           options={{ readOnly: true }}
           language={context?.language}
           value={showGeneratorCode ? generatorCode : selectedCode}
         />
+     }
       </div>
     </div>
   );

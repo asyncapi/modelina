@@ -41,6 +41,8 @@ interface PlaygroundContextProps {
   setHasLoadedQuery: Dispatch<SetStateAction<boolean>>;
   renderModels: React.ReactNode | null;
   setRenderModels: (models: React.ReactNode) => void;
+  outputLoading: boolean;
+  setOutputLoading: Dispatch<SetStateAction<boolean>>;
 }
 
 const PlaygroundContext = createContext<PlaygroundContextProps | undefined>(undefined);
@@ -104,6 +106,7 @@ export const PlaygroundContextProvider: React.FC<{
   const [isLoaded, setIsLoaded] = useState(false);
   const [hasLoadedQuery, setHasLoadedQuery] = useState(false);
   const [renderModels, setRenderModels] = React.useState<React.ReactNode | null>(null);
+  const [outputLoading, setOutputLoading] = useState(true);
 
   const contextValue = useMemo(
     () => ({
@@ -130,7 +133,9 @@ export const PlaygroundContextProvider: React.FC<{
       hasLoadedQuery,
       setHasLoadedQuery,
       renderModels,
-      setRenderModels
+      setRenderModels,
+      outputLoading,
+      setOutputLoading
     }),
     [
       config,
@@ -156,7 +161,9 @@ export const PlaygroundContextProvider: React.FC<{
       hasLoadedQuery,
       setHasLoadedQuery,
       renderModels,
-      setRenderModels
+      setRenderModels,
+      outputLoading,
+      setOutputLoading
     ]
   );
 

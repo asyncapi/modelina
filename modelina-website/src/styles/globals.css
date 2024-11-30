@@ -72,3 +72,13 @@ abbr[title] {
     scroll-margin-top: 155px;
   }
 }
+
+.loading-text {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
