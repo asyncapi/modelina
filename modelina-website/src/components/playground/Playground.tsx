@@ -113,7 +113,6 @@ const Playground: React.FC<ModelinaPlaygroundProps> = (props) => {
             setError(true);
             setErrorMessage('Input is not a correct AsyncAPI document, so it cannot be processed.');
             setStatusCode(500);
-            setOutputLoading(true);
           });
       }
     } catch (e: any) {
@@ -121,7 +120,6 @@ const Playground: React.FC<ModelinaPlaygroundProps> = (props) => {
       setError(true);
       setErrorMessage('Input is not a correct AsyncAPI document, so it cannot be processed.');
       setStatusCode(400);
-      setOutputLoading(true);
     }
   };
 
