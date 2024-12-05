@@ -1,12 +1,14 @@
 import { ClassRenderer } from '../../renderers/ClassRenderer';
 import { getDictionary, getNormalProperties } from '../../../../helpers';
 import {
+  ConstrainedArrayModel,
   ConstrainedDictionaryModel,
   ConstrainedEnumModel,
   ConstrainedMetaModel,
   ConstrainedObjectModel,
   ConstrainedObjectPropertyModel,
-  ConstrainedReferenceModel
+  ConstrainedReferenceModel,
+  ConstrainedUnionModel
 } from '../../../../models';
 
 /**
@@ -22,6 +24,16 @@ function renderUnmarshalProperty(
   ) {
     return `${model.type}.unmarshal(${modelInstanceVariable})`;
   }
+
+  if (
+    model instanceof ConstrainedArrayModel &&
+    !(model.valueModel instanceof ConstrainedUnionModel)
+  ) {
+    return `${modelInstanceVariable} == null
+    ? null
+    : ${modelInstanceVariable}.map((item: any) => ${model.valueModel.type}.unmarshal(item))`;
+  }
+
   return `${modelInstanceVariable}`;
 }
 
