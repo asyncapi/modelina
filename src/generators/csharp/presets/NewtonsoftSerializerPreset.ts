@@ -71,9 +71,11 @@ jo.Add("${prop.unconstrainedPropertyName}", JToken.FromObject(jsonStringComplian
  * Render `deserialize` function based on model
  */
 function renderDeserialize({
-  model
+  model,
+  options
 }: {
   model: ConstrainedObjectModel;
+  options: CSharpOptions;
 }): string {
   const unwrapDictionaryProps = Object.values(model.properties).filter(
     (prop) =>
@@ -96,6 +98,20 @@ function renderDeserialize({
         prop.unconstrainedPropertyName
       }"].ToString())${prop.required ? '.Value' : ''}`;
     }
+
+    if (
+      options?.enforceRequired !== undefined &&
+      options?.enforceRequired &&
+      prop.required
+    ) {
+      return `if(jo["${prop.unconstrainedPropertyName}"] is null){
+  throw new JsonSerializationException("Required property '${prop.unconstrainedPropertyName}' is missing");
+}
+
+value.${propertyAccessor} = ${toValue};
+`;
+    }
+
     return `if(jo["${prop.unconstrainedPropertyName}"] != null) {
   value.${propertyAccessor} = ${toValue};
 }`;
@@ -151,7 +167,7 @@ function renderDeserialize({
 export const CSHARP_NEWTONSOFT_SERIALIZER_PRESET: CSharpPreset<CSharpOptions> =
   {
     class: {
-      self: ({ renderer, content, model }) => {
+      self: ({ renderer, content, model, options }) => {
         renderer.dependencyManager.addDependency('using Newtonsoft.Json;');
         renderer.dependencyManager.addDependency('using Newtonsoft.Json.Linq;');
         renderer.dependencyManager.addDependency(
@@ -159,7 +175,7 @@ export const CSHARP_NEWTONSOFT_SERIALIZER_PRESET: CSharpPreset<CSharpOptions> =
         );
         renderer.dependencyManager.addDependency('using System.Linq;');
 
-        const deserialize = renderDeserialize({ model });
+        const deserialize = renderDeserialize({ model, options });
         const serialize = renderSerialize({ model });
 
         return `[JsonConverter(typeof(${model.name}Converter))]
