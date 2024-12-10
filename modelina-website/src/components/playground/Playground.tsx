@@ -43,7 +43,9 @@ const Playground: React.FC<ModelinaPlaygroundProps> = (props) => {
     isLoaded,
     setIsLoaded,
     hasLoadedQuery,
-    setHasLoadedQuery
+    setHasLoadedQuery,
+    outputLoading,
+    setOutputLoading
   } = usePlaygroundContext();
 
   // To avoid hydration error
@@ -53,6 +55,8 @@ const Playground: React.FC<ModelinaPlaygroundProps> = (props) => {
    * Tell the socket io server that we want some code
    */
   const generateNewCode = (inputArgs: string) => {
+    setOutputLoading(true);
+
     try {
       const message: GenerateMessage = {
         ...config,
@@ -102,6 +106,7 @@ const Playground: React.FC<ModelinaPlaygroundProps> = (props) => {
             setError(false);
             setStatusCode(200);
             setErrorMessage('');
+            setOutputLoading(false);
           })
           .catch((error) => {
             console.error(error);
