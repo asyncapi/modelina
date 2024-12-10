@@ -158,7 +158,9 @@ exports[`Marshalling preset should render un/marshal code 1`] = `
       instance.unionArrayTest = obj[\\"unionArrayTest\\"];
     }
     if (obj[\\"arrayTest\\"] !== undefined) {
-      instance.arrayTest = obj[\\"arrayTest\\"];
+      instance.arrayTest = obj[\\"arrayTest\\"] == null
+        ? null
+        : obj[\\"arrayTest\\"].map((item: any) => NestedTest.unmarshal(item));
     }
     if (obj[\\"tupleTest\\"] !== undefined) {
       instance.tupleTest = obj[\\"tupleTest\\"];
