@@ -47,6 +47,7 @@ Requires [System.Text.Json](https://devblogs.microsoft.com/dotnet/try-the-new-sy
 #### Using Newtonsoft/Json.NET
 
 To include functionality that convert the models using the [Newtonsoft/Json.NET](https://www.newtonsoft.com/json) framework, to use this, use the preset `CSHARP_NEWTONSOFT_SERIALIZER_PRESET`.
+You can use the option "enforceRequired" to prevent deserialization if any required field is missing.
 
 Check out this [example for a live demonstration](../../examples/csharp-generate-newtonsoft-serializer).
 
