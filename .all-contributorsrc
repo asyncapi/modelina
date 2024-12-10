@@ -1041,6 +1041,17 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "jonjomckay",
+      "name": "Jonjo McKay",
+      "avatar_url": "https://avatars.githubusercontent.com/u/456645?v=4",
+      "profile": "https://jonjomckay.com",
+      "contributions": [
+        "code",
+        "bug",
+        "test"
+      ]
     }
   ],
   "contributorsPerLine": 7,
