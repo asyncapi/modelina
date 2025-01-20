@@ -32,31 +32,29 @@ export class ClassRenderer extends JavaRenderer<ConstrainedObjectModel> {
       this.dependencyManager.addDependency('import java.util.Map;');
     }
 
-    if (this.model.options.isExtended) {
-      return `public interface ${this.model.name} {
-${this.indent(this.renderBlock(content, 2))}
-}`;
-    }
+    const abstractType = this.model.options.isExtended ? 'interface' : 'class';
 
     const parentUnions = this.getParentUnions();
     const extend = this.model.options.extend?.filter(
       (extend) => extend.options.isExtended
     );
-    const implement = [...(parentUnions ?? []), ...(extend ?? [])];
+    const parents = [...(parentUnions ?? []), ...(extend ?? [])];
 
-    if (implement.length) {
-      for (const i of implement) {
+    if (parents.length) {
+      for (const i of parents) {
         this.dependencyManager.addModelDependency(i);
       }
 
-      return `public class ${this.model.name} implements ${implement
+      const inheritanceKeyworkd = this.model.options.isExtended ? 'extends' : 'implements';
+
+      return `public ${abstractType} ${this.model.name} ${inheritanceKeyworkd} ${parents
         .map((i) => i.name)
         .join(', ')} {
 ${this.indent(this.renderBlock(content, 2))}
 }`;
     }
 
-    return `public class ${this.model.name} {
+    return `public ${abstractType} ${this.model.name} {
 ${this.indent(this.renderBlock(content, 2))}
 }`;
   }
@@ -168,7 +166,7 @@ export const isDiscriminatorOrDictionary = (
   property: ConstrainedObjectPropertyModel
 ): boolean =>
   model.options.discriminator?.discriminator ===
-    property.unconstrainedPropertyName ||
+  property.unconstrainedPropertyName ||
   property.property instanceof ConstrainedDictionaryModel;
 
 export const JAVA_DEFAULT_CLASS_PRESET: ClassPresetType<JavaOptions> = {

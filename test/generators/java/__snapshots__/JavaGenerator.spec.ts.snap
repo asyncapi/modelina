@@ -1,54 +1,34 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`JavaGenerator allowInheritance should create interface for Pet and CloudEvent 1`] = `
+exports[`JavaGenerator allowInheritance should create interface for Animal, Pet and Dog 1`] = `
 Array [
-  "@JsonTypeInfo(use=JsonTypeInfo.Id.NAME, include=JsonTypeInfo.As.EXISTING_PROPERTY, property=\\"type\\", visible=true)
+  "@JsonTypeInfo(use=JsonTypeInfo.Id.NAME, include=JsonTypeInfo.As.EXISTING_PROPERTY, property=\\"petType\\", visible=true)
 @JsonSubTypes({
-  @JsonSubTypes.Type(value = Dog.class, name = \\"Dog\\"),
+  @JsonSubTypes.Type(value = Boxer.class, name = \\"Boxer\\"),
   @JsonSubTypes.Type(value = Cat.class, name = \\"Cat\\")
 })
 /**
- * Pet represents a union of types: Dog, Cat
+ * Animal represents a union of types: Boxer, Cat
  */
-public interface Pet {
-  CloudEventType getType();
+public interface Animal {
+  String getPetType();
 }",
-  "public class Dog implements Pet, CloudEvent {
-  @NotNull
-  @JsonProperty(\\"id\\")
-  private String id;
-  @NotNull
-  @JsonProperty(\\"type\\")
-  private final CloudEventType type = CloudEventType.DOG;
-  @JsonProperty(\\"sequencetype\\")
+  "public class Boxer implements Animal, Dog {
+  @JsonProperty(\\"breed\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
-  private CloudEventDotSequenceType sequencetype;
-  @JsonProperty(\\"data\\")
+  private final String breed = \\"Boxer\\";
+  @JsonProperty(\\"petType\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
-  private String data;
-  @JsonProperty(\\"test\\")
-  @JsonInclude(JsonInclude.Include.NON_NULL)
-  private TestAllOf test;
+  private String petType;
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
-  @Override
-  public String getId() { return this.id; }
-  @Override
-  public void setId(String id) { this.id = id; }
-
-  public CloudEventType getType() { return this.type; }
+  public String getBreed() { return this.breed; }
 
   @Override
-  public CloudEventDotSequenceType getSequencetype() { return this.sequencetype; }
+  public String getPetType() { return this.petType; }
   @Override
-  public void setSequencetype(CloudEventDotSequenceType sequencetype) { this.sequencetype = sequencetype; }
-
-  public String getData() { return this.data; }
-  public void setData(String data) { this.data = data; }
-
-  public TestAllOf getTest() { return this.test; }
-  public void setTest(TestAllOf test) { this.test = test; }
+  public void setPetType(String petType) { this.petType = petType; }
 
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
   public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
@@ -61,29 +41,23 @@ public interface Pet {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    Dog self = (Dog) o;
+    Boxer self = (Boxer) o;
       return 
-        Objects.equals(this.id, self.id) &&
-        Objects.equals(this.type, self.type) &&
-        Objects.equals(this.sequencetype, self.sequencetype) &&
-        Objects.equals(this.data, self.data) &&
-        Objects.equals(this.test, self.test) &&
+        Objects.equals(this.breed, self.breed) &&
+        Objects.equals(this.petType, self.petType) &&
         Objects.equals(this.additionalProperties, self.additionalProperties);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash((Object)id, (Object)type, (Object)sequencetype, (Object)data, (Object)test, (Object)additionalProperties);
+    return Objects.hash((Object)breed, (Object)petType, (Object)additionalProperties);
   }
 
   @Override
   public String toString() {
-    return \\"class Dog {\\\\n\\" +   
-      \\"    id: \\" + toIndentedString(id) + \\"\\\\n\\" +
-      \\"    type: \\" + toIndentedString(type) + \\"\\\\n\\" +
-      \\"    sequencetype: \\" + toIndentedString(sequencetype) + \\"\\\\n\\" +
-      \\"    data: \\" + toIndentedString(data) + \\"\\\\n\\" +
-      \\"    test: \\" + toIndentedString(test) + \\"\\\\n\\" +
+    return \\"class Boxer {\\\\n\\" +   
+      \\"    breed: \\" + toIndentedString(breed) + \\"\\\\n\\" +
+      \\"    petType: \\" + toIndentedString(petType) + \\"\\\\n\\" +
       \\"    additionalProperties: \\" + toIndentedString(additionalProperties) + \\"\\\\n\\" +
     \\"}\\";
   }
@@ -99,211 +73,21 @@ public interface Pet {
     return o.toString().replace(\\"\\\\n\\", \\"\\\\n    \\");
   }
 }",
-  "public enum CloudEventType {
-  DOG((String)\\"Dog\\"), CAT((String)\\"Cat\\");
-
-  private String value;
-
-  CloudEventType(String value) {
-    this.value = value;
-  }
-
-  @JsonValue
-  public String getValue() {
-    return value;
-  }
-
-  @JsonCreator
-  public static CloudEventType fromValue(String value) {
-    for (CloudEventType e : CloudEventType.values()) {
-      if (e.value.equals(value)) {
-        return e;
-      }
-    }
-    throw new IllegalArgumentException(\\"Unexpected value '\\" + value + \\"'\\");
-  }
-
-  @Override
-  public String toString() {
-    return String.valueOf(value);
-  }
+  "public interface Dog extends Pet {
+  
 }",
-  "public enum CloudEventDotSequenceType {
-  INTEGER((String)\\"Integer\\");
-
-  private String value;
-
-  CloudEventDotSequenceType(String value) {
-    this.value = value;
-  }
-
-  @JsonValue
-  public String getValue() {
-    return value;
-  }
-
-  @JsonCreator
-  public static CloudEventDotSequenceType fromValue(String value) {
-    for (CloudEventDotSequenceType e : CloudEventDotSequenceType.values()) {
-      if (e.value.equals(value)) {
-        return e;
-      }
-    }
-    throw new IllegalArgumentException(\\"Unexpected value '\\" + value + \\"'\\");
-  }
-
-  @Override
-  public String toString() {
-    return String.valueOf(value);
-  }
+  "public interface Pet {
+  
 }",
-  "public class TestAllOf {
-  @JsonProperty(\\"testProp\\")
+  "public class Cat implements Animal, Pet {
+  @JsonProperty(\\"petType\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
-  private String testProp;
-  @JsonProperty(\\"testProp2\\")
-  @JsonInclude(JsonInclude.Include.NON_NULL)
-  private String testProp2;
+  private String petType;
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
-  public String getTestProp() { return this.testProp; }
-  public void setTestProp(String testProp) { this.testProp = testProp; }
-
-  public String getTestProp2() { return this.testProp2; }
-  public void setTestProp2(String testProp2) { this.testProp2 = testProp2; }
-
-  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
-  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-    TestAllOf self = (TestAllOf) o;
-      return 
-        Objects.equals(this.testProp, self.testProp) &&
-        Objects.equals(this.testProp2, self.testProp2) &&
-        Objects.equals(this.additionalProperties, self.additionalProperties);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash((Object)testProp, (Object)testProp2, (Object)additionalProperties);
-  }
-
-  @Override
-  public String toString() {
-    return \\"class TestAllOf {\\\\n\\" +   
-      \\"    testProp: \\" + toIndentedString(testProp) + \\"\\\\n\\" +
-      \\"    testProp2: \\" + toIndentedString(testProp2) + \\"\\\\n\\" +
-      \\"    additionalProperties: \\" + toIndentedString(additionalProperties) + \\"\\\\n\\" +
-    \\"}\\";
-  }
-
-  /**
-   * Convert the given object to string with each line indented by 4 spaces
-   * (except the first line).
-   */
-  private String toIndentedString(Object o) {
-    if (o == null) {
-      return \\"null\\";
-    }
-    return o.toString().replace(\\"\\\\n\\", \\"\\\\n    \\");
-  }
-}",
-  "public class Test {
-  @JsonProperty(\\"testProp\\")
-  @JsonInclude(JsonInclude.Include.NON_NULL)
-  private String testProp;
-  @JsonInclude(JsonInclude.Include.NON_NULL)
-  private Map<String, Object> additionalProperties;
-
-  public String getTestProp() { return this.testProp; }
-  public void setTestProp(String testProp) { this.testProp = testProp; }
-
-  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
-  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-    Test self = (Test) o;
-      return 
-        Objects.equals(this.testProp, self.testProp) &&
-        Objects.equals(this.additionalProperties, self.additionalProperties);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash((Object)testProp, (Object)additionalProperties);
-  }
-
-  @Override
-  public String toString() {
-    return \\"class Test {\\\\n\\" +   
-      \\"    testProp: \\" + toIndentedString(testProp) + \\"\\\\n\\" +
-      \\"    additionalProperties: \\" + toIndentedString(additionalProperties) + \\"\\\\n\\" +
-    \\"}\\";
-  }
-
-  /**
-   * Convert the given object to string with each line indented by 4 spaces
-   * (except the first line).
-   */
-  private String toIndentedString(Object o) {
-    if (o == null) {
-      return \\"null\\";
-    }
-    return o.toString().replace(\\"\\\\n\\", \\"\\\\n    \\");
-  }
-}",
-  "public interface CloudEvent {
-  public String getId();
-  public void setId(String id);
-
-  public CloudEventDotSequenceType getSequencetype();
-  public void setSequencetype(CloudEventDotSequenceType sequencetype);
-}",
-  "public class Cat implements Pet, CloudEvent {
-  @NotNull
-  @JsonProperty(\\"id\\")
-  private String id;
-  @NotNull
-  @JsonProperty(\\"type\\")
-  private final CloudEventType type = CloudEventType.CAT;
-  @JsonProperty(\\"sequencetype\\")
-  @JsonInclude(JsonInclude.Include.NON_NULL)
-  private CloudEventDotSequenceType sequencetype;
-  @JsonProperty(\\"test\\")
-  @JsonInclude(JsonInclude.Include.NON_NULL)
-  private Test test;
-  @JsonInclude(JsonInclude.Include.NON_NULL)
-  private Map<String, Object> additionalProperties;
-
-  @Override
-  public String getId() { return this.id; }
-  @Override
-  public void setId(String id) { this.id = id; }
-
-  public CloudEventType getType() { return this.type; }
-
-  @Override
-  public CloudEventDotSequenceType getSequencetype() { return this.sequencetype; }
-  @Override
-  public void setSequencetype(CloudEventDotSequenceType sequencetype) { this.sequencetype = sequencetype; }
-
-  public Test getTest() { return this.test; }
-  public void setTest(Test test) { this.test = test; }
+  public String getPetType() { return this.petType; }
+  public void setPetType(String petType) { this.petType = petType; }
 
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
   public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
@@ -318,25 +102,285 @@ public interface Pet {
     }
     Cat self = (Cat) o;
       return 
-        Objects.equals(this.id, self.id) &&
-        Objects.equals(this.type, self.type) &&
-        Objects.equals(this.sequencetype, self.sequencetype) &&
-        Objects.equals(this.test, self.test) &&
+        Objects.equals(this.petType, self.petType) &&
         Objects.equals(this.additionalProperties, self.additionalProperties);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash((Object)id, (Object)type, (Object)sequencetype, (Object)test, (Object)additionalProperties);
+    return Objects.hash((Object)petType, (Object)additionalProperties);
   }
 
   @Override
   public String toString() {
     return \\"class Cat {\\\\n\\" +   
-      \\"    id: \\" + toIndentedString(id) + \\"\\\\n\\" +
-      \\"    type: \\" + toIndentedString(type) + \\"\\\\n\\" +
-      \\"    sequencetype: \\" + toIndentedString(sequencetype) + \\"\\\\n\\" +
-      \\"    test: \\" + toIndentedString(test) + \\"\\\\n\\" +
+      \\"    petType: \\" + toIndentedString(petType) + \\"\\\\n\\" +
+      \\"    additionalProperties: \\" + toIndentedString(additionalProperties) + \\"\\\\n\\" +
+    \\"}\\";
+  }
+
+  /**
+   * Convert the given object to string with each line indented by 4 spaces
+   * (except the first line).
+   */
+  private String toIndentedString(Object o) {
+    if (o == null) {
+      return \\"null\\";
+    }
+    return o.toString().replace(\\"\\\\n\\", \\"\\\\n    \\");
+  }
+}",
+]
+`;
+
+exports[`JavaGenerator allowInheritance should create interface for Pet and CloudEvent 1`] = `
+Array [
+  "@JsonTypeInfo(use=JsonTypeInfo.Id.NAME, include=JsonTypeInfo.As.EXISTING_PROPERTY, property=\\"petType\\", visible=true)
+@JsonSubTypes({
+  @JsonSubTypes.Type(value = Boxer.class, name = \\"Boxer\\"),
+  @JsonSubTypes.Type(value = Cat.class, name = \\"Cat\\")
+})
+/**
+ * Animal represents a union of types: Boxer, Cat
+ */
+public interface Animal {
+  String getPetType();
+}",
+  "public class Boxer implements Animal, Dog {
+  @JsonProperty(\\"breed\\")
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private final String breed = \\"Boxer\\";
+  @JsonProperty(\\"petType\\")
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private String petType;
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private Map<String, Object> additionalProperties;
+
+  public String getBreed() { return this.breed; }
+
+  @Override
+  public String getPetType() { return this.petType; }
+  @Override
+  public void setPetType(String petType) { this.petType = petType; }
+
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Boxer self = (Boxer) o;
+      return 
+        Objects.equals(this.breed, self.breed) &&
+        Objects.equals(this.petType, self.petType) &&
+        Objects.equals(this.additionalProperties, self.additionalProperties);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash((Object)breed, (Object)petType, (Object)additionalProperties);
+  }
+
+  @Override
+  public String toString() {
+    return \\"class Boxer {\\\\n\\" +   
+      \\"    breed: \\" + toIndentedString(breed) + \\"\\\\n\\" +
+      \\"    petType: \\" + toIndentedString(petType) + \\"\\\\n\\" +
+      \\"    additionalProperties: \\" + toIndentedString(additionalProperties) + \\"\\\\n\\" +
+    \\"}\\";
+  }
+
+  /**
+   * Convert the given object to string with each line indented by 4 spaces
+   * (except the first line).
+   */
+  private String toIndentedString(Object o) {
+    if (o == null) {
+      return \\"null\\";
+    }
+    return o.toString().replace(\\"\\\\n\\", \\"\\\\n    \\");
+  }
+}",
+  "public interface Dog extends Pet {
+  
+}",
+  "public interface Pet {
+  
+}",
+  "public class Cat implements Animal, Pet {
+  @JsonProperty(\\"petType\\")
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private String petType;
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private Map<String, Object> additionalProperties;
+
+  public String getPetType() { return this.petType; }
+  public void setPetType(String petType) { this.petType = petType; }
+
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Cat self = (Cat) o;
+      return 
+        Objects.equals(this.petType, self.petType) &&
+        Objects.equals(this.additionalProperties, self.additionalProperties);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash((Object)petType, (Object)additionalProperties);
+  }
+
+  @Override
+  public String toString() {
+    return \\"class Cat {\\\\n\\" +   
+      \\"    petType: \\" + toIndentedString(petType) + \\"\\\\n\\" +
+      \\"    additionalProperties: \\" + toIndentedString(additionalProperties) + \\"\\\\n\\" +
+    \\"}\\";
+  }
+
+  /**
+   * Convert the given object to string with each line indented by 4 spaces
+   * (except the first line).
+   */
+  private String toIndentedString(Object o) {
+    if (o == null) {
+      return \\"null\\";
+    }
+    return o.toString().replace(\\"\\\\n\\", \\"\\\\n    \\");
+  }
+}",
+]
+`;
+
+exports[`JavaGenerator allowInheritance should create interface for Pet, Dog and CloudEvent 1`] = `
+Array [
+  "@JsonTypeInfo(use=JsonTypeInfo.Id.NAME, include=JsonTypeInfo.As.EXISTING_PROPERTY, property=\\"petType\\", visible=true)
+@JsonSubTypes({
+  @JsonSubTypes.Type(value = Boxer.class, name = \\"Boxer\\"),
+  @JsonSubTypes.Type(value = Cat.class, name = \\"Cat\\")
+})
+/**
+ * Animal represents a union of types: Boxer, Cat
+ */
+public interface Animal {
+  String getPetType();
+}",
+  "public class Boxer implements Animal, Dog {
+  @JsonProperty(\\"breed\\")
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private final String breed = \\"Boxer\\";
+  @JsonProperty(\\"petType\\")
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private String petType;
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private Map<String, Object> additionalProperties;
+
+  public String getBreed() { return this.breed; }
+
+  @Override
+  public String getPetType() { return this.petType; }
+  @Override
+  public void setPetType(String petType) { this.petType = petType; }
+
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Boxer self = (Boxer) o;
+      return 
+        Objects.equals(this.breed, self.breed) &&
+        Objects.equals(this.petType, self.petType) &&
+        Objects.equals(this.additionalProperties, self.additionalProperties);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash((Object)breed, (Object)petType, (Object)additionalProperties);
+  }
+
+  @Override
+  public String toString() {
+    return \\"class Boxer {\\\\n\\" +   
+      \\"    breed: \\" + toIndentedString(breed) + \\"\\\\n\\" +
+      \\"    petType: \\" + toIndentedString(petType) + \\"\\\\n\\" +
+      \\"    additionalProperties: \\" + toIndentedString(additionalProperties) + \\"\\\\n\\" +
+    \\"}\\";
+  }
+
+  /**
+   * Convert the given object to string with each line indented by 4 spaces
+   * (except the first line).
+   */
+  private String toIndentedString(Object o) {
+    if (o == null) {
+      return \\"null\\";
+    }
+    return o.toString().replace(\\"\\\\n\\", \\"\\\\n    \\");
+  }
+}",
+  "public interface Dog extends Pet {
+  
+}",
+  "public interface Pet {
+  
+}",
+  "public class Cat implements Animal, Pet {
+  @JsonProperty(\\"petType\\")
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private String petType;
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private Map<String, Object> additionalProperties;
+
+  public String getPetType() { return this.petType; }
+  public void setPetType(String petType) { this.petType = petType; }
+
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Cat self = (Cat) o;
+      return 
+        Objects.equals(this.petType, self.petType) &&
+        Objects.equals(this.additionalProperties, self.additionalProperties);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash((Object)petType, (Object)additionalProperties);
+  }
+
+  @Override
+  public String toString() {
+    return \\"class Cat {\\\\n\\" +   
+      \\"    petType: \\" + toIndentedString(petType) + \\"\\\\n\\" +
       \\"    additionalProperties: \\" + toIndentedString(additionalProperties) + \\"\\\\n\\" +
     \\"}\\";
   }
