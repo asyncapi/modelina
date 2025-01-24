@@ -5,6 +5,7 @@ import Highlight from 'react-syntax-highlighter';
 
 import Caption from './Caption';
 import IconClipboard from './icons/Clipboard';
+import IconCheck from './icons/IconCheck';
 
 const theme = {
   hljs: {
@@ -270,10 +271,13 @@ export default function CodeBlock({
               className='absolute right-2 top-1 z-50 cursor-pointer bg-code-editor-dark text-xs text-gray-500 hover:text-gray-300 focus:outline-none'
               title='Copy to clipboard'
             >
-              {showIsCopied && <span className='mr-2 inline-block pl-2 pt-1'>Copied!</span>}
-              <span className='inline-block pt-1'>
-                <IconClipboard className='-mt-0.5 inline-block size-4' />
-              </span>
+              <span>
+             {showIsCopied ? (
+             <IconCheck className='mt-2 mr-1 inline-block size-4' />
+             ) : (
+             <IconClipboard className='mt-2  mr-1 inline-block size-4' />
+              )}
+            </span>
             </button>
           </div>
         )}
