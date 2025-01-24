@@ -1023,6 +1023,35 @@
         "code",
         "test"
       ]
+    },
+    {
+      "login": "maxplatov",
+      "name": "maxplatov",
+      "avatar_url": "https://avatars.githubusercontent.com/u/14889696?v=4",
+      "profile": "https://github.com/maxplatov",
+      "contributions": [
+        "review"
+      ]
+    },
+    {
+      "login": "emmanuel-ferdman",
+      "name": "Emmanuel Ferdman",
+      "avatar_url": "https://avatars.githubusercontent.com/u/35470921?v=4",
+      "profile": "https://github.com/emmanuel-ferdman",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "jonjomckay",
+      "name": "Jonjo McKay",
+      "avatar_url": "https://avatars.githubusercontent.com/u/456645?v=4",
+      "profile": "https://jonjomckay.com",
+      "contributions": [
+        "code",
+        "bug",
+        "test"
+      ]
     }
   ],
   "contributorsPerLine": 7,

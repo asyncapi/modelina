@@ -57,6 +57,13 @@ const doc = {
         $ref: '#/definitions/NestedTest'
       }
     },
+    primitiveArrayTest: {
+      type: 'array',
+      additionalItems: false,
+      items: {
+        type: 'string'
+      }
+    },
     tupleTest: {
       type: 'array',
       additionalItems: false,
