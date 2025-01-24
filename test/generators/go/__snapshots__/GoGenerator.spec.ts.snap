@@ -4,6 +4,7 @@ exports[`GoGenerator generateCompleteModels() should render dependencies 1`] = `
 "
 package some_package
 
+// Members represents a Members model.
 type Members struct {
   string
   float64
@@ -15,6 +16,7 @@ exports[`GoGenerator generateCompleteModels() should render dependencies 2`] = `
 "
 package some_package
 
+// Union represents a Union model.
 type Union struct {
   string
   float64
@@ -26,6 +28,7 @@ exports[`GoGenerator generateCompleteModels() should render dependencies 3`] = `
 "
 package some_package
 
+// AdditionalProperties represents a AdditionalProperties model.
 type AdditionalProperties struct {
   ModelinaAnyType interface{}
   string
@@ -38,6 +41,7 @@ package some_package
 import (  
   \\"time\\"
 )
+// Address represents a Address model.
 type Address struct {
   StreetName string
   City string
@@ -57,6 +61,7 @@ package some_package
 import (  
   \\"time\\"
 )
+// OtherModel represents a OtherModel model.
 type OtherModel struct {
   StreetName string
   AdditionalProperties map[string]interface{}
@@ -67,6 +72,7 @@ exports[`GoGenerator generateCompleteModels() should render models 1`] = `
 "
 package some_package
 
+// Members represents a Members model.
 type Members struct {
   string
   float64
@@ -78,6 +84,7 @@ exports[`GoGenerator generateCompleteModels() should render models 2`] = `
 "
 package some_package
 
+// Union represents a Union model.
 type Union struct {
   string
   float64
@@ -89,6 +96,7 @@ exports[`GoGenerator generateCompleteModels() should render models 3`] = `
 "
 package some_package
 
+// AdditionalProperties represents a AdditionalProperties model.
 type AdditionalProperties struct {
   ModelinaAnyType interface{}
   string
@@ -99,6 +107,7 @@ exports[`GoGenerator generateCompleteModels() should render models 4`] = `
 "
 package some_package
 
+// Address represents a Address model.
 type Address struct {
   StreetName interface{}
   City string
@@ -116,6 +125,7 @@ exports[`GoGenerator generateCompleteModels() should render models 5`] = `
 "
 package some_package
 
+// OtherModel represents a OtherModel model.
 type OtherModel struct {
   StreetName string
   AdditionalProperties map[string]interface{}
@@ -124,17 +134,20 @@ type OtherModel struct {
 
 exports[`GoGenerator oneOf/discriminator handle setting title with const 1`] = `
 Array [
-  "type Pet interface {
+  "// Pet represents a Pet model.
+type Pet interface {
   IsPetType()
 }",
-  "type Dog struct {
+  "// Dog represents a Dog model.
+type Dog struct {
   ReservedType *DogType
   AdditionalProperties map[string]interface{}
 }
 
 func (r Dog) IsPetType() {}
 ",
-  "type DogType uint
+  "// DogType represents an enum of DogType.
+type DogType uint
 
 const (
   DogTypeDog DogType = iota
@@ -153,14 +166,16 @@ var ValuesToDogType = map[any]DogType{
   DogTypeValues[DogTypeDog]: DogTypeDog,
 }
 ",
-  "type Cat struct {
+  "// Cat represents a Cat model.
+type Cat struct {
   ReservedType *CatType
   AdditionalProperties map[string]interface{}
 }
 
 func (r Cat) IsPetType() {}
 ",
-  "type CatType uint
+  "// CatType represents an enum of CatType.
+type CatType uint
 
 const (
   CatTypeCat CatType = iota
@@ -184,14 +199,17 @@ var ValuesToCatType = map[any]CatType{
 
 exports[`GoGenerator oneOf/discriminator should render interfaces for objects with discriminator 1`] = `
 Array [
-  "type Vehicle interface {
+  "// Vehicle represents a Vehicle model.
+type Vehicle interface {
   IsVehicleVehicleType()
 }",
-  "type Cargo struct {
+  "// Cargo represents a Cargo model.
+type Cargo struct {
   Vehicle Vehicle
   AdditionalProperties map[string]interface{}
 }",
-  "type Car struct {
+  "// Car represents a Car model.
+type Car struct {
   VehicleType *VehicleType
   RegistrationPlate string
   AdditionalProperties map[string]interface{}
@@ -199,7 +217,8 @@ Array [
 
 func (r Car) IsVehicleVehicleType() {}
 ",
-  "type VehicleType uint
+  "// VehicleType represents an enum of VehicleType.
+type VehicleType uint
 
 const (
   VehicleTypeCar VehicleType = iota
@@ -220,7 +239,8 @@ var ValuesToVehicleType = map[any]VehicleType{
   VehicleTypeValues[VehicleTypeTruck]: VehicleTypeTruck,
 }
 ",
-  "type Truck struct {
+  "// Truck represents a Truck model.
+type Truck struct {
   VehicleType *VehicleType
   RegistrationPlate string
   AdditionalProperties map[string]interface{}
@@ -232,7 +252,8 @@ func (r Truck) IsVehicleVehicleType() {}
 `;
 
 exports[`GoGenerator should render \`enum\` with mixed types 1`] = `
-"type Things uint
+"// Things represents an enum of Things.
+type Things uint
 
 const (
   ThingsTexas Things = iota
@@ -261,16 +282,9 @@ var ValuesToThings = map[any]Things{
 "
 `;
 
-exports[`GoGenerator should render \`required\` for required properties 1`] = `
-"type ExampleStruct struct {
-  Id int \`json:\\"id,omitempty\\"\`
-  MsgUid string \`json:\\"msgUid\\" binding:\\"required\\"\`
-  EvtName string \`json:\\"evtName,omitempty\\"\`
-}"
-`;
-
 exports[`GoGenerator should render \`struct\` type 1`] = `
-"type Members struct {
+"// Members represents a Members model.
+type Members struct {
   string
   float64
   bool
@@ -278,7 +292,8 @@ exports[`GoGenerator should render \`struct\` type 1`] = `
 `;
 
 exports[`GoGenerator should render \`struct\` type 2`] = `
-"type Union struct {
+"// Union represents a Union model.
+type Union struct {
   string
   float64
   ModelinaAnyType interface{}
@@ -286,13 +301,15 @@ exports[`GoGenerator should render \`struct\` type 2`] = `
 `;
 
 exports[`GoGenerator should render \`struct\` type 3`] = `
-"type AdditionalProperties struct {
+"// AdditionalProperties represents a AdditionalProperties model.
+type AdditionalProperties struct {
   string
 }"
 `;
 
 exports[`GoGenerator should render \`struct\` type 4`] = `
-"type Address struct {
+"// Address represents a Address model.
+type Address struct {
   StreetName string
   City string
   State string
@@ -306,23 +323,28 @@ exports[`GoGenerator should render \`struct\` type 4`] = `
 `;
 
 exports[`GoGenerator should render \`union\` type for primitives 1`] = `
-"type Members struct {
+"// Members represents a Members model.
+type Members struct {
   string
   float64
   bool
 }
+// Union represents a Union model.
 type Union struct {
   string
   float64
   ModelinaAnyType interface{}
 }
+// LocationAdditionalProperty represents a LocationAdditionalProperty model.
 type LocationAdditionalProperty struct {
   LocationAdditionalPropertyOneOf_0
   LocationAdditionalPropertyOneOf_1
 }
+// AdditionalProperties represents a AdditionalProperties model.
 type AdditionalProperties struct {
   string
 }
+// Address represents a Address model.
 type Address struct {
   StreetName string
   City string
@@ -335,10 +357,12 @@ type Address struct {
   Location map[string]LocationAdditionalProperty
   AdditionalProperties map[string]AdditionalProperties
 }
+// LocationAdditionalPropertyOneOf_0 represents a LocationAdditionalPropertyOneOf_0 model.
 type LocationAdditionalPropertyOneOf_0 struct {
   Ref string
   AdditionalProperties map[string]interface{}
 }
+// LocationAdditionalPropertyOneOf_1 represents a LocationAdditionalPropertyOneOf_1 model.
 type LocationAdditionalPropertyOneOf_1 struct {
   Id string
   AdditionalProperties map[string]interface{}
@@ -346,7 +370,8 @@ type LocationAdditionalPropertyOneOf_1 struct {
 `;
 
 exports[`GoGenerator should work custom preset for \`enum\` type 1`] = `
-"type CustomEnum uint
+"// CustomEnum represents an enum of CustomEnum.
+type CustomEnum uint
 
 const (
   test 0
@@ -372,7 +397,8 @@ additionalContent"
 `;
 
 exports[`GoGenerator should work custom preset for \`struct\` type 1`] = `
-"type CustomStruct struct {
+"// CustomStruct represents a CustomStruct model.
+type CustomStruct struct {
   field Property
   field AdditionalProperties
 

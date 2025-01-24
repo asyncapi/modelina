@@ -28,10 +28,15 @@ const unionIncludesDiscriminator = (model: ConstrainedUnionModel): boolean => {
  */
 export class UnionRenderer extends GoRenderer<ConstrainedUnionModel> {
   public async defaultSelf(): Promise<string> {
+    const doc = this.renderComments(
+      `${this.model.name} represents a ${this.model.name} model.`
+    );
+
     if (unionIncludesDiscriminator(this.model)) {
       const content: string[] = [await this.runDiscriminatorAccessorPreset()];
 
-      return `type ${this.model.name} interface {
+      return `${doc}
+type ${this.model.name} interface {
 ${this.indent(this.renderBlock(content, 2))}
 }`;
     }
@@ -41,7 +46,8 @@ ${this.indent(this.renderBlock(content, 2))}
       await this.runAdditionalContentPreset()
     ];
 
-    return `type ${this.model.name} struct {
+    return `${doc}
+type ${this.model.name} struct {
 ${this.indent(this.renderBlock(content, 2))}
 }`;
   }
