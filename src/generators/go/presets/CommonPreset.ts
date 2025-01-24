@@ -21,6 +21,9 @@ function renderJSONTag({
   ) {
     return `json:"-,omitempty"`;
   }
+  if (field.required) {
+    return `json:"${field.unconstrainedPropertyName}" binding:"required"`;
+  }
   return `json:"${field.unconstrainedPropertyName},omitempty"`;
 }
 
