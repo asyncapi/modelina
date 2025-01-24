@@ -2,7 +2,8 @@
 
 exports[`Should be able to render json-tags in struct and should log expected output to console 1`] = `
 Array [
-  "type Root struct {
+  "// Root represents a Root model.
+type Root struct {
   Cities *Cities \`json:\\"cities,omitempty\\"\`
   Options *Options \`json:\\"options,omitempty\\"\`
 }",
@@ -11,7 +12,8 @@ Array [
 
 exports[`Should be able to render json-tags in struct and should log expected output to console 2`] = `
 Array [
-  "type Cities uint
+  "// Cities represents an enum of Cities.
+type Cities uint
 
 const (
   CitiesLondon Cities = iota
@@ -52,7 +54,8 @@ func (op Cities) MarshalJSON() ([]byte, error) {
 
 exports[`Should be able to render json-tags in struct and should log expected output to console 3`] = `
 Array [
-  "type Options uint
+  "// Options represents an enum of Options.
+type Options uint
 
 const (
   OptionsNumber_123 Options = iota

@@ -2,7 +2,8 @@
 
 exports[`Should be able to render Go Enums and should log expected output to console 1`] = `
 Array [
-  "type Root struct {
+  "// Root represents a Root model.
+type Root struct {
   Cities *Cities
   Options *Options
 }",
@@ -11,7 +12,8 @@ Array [
 
 exports[`Should be able to render Go Enums and should log expected output to console 2`] = `
 Array [
-  "type Cities uint
+  "// Cities represents an enum of Cities.
+type Cities uint
 
 const (
   CitiesLondon Cities = iota
@@ -39,7 +41,8 @@ var ValuesToCities = map[any]Cities{
 
 exports[`Should be able to render Go Enums and should log expected output to console 3`] = `
 Array [
-  "type Options uint
+  "// Options represents an enum of Options.
+type Options uint
 
 const (
   OptionsNumber_123 Options = iota
