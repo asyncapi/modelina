@@ -2,8 +2,7 @@
 
 exports[`Should be able to render Go Models and should log expected output to console 1`] = `
 Array [
-  "// Root represents a Root model.
-type Root struct {
+  "type Root struct {
   Email string
 }",
 ]
