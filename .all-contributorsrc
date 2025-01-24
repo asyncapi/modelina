@@ -1052,6 +1052,17 @@
         "bug",
         "test"
       ]
+    },
+    {
+      "login": "TertiumOrganum1",
+      "name": "TertiumOrganum1",
+      "avatar_url": "https://avatars.githubusercontent.com/u/51286827?v=4",
+      "profile": "https://github.com/TertiumOrganum1",
+      "contributions": [
+        "code",
+        "doc",
+        "test"
+      ]
     }
   ],
   "contributorsPerLine": 7,
