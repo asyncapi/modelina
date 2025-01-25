@@ -34,8 +34,7 @@ const PYTHON_PYDANTIC_CLASS_PRESET: ClassPresetType<PythonOptions> = {
     }
 
     const isOptional =
-      !property.required ||
-      property.property.options.isNullable === true;
+      !property.required || property.property.options.isNullable === true;
     if (isOptional) {
       type = `Optional[${type}]`;
     }

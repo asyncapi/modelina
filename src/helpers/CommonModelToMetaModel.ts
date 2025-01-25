@@ -165,9 +165,7 @@ export function convertToMetaModel(context: {
   if (booleanModel !== undefined) {
     return booleanModel;
   }
-  Logger.warn(
-    `Failed to convert ${name} to MetaModel, defaulting to AnyModel`
-  );
+  Logger.warn(`Failed to convert ${name} to MetaModel, defaulting to AnyModel`);
   return new AnyModel(
     name,
     jsonSchemaModel.originalInput,
