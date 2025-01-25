@@ -1063,6 +1063,15 @@
         "doc",
         "test"
       ]
+    },
+    {
+      "login": "Shriya-Chauhan",
+      "name": "Shriya Chauhan",
+      "avatar_url": "https://avatars.githubusercontent.com/u/78415084?v=4",
+      "profile": "https://github.com/Shriya-Chauhan",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,

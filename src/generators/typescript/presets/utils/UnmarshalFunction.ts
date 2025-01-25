@@ -27,6 +27,8 @@ function renderUnmarshalProperty(
 
   if (
     model instanceof ConstrainedArrayModel &&
+    model.valueModel instanceof ConstrainedReferenceModel &&
+    !(model.valueModel.ref instanceof ConstrainedEnumModel) &&
     !(model.valueModel instanceof ConstrainedUnionModel)
   ) {
     return `${modelInstanceVariable} == null
