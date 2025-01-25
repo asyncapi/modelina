@@ -1,15 +1,12 @@
+import { debounce } from 'lodash';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
-import Select from '@/components/Select';
+
 import { PlaygroundScalaConfigContext } from '@/components/contexts/PlaygroundConfigContext';
 import InfoModal from '@/components/InfoModal';
-import { debounce } from 'lodash';
+import Select from '@/components/Select';
 
 interface ScalaGeneratorOptionsProps {
-  setNewConfig?: (
-    queryKey: string,
-    queryValue: any,
-    updateCode?: boolean
-  ) => void;
+  setNewConfig?: (queryKey: string, queryValue: any, updateCode?: boolean) => void;
 }
 
 interface ScalaGeneratorState {
@@ -18,9 +15,7 @@ interface ScalaGeneratorState {
 
 export const defaultState: ScalaGeneratorState = {};
 
-const ScalaGeneratorOptions: React.FC<ScalaGeneratorOptionsProps> = ({
-  setNewConfig
-}) => {
+const ScalaGeneratorOptions: React.FC<ScalaGeneratorOptionsProps> = ({ setNewConfig }) => {
   const context = useContext(PlaygroundScalaConfigContext);
   const [state, setState] = useState<ScalaGeneratorState>(defaultState);
 
@@ -40,6 +35,7 @@ const ScalaGeneratorOptions: React.FC<ScalaGeneratorOptionsProps> = ({
   const onChangePackageName = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       const packageName = event.target.value;
+
       setState({ ...state, packageName });
       setNewConfig && debouncedSetNewConfig('scalaPackageName', packageName);
     },
@@ -47,45 +43,37 @@ const ScalaGeneratorOptions: React.FC<ScalaGeneratorOptionsProps> = ({
   );
 
   return (
-    <ul className="flex flex-col">
-      <h3 className="py-2 w-full text-left border-b-[1px] border-gray-700">
-        Scala Specific options
-      </h3>
-      <li className="flex gap-1 items-center">
-        <InfoModal text="Package Name :">
+    <ul className='flex flex-col'>
+      <h3 className='w-full border-b border-gray-700 py-2 text-left'>Scala Specific options</h3>
+      <li className='flex items-center gap-1'>
+        <InfoModal text='Package Name :'>
           <p>
-            In Scala, a package name is a way to organize and group related
-            classes, objects, and traits together. It is a naming convention
-            that helps prevent naming conflicts and provides a hierarchical
-            structure to the Scala codebase.
+            In Scala, a package name is a way to organize and group related classes, objects, and traits together. It is
+            a naming convention that helps prevent naming conflicts and provides a hierarchical structure to the Scala
+            codebase.
           </p>
         </InfoModal>
-        <label className="flex flex-grow gap-1 items-center py-2 justify-between cursor-pointer">
-          <span className="mt-1 max-w-2xl text-sm text-gray-500">
-            Scala Package Name
-          </span>
+        <label className='flex grow cursor-pointer items-center justify-between gap-1 py-2'>
+          <span className='mt-1 max-w-2xl text-sm text-gray-500'>Scala Package Name</span>
           <input
-            type="text"
-            className="form-input w-[88%] rounded-md border-gray-300 cursor-pointer font-regular text-md text-gray-700 hover:bg-gray-50 focus-within:text-gray-900"
-            name="scalaPackageName"
+            type='text'
+            className='text-md form-input w-[88%] cursor-pointer rounded-md border-gray-300 font-regular text-gray-700 focus-within:text-gray-900 hover:bg-gray-50'
+            name='scalaPackageName'
             value={state?.packageName}
             onChange={onChangePackageName}
           />
         </label>
       </li>
-      <li className="flex gap-1 items-center">
-        <InfoModal text="Scala collection type: ">
+      <li className='flex items-center gap-1'>
+        <InfoModal text='Scala collection type: '>
           <p>
-            It indicates the collection type. Its value can be either List or
-            Array.
+            It indicates the collection type. Its value can be either List or Array.
             <br /> <br />
             The default value is Array.
           </p>
         </InfoModal>
-        <label className="flex flex-grow gap-1 items-center py-2 justify-between cursor-pointer">
-          <span className="mt-1 max-w-2xl text-sm text-gray-500">
-            Scala collection type
-          </span>
+        <label className='flex grow cursor-pointer items-center justify-between gap-1 py-2'>
+          <span className='mt-1 max-w-2xl text-sm text-gray-500'>Scala collection type</span>
           <Select
             options={[
               { value: 'array', text: 'Array' },
@@ -93,7 +81,7 @@ const ScalaGeneratorOptions: React.FC<ScalaGeneratorOptionsProps> = ({
             ]}
             value={context?.scalaCollectionType}
             onChange={onChangeCollectionType}
-            className="shadow-outline-blue cursor-pointer"
+            className='shadow-outline-blue cursor-pointer'
           />
         </label>
       </li>

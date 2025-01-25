@@ -6,6 +6,7 @@ export default function Paragraph({
   children
 }: any) {
   let classNames = '';
+
   switch (typeStyle) {
     case 'body-lg':
       classNames = `text-lg ${fontWeight} ${className || ''}`;

@@ -1,23 +1,37 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { JavaGenerator, JavaOptions, javaDefaultEnumKeyConstraints, javaDefaultModelNameConstraints, javaDefaultPropertyKeyConstraints, JAVA_JACKSON_PRESET, JAVA_COMMON_PRESET, JAVA_DESCRIPTION_PRESET, JAVA_CONSTRAINTS_PRESET } from '../../../../../';
+import type { JavaOptions } from '@/../../';
+import {
+  JAVA_COMMON_PRESET,
+  JAVA_CONSTRAINTS_PRESET,
+  JAVA_DESCRIPTION_PRESET,
+  JAVA_JACKSON_PRESET,
+  javaDefaultEnumKeyConstraints,
+  javaDefaultModelNameConstraints,
+  javaDefaultPropertyKeyConstraints,
+  JavaGenerator
+} from '@/../../';
+import type { DeepPartial } from '@/../../lib/types/utils';
+
+import type { ModelinaJavaOptions, ModelProps } from '../../../types';
 import { applyGeneralOptions, convertModelsToProps } from './Helpers';
-import { ModelinaJavaOptions, ModelProps } from '../../../types';
-import { DeepPartial } from '../../../../../lib/types/utils';
 
 /**
  * This is the server side part of the Java generator, that takes input and generator parameters and generate the models.
  */
-export async function getJavaModels(
-  input: any,
-  generatorOptions: ModelinaJavaOptions
-): Promise<ModelProps[]> {
+export async function getJavaModels(input: any, generatorOptions: ModelinaJavaOptions): Promise<ModelProps[]> {
   const options: DeepPartial<JavaOptions> = {
     presets: []
   };
-  applyGeneralOptions(generatorOptions, options, javaDefaultEnumKeyConstraints, javaDefaultPropertyKeyConstraints, javaDefaultModelNameConstraints);
+
+  applyGeneralOptions(
+    generatorOptions,
+    options,
+    javaDefaultEnumKeyConstraints,
+    javaDefaultPropertyKeyConstraints,
+    javaDefaultModelNameConstraints
+  );
 
   if (generatorOptions.javaIncludeJackson) {
-    options.presets?.push(JAVA_JACKSON_PRESET)
+    options.presets?.push(JAVA_JACKSON_PRESET);
   }
 
   if (generatorOptions.javaIncludeMarshaling) {
@@ -29,7 +43,7 @@ export async function getJavaModels(
         classToString: false,
         marshalling: true
       }
-    })
+    });
   }
 
   if (generatorOptions.javaArrayType) {
@@ -37,17 +51,15 @@ export async function getJavaModels(
   }
 
   if (generatorOptions.javaOverwriteHashcode) {
-    options.presets?.push(
-      {
-        preset: JAVA_COMMON_PRESET,
-        options: {
-          equal: false,
-          hashCode: true,
-          classToString: false,
-          marshalling: false
-        }
+    options.presets?.push({
+      preset: JAVA_COMMON_PRESET,
+      options: {
+        equal: false,
+        hashCode: true,
+        classToString: false,
+        marshalling: false
       }
-    )
+    });
   }
 
   if (generatorOptions.javaOverwriteEqual) {
@@ -59,10 +71,10 @@ export async function getJavaModels(
         classToString: false,
         marshalling: false
       }
-    })
+    });
   }
 
-  if(generatorOptions.javaOverwriteToString){
+  if (generatorOptions.javaOverwriteToString) {
     options.presets?.push({
       preset: JAVA_COMMON_PRESET,
       options: {
@@ -71,24 +83,25 @@ export async function getJavaModels(
         classToString: true,
         marshalling: false
       }
-    })
+    });
   }
 
   if (generatorOptions.javaJavaDocs) {
-    options.presets?.push(JAVA_DESCRIPTION_PRESET)
+    options.presets?.push(JAVA_DESCRIPTION_PRESET);
   }
 
   if (generatorOptions.javaJavaxAnnotation) {
-    options.presets?.push(JAVA_CONSTRAINTS_PRESET)
+    options.presets?.push(JAVA_CONSTRAINTS_PRESET);
   }
 
   if (generatorOptions.showTypeMappingExample) {
     options.typeMapping = {
       Integer: ({ dependencyManager }) => {
         dependencyManager.addDependency('import java.util.ArrayList;');
+
         return 'long';
       }
-    }
+    };
   }
 
   try {
@@ -96,10 +109,12 @@ export async function getJavaModels(
     const generatedModels = await generator.generateCompleteModels(input, {
       packageName: generatorOptions.javaPackageName ?? 'asyncapi.models'
     });
+
     return convertModelsToProps(generatedModels);
-  } catch (e : any) {
+  } catch (e: any) {
     console.error('Could not generate models');
     console.error(e);
+
     return e.message;
   }
 }

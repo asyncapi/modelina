@@ -1,5 +1,6 @@
-import { twMerge } from 'tailwind-merge';
 import Link from 'next/link';
+import { twMerge } from 'tailwind-merge';
+
 export default function Button({
   text,
   href,
@@ -8,8 +9,8 @@ export default function Button({
   icon,
   iconPosition = 'right',
   className,
-  bgClassName = twMerge(`bg-primary-500 hover:bg-primary-400`),
-  textClassName = twMerge(`text-white`),
+  bgClassName = twMerge('bg-primary-500 hover:bg-primary-400'),
+  textClassName = twMerge('text-white'),
   buttonSize,
   ...props
 }: any) {
@@ -26,18 +27,10 @@ export default function Button({
 
   if (!href) {
     return (
-      <button
-        {...props}
-        type={type}
-        className={buttonSize === 'small' ? smallButtonClasses : classNames}
-      >
-        {icon && iconPosition === 'left' && (
-          <span className="inline-block mr-2">{icon}</span>
-        )}
-        <span className="inline-block">{text}</span>
-        {icon && iconPosition === 'right' && (
-          <span className="inline-block ml-2">{icon}</span>
-        )}
+      <button {...props} type={type} className={buttonSize === 'small' ? smallButtonClasses : classNames}>
+        {icon && iconPosition === 'left' && <span className='mr-2 inline-block'>{icon}</span>}
+        <span className='inline-block'>{text}</span>
+        {icon && iconPosition === 'right' && <span className='ml-2 inline-block'>{icon}</span>}
       </button>
     );
   }
@@ -47,17 +40,13 @@ export default function Button({
       href={href}
       passHref
       target={target}
-      rel="noopener noreferrer"
+      rel='noopener noreferrer'
       className={buttonSize === 'small' ? smallButtonClasses : classNames}
       {...props}
     >
-      {icon && iconPosition === 'left' && (
-        <span className="inline-block mr-2">{icon}</span>
-      )}
-      <span className="inline-block">{text}</span>
-      {icon && iconPosition === 'right' && (
-        <span className="inline-block ml-2">{icon}</span>
-      )}
+      {icon && iconPosition === 'left' && <span className='mr-2 inline-block'>{icon}</span>}
+      <span className='inline-block'>{text}</span>
+      {icon && iconPosition === 'right' && <span className='ml-2 inline-block'>{icon}</span>}
     </Link>
   );
 }

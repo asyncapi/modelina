@@ -1,11 +1,14 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { ModelinaJavaOptions } from '../../types';
+import type { ModelinaJavaOptions } from '../../types';
 import { getGeneralGeneratorCode, renderGeneratorInstanceCode } from './GeneralGenerator';
 
-export function getJavaGeneratorCode(
-  generatorOptions: ModelinaJavaOptions
-) {
-  const optionString: string[] = getGeneralGeneratorCode(generatorOptions, 'javaDefaultEnumKeyConstraints', 'javaDefaultPropertyKeyConstraints', 'javaDefaultModelNameConstraints');
+export function getJavaGeneratorCode(generatorOptions: ModelinaJavaOptions) {
+  const optionString: string[] = getGeneralGeneratorCode(
+    generatorOptions,
+    'javaDefaultEnumKeyConstraints',
+    'javaDefaultPropertyKeyConstraints',
+    'javaDefaultModelNameConstraints'
+  );
   const optionStringPresets: string[] = [];
 
   if (generatorOptions.showTypeMappingExample === true) {
@@ -21,7 +24,7 @@ export function getJavaGeneratorCode(
   }
 
   if (generatorOptions.javaIncludeJackson) {
-    optionStringPresets.push(`JAVA_JACKSON_PRESET`)
+    optionStringPresets.push('JAVA_JACKSON_PRESET');
   }
 
   if (generatorOptions.javaIncludeMarshaling) {
@@ -77,11 +80,11 @@ export function getJavaGeneratorCode(
   }
 
   if (generatorOptions.javaJavaDocs) {
-    optionStringPresets.push(`JAVA_DESCRIPTION_PRESET`)
+    optionStringPresets.push('JAVA_DESCRIPTION_PRESET');
   }
 
   if (generatorOptions.javaJavaxAnnotation) {
-    optionStringPresets.push(`JAVA_CONSTRAINTS_PRESET`)
+    optionStringPresets.push('JAVA_CONSTRAINTS_PRESET');
   }
 
   const generateInstanceCode = renderGeneratorInstanceCode(optionString, optionStringPresets, 'JavaGenerator');

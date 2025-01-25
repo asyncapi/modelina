@@ -1,18 +1,21 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { ModelinaCplusplusOptions } from '../../types';
+import type { ModelinaCplusplusOptions } from '../../types';
 import { getGeneralGeneratorCode, renderGeneratorInstanceCode } from './GeneralGenerator';
 
-export function getCplusplusGeneratorCode(
-  generatorOptions: ModelinaCplusplusOptions
-) {
-  const optionString: string[] = getGeneralGeneratorCode(generatorOptions, 'cplusplusDefaultEnumKeyConstraints', 'cplusplusDefaultPropertyKeyConstraints', 'cplusplusDefaultModelNameConstraints');
+export function getCplusplusGeneratorCode(generatorOptions: ModelinaCplusplusOptions) {
+  const optionString: string[] = getGeneralGeneratorCode(
+    generatorOptions,
+    'cplusplusDefaultEnumKeyConstraints',
+    'cplusplusDefaultPropertyKeyConstraints',
+    'cplusplusDefaultModelNameConstraints'
+  );
   const optionStringPresets: string[] = [];
 
   if (generatorOptions.cplusplusNamespace) {
     optionString.push(`namespace: '${generatorOptions.cplusplusNamespace}'`);
   }
 
-  if(generatorOptions.showTypeMappingExample === true) {
+  if (generatorOptions.showTypeMappingExample === true) {
     optionString.push(`typeMapping: {
   Integer: ({ dependencyManager, constrainedModel, options, partOfProperty }) => {
     // Add custom dependency for your type if required.

@@ -1,69 +1,33 @@
-import React from 'react';
-import { IoOptionsOutline } from 'react-icons/io5';
-import { VscListSelection } from 'react-icons/vsc';
+import clsx from 'clsx';
+import React, { useCallback } from 'react';
+
+import { usePlaygroundLayout } from '../contexts/PlaygroundLayoutContext';
 import { Tooltip } from './Tooltip';
-import { usePlaygroundContext } from '../contexts/PlaygroundContext';
 
-interface SidebarItem {
-  name: string;
-  title: string;
-  isActive: boolean;
-  onClick: () => void;
-  icon: React.ReactNode;
-  tooltip: React.ReactNode;
-}
+export const Sidebar: React.FunctionComponent = () => {
+  const { state, dispatch } = usePlaygroundLayout();
 
-interface SidebarProps {}
+  const sidebarItems = Array.from(state.sidebarItems.values());
 
-export const Sidebar: React.FunctionComponent<SidebarProps> = () => {
-  const { setShowOptions, setShowOutputNavigation } = usePlaygroundContext();
-  const sidebarItems: SidebarItem[] = [
-    // Options
-    {
-      name: 'options',
-      title: 'Options',
-      isActive: false,
-      onClick: () => {
-        setShowOptions((prevShowOptions) => !prevShowOptions);
-      },
-      icon: <IoOptionsOutline className="w-5 h-5" />,
-      tooltip: 'Show or hide all the options'
-    },
-    // Output Explorer
-    {
-      name: 'outputExplorer',
-      title: 'Output',
-      isActive: false,
-      onClick: () => {
-        setShowOutputNavigation((prevShowOutputNavigation) => !prevShowOutputNavigation);
-      },
-      icon: <VscListSelection className="w-5 h-5" />,
-      tooltip: 'Show or hide the list of output models'
-    }
-  ];
+  const handleClick = useCallback(({ name }: { name: string }) => { dispatch({ type: 'open-option', name }); }, []);
 
   return (
-    <div className="flex flex-col h-full w-full bg-[#1f2937] shadow-lg border-r border-gray-700 justify-start">
-      <div className="flex flex-col">
+    <div className='flex size-full flex-col justify-start border-r border-gray-700 bg-[#1f2937] shadow-lg'>
+      <div className='flex flex-col'>
         {sidebarItems.map((item) => (
-          <Tooltip
-            content={item.tooltip}
-            placement="right"
-            hideOnClick={true}
-            key={item.name}
-          >
+          <Tooltip content={item.tooltip} placement='right' hideOnClick={true} key={item.name}>
             <button
               title={item.title}
-              onClick={() => item.onClick()}
-              className="flex text-sm focus:outline-none border-box p-2"
-              type="button"
+              onClick={() => handleClick({ name: item.name })}
+              className={clsx('border-box flex p-2 text-sm focus:outline-none disabled:opacity-25', {
+                'hidden md:block': item.name === 'output-options' && state.open === 'general-options',
+                'md:hidden': item.devices === 'mobile'
+              })}
+              disabled={item.name === 'output-options' && state.open === 'general-options' && state.device === 'mobile'}
+              type='button'
             >
               <div
-                className={
-                  item.isActive
-                    ? 'bg-gray-900 p-2 rounded text-white'
-                    : 'p-2 text-gray-700 hover:text-white'
-                }
+                className={item.isOpen ? 'rounded bg-slate-200/25 p-2 text-white' : 'p-2 text-gray-700 hover:text-white'}
               >
                 {item.icon}
               </div>

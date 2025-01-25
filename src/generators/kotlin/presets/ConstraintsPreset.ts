@@ -8,11 +8,17 @@ import {
 import { KotlinPreset } from '../KotlinPreset';
 import { ClassRenderer } from '../renderers/ClassRenderer';
 
+export interface KotlinConstraintsPresetOptions {
+  useJakarta: false;
+}
+
 export const KOTLIN_CONSTRAINTS_PRESET: KotlinPreset = {
   class: {
-    self({ renderer, content }) {
+    self({ renderer, content, options }) {
+      options = options || { useJakarta: false };
+      const importFrom = options.useJakarta ? 'jakarta' : 'javax';
       renderer.dependencyManager.addDependency(
-        'javax.validation.constraints.*'
+        `${importFrom}.validation.constraints.*`
       );
       return content;
     },

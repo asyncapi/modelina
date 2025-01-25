@@ -33,7 +33,10 @@ const PYTHON_PYDANTIC_CLASS_PRESET: ClassPresetType<PythonOptions> = {
       type = `Union[${unionTypes.join(', ')}]`;
     }
 
-    if (!property.required) {
+    const isOptional =
+      !property.required ||
+      property.property.options.isNullable === true;
+    if (isOptional) {
       type = `Optional[${type}]`;
     }
     type = renderer.renderPropertyType({
@@ -47,6 +50,9 @@ const PYTHON_PYDANTIC_CLASS_PRESET: ClassPresetType<PythonOptions> = {
       decoratorArgs.push(
         `description='''${property.property.originalInput['description']}'''`
       );
+    }
+    if (isOptional) {
+      decoratorArgs.push('default=None');
     }
     if (
       property.property instanceof ConstrainedDictionaryModel &&

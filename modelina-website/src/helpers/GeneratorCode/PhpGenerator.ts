@@ -1,9 +1,14 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { ModelinaPhpOptions } from '../../types';
+import type { ModelinaPhpOptions } from '../../types';
 import { getGeneralGeneratorCode, renderGeneratorInstanceCode } from './GeneralGenerator';
 
 export function getPhpGeneratorCode(generatorOptions: ModelinaPhpOptions) {
-  const optionString: string[] = getGeneralGeneratorCode(generatorOptions, 'phpDefaultEnumKeyConstraints', 'phpDefaultPropertyKeyConstraints', 'phpDefaultModelNameConstraints');
+  const optionString: string[] = getGeneralGeneratorCode(
+    generatorOptions,
+    'phpDefaultEnumKeyConstraints',
+    'phpDefaultPropertyKeyConstraints',
+    'phpDefaultModelNameConstraints'
+  );
   const optionStringPresets: string[] = [];
 
   if (generatorOptions.phpIncludeDescriptions === true) {
@@ -12,11 +17,11 @@ export function getPhpGeneratorCode(generatorOptions: ModelinaPhpOptions) {
   }`);
   }
 
-  if(generatorOptions.phpNamespace) {
+  if (generatorOptions.phpNamespace) {
     optionString.push(`namespace: '${generatorOptions.phpNamespace}'`);
   }
 
-  if(generatorOptions.showTypeMappingExample === true) {
+  if (generatorOptions.showTypeMappingExample === true) {
     optionString.push(`typeMapping: {
   Integer: ({ dependencyManager, constrainedModel, options, partOfProperty }) => {
     // Add custom dependency for your type if required. 

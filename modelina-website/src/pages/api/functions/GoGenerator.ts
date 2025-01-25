@@ -1,28 +1,39 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { GoGenerator, GoOptions, goDefaultEnumKeyConstraints, goDefaultModelNameConstraints, goDefaultPropertyKeyConstraints } from '../../../../../';
+import type { GoOptions } from '@/../../';
+import {
+  goDefaultEnumKeyConstraints,
+  goDefaultModelNameConstraints,
+  goDefaultPropertyKeyConstraints,
+  GoGenerator
+} from '@/../../';
+import type { DeepPartial } from '@/../../lib/types/utils';
+
+import type { ModelinaGoOptions, ModelProps } from '../../../types';
 import { applyGeneralOptions, convertModelsToProps } from './Helpers';
-import { ModelinaGoOptions, ModelProps } from '../../../types';
-import { DeepPartial } from '../../../../../lib/types/utils';
 
 /**
  * This is the server side part of the Go generator, that takes input and generator parameters and generate the models.
  */
-export async function getGoModels(
-  input: any,
-  generatorOptions: ModelinaGoOptions
-): Promise<ModelProps[]> {
+export async function getGoModels(input: any, generatorOptions: ModelinaGoOptions): Promise<ModelProps[]> {
   const options: DeepPartial<GoOptions> = {
     presets: []
   };
-  applyGeneralOptions(generatorOptions, options, goDefaultEnumKeyConstraints, goDefaultPropertyKeyConstraints, goDefaultModelNameConstraints);
+
+  applyGeneralOptions(
+    generatorOptions,
+    options,
+    goDefaultEnumKeyConstraints,
+    goDefaultPropertyKeyConstraints,
+    goDefaultModelNameConstraints
+  );
 
   if (generatorOptions.showTypeMappingExample) {
     options.typeMapping = {
       Integer: ({ dependencyManager }) => {
         dependencyManager.addDependency('parent "family/father"');
+
         return 'int64';
       }
-    }
+    };
   }
 
   try {
@@ -30,10 +41,12 @@ export async function getGoModels(
     const generatedModels = await generator.generateCompleteModels(input, {
       packageName: generatorOptions.goPackageName || 'asyncapi.models'
     });
+
     return convertModelsToProps(generatedModels);
-  } catch (e : any) {
+  } catch (e: any) {
     console.error('Could not generate models');
     console.error(e);
+
     return e.message;
   }
 }
