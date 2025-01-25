@@ -45,11 +45,13 @@ export class ClassRenderer extends JavaRenderer<ConstrainedObjectModel> {
         this.dependencyManager.addModelDependency(i);
       }
 
-      const inheritanceKeyworkd = this.model.options.isExtended ? 'extends' : 'implements';
+      const inheritanceKeyworkd = this.model.options.isExtended
+        ? 'extends'
+        : 'implements';
 
-      return `public ${abstractType} ${this.model.name} ${inheritanceKeyworkd} ${parents
-        .map((i) => i.name)
-        .join(', ')} {
+      return `public ${abstractType} ${
+        this.model.name
+      } ${inheritanceKeyworkd} ${parents.map((i) => i.name).join(', ')} {
 ${this.indent(this.renderBlock(content, 2))}
 }`;
     }
@@ -166,7 +168,7 @@ export const isDiscriminatorOrDictionary = (
   property: ConstrainedObjectPropertyModel
 ): boolean =>
   model.options.discriminator?.discriminator ===
-  property.unconstrainedPropertyName ||
+    property.unconstrainedPropertyName ||
   property.property instanceof ConstrainedDictionaryModel;
 
 export const JAVA_DEFAULT_CLASS_PRESET: ClassPresetType<JavaOptions> = {
