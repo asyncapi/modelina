@@ -4,17 +4,28 @@ import {
 } from '../../src';
 
 const generator = new CSharpGenerator({
-  presets: [CSHARP_NEWTONSOFT_SERIALIZER_PRESET]
+  presets: [
+    {
+      preset: CSHARP_NEWTONSOFT_SERIALIZER_PRESET,
+      options: {
+        enforceRequired: true
+      }
+    }
+  ]
 });
 
 const jsonSchemaDraft7 = {
   $schema: 'http://json-schema.org/draft-07/schema#',
   type: 'object',
   additionalProperties: false,
+  required: ['email'],
   properties: {
     email: {
       type: 'string',
       format: 'email'
+    },
+    name: {
+      type: 'string'
     }
   }
 };
