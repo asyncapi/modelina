@@ -1072,6 +1072,17 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "fr-th",
+      "name": "fr-th",
+      "avatar_url": "https://avatars.githubusercontent.com/u/61010557?v=4",
+      "profile": "https://github.com/fr-th",
+      "contributions": [
+        "code",
+        "test",
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
