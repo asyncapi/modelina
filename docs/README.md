@@ -44,7 +44,7 @@ Explains how to setup the project for development.
 ### [Presets](./presets.md)
 Goes more in-depth into how the preset system works, which enables full customization of generators.
 
-### [Interpretation of JSON Schema](./inputs/json_schema.md)
+### [Interpretation of JSON Schema](./inputs/JSON_Schema.md)
 Explains how a JSON Schema is interpreted to a data model.
 
 ### [Migration](./migrations/README.md)

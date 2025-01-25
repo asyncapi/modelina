@@ -118,7 +118,7 @@ To make it easier to contribute a new generator, and to avoid focusing too much 
 4. Add your [generator to the generator index file](../src/generators/index.ts).
 
 Now it's time to adapt the template into what ever it is you are generating:
-1. Adapt the [constraint logic](../src/generators/template/constrainer) and the [type constraints](../src/generators/template/TemplateConstrainer.ts) based on what is allowed within your output. Read more about the constraint logic [here](./constraints.md).
+1. Adapt the [constraint logic](../src/generators/template/constrainer) and the [type constraints](../src/generators/template/TemplateConstrainer.ts) based on what is allowed within your output. Read more about the constraint logic [here](./constraints/README.md).
 2. Add all of the reserved keywords that the models must never generate in the [Constant file](../src/generators/template/Constants.ts).
 3. Adapt/create the first renderers. The template by default include two renderers, one for rendering enums and one for classes, but you can create what ever renderers makes sense. For example in Rust it's not called class but struct, so therefore its called a `StructRenderer`.
 4. Adapt the file generator and the rendering of the complete models to fit your generator.

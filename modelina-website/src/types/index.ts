@@ -1,6 +1,6 @@
-import { ParsedUrlQuery } from 'querystring';
+import type { ParsedUrlQuery } from 'querystring';
 
-export interface params extends ParsedUrlQuery {
+export interface Params extends ParsedUrlQuery {
   page: string;
 }
 
@@ -21,6 +21,27 @@ export interface ModelProps {
 
 export interface UpdateMessage {
   models: ModelProps[];
+}
+
+export interface ModelinaGeneralOptions {
+  language:
+    | 'typescript'
+    | 'java'
+    | 'go'
+    | 'javascript'
+    | 'csharp'
+    | 'kotlin'
+    | 'rust'
+    | 'scala'
+    | 'python'
+    | 'dart'
+    | 'cplusplus'
+    | 'php';
+  showTypeMappingExample: boolean;
+  indentationType: 'tabs' | 'spaces';
+  propertyNamingFormat: 'default' | 'snake_case' | 'pascal_case' | 'camel_case' | 'param_case' | 'constant_case';
+  modelNamingFormat: 'default' | 'snake_case' | 'pascal_case' | 'camel_case' | 'param_case' | 'constant_case';
+  enumKeyNamingFormat: 'default' | 'snake_case' | 'pascal_case' | 'camel_case' | 'param_case' | 'constant_case';
 }
 
 export interface ModelinaTypeScriptOptions extends ModelinaGeneralOptions {
@@ -76,46 +97,7 @@ export interface ModelinaScalaOptions extends ModelinaGeneralOptions {
 }
 export interface ModelinaPythonOptions extends ModelinaGeneralOptions {}
 export interface ModelinaDartOptions extends ModelinaGeneralOptions {}
-export interface ModelinaGeneralOptions {
-  language:
-    | 'typescript'
-    | 'java'
-    | 'go'
-    | 'javascript'
-    | 'csharp'
-    | 'kotlin'
-    | 'rust'
-    | 'scala'
-    | 'python'
-    | 'dart'
-    | 'cplusplus'
-    | 'php';
-  showTypeMappingExample: boolean;
-  indentationType: 
-    | 'tabs'
-    | 'spaces';
-  propertyNamingFormat: 
-    | 'default'
-    | 'snake_case'
-    | 'pascal_case'
-    | 'camel_case'
-    | 'param_case'
-    | 'constant_case';
-  modelNamingFormat:
-    | 'default'
-    | 'snake_case'
-    | 'pascal_case'
-    | 'camel_case'
-    | 'param_case'
-    | 'constant_case';
-  enumKeyNamingFormat:
-    | 'default'
-    | 'snake_case'
-    | 'pascal_case'
-    | 'camel_case'
-    | 'param_case'
-    | 'constant_case';
-}
+
 export interface ModelinaGeneralQueryOptions {
   language: string;
   showTypeMappingExample?: string;
@@ -130,7 +112,7 @@ export interface ModelinaJavaQueryOptions {
   javaIncludeJackson?: string;
   javaIncludeMarshaling?: string;
   javaArrayType?: string;
-  javaOverwriteHashcode?:string;
+  javaOverwriteHashcode?: string;
   javaOverwriteEqual?: string;
   javaOverwriteToString?: string;
   javaJavaDocs?: string;
@@ -143,7 +125,7 @@ export interface ModelinaJavaScriptQueryOptions {}
 export interface ModelinaCSharpQueryOptions {
   csharpArrayType?: string;
   csharpAutoImplemented?: string;
-  csharpOverwriteHashcode?:string;
+  csharpOverwriteHashcode?: string;
   csharpIncludeJson?: string;
   csharpOverwriteEqual?: string;
   csharpIncludeNewtonsoft?: string;
@@ -190,7 +172,7 @@ export interface ModelinaOptions
     ModelinaScalaOptions,
     ModelinaPythonOptions,
     ModelinaDartOptions,
-    ModelinaPhpOptions, 
+    ModelinaPhpOptions,
     ModelinaCplusplusOptions {}
 export interface ModelinaQueryOptions
   extends ParsedUrlQuery,
@@ -240,9 +222,7 @@ export const modelinaLanguageOptions = [
     value: 'rust',
     text: 'Rust'
   },
-  { value: 'scala',
-    text: 'Scala'
-  },
+  { value: 'scala', text: 'Scala' },
   {
     value: 'python',
     text: 'Python'
@@ -266,8 +246,7 @@ export const defaultAsyncapiDocument = {
   info: {
     title: 'Streetlights API',
     version: '1.0.0',
-    description:
-      'The Smartylighting Streetlights API allows you\nto remotely manage the city lights.\n',
+    description: 'The Smartylighting Streetlights API allows you\nto remotely manage the city lights.\n',
     license: {
       name: 'Apache 2.0',
       url: 'https://www.apache.org/licenses/LICENSE-2.0'
@@ -282,8 +261,7 @@ export const defaultAsyncapiDocument = {
   channels: {
     'light/measured': {
       publish: {
-        summary:
-          'Inform about environmental lighting conditions for a particular streetlight.',
+        summary: 'Inform about environmental lighting conditions for a particular streetlight.',
         operationId: 'onLightMeasured',
         message: {
           name: 'LightMeasured',
@@ -313,8 +291,7 @@ export const defaultAsyncapiDocument = {
     },
     'turn/on': {
       subscribe: {
-        summary:
-          'Command a particular streetlight to turn the lights on or off.',
+        summary: 'Command a particular streetlight to turn the lights on or off.',
         operationId: 'turnOn',
         message: {
           name: 'TurnOn',

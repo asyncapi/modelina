@@ -1,5 +1,5 @@
-import GenericLayout from '@/components/layouts/GenericLayout';
 import Examples from '@/components/examples/Examples';
+import GenericLayout from '@/components/layouts/GenericLayout';
 
 export default function Index() {
   const description =
@@ -7,13 +7,8 @@ export default function Index() {
   const image = '/img/social/modelina-card.jpg';
 
   return (
-    <GenericLayout
-      title="Modelina"
-      description={description}
-      image={image}
-      full={true}
-    >
-      <Examples/>
+    <GenericLayout title='Modelina' description={description} image={image} full={true}>
+      <Examples />
     </GenericLayout>
   );
 }

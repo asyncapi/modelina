@@ -1,8 +1,6 @@
-import { ModelinaScalaOptions } from '@/types';
-import {
-  getGeneralGeneratorCode,
-  renderGeneratorInstanceCode
-} from './GeneralGenerator';
+import type { ModelinaScalaOptions } from '@/types';
+
+import { getGeneralGeneratorCode, renderGeneratorInstanceCode } from './GeneralGenerator';
 
 export function getScalaGeneratorCode(generatorOptions: ModelinaScalaOptions) {
   const optionString: string[] = getGeneralGeneratorCode(
@@ -25,11 +23,7 @@ export function getScalaGeneratorCode(generatorOptions: ModelinaScalaOptions) {
         }`);
   }
 
-  const generateInstanceCode = renderGeneratorInstanceCode(
-    optionString,
-    optionStringPresets,
-    'ScalaGenerator'
-  );
+  const generateInstanceCode = renderGeneratorInstanceCode(optionString, optionStringPresets, 'ScalaGenerator');
 
   return `// Use the following code as starting point
 // To generate the models exactly as displayed in the playground

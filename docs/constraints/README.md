@@ -1,5 +1,5 @@
 # Constraints
-Because we cannot control what is provided as input, we must constrain the internal model to be valid for the output ([read more about the process here](./internal-model.md)). What is considered valid entirely depends on the output so each have their own set of rules.
+Because we cannot control what is provided as input, we must constrain the internal model to be valid for the output ([read more about the process here](../internal-model.md)). What is considered valid entirely depends on the output so each have their own set of rules.
 
 As an example lets consider TypeScript as an output. Consider the model name, which are a simple string, but a string which can contain ANY characters and formats. Some of the constraints we have found for the naming of a model are:
 
@@ -16,18 +16,18 @@ class 1name {}
 
 There are many rules as such, but to get the full description about the default constraints here:
 
-- [C++](./constraints/Csplusplus.md)
-- [C#](./constraints/CSharp.md)
-- [Dart](./constraints/Dart.md)
-- [Go](./constraints/Go.md)
-- [Java](./constraints/Java.md)
-- [JavaScript](./constraints/JavaScript.md)
-- [Kotlin](./constraints/Kotlin.md)
-- [PHP](./constraints/PHP.md)
-- [Python](./constraints/Python.md)
-- [Rust](./constraints/Rust.md)
-- [Scala](./constraints/Scala.md)
-- [TypeScript](./constraints/TypeScript.md)
+- [C++](./Cplusplus.md)
+- [C#](./CSharp.md)
+- [Dart](./Dart.md)
+- [Go](./Go.md)
+- [Java](./Java.md)
+- [JavaScript](./JavaScript.md)
+- [Kotlin](./Kotlin.md)
+- [PHP](./PHP.md)
+- [Python](./Python.md)
+- [Rust](./Rust.md)
+- [Scala](./Scala.md)
+- [TypeScript](./TypeScript.md)
 
 Even though there are many of these constraints, there might be reasons you want to customize the behavior to make it suit your use-case. Therefore each of the constraint rules can be overwritten completely and allow for you to implement your own behavior.
 

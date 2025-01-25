@@ -1,31 +1,31 @@
-import { OutputModel, FormatHelpers, IndentationTypes } from '../../../../../';
-import { ModelinaGeneralOptions, ModelProps } from "@/types";
+import type { OutputModel } from '@/../../';
+import { FormatHelpers, IndentationTypes } from '@/../../';
+import type { ModelinaGeneralOptions, ModelProps } from '@/types';
 
 /**
  * Converts the output model of Modelina to props
  */
-export function convertModelsToProps(
-  generatedModels: OutputModel[]
-): ModelProps[] {
-  return generatedModels.map((model) => {
-    return {
+export function convertModelsToProps(generatedModels: OutputModel[]): ModelProps[] {
+  return generatedModels.map((model) => ({
       code: model.result,
       name: model.modelName
-    };
-  });
+    }));
 }
 
 /**
  * Function that applies the general options to the generator options, right before the models are generated.
- * 
+ *
  * Works for all generators.
  */
 export function applyGeneralOptions(
-  generatorOptions: ModelinaGeneralOptions, 
-  options: any, 
-  enumKeyConstraints: any, 
-  propertyKeyConstraints: any, 
-  modelNameConstraints: any) {
+  generatorOptions: ModelinaGeneralOptions,
+  opts: Record<any, any>,
+  enumKeyConstraints: any,
+  propertyKeyConstraints: any,
+  modelNameConstraints: any
+) {
+  const options = opts;
+
   options.constraints = {};
   if (generatorOptions.enumKeyNamingFormat !== 'default') {
     switch (generatorOptions.enumKeyNamingFormat) {
@@ -125,12 +125,12 @@ export function applyGeneralOptions(
       case 'spaces':
         options.indentation = {
           type: IndentationTypes.SPACES
-        }
+        };
         break;
       case 'tabs':
         options.indentation = {
           type: IndentationTypes.TABS
-        }
+        };
         break;
       default:
         break;

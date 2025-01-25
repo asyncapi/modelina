@@ -1,14 +1,16 @@
-import { ModelinaGeneralOptions } from "@/types";
-import { IndentationTypes, indent } from "../Utils";
+import type { ModelinaGeneralOptions } from '@/types';
+
+import { indent, IndentationTypes } from '../Utils';
 
 /**
  * Even if each language has their own constraints, naming formatting, is something that always remain the same
  */
 export function getGeneralGeneratorCode(
   generatorOptions: ModelinaGeneralOptions,
-  enumKeyConstraints: string, 
-  propertyKeyConstraints: string, 
-  modelNameConstraints: string): string[] {
+  enumKeyConstraints: string,
+  propertyKeyConstraints: string,
+  modelNameConstraints: string
+): string[] {
   const optionString: string[] = [];
   const constraints = [];
 
@@ -105,12 +107,12 @@ export function getGeneralGeneratorCode(
         break;
     }
   }
-  if(constraints.length > 0) {
+  if (constraints.length > 0) {
     optionString.push(`constraints: {
-${constraints.map((value) => {
-  return indent(value, 2, IndentationTypes.SPACES);
-}).join(',\n')}
-}`); 
+${constraints
+  .map((value) => indent(value, 2, IndentationTypes.SPACES))
+  .join(',\n')}
+}`);
   }
 
   if (generatorOptions.indentationType) {
@@ -129,35 +131,41 @@ ${constraints.map((value) => {
         break;
     }
   }
+
   return optionString;
 }
 
 /**
  * Rendering of options are pretty generic, this function handles that rendering.
  */
-export function renderGeneratorInstanceCode(optionString: string[], optionStringPresets: string[], generatorName: string) {
-  const renderedPresets = optionStringPresets.map((value) => {
-    return indent(value, 2, IndentationTypes.SPACES);
-  }).join(', \n');
+export function renderGeneratorInstanceCode(
+  optionString: string[],
+  optionStringPresets: string[],
+  generatorName: string
+) {
+  const renderedPresets = optionStringPresets
+    .map((value) => indent(value, 2, IndentationTypes.SPACES))
+    .join(', \n');
   const spacer = optionString.length > 0 ? ',' : '';
   const presetOptions =
     optionStringPresets.length > 0
       ? `${spacer}\n presets: [
 ${renderedPresets}
-]` : '';
+]`
+      : '';
   let fullOptions = '';
+
   if (optionStringPresets.length > 0 || optionString.length > 0) {
-    const renderedOptions = optionString.map((value) => {
-      return indent(value, 2, IndentationTypes.SPACES);
-    }).join(',\n');
+    const renderedOptions = optionString
+      .map((value) => indent(value, 2, IndentationTypes.SPACES))
+      .join(',\n');
+
     fullOptions = `{
 ${renderedOptions}
 ${presetOptions}
 }`;
   }
-  const generateInstanceCode = `const generator = new ${generatorName}(${fullOptions});`.replace(
-    /^\s*\n/gm,
-    ''
-  );
+  const generateInstanceCode = `const generator = new ${generatorName}(${fullOptions});`.replace(/^\s*\n/gm, '');
+
   return generateInstanceCode;
 }

@@ -19,6 +19,10 @@
 # Input Champions for AsyncAPI input
 */processors/AsyncAPIInputProcessor*.ts
 
+# Input Champions for Avro Schema input
+*/helpers/AvroToMetaModel*.ts @akkshitgupta
+*/processors/AvroSchemaInputProcessor*.ts @akkshitgupta
+
 # Input Champions for TypeScript input
 */processors/TypeScriptInputProcessor*.ts
 

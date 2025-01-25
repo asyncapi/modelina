@@ -1,3 +1,4 @@
+export * from './AbstractDependencyManager';
 export * from './AbstractGenerator';
 export * from './AbstractRenderer';
 export * from './java';

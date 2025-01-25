@@ -1,14 +1,17 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { ModelinaDartOptions } from '../../types';
+import type { ModelinaDartOptions } from '../../types';
 import { getGeneralGeneratorCode, renderGeneratorInstanceCode } from './GeneralGenerator';
 
-export function getDartGeneratorCode(
-  generatorOptions: ModelinaDartOptions
-) {
-  const optionString: string[] = getGeneralGeneratorCode(generatorOptions, 'dartDefaultEnumKeyConstraints', 'dartDefaultPropertyKeyConstraints', 'dartDefaultModelNameConstraints');
+export function getDartGeneratorCode(generatorOptions: ModelinaDartOptions) {
+  const optionString: string[] = getGeneralGeneratorCode(
+    generatorOptions,
+    'dartDefaultEnumKeyConstraints',
+    'dartDefaultPropertyKeyConstraints',
+    'dartDefaultModelNameConstraints'
+  );
   const optionStringPresets: string[] = [];
 
-  if(generatorOptions.showTypeMappingExample === true) {
+  if (generatorOptions.showTypeMappingExample === true) {
     optionString.push(`typeMapping: {
   Integer: ({ dependencyManager, constrainedModel, options, partOfProperty }) => {
     // Add custom dependency for your type if required.

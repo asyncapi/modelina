@@ -869,7 +869,10 @@
       "profile": "https://github.com/akkshitgupta",
       "contributions": [
         "code",
-        "bug"
+        "bug",
+        "example",
+        "test",
+        "doc"
       ]
     },
     {
@@ -937,6 +940,137 @@
       "contributions": [
         "code",
         "example"
+      ]
+    },
+    {
+      "login": "gitankit7",
+      "name": "gitankit7",
+      "avatar_url": "https://avatars.githubusercontent.com/u/34441936?v=4",
+      "profile": "https://github.com/gitankit7",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "janne-slamcore",
+      "name": "Janne Husberg",
+      "avatar_url": "https://avatars.githubusercontent.com/u/112867847?v=4",
+      "profile": "https://github.com/janne-slamcore",
+      "contributions": [
+        "code",
+        "test",
+        "bug"
+      ]
+    },
+    {
+      "login": "borrull",
+      "name": "borrull",
+      "avatar_url": "https://avatars.githubusercontent.com/u/5275400?v=4",
+      "profile": "https://github.com/borrull",
+      "contributions": [
+        "code",
+        "test"
+      ]
+    },
+    {
+      "login": "kamaz",
+      "name": "Kamil Zuzda",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2106178?v=4",
+      "profile": "http://www.yokeplatform.com",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "jespitae",
+      "name": "jespitae",
+      "avatar_url": "https://avatars.githubusercontent.com/u/23041146?v=4",
+      "profile": "https://github.com/jespitae",
+      "contributions": [
+        "code",
+        "test",
+        "bug"
+      ]
+    },
+    {
+      "login": "Pike",
+      "name": "Axel Hecht",
+      "avatar_url": "https://avatars.githubusercontent.com/u/43494?v=4",
+      "profile": "https://pike.github.io/",
+      "contributions": [
+        "code",
+        "test"
+      ]
+    },
+    {
+      "login": "tomdevroomen",
+      "name": "Tom de Vroomen",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4637986?v=4",
+      "profile": "https://github.com/tomdevroomen",
+      "contributions": [
+        "code",
+        "example",
+        "doc",
+        "test"
+      ]
+    },
+    {
+      "login": "memdal",
+      "name": "memdal",
+      "avatar_url": "https://avatars.githubusercontent.com/u/77838566?v=4",
+      "profile": "https://github.com/memdal",
+      "contributions": [
+        "code",
+        "test"
+      ]
+    },
+    {
+      "login": "maxplatov",
+      "name": "maxplatov",
+      "avatar_url": "https://avatars.githubusercontent.com/u/14889696?v=4",
+      "profile": "https://github.com/maxplatov",
+      "contributions": [
+        "review"
+      ]
+    },
+    {
+      "login": "emmanuel-ferdman",
+      "name": "Emmanuel Ferdman",
+      "avatar_url": "https://avatars.githubusercontent.com/u/35470921?v=4",
+      "profile": "https://github.com/emmanuel-ferdman",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "jonjomckay",
+      "name": "Jonjo McKay",
+      "avatar_url": "https://avatars.githubusercontent.com/u/456645?v=4",
+      "profile": "https://jonjomckay.com",
+      "contributions": [
+        "code",
+        "bug",
+        "test"
+      ]
+    },
+    {
+      "login": "TertiumOrganum1",
+      "name": "TertiumOrganum1",
+      "avatar_url": "https://avatars.githubusercontent.com/u/51286827?v=4",
+      "profile": "https://github.com/TertiumOrganum1",
+      "contributions": [
+        "code",
+        "doc",
+        "test"
+      ]
+    },
+    {
+      "login": "Shriya-Chauhan",
+      "name": "Shriya Chauhan",
+      "avatar_url": "https://avatars.githubusercontent.com/u/78415084?v=4",
+      "profile": "https://github.com/Shriya-Chauhan",
+      "contributions": [
+        "code"
       ]
     }
   ],
