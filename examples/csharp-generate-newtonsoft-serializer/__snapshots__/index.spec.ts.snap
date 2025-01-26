@@ -5,12 +5,19 @@ Array [
   "[JsonConverter(typeof(RootConverter))]
 public partial class Root
 {
-  private string? email;
+  private string email;
+  private string? name;
 
-  public string? Email 
+  public string Email 
   {
     get { return email; }
     set { this.email = value; }
+  }
+
+  public string? Name 
+  {
+    get { return name; }
+    set { this.name = value; }
   }
 
     public string Serialize()
@@ -30,8 +37,14 @@ public class RootConverter : JsonConverter<Root>
   JObject jo = JObject.Load(reader);
   Root value = new Root();
 
-  if(jo[\\"email\\"] != null) {
-  value.Email = jo[\\"email\\"].ToObject<string?>(serializer);
+  if(jo[\\"email\\"] is null){
+  throw new JsonSerializationException(\\"Required property 'email' is missing\\");
+}
+
+value.Email = jo[\\"email\\"].ToObject<string>(serializer);
+
+if(jo[\\"name\\"] != null) {
+  value.Name = jo[\\"name\\"].ToObject<string?>(serializer);
 }
 
   
@@ -44,6 +57,10 @@ public class RootConverter : JsonConverter<Root>
   if (value.Email != null)
 {
   jo.Add(\\"email\\", JToken.FromObject(value.Email, serializer));
+}
+if (value.Name != null)
+{
+  jo.Add(\\"name\\", JToken.FromObject(value.Name, serializer));
 }
   
 
