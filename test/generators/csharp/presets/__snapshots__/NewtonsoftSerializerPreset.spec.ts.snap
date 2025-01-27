@@ -73,7 +73,6 @@ public class TestConverter : JsonConverter<Test>
   if(jo[\\"string prop\\"] is null){
   throw new JsonSerializationException(\\"Required property 'string prop' is missing\\");
 }
-
 value.StringProp = jo[\\"string prop\\"].ToObject<string>(serializer);
 
 if(jo[\\"const string prop\\"] != null) {

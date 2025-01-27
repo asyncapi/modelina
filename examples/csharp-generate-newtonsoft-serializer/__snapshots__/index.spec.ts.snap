@@ -19,7 +19,6 @@ public partial class Root
     get { return name; }
     set { this.name = value; }
   }
-
     public string Serialize()
     {
       return JsonConvert.SerializeObject(this);
