@@ -1,9 +1,9 @@
 import {
-  JavaGenerator,
   JAVA_COMMON_PRESET,
   JAVA_CONSTRAINTS_PRESET,
   JAVA_DESCRIPTION_PRESET,
-  JAVA_JACKSON_PRESET
+  JAVA_JACKSON_PRESET,
+  JavaGenerator
 } from '../../../src/generators';
 
 describe('JavaGenerator', () => {
@@ -282,7 +282,7 @@ describe('JavaGenerator', () => {
   });
 
   describe('allowInheritance', () => {
-    test('should create interface for Pet and CloudEvent', async () => {
+    test('should create interface for Animal, Pet and Dog', async () => {
       const asyncapiDoc = {
         asyncapi: '2.5.0',
         info: {
@@ -290,12 +290,12 @@ describe('JavaGenerator', () => {
           version: '1.0.0'
         },
         channels: {
-          pet: {
+          animal: {
             publish: {
               message: {
                 oneOf: [
                   {
-                    $ref: '#/components/messages/Dog'
+                    $ref: '#/components/messages/Boxer'
                   },
                   {
                     $ref: '#/components/messages/Cat'
@@ -307,96 +307,58 @@ describe('JavaGenerator', () => {
         },
         components: {
           messages: {
-            Dog: {
+            Boxer: {
               payload: {
-                title: 'Dog',
-                allOf: [
-                  {
-                    $ref: '#/components/schemas/CloudEvent'
-                  },
-                  {
-                    type: 'object',
-                    properties: {
-                      type: {
-                        const: 'Dog'
-                      },
-                      data: {
-                        type: 'string'
-                      },
-                      test: {
-                        $ref: '#/components/schemas/TestAllOf'
-                      }
-                    }
-                  }
-                ]
+                $ref: '#/components/schemas/Boxer'
               }
             },
             Cat: {
               payload: {
-                title: 'Cat',
-                allOf: [
-                  {
-                    $ref: '#/components/schemas/CloudEvent'
-                  },
-                  {
-                    type: 'object',
-                    properties: {
-                      type: {
-                        const: 'Cat'
-                      },
-                      test: {
-                        $ref: '#/components/schemas/Test'
-                      }
-                    }
-                  }
-                ]
+                $ref: '#/components/schemas/Cat'
               }
             }
           },
           schemas: {
-            CloudEvent: {
-              title: 'CloudEvent',
+            Pet: {
+              title: 'Pet',
               type: 'object',
-              discriminator: 'type',
+              discriminator: 'petType',
               properties: {
-                id: {
+                petType: {
                   type: 'string'
-                },
-                type: {
-                  title: 'CloudEventType',
-                  type: 'string',
-                  description: 'test'
-                },
-                sequencetype: {
-                  title: 'CloudEvent.SequenceType',
-                  type: 'string',
-                  enum: ['Integer']
                 }
               },
-              required: ['id', 'type']
+              required: ['type']
             },
-            Test: {
-              title: 'Test',
-              type: 'object',
-              properties: {
-                testProp: {
-                  type: 'string'
-                }
-              }
-            },
-            TestAllOf: {
-              title: 'TestAllOf',
+            Cat: {
+              title: 'Cat',
               allOf: [
-                { $ref: '#/components/schemas/Test' },
                 {
-                  type: 'object',
-                  properties: {
-                    testProp2: {
-                      type: 'string'
-                    }
-                  }
+                  $ref: '#/components/schemas/Pet'
                 }
               ]
+            },
+            Dog: {
+              title: 'Dog',
+              allOf: [
+                {
+                  $ref: '#/components/schemas/Pet'
+                }
+              ]
+            },
+            Boxer: {
+              title: 'Boxer',
+              type: 'object',
+              allOf: [
+                {
+                  $ref: '#/components/schemas/Dog'
+                }
+              ],
+              properties: {
+                breed: {
+                  const: 'Boxer'
+                }
+              }
             }
           }
         }
