@@ -10,6 +10,7 @@ const doc = {
   properties: {
     'string prop': { type: 'string' },
     'const string prop': { type: 'string', const: 'abc' },
+    notRequiredStringProp: { type: 'string' },
     numberProp: { type: 'number' },
     enumProp: {
       $id: 'EnumTest',
@@ -30,7 +31,14 @@ const doc = {
 describe('Newtonsoft JSON serializer preset', () => {
   test('should render serialize and deserialize converters', async () => {
     const generator = new CSharpGenerator({
-      presets: [CSHARP_NEWTONSOFT_SERIALIZER_PRESET]
+      presets: [
+        {
+          preset: CSHARP_NEWTONSOFT_SERIALIZER_PRESET,
+          options: {
+            enforceRequired: true
+          }
+        }
+      ]
     });
 
     const outputModels = await generator.generate(doc);

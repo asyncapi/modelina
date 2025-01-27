@@ -71,9 +71,11 @@ jo.Add("${prop.unconstrainedPropertyName}", JToken.FromObject(jsonStringComplian
  * Render `deserialize` function based on model
  */
 function renderDeserialize({
-  model
+  model,
+  options
 }: {
   model: ConstrainedObjectModel;
+  options: CSharpOptions;
 }): string {
   const unwrapDictionaryProps = Object.values(model.properties).filter(
     (prop) =>
@@ -93,11 +95,24 @@ function renderDeserialize({
         prop.property instanceof ConstrainedReferenceModel &&
         prop.property.ref instanceof ConstrainedEnumModel
       ) {
-        toValue = `${prop.property.name}Extensions.To${prop.property.name}(jo["${prop.unconstrainedPropertyName}"].ToString()) ?? 0`;
+        toValue = `${prop.property.name}Extensions.To${prop.property.name}(jo["${
+          prop.unconstrainedPropertyName
+        }"].ToString())${prop.required ? '.Value' : ''}`;
       }
-      if (prop.property.options.const) {
-        return undefined;
+
+      if (
+        options?.enforceRequired !== undefined &&
+        options?.enforceRequired &&
+        prop.required
+      ) {
+        return `if(jo["${prop.unconstrainedPropertyName}"] is null){
+  throw new JsonSerializationException("Required property '${prop.unconstrainedPropertyName}' is missing");
+}
+
+value.${propertyAccessor} = ${toValue};
+`;
       }
+
       return `if(jo["${prop.unconstrainedPropertyName}"] != null) {
   value.${propertyAccessor} = ${toValue};
 }`;
@@ -165,7 +180,7 @@ public static ${model.name} Deserialize(string json)
   return JsonConvert.DeserializeObject<${model.name}>(json);
 }`);
       },
-      self: ({ renderer, content, model }) => {
+      self: ({ renderer, content, model, options }) => {
         renderer.dependencyManager.addDependency('using Newtonsoft.Json;');
         renderer.dependencyManager.addDependency('using Newtonsoft.Json.Linq;');
         renderer.dependencyManager.addDependency(
@@ -173,7 +188,7 @@ public static ${model.name} Deserialize(string json)
         );
         renderer.dependencyManager.addDependency('using System.Linq;');
 
-        const deserialize = renderDeserialize({ model });
+        const deserialize = renderDeserialize({ model, options });
         const serialize = renderSerialize({ model });
 
         return `[JsonConverter(typeof(${model.name}Converter))]

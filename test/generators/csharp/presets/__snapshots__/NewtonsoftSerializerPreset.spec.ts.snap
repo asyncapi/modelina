@@ -6,6 +6,7 @@ public partial class Test
 {
   private string stringProp;
   private const string? constStringProp = \\"abc\\";
+  private string? notRequiredStringProp;
   private double? numberProp;
   private EnumTest? enumProp;
   private NestedTest? objectProp;
@@ -20,6 +21,12 @@ public partial class Test
   public string? ConstStringProp 
   {
     get { return constStringProp; }
+  }
+
+  public string? NotRequiredStringProp 
+  {
+    get { return notRequiredStringProp; }
+    set { this.notRequiredStringProp = value; }
   }
 
   public double? NumberProp 
@@ -63,20 +70,29 @@ public class TestConverter : JsonConverter<Test>
   JObject jo = JObject.Load(reader);
   Test value = new Test();
 
-  if(jo[\\"string prop\\"] != null) {
-  value.StringProp = jo[\\"string prop\\"].ToObject<string>(serializer);
+  if(jo[\\"string prop\\"] is null){
+  throw new JsonSerializationException(\\"Required property 'string prop' is missing\\");
+}
+
+value.StringProp = jo[\\"string prop\\"].ToObject<string>(serializer);
+
+if(jo[\\"const string prop\\"] != null) {
+  value.ConstStringProp = jo[\\"const string prop\\"].ToObject<string?>(serializer);
+}
+if(jo[\\"notRequiredStringProp\\"] != null) {
+  value.NotRequiredStringProp = jo[\\"notRequiredStringProp\\"].ToObject<string?>(serializer);
 }
 if(jo[\\"numberProp\\"] != null) {
   value.NumberProp = jo[\\"numberProp\\"].ToObject<double?>(serializer);
 }
 if(jo[\\"enumProp\\"] != null) {
-  value.EnumProp = EnumTestExtensions.ToEnumTest(jo[\\"enumProp\\"].ToString()) ?? 0;
+  value.EnumProp = EnumTestExtensions.ToEnumTest(jo[\\"enumProp\\"].ToString());
 }
 if(jo[\\"objectProp\\"] != null) {
   value.ObjectProp = jo[\\"objectProp\\"].ToObject<NestedTest?>(serializer);
 }
 
-  var additionalProperties = jo.Properties().Where((prop) => prop.Name != \\"string prop\\" || prop.Name != \\"const string prop\\" || prop.Name != \\"numberProp\\" || prop.Name != \\"enumProp\\" || prop.Name != \\"objectProp\\");
+  var additionalProperties = jo.Properties().Where((prop) => prop.Name != \\"string prop\\" || prop.Name != \\"const string prop\\" || prop.Name != \\"notRequiredStringProp\\" || prop.Name != \\"numberProp\\" || prop.Name != \\"enumProp\\" || prop.Name != \\"objectProp\\");
   value.AdditionalProperties = new Dictionary<string, dynamic>();
 
   foreach (var additionalProperty in additionalProperties)
@@ -96,6 +112,10 @@ if(jo[\\"objectProp\\"] != null) {
 if (value.ConstStringProp != null)
 {
   jo.Add(\\"const string prop\\", JToken.FromObject(value.ConstStringProp, serializer));
+}
+if (value.NotRequiredStringProp != null)
+{
+  jo.Add(\\"notRequiredStringProp\\", JToken.FromObject(value.NotRequiredStringProp, serializer));
 }
 if (value.NumberProp != null)
 {
