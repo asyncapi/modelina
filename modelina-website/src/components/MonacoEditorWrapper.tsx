@@ -54,6 +54,7 @@ export default function MonacoEditorWrapper({
         },
         rules: [{ token: '', background: '#252f3f' }]
       });
+      monacoInstance.editor.setTheme('asyncapi-theme'); // Apply theme immediately
     }
   }, [monacoInstance]);
 
