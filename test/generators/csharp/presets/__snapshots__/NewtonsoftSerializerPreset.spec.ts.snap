@@ -93,6 +93,7 @@ if(jo[\\"objectProp\\"] != null) {
 }
 
   var additionalProperties = jo.Properties().Where((prop) => prop.Name != \\"string prop\\" || prop.Name != \\"const string prop\\" || prop.Name != \\"notRequiredStringProp\\" || prop.Name != \\"numberProp\\" || prop.Name != \\"enumProp\\" || prop.Name != \\"objectProp\\");
+
   value.AdditionalProperties = new Dictionary<string, dynamic>();
 
   foreach (var additionalProperty in additionalProperties)
