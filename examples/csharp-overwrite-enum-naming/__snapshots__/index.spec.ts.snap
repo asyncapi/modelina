@@ -9,33 +9,32 @@ Array [
   Delivered,
   Cancelled
 }
-
-public static class OrderStatusExtensions
-{
-  public static int? GetValue(this OrderStatus enumValue)
+  public static class OrderStatusExtensions
   {
-    switch (enumValue)
+    public static int? GetValue(this OrderStatus enumValue)
     {
-      case OrderStatus.Ordered: return 30;
-      case OrderStatus.UnderDelivery: return 40;
-      case OrderStatus.Delivered: return 50;
-      case OrderStatus.Cancelled: return 99;
+      switch (enumValue)
+      {
+        case OrderStatus.Ordered: return 30;
+        case OrderStatus.UnderDelivery: return 40;
+        case OrderStatus.Delivered: return 50;
+        case OrderStatus.Cancelled: return 99;
+      }
+      return null;
     }
-    return null;
-  }
 
-  public static OrderStatus? ToOrderStatus(dynamic? value)
-  {
-    switch (value)
+    public static OrderStatus? ToOrderStatus(dynamic? value)
     {
-      case 30: return OrderStatus.Ordered;
-      case 40: return OrderStatus.UnderDelivery;
-      case 50: return OrderStatus.Delivered;
-      case 99: return OrderStatus.Cancelled;
+      switch (value)
+      {
+        case 30: return OrderStatus.Ordered;
+        case 40: return OrderStatus.UnderDelivery;
+        case 50: return OrderStatus.Delivered;
+        case 99: return OrderStatus.Cancelled;
+      }
+      return null;
     }
-    return null;
   }
-}
 ",
 ]
 `;
