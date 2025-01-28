@@ -5,6 +5,7 @@ exports[`Newtonsoft JSON serializer preset should render serialize and deseriali
 public partial class Test
 {
   private string stringProp;
+  private const string? constStringProp = \\"abc\\";
   private string? notRequiredStringProp;
   private double? numberProp;
   private EnumTest? enumProp;
@@ -15,6 +16,11 @@ public partial class Test
   {
     get { return stringProp; }
     set { this.stringProp = value; }
+  }
+
+  public string? ConstStringProp 
+  {
+    get { return constStringProp; }
   }
 
   public string? NotRequiredStringProp 
@@ -46,6 +52,15 @@ public partial class Test
     get { return additionalProperties; }
     set { this.additionalProperties = value; }
   }
+
+    public string Serialize()
+    {
+      return JsonConvert.SerializeObject(this);
+    }
+    public static Test Deserialize(string json)
+    {
+      return JsonConvert.DeserializeObject<Test>(json);
+    }
 }
 
 public class TestConverter : JsonConverter<Test>
@@ -58,9 +73,11 @@ public class TestConverter : JsonConverter<Test>
   if(jo[\\"string prop\\"] is null){
   throw new JsonSerializationException(\\"Required property 'string prop' is missing\\");
 }
-
 value.StringProp = jo[\\"string prop\\"].ToObject<string>(serializer);
 
+if(jo[\\"const string prop\\"] != null) {
+  value.ConstStringProp = jo[\\"const string prop\\"].ToObject<string?>(serializer);
+}
 if(jo[\\"notRequiredStringProp\\"] != null) {
   value.NotRequiredStringProp = jo[\\"notRequiredStringProp\\"].ToObject<string?>(serializer);
 }
@@ -74,7 +91,7 @@ if(jo[\\"objectProp\\"] != null) {
   value.ObjectProp = jo[\\"objectProp\\"].ToObject<NestedTest?>(serializer);
 }
 
-  var additionalProperties = jo.Properties().Where((prop) => prop.Name != \\"string prop\\" || prop.Name != \\"notRequiredStringProp\\" || prop.Name != \\"numberProp\\" || prop.Name != \\"enumProp\\" || prop.Name != \\"objectProp\\");
+  var additionalProperties = jo.Properties().Where((prop) => prop.Name != \\"string prop\\" || prop.Name != \\"const string prop\\" || prop.Name != \\"notRequiredStringProp\\" || prop.Name != \\"numberProp\\" || prop.Name != \\"enumProp\\" || prop.Name != \\"objectProp\\");
   value.AdditionalProperties = new Dictionary<string, dynamic>();
 
   foreach (var additionalProperty in additionalProperties)
@@ -90,6 +107,10 @@ if(jo[\\"objectProp\\"] != null) {
   if (value.StringProp != null)
 {
   jo.Add(\\"string prop\\", JToken.FromObject(value.StringProp, serializer));
+}
+if (value.ConstStringProp != null)
+{
+  jo.Add(\\"const string prop\\", JToken.FromObject(value.ConstStringProp, serializer));
 }
 if (value.NotRequiredStringProp != null)
 {
@@ -185,6 +206,15 @@ public partial class NestedTest
     get { return additionalProperties; }
     set { this.additionalProperties = value; }
   }
+
+    public string Serialize()
+    {
+      return JsonConvert.SerializeObject(this);
+    }
+    public static NestedTest Deserialize(string json)
+    {
+      return JsonConvert.DeserializeObject<NestedTest>(json);
+    }
 }
 
 public class NestedTestConverter : JsonConverter<NestedTest>

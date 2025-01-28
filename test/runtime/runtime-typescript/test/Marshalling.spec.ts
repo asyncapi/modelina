@@ -1,100 +1,32 @@
-import { Address } from '../src/marshalling/Address';
-import { NestedObject } from '../src/marshalling/NestedObject';
+import {TestObject} from '../src/marshalling/TestObject';
+import {ObjectType} from '../src/marshalling/ObjectType';
+import {EnumType} from '../src/marshalling/EnumType';
 
-describe('Address', () => {
-  describe('marshalling', () => {
-    describe('required properties', () => {
-      const address = new Address({
-        streetName: 'test',
-        houseNumber: 1,
-        arrayType: [1, 'test']
-      });
-      test('should contain correctly marshalled JSON', () => {
-        const serialized = address.marshal();
-        expect(serialized).toEqual("{\"street_name\": \"test\",\"house_number\": 1,\"array_type\": [1,\"test\"]}");
-      });
-      test('be able to serialize model and turning it back to a model with the same values', () => {
-        const serialized = address.marshal();
-        const newAddress = Address.unmarshal(serialized);
-        expect(serialized).toEqual(newAddress.marshal());
-      });
-    });
-
-    describe('marriage', () => {
-      const address = new Address({
-        streetName: 'test',
-        houseNumber: 1,
-        arrayType: [1, 'test'],
-        marriage: true,
-      });
-      test('should contain correctly marshalled JSON', () => {
-        const serialized = address.marshal();
-        expect(serialized).toEqual("{\"street_name\": \"test\",\"house_number\": 1,\"marriage\": true,\"array_type\": [1,\"test\"]}");
-      });
-      test('be able to serialize model and turning it back to a model with the same values', () => {
-        const serialized = address.marshal();
-        const newAddress = Address.unmarshal(serialized);
-        expect(serialized).toEqual(newAddress.marshal());
-      });
-    });
-
-    describe('members', () => {
-      const address = new Address({
-        streetName: 'test',
-        houseNumber: 1,
-        arrayType: [1, 'test'],
-        members: 2,
-      });
-      test('should contain correctly marshalled JSON', () => {
-        const serialized = address.marshal();
-        expect(serialized).toEqual("{\"street_name\": \"test\",\"house_number\": 1,\"members\": 2,\"array_type\": [1,\"test\"]}");
-      });
-      test('be able to serialize model and turning it back to a model with the same values', () => {
-        const serialized = address.marshal();
-        const newAddress = Address.unmarshal(serialized);
-        expect(serialized).toEqual(newAddress.marshal());
-      });
-    });
-
-    describe('nestedObject', () => {
-      const nestedObj = new NestedObject({
-        test: 'test'
-      });
-      const address = new Address({
-        streetName: 'test',
-        houseNumber: 1,
-        arrayType: [1, 'test'],
-        nestedObject: nestedObj
-      });
-      test('should contain correctly marshalled JSON', () => {
-        const serialized = address.marshal();
-        expect(serialized).toEqual("{\"street_name\": \"test\",\"house_number\": 1,\"array_type\": [1,\"test\"],\"nestedObject\": {\"test\": \"test\"}}");
-      });
-      test('be able to serialize model and turning it back to a model with the same values', () => {
-        const serialized = address.marshal();
-        const newAddress = Address.unmarshal(serialized);
-        expect(serialized).toEqual(newAddress.marshal());
-      });
-    });
+describe('Marshalling', () => {
+  describe('should be able to serialize and deserialize the model', () => {
     describe('full model', () => {
-      const nestedObj = new NestedObject({
+      const objectType = new ObjectType({
         test: 'test'
       });
-      const address = new Address({
-        streetName: 'test',
-        houseNumber: 1,
-        marriage: true,
-        members: 2,
+      const testObject = new TestObject({
+        stringType: 'test',
+        numberType: 1,
+        booleanType: true,
         arrayType: [1, 'test'],
-        nestedObject: nestedObj
+        objectType: objectType,
+        dictionaryType: new Map(Object.entries({"test": "test"})),
+        additionalProperties: new Map(Object.entries({"test": "test"})),
+        enumType: EnumType.CURLYLEFT_QUOTATION_TEST_QUOTATION_COLON_2_CURLYRIGHT,
+        tupleType: ['test', 1],
+        unionType: 'test'
       });
       test('be able to serialize model', () => {
-        const serialized = address.marshal();
-        expect(serialized).toEqual("{\"street_name\": \"test\",\"house_number\": 1,\"marriage\": true,\"members\": 2,\"array_type\": [1,\"test\"],\"nestedObject\": {\"test\": \"test\"}}");
+        const serialized = testObject.marshal();
+        expect(serialized).toEqual("{\"string_type\": \"test\",\"number_type\": 1,\"boolean_type\": true,\"union_type\": \"test\",\"array_type\": [1,\"test\"],\"tuple_type\": [\"test\",1],\"object_type\": {\"test\": \"test\"},\"dictionary_type\": {},\"enum_type\": \"{\\\"test\\\":2}\",\"test\": \"test\"}");
       });
       test('be able to serialize model and turning it back to a model with the same values', () => {
-        const serialized = address.marshal();
-        const newAddress = Address.unmarshal(serialized);
+        const serialized = testObject.marshal();
+        const newAddress = TestObject.unmarshal(serialized);
         expect(serialized).toEqual(newAddress.marshal());
       });
     })

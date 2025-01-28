@@ -87,35 +87,37 @@ function renderDeserialize({
       !(prop.property instanceof ConstrainedDictionaryModel) ||
       prop.property.serializationType === 'normal'
   );
-  const corePropsRead = coreProps.map((prop) => {
-    const propertyAccessor = pascalCase(prop.propertyName);
-    let toValue = `jo["${prop.unconstrainedPropertyName}"].ToObject<${prop.property.type}>(serializer)`;
-    if (
-      prop.property instanceof ConstrainedReferenceModel &&
-      prop.property.ref instanceof ConstrainedEnumModel
-    ) {
-      toValue = `${prop.property.name}Extensions.To${prop.property.name}(jo["${
-        prop.unconstrainedPropertyName
-      }"].ToString())${prop.required ? '.Value' : ''}`;
-    }
 
-    if (
-      options?.enforceRequired !== undefined &&
-      options?.enforceRequired &&
-      prop.required
-    ) {
-      return `if(jo["${prop.unconstrainedPropertyName}"] is null){
+  const corePropsRead = coreProps
+    .map((prop) => {
+      const propertyAccessor = pascalCase(prop.propertyName);
+      let toValue = `jo["${prop.unconstrainedPropertyName}"].ToObject<${prop.property.type}>(serializer)`;
+      if (
+        prop.property instanceof ConstrainedReferenceModel &&
+        prop.property.ref instanceof ConstrainedEnumModel
+      ) {
+        toValue = `${prop.property.name}Extensions.To${prop.property.name}(jo["${
+          prop.unconstrainedPropertyName
+        }"].ToString())${prop.required ? '.Value' : ''}`;
+      }
+
+      if (
+        options?.enforceRequired !== undefined &&
+        options?.enforceRequired &&
+        prop.required
+      ) {
+        return `if(jo["${prop.unconstrainedPropertyName}"] is null){
   throw new JsonSerializationException("Required property '${prop.unconstrainedPropertyName}' is missing");
 }
-
 value.${propertyAccessor} = ${toValue};
 `;
-    }
+      }
 
-    return `if(jo["${prop.unconstrainedPropertyName}"] != null) {
+      return `if(jo["${prop.unconstrainedPropertyName}"] != null) {
   value.${propertyAccessor} = ${toValue};
 }`;
-  });
+    })
+    .filter((prop): prop is string => !!prop);
   const nonDictionaryPropCheck = coreProps.map((prop) => {
     return `prop.Name != "${prop.unconstrainedPropertyName}"`;
   });
@@ -167,6 +169,17 @@ value.${propertyAccessor} = ${toValue};
 export const CSHARP_NEWTONSOFT_SERIALIZER_PRESET: CSharpPreset<CSharpOptions> =
   {
     class: {
+      additionalContent: ({ content, model, renderer }) => {
+        return renderer.indent(`${content}
+public string Serialize()
+{
+  return JsonConvert.SerializeObject(this);
+}
+public static ${model.name} Deserialize(string json)
+{
+  return JsonConvert.DeserializeObject<${model.name}>(json);
+}`);
+      },
       self: ({ renderer, content, model, options }) => {
         renderer.dependencyManager.addDependency('using Newtonsoft.Json;');
         renderer.dependencyManager.addDependency('using Newtonsoft.Json.Linq;');

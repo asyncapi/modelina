@@ -37,7 +37,7 @@ export class FileHelpers {
         /**
          * It happens that the promise is resolved before the file is actually written to.
          *
-         * This often happen if the file system is swamped with write requests in either benchmarks or in our blackbox tests.
+         * This often happen if the file system is swamped with write requests in either benchmarks
          *
          * To avoid this we dont resolve until we are sure the file is written and exists.
          */

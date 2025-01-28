@@ -58,6 +58,10 @@ describe('PropertyKeyConstrainer', () => {
     const constrainedKey = constrainPropertyName('some weird_value!"#2');
     expect(constrainedKey).toEqual('someWeirdValueExclamationQuotationHash_2');
   });
+  test('should correctly handle casing with numbers', () => {
+    const constrainedKey = constrainPropertyName('aa_00_testAttribute');
+    expect(constrainedKey).toEqual('aa_00_testAttribute');
+  });
   test('should not contain duplicate properties', () => {
     const objectModel = new ObjectModel('test', undefined, {}, {});
     const constrainedObjectModel = new ConstrainedObjectModel(

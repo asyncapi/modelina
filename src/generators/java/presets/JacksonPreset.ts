@@ -35,6 +35,7 @@ export const JAVA_JACKSON_PRESET: JavaPreset = {
       const blocks: string[] = [];
 
       if (hasUnwrappedOptions) {
+        blocks.push(renderer.renderAnnotation('JsonAnySetter'));
         if (!property.required) {
           blocks.push(
             renderer.renderAnnotation(
@@ -67,6 +68,24 @@ export const JAVA_JACKSON_PRESET: JavaPreset = {
 
       blocks.push(content);
 
+      return renderer.renderBlock(blocks);
+    },
+    getter({ renderer, property, content, model }) {
+      if (model.options.isExtended) {
+        return content;
+      }
+      //Properties that are dictionaries with unwrapped options, cannot get the annotation because it cannot be accurately unwrapped by the jackson library.
+      const isDictionary =
+        property.property instanceof ConstrainedDictionaryModel;
+      const hasUnwrappedOptions =
+        isDictionary &&
+        (property.property as ConstrainedDictionaryModel).serializationType ===
+          'unwrap';
+      const blocks: string[] = [];
+      if (hasUnwrappedOptions) {
+        blocks.push(renderer.renderAnnotation('JsonAnyGetter'));
+      }
+      blocks.push(content);
       return renderer.renderBlock(blocks);
     }
   },

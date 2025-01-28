@@ -1,5 +1,4 @@
 [![AsyncAPI Modelina](./docs/img/readme-banner.png)](https://www.modelina.org)
-[![blackbox pipeline status](<https://img.shields.io/github/actions/workflow/status/asyncapi/modelina/blackbox-testing.yml?label=blackbox%20testing>)](https://github.com/asyncapi/modelina/actions/workflows/blackbox-testing.yml?query=branch%3Amaster++)
 [![Coverage Status](https://coveralls.io/repos/github/asyncapi/modelina/badge.svg?branch=master)](https://coveralls.io/github/asyncapi/modelina?branch=master)
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 ![Maintenance score](https://img.shields.io/npms-io/maintenance-score/@asyncapi/modelina)
@@ -12,6 +11,7 @@
 [![All Contributors](https://img.shields.io/badge/all_contributors-100-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
+
 Your one-stop tool for generating accurate and well-tested models for representing the message payloads. Use it as a tool in your development workflow, or a library in a larger integrations, entirely in your control.
 
 ---
@@ -21,7 +21,6 @@ Your one-stop tool for generating accurate and well-tested models for representi
 <!-- toc -->
 
 - [Installing Modelina](#installing-modelina)
-- [AsyncAPI CLI](#asyncapi-cli)
 - [Features](#features)
 - [Requirements](#requirements)
 - [Documentation](#documentation)
@@ -35,18 +34,16 @@ Your one-stop tool for generating accurate and well-tested models for representi
 
 ## Installing Modelina
 
-Run this command to install Modelina in your project:
+Install Modelina directly as a dependency to your project:
 
 ```bash
 npm install @asyncapi/modelina
 ```
 
-## AsyncAPI CLI
-
-If you have the [AsyncAPI CLI installed](https://github.com/asyncapi/cli#installation) (ONLY support AsyncAPI inputs), you can run the following command to use [Modelina](https://github.com/asyncapi/cli#usage):
+Or if you want to [run Modelina, use the CLI](./modelina-cli/README.md).
 
 ```bash
-asyncapi generate models <language> ./asyncapi.json
+modelina generate <language> ./asyncapi.json
 ```
 
 <h2 align="center">What Does Modelina Do?</h2>
@@ -193,7 +190,11 @@ The following table provides a short summary of available features for supported
   </tr>
   <tr>
     <td><a href="./docs/usage.md#generate-models-from-asyncapi-documents">AsyncAPI</a></td>
-    <td>We support the following AsyncAPI versions: <em>2.0.0 -> 2.6.0</em>, which generates models for all the defined message payloads. It supports the following schemaFormats AsyncAPI Schema object, JSON Schema draft 7, <a href="./examples/asyncapi-avro-schema">AVRO 1.9</a>, <a href="./examples/asyncapi-raml-schema">RAML 1.0 data type</a>, and <a href="./examples/asyncapi-openapi-schema">OpenAPI 3.0 Schema</a>.</td>
+    <td>We support the following AsyncAPI versions: <em>2.0.0 -> 3.0.0</em>, which generates models for all the defined message payloads. It supports the following schemaFormats AsyncAPI Schema object, JSON Schema draft 7, <a href="./examples/asyncapi-avro-schema">AVRO 1.9</a>, <a href="./examples/asyncapi-raml-schema">RAML 1.0 data type</a>, and <a href="./examples/asyncapi-openapi-schema">OpenAPI 3.0 Schema</a>.</td>
+  </tr>
+  <tr>
+    <td><a href="./docs/usage.md#generate-models-from-avro-schema-documents">Avro Schema<a></td>
+    <td>We support the following Avro versions: <a href="./examples/avro-schema-from-object">v1.x</a></td>
   </tr>
   <tr>
     <td><a href="./docs/usage.md#generate-models-from-json-schema-documents">JSON Schema</a></td>

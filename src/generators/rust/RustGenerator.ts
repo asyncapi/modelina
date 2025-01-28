@@ -14,7 +14,13 @@ import {
   ConstrainedMetaModel,
   MetaModel,
   ConstrainedTupleModel,
-  ConstrainedUnionModel
+  ConstrainedUnionModel,
+  ConstrainedAnyModel,
+  ConstrainedBooleanModel,
+  ConstrainedFloatModel,
+  ConstrainedIntegerModel,
+  ConstrainedReferenceModel,
+  ConstrainedStringModel
 } from '../../models';
 import {
   ConstantConstraint,
@@ -92,6 +98,22 @@ export const defaultRustRenderCompleteModelOptions = {
 };
 
 export class ConstrainedSupportFileModel extends ConstrainedMetaModel {}
+
+/**
+ * All the constrained models that do not depend on others to determine the type
+ */
+const SAFE_MODEL_TYPES: any[] = [
+  ConstrainedAnyModel,
+  ConstrainedBooleanModel,
+  ConstrainedFloatModel,
+  ConstrainedIntegerModel,
+  ConstrainedStringModel,
+  ConstrainedReferenceModel,
+  ConstrainedObjectModel,
+  ConstrainedUnionModel,
+  ConstrainedEnumModel,
+  ConstrainedTupleModel
+];
 
 /**
  * Generator for Rust
@@ -185,7 +207,8 @@ export class RustGenerator extends AbstractGenerator<
         dependencyManager: dependencyManagerToUse,
         options: this.options,
         constrainedName: '' //This is just a placeholder, it will be constrained within the function
-      }
+      },
+      SAFE_MODEL_TYPES
     );
   }
 

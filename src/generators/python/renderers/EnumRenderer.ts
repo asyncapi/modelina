@@ -19,7 +19,7 @@ export class EnumRenderer extends PythonRenderer<ConstrainedEnumModel> {
     ];
 
     return `class ${this.model.name}(Enum): 
-${this.indent(this.renderBlock(content, 2))}`;
+${this.indent(this.renderBlock(content, 2), 2)}`;
   }
 
   async renderItems(): Promise<string> {

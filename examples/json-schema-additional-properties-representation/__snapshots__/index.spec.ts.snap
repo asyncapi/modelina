@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Should be able to render object with different additional property and should log expected output to console 1`] = `
+Array [
+  "class Root {
+  private _email?: string;
+  private _extensions?: Map<string, any>;
+
+  constructor(input: {
+    email?: string,
+    extensions?: Map<string, any>,
+  }) {
+    this._email = input.email;
+    this._extensions = input.extensions;
+  }
+
+  get email(): string | undefined { return this._email; }
+  set email(email: string | undefined) { this._email = email; }
+
+  get extensions(): Map<string, any> | undefined { return this._extensions; }
+  set extensions(extensions: Map<string, any> | undefined) { this._extensions = extensions; }
+}",
+]
+`;

@@ -1,0 +1,51 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Interpreter should return multiple separate models 1`] = `
+CommonModel {
+  "$id": "schema1",
+  "additionalItems": CommonModel {
+    "originalInput": true,
+    "type": Array [
+      "object",
+      "string",
+      "number",
+      "array",
+      "boolean",
+      "null",
+      "integer",
+    ],
+  },
+  "originalInput": Object {
+    "$id": "schema1",
+    "properties": Object {
+      "testProp": Object {
+        "$id": "schema2",
+        "type": "object",
+      },
+    },
+  },
+  "properties": Object {
+    "testProp": CommonModel {
+      "$id": "schema2",
+      "additionalProperties": CommonModel {
+        "originalInput": true,
+        "type": Array [
+          "object",
+          "string",
+          "number",
+          "array",
+          "boolean",
+          "null",
+          "integer",
+        ],
+      },
+      "originalInput": Object {
+        "$id": "schema2",
+        "type": "object",
+      },
+      "type": "object",
+    },
+  },
+  "type": "object",
+}
+`;

@@ -91,6 +91,8 @@ export class SwaggerV2Schema {
       'Could not convert input to expected copy of SwaggerV2Schema'
     );
   }
+
+  // eslint-disable-next-line sonarjs/cognitive-complexity
   private static internalToSchema(
     object: any,
     seenSchemas: Map<any, SwaggerV2Schema> = new Map()
@@ -118,7 +120,10 @@ export class SwaggerV2Schema {
     const schema = new SwaggerV2Schema();
     seenSchemas.set(object, schema);
     for (const [propName, prop] of Object.entries(object)) {
-      let copyProp = prop;
+      if (prop === undefined) {
+        continue;
+      }
+      let copyProp: any = prop;
 
       // Ignore value properties (those with `any` type) as they should be saved as is regardless of value
       if (propName !== 'default' && propName !== 'enum') {
@@ -130,8 +135,23 @@ export class SwaggerV2Schema {
         } else if (propName === 'xml') {
           schema.xml = SwaggerV2Xml.toXml(prop);
           continue;
+        } else if (
+          propName === 'properties' ||
+          propName === 'patternProperties' ||
+          propName === 'definitions' ||
+          propName === 'dependencies'
+        ) {
+          // Special cases are properties that should be a basic object
+          copyProp = {};
+          for (const [propName2, prop2] of Object.entries(prop as any)) {
+            copyProp[String(propName2)] = SwaggerV2Schema.internalToSchema(
+              prop2,
+              seenSchemas
+            );
+          }
+        } else {
+          copyProp = SwaggerV2Schema.internalToSchema(prop, seenSchemas);
         }
-        copyProp = SwaggerV2Schema.internalToSchema(prop, seenSchemas);
       }
       (schema as any)[String(propName)] = copyProp;
     }

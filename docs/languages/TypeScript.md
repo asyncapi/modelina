@@ -24,13 +24,13 @@ There are special use-cases that each language supports; this document pertains 
 
 ## Generate an interface instead of classes
 
-Sometimes you don't care about classes, but rather have interfaces generated. This can be changed through the [modelType configuration](https://github.com/asyncapi/modelina/blob/master/docs/generators.md#typescript).
+Sometimes you don't care about classes, but rather have interfaces generated. This can be changed through the `modelType` configuration
 
 Check out this [example out for a live demonstration](../../examples/typescript-interface).
 
 ## Generate different `mapType`s for an `object`
 
-Typescript offers different `mapType`s which can simplify the use based on the needs. This behavior can be changed through the [`mapType` configuration](https://github.com/asyncapi/modelina/blob/master/docs/generators.md#typescript).
+Typescript offers different `mapType`s which can simplify the use based on the needs. This behavior can be changed through the `mapType` configuration.
 
 - Use `map` when you need a dynamic collection of key-value pairs with built-in methods for manipulation.
 - Use `record` when you want to define an object with specific keys and their corresponding value types.
@@ -53,7 +53,7 @@ Also, check out this [example for a live demonstration](../../examples/typescrip
 
 ## Generate union types instead of enums
 
-Typescript offers union types which can simplify the use as no keywords are needed and the values can be set directly. This behavior can be changed through the [modelType configuration](https://github.com/asyncapi/modelina/blob/master/docs/generators.md#typescript). An example of the generated code can be seen below:
+Typescript offers union types which can simplify the use as no keywords are needed and the values can be set directly. This behavior can be changed through the `modelType` configuration. An example of the generated code can be seen below:
 
 ```ts
 // enumType = 'enum'

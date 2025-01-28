@@ -9,6 +9,7 @@ const doc = {
   required: ['string prop'],
   properties: {
     'string prop': { type: 'string' },
+    'const string prop': { type: 'string', const: 'abc' },
     numberProp: { type: 'number' },
     enumProp: {
       $id: 'EnumTest',

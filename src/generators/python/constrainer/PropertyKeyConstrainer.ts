@@ -35,7 +35,7 @@ export const DefaultPropertyKeyConstraints: PropertyKeyConstraintOptions = {
   NO_NUMBER_START_CHAR,
   NO_DUPLICATE_PROPERTIES,
   NO_EMPTY_VALUE,
-  NAMING_FORMATTER: FormatHelpers.toCamelCase,
+  NAMING_FORMATTER: FormatHelpers.toSnakeCase,
   NO_RESERVED_KEYWORDS: (value: string) => {
     return NO_RESERVED_KEYWORDS(value, isReservedPythonKeyword);
   }

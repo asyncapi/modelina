@@ -6,9 +6,19 @@ import {
   defaultGeneratorOptions
 } from '../AbstractGenerator';
 import {
+  ConstrainedAnyModel,
+  ConstrainedArrayModel,
+  ConstrainedBooleanModel,
+  ConstrainedDictionaryModel,
   ConstrainedEnumModel,
+  ConstrainedFloatModel,
+  ConstrainedIntegerModel,
   ConstrainedMetaModel,
   ConstrainedObjectModel,
+  ConstrainedReferenceModel,
+  ConstrainedStringModel,
+  ConstrainedTupleModel,
+  ConstrainedUnionModel,
   InputMetaModel,
   MetaModel,
   RenderOutput
@@ -45,6 +55,25 @@ export interface PhpRenderCompleteModelOptions {
   namespace: string;
   declareStrictTypes: boolean;
 }
+
+/**
+ * All the constrained models that do not depend on others to determine the type
+ */
+const SAFE_MODEL_TYPES: any[] = [
+  ConstrainedAnyModel,
+  ConstrainedBooleanModel,
+  ConstrainedFloatModel,
+  ConstrainedIntegerModel,
+  ConstrainedStringModel,
+  ConstrainedReferenceModel,
+  ConstrainedObjectModel,
+  ConstrainedUnionModel,
+  ConstrainedEnumModel,
+  ConstrainedTupleModel,
+  ConstrainedArrayModel,
+  ConstrainedDictionaryModel
+];
+
 export class PhpGenerator extends AbstractGenerator<
   PhpOptions,
   PhpRenderCompleteModelOptions
@@ -119,7 +148,8 @@ export class PhpGenerator extends AbstractGenerator<
         dependencyManager: dependencyManagerToUse,
         options: this.options,
         constrainedName: '' //This is just a placeholder, it will be constrained within the function
-      }
+      },
+      SAFE_MODEL_TYPES
     );
   }
 

@@ -31,6 +31,7 @@ jobs:
             )
           )
         id: should_run
+        shell: bash
         name: Should Run
         run: echo "shouldrun=true" >> $GITHUB_OUTPUT
       - if: steps.should_run.outputs.shouldrun == 'true' 

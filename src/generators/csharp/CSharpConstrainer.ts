@@ -15,7 +15,7 @@ function getFullTypeDefinition(
   typeName: string,
   partOfProperty: ConstrainedObjectPropertyModel | undefined
 ) {
-  return partOfProperty?.required ?? true ? typeName : `${typeName}?`;
+  return (partOfProperty?.required ?? true) ? typeName : `${typeName}?`;
 }
 
 const fromEnumValueToType = (
@@ -51,17 +51,23 @@ export const CSharpDefaultTypeMapping: CSharpTypeMapping = {
   Float({ partOfProperty }): string {
     return getFullTypeDefinition('double', partOfProperty);
   },
-  Integer({ partOfProperty }): string {
-    return getFullTypeDefinition('int', partOfProperty);
+  Integer({ constrainedModel, partOfProperty }): string {
+    switch (constrainedModel.options.format) {
+      case 'int64':
+        return getFullTypeDefinition('long', partOfProperty);
+      default:
+        return getFullTypeDefinition('int', partOfProperty);
+    }
   },
   String({ constrainedModel, partOfProperty }): string {
     switch (constrainedModel.options.format) {
       case 'time':
         return getFullTypeDefinition('System.TimeSpan', partOfProperty);
       case 'date':
+        return getFullTypeDefinition('System.DateTime', partOfProperty);
       case 'dateTime':
       case 'date-time':
-        return getFullTypeDefinition('System.DateTime', partOfProperty);
+        return getFullTypeDefinition('System.DateTimeOffset', partOfProperty);
       case 'uuid':
         return getFullTypeDefinition('System.Guid', partOfProperty);
       default:

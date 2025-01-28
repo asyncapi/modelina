@@ -6,6 +6,7 @@ Array [
   @JsonProperty(\\"extendProp\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private String extendProp;
+  @JsonAnySetter
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
@@ -14,6 +15,7 @@ Array [
   @Override
   public void setExtendProp(String extendProp) { this.extendProp = extendProp; }
 
+  @JsonAnyGetter
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
   public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
 }",
@@ -31,6 +33,7 @@ exports[`JAVA_JACKSON_PRESET should render Jackson annotations for class 1`] = `
   @JsonProperty(\\"max_number_prop\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Double maxNumberProp;
+  @JsonAnySetter
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
@@ -40,6 +43,7 @@ exports[`JAVA_JACKSON_PRESET should render Jackson annotations for class 1`] = `
   public Double getMaxNumberProp() { return this.maxNumberProp; }
   public void setMaxNumberProp(Double maxNumberProp) { this.maxNumberProp = maxNumberProp; }
 
+  @JsonAnyGetter
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
   public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
 }"
@@ -97,6 +101,7 @@ public interface Vehicle {
   @JsonProperty(\\"name\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private String name;
+  @JsonAnySetter
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
@@ -106,6 +111,7 @@ public interface Vehicle {
   public String getName() { return this.name; }
   public void setName(String name) { this.name = name; }
 
+  @JsonAnyGetter
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
   public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
 }",
@@ -116,6 +122,7 @@ public interface Vehicle {
   @JsonProperty(\\"name\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private String name;
+  @JsonAnySetter
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
@@ -125,6 +132,7 @@ public interface Vehicle {
   public String getName() { return this.name; }
   public void setName(String name) { this.name = name; }
 
+  @JsonAnyGetter
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
   public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
 }",
@@ -148,12 +156,14 @@ public interface Vehicle {
   @JsonProperty(\\"vehicleType\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private String vehicleType;
+  @JsonAnySetter
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
   public String getVehicleType() { return this.vehicleType; }
   public void setVehicleType(String vehicleType) { this.vehicleType = vehicleType; }
 
+  @JsonAnyGetter
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
   public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
 }",
@@ -161,12 +171,14 @@ public interface Vehicle {
   @JsonProperty(\\"vehicleType\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private String vehicleType;
+  @JsonAnySetter
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
   public String getVehicleType() { return this.vehicleType; }
   public void setVehicleType(String vehicleType) { this.vehicleType = vehicleType; }
 
+  @JsonAnyGetter
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
   public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
 }",
@@ -190,12 +202,14 @@ public interface Vehicle {
   @JsonProperty(\\"vehicleType\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private String vehicleType;
+  @JsonAnySetter
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
   public String getVehicleType() { return this.vehicleType; }
   public void setVehicleType(String vehicleType) { this.vehicleType = vehicleType; }
 
+  @JsonAnyGetter
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
   public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
 }",
@@ -203,12 +217,14 @@ public interface Vehicle {
   @JsonProperty(\\"vehicleType\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private String vehicleType;
+  @JsonAnySetter
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
   public String getVehicleType() { return this.vehicleType; }
   public void setVehicleType(String vehicleType) { this.vehicleType = vehicleType; }
 
+  @JsonAnyGetter
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
   public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
 }",
@@ -232,12 +248,14 @@ public interface Vehicle {
   @JsonProperty(\\"passengers\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private String passengers;
+  @JsonAnySetter
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
   public String getPassengers() { return this.passengers; }
   public void setPassengers(String passengers) { this.passengers = passengers; }
 
+  @JsonAnyGetter
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
   public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
 }",
@@ -245,12 +263,14 @@ public interface Vehicle {
   @JsonProperty(\\"cargo\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private String cargo;
+  @JsonAnySetter
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
   public String getCargo() { return this.cargo; }
   public void setCargo(String cargo) { this.cargo = cargo; }
 
+  @JsonAnyGetter
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
   public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
 }",

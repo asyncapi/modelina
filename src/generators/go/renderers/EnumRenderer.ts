@@ -1,5 +1,8 @@
 import { GoRenderer } from '../GoRenderer';
-import { ConstrainedEnumModel } from '../../../models';
+import {
+  ConstrainedEnumModel,
+  ConstrainedEnumValueModel
+} from '../../../models';
 import { EnumPresetType } from '../GoPreset';
 import { GoOptions } from '../GoGenerator';
 
@@ -12,23 +15,23 @@ import { GoOptions } from '../GoGenerator';
  * @extends GoRenderer
  */
 export class EnumRenderer extends GoRenderer<ConstrainedEnumModel> {
-  public defaultSelf(): string {
-    const doc = this.renderCommentForEnumType(this.model.name, this.model.type);
-    const enumValues = this.renderConstValuesForEnumType();
-    const temp = this.model.values.map((value) => {
+  public async defaultSelf(): Promise<string> {
+    const enumValues = await this.renderItems();
+    const valuesToEnumMap = this.model.values.map((value) => {
       return `${this.model.name}Values[${value.key}]: ${value.key},`;
     });
+    const additionalContent = await this.runAdditionalContentPreset();
+
     const values = this.model.values
       .map((value) => {
         return value.value;
       })
       .join(',');
 
-    return `${doc}
-type ${this.model.name} uint
+    return `type ${this.model.name} uint
 
 const (
-${this.indent(this.renderBlock(enumValues))}
+${this.indent(enumValues)}
 )
 
 // Value returns the value of the enum.
@@ -41,31 +44,42 @@ func (op ${this.model.name}) Value() any {
 
 var ${this.model.name}Values = []any{${values}}
 var ValuesTo${this.model.name} = map[any]${this.model.name}{
-${this.indent(this.renderBlock(temp))}
+${this.indent(this.renderBlock(valuesToEnumMap))}
 }
-`;
+${additionalContent}`;
   }
 
-  renderCommentForEnumType(name: string, type: string): string {
-    const globalType = type === 'interface{}' ? 'mixed types' : type;
-    return this.renderComments(`${name} represents an enum of ${globalType}.`);
+  async renderItems(): Promise<string> {
+    const enums = this.model.values || [];
+    const items: string[] = [];
+
+    for (const [index, item] of enums.entries()) {
+      const renderedItem = await this.runItemPreset(item, index);
+      items.push(renderedItem);
+    }
+
+    return this.renderBlock(items);
   }
 
-  renderConstValuesForEnumType(): string[] {
-    return this.model.values.map((enumValue, index) => {
-      if (index === 0) {
-        return `${enumValue.key} ${this.model.name} = iota`;
-      }
-      if (typeof enumValue.value === 'string') {
-        return enumValue.key;
-      }
-      return enumValue.key;
-    });
+  runItemPreset(
+    item: ConstrainedEnumValueModel,
+    index: number
+  ): Promise<string> {
+    return this.runPreset('item', { item, index });
   }
 }
 
 export const GO_DEFAULT_ENUM_PRESET: EnumPresetType<GoOptions> = {
   self({ renderer }) {
     return renderer.defaultSelf();
+  },
+  item({ model, item, index }) {
+    if (index === 0) {
+      return `${item.key} ${model.name} = iota`;
+    }
+    if (typeof item.value === 'string') {
+      return item.key;
+    }
+    return item.key;
   }
 };

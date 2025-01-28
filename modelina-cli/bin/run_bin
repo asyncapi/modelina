@@ -1,0 +1,13 @@
+#!/usr/bin/env node
+
+// Only the binary installed through NPM is considered production environment. See "bin" in package.json.
+process.env.NODE_ENV = 'production';
+
+const oclif = require('@oclif/core');
+
+oclif.run()
+  .then(require('@oclif/core/flush'))
+  .catch((err) => {
+    const oclifHandler = require('@oclif/core/handle');
+    return oclifHandler(err.message);
+  });

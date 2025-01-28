@@ -2,31 +2,31 @@
 
 exports[`PYTHON_JSON_SERIALIZER_PRESET should render serializer and deserializer for class 1`] = `
 "class Test: 
-  def __init__(self, input):
-    if hasattr(input, 'prop'):
-    	self._prop = input.prop
-    if hasattr(input, 'additionalProperties'):
-    	self._additionalProperties = input.additionalProperties
+  def __init__(self, input: Dict):
+    if 'prop' in input:
+      self._prop: str = input['prop']
+    if 'additional_properties' in input:
+      self._additional_properties: dict[str, Any] = input['additional_properties']
 
   @property
-  def prop(self):
-  	return self._prop
+  def prop(self) -> str:
+    return self._prop
   @prop.setter
-  def prop(self, prop):
-  	self._prop = prop
+  def prop(self, prop: str):
+    self._prop = prop
 
   @property
-  def additionalProperties(self):
-  	return self._additionalProperties
-  @additionalProperties.setter
-  def additionalProperties(self, additionalProperties):
-  	self._additionalProperties = additionalProperties
+  def additional_properties(self) -> dict[str, Any]:
+    return self._additional_properties
+  @additional_properties.setter
+  def additional_properties(self, additional_properties: dict[str, Any]):
+    self._additional_properties = additional_properties
 
-  def serializeToJson(self):
+  def serialize_to_json(self):
     return json.dumps(self.__dict__, default=lambda o: o.__dict__, indent=2)
 
   @staticmethod
-  def deserializeFromJson(json_string):
+  def deserialize_from_json(json_string):
     return Test(**json.loads(json_string))
 "
 `;

@@ -9,7 +9,6 @@ You can either build the image and run the needed commands manually or rather us
 
 - `npm run docker:build` builds the docker image with the tag `asyncapi/modelina` (the rest of the scripts run this one as well).
 - `npm run docker:test` runs the main test suite.
-- `npm run docker:test:blackbox` runs the BlackBox test suite.
 
 ## Environment setup
 
@@ -21,6 +20,3 @@ To setup the environment follow these steps:
    - You can update snapshots by running `npm run test -- -u`
 4. Make sure code is well formatted and secure with eslint by running `npm run lint`, you can also auto format your code with `npm run format`
 
-## BlackBox testing
-
-We have several BlackBox tests that are run separately from the `npm run test` script. Please refer to the [BlackBox documentation](../test/blackbox) for further information.

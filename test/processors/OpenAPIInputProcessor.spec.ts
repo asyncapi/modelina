@@ -8,13 +8,25 @@ const basicDoc = JSON.parse(
     'utf8'
   )
 );
+const noPathsDoc = JSON.parse(
+  fs.readFileSync(
+    path.resolve(__dirname, './OpenAPIInputProcessor/no_paths.json'),
+    'utf8'
+  )
+);
+const circularDoc = JSON.parse(
+  fs.readFileSync(
+    path.resolve(__dirname, './OpenAPIInputProcessor/references_circular.json'),
+    'utf8'
+  )
+);
 jest.mock('../../src/utils/LoggingInterface');
 const processorSpy = jest.spyOn(
   OpenAPIInputProcessor,
   'convertToInternalSchema'
 );
 const mockedReturnModels = [new CommonModel()];
-const mockedMetaModel = new AnyModel('', undefined);
+const mockedMetaModel = new AnyModel('', undefined, {});
 jest.mock('../../src/helpers/CommonModelToMetaModel', () => {
   return {
     convertToMetaModel: jest.fn().mockImplementation(() => {
@@ -94,6 +106,14 @@ describe('OpenAPIInputProcessor', () => {
       expect(commonInputModel).toMatchSnapshot();
       expect(processorSpy.mock.calls).toMatchSnapshot();
     });
+    test('should process the OpenAPI document with no paths', async () => {
+      const processor = new OpenAPIInputProcessor();
+      const commonInputModel = await processor.process(noPathsDoc, {
+        openapi: { includeComponentSchemas: true }
+      });
+      expect(commonInputModel).toMatchSnapshot();
+      expect(processorSpy.mock.calls).toMatchSnapshot();
+    });
     test('should include schema for parameters', async () => {
       const doc = {
         openapi: '3.0.3',
@@ -133,6 +153,12 @@ describe('OpenAPIInputProcessor', () => {
         { type: 'string' },
         'test_parameters_header_path_parameter'
       ]);
+    });
+    test('should be able to use $ref when circular', async () => {
+      const processor = new OpenAPIInputProcessor();
+      const commonInputModel = await processor.process(circularDoc);
+      expect(commonInputModel).toMatchSnapshot();
+      expect(processorSpy.mock.calls).toMatchSnapshot();
     });
   });
 });
