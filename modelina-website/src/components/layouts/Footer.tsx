@@ -53,16 +53,6 @@ export default function Footer() {
                     </Link>
                   </li>
                   <li className='py-2'>
-                    <a
-                      href='https://www.store.asyncapi.com/collections/all-products'
-                      target='_blank'
-                      rel='noopener noreferrer'
-                      className='text-base leading-6 text-gray-500 transition duration-300 ease-in-out hover:text-white'
-                    >
-                      Shop
-                    </a>
-                  </li>
-                  <li className='py-2'>
                     <Link
                       href='/jobs'
                       className='text-base leading-6 text-cool-gray transition duration-300 ease-in-out hover:text-white'
