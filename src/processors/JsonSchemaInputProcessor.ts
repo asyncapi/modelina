@@ -10,12 +10,34 @@ import {
   SwaggerV2Schema,
   OpenapiV3Schema,
   AsyncapiV2Schema,
-  ProcessorOptions
+  ProcessorOptions,
+  MetaModel
 } from '../models';
 import { Logger } from '../utils';
-import { Interpreter } from '../interpreter/Interpreter';
+import { Interpreter, InterpreterOptions } from '../interpreter/Interpreter';
 import { convertToMetaModel } from '../helpers';
 import { ParserOptions } from '@apidevtools/json-schema-ref-parser/dist/lib/options';
+export interface JsonSchemaProcessorOptions extends InterpreterOptions {
+  /**
+   * This option enables that a single enum value `{enum: ['test']}` is interpreted the same as if the value was `{const: 'test'}`
+   * Use this option to reduce the number of enums being created and use constant values instead.
+   */
+  interpretSingleEnumAsConst?: boolean;
+
+  /**
+   * This option changes which property name that should be used to represent `additionalProperties` in JSON Schema
+   */
+  propertyNameForAdditionalProperties?: string;
+}
+
+export const defaultJsonSchemaProcessorOptions: JsonSchemaProcessorOptions = {
+  allowInheritance: false,
+  disableCache: false,
+  ignoreAdditionalItems: false,
+  ignoreAdditionalProperties: false,
+  interpretSingleEnumAsConst: false,
+  propertyNameForAdditionalProperties: 'additionalProperties'
+};
 
 /**
  * Class for processing JSON Schema
@@ -83,16 +105,16 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
     input = JsonSchemaInputProcessor.reflectSchemaNames(
       input,
       {},
+      new Set(),
       'root',
       true
     );
     input = await this.dereferenceInputs(input);
     const parsedSchema = Draft7Schema.toSchema(input);
-    const newCommonModel = JsonSchemaInputProcessor.convertSchemaToCommonModel(
+    const metaModel = JsonSchemaInputProcessor.convertSchemaToMetaModel(
       parsedSchema,
       options
     );
-    const metaModel = convertToMetaModel(newCommonModel);
     inputModel.models[metaModel.name] = metaModel;
     Logger.debug('Completed processing input as JSON Schema draft 7 document');
     return inputModel;
@@ -113,16 +135,16 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
     input = JsonSchemaInputProcessor.reflectSchemaNames(
       input,
       {},
+      new Set(),
       'root',
       true
     );
     input = await this.dereferenceInputs(input);
     const parsedSchema = Draft4Schema.toSchema(input);
-    const newCommonModel = JsonSchemaInputProcessor.convertSchemaToCommonModel(
+    const metaModel = JsonSchemaInputProcessor.convertSchemaToMetaModel(
       parsedSchema,
       options
     );
-    const metaModel = convertToMetaModel(newCommonModel);
     inputModel.models[metaModel.name] = metaModel;
     Logger.debug('Completed processing input as JSON Schema draft 4 document');
     return inputModel;
@@ -143,16 +165,16 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
     input = JsonSchemaInputProcessor.reflectSchemaNames(
       input,
       {},
+      new Set(),
       'root',
       true
     );
     input = await this.dereferenceInputs(input);
     const parsedSchema = Draft6Schema.toSchema(input);
-    const newCommonModel = JsonSchemaInputProcessor.convertSchemaToCommonModel(
+    const metaModel = JsonSchemaInputProcessor.convertSchemaToMetaModel(
       parsedSchema,
       options
     );
-    const metaModel = convertToMetaModel(newCommonModel);
     inputModel.models[metaModel.name] = metaModel;
     Logger.debug('Completed processing input as JSON Schema draft 6 document');
     return inputModel;
@@ -205,6 +227,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
       dereference: {
         circular: true,
         excludedPathMatcher: (path: string) => {
+          // References inside examples should not be de-referenced, unless they are a property.
           return (
             path.includes('/examples/') &&
             !path.includes('/properties/examples/')
@@ -239,7 +262,8 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
    * This reflects all the common keywords that are shared between draft-4, draft-7 and Swagger 2.0 Schema
    *
    * @param schema to process
-   * @param namesStack is a aggegator of previous used names
+   * @param namesStack is a aggregator of previous used names
+   * @param seenSchemas is a set of schema already seen and named
    * @param name to infer
    * @param isRoot indicates if performed schema is a root schema
    */
@@ -253,6 +277,13 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
       | OpenapiV3Schema
       | boolean,
     namesStack: Record<string, number>,
+    seenSchemas: Set<
+      | Draft4Schema
+      | Draft6Schema
+      | Draft7Schema
+      | SwaggerV2Schema
+      | OpenapiV3Schema
+    >,
     name?: string,
     isRoot?: boolean
   ): any {
@@ -260,7 +291,14 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
       return schema;
     }
 
+    // short-circuit circular references
+    if (seenSchemas.has(schema)) {
+      return schema;
+    }
+    seenSchemas.add(schema);
+
     schema = { ...schema };
+
     if (isRoot) {
       namesStack[String(name)] = 0;
       (schema as any)[this.MODELGEN_INFFERED_NAME] = name;
@@ -285,6 +323,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
         this.reflectSchemaNames(
           item,
           namesStack,
+          seenSchemas,
           this.ensureNamePattern(name, 'allOf', idx)
         )
       );
@@ -294,6 +333,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
         this.reflectSchemaNames(
           item,
           namesStack,
+          seenSchemas,
           this.ensureNamePattern(name, 'oneOf', idx)
         )
       );
@@ -303,6 +343,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
         this.reflectSchemaNames(
           item,
           namesStack,
+          seenSchemas,
           this.ensureNamePattern(name, 'anyOf', idx)
         )
       );
@@ -311,6 +352,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
       schema.not = this.reflectSchemaNames(
         schema.not,
         namesStack,
+        seenSchemas,
         this.ensureNamePattern(name, 'not')
       );
     }
@@ -321,6 +363,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
       schema.additionalItems = this.reflectSchemaNames(
         schema.additionalItems,
         namesStack,
+        seenSchemas,
         this.ensureNamePattern(name, 'additionalItem')
       );
     }
@@ -331,6 +374,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
       schema.additionalProperties = this.reflectSchemaNames(
         schema.additionalProperties,
         namesStack,
+        seenSchemas,
         this.ensureNamePattern(name, 'additionalProperty')
       );
     }
@@ -341,6 +385,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
             this.reflectSchemaNames(
               item,
               namesStack,
+              seenSchemas,
               this.ensureNamePattern(name, 'item', idx)
             )
         );
@@ -348,6 +393,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
         schema.items = this.reflectSchemaNames(
           schema.items,
           namesStack,
+          seenSchemas,
           this.ensureNamePattern(name, 'item')
         );
       }
@@ -361,6 +407,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
         properties[String(propertyName)] = this.reflectSchemaNames(
           propertySchema,
           namesStack,
+          seenSchemas,
           this.ensureNamePattern(name, propertyName)
         );
       }
@@ -375,6 +422,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
           dependencies[String(dependencyName)] = this.reflectSchemaNames(
             dependency as any,
             namesStack,
+            seenSchemas,
             this.ensureNamePattern(name, dependencyName)
           );
         } else {
@@ -393,6 +441,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
           this.reflectSchemaNames(
             patternProperty as any,
             namesStack,
+            seenSchemas,
             this.ensureNamePattern(name, 'pattern_property', idx)
           );
       }
@@ -406,6 +455,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
         definitions[String(definitionName)] = this.reflectSchemaNames(
           definition,
           namesStack,
+          seenSchemas,
           this.ensureNamePattern(name, definitionName)
         );
       }
@@ -418,6 +468,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
         schema.contains = this.reflectSchemaNames(
           schema.contains,
           namesStack,
+          seenSchemas,
           this.ensureNamePattern(name, 'contain')
         );
       }
@@ -425,6 +476,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
         schema.propertyNames = this.reflectSchemaNames(
           schema.propertyNames,
           namesStack,
+          seenSchemas,
           this.ensureNamePattern(name, 'propertyName')
         );
       }
@@ -434,6 +486,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
           schema.if = this.reflectSchemaNames(
             schema.if,
             namesStack,
+            seenSchemas,
             this.ensureNamePattern(name, 'if')
           );
         }
@@ -441,6 +494,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
           schema.then = this.reflectSchemaNames(
             schema.then,
             namesStack,
+            seenSchemas,
             this.ensureNamePattern(name, 'then')
           );
         }
@@ -448,6 +502,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
           schema.else = this.reflectSchemaNames(
             schema.else,
             namesStack,
+            seenSchemas,
             this.ensureNamePattern(name, 'else')
           );
         }
@@ -490,10 +545,37 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
     options?: ProcessorOptions
   ): CommonModel {
     const interpreter = new Interpreter();
-    const model = interpreter.interpret(schema, options?.interpreter);
+    const model = interpreter.interpret(
+      schema,
+      options?.jsonSchema ?? options?.interpreter
+    );
     if (model === undefined) {
       throw new Error('Could not interpret schema to internal model');
     }
     return model;
+  }
+
+  /**
+   * Simplifies a JSON Schema into a common models
+   *
+   * @param schema to simplify to common model
+   */
+  static convertSchemaToMetaModel(
+    schema:
+      | Draft4Schema
+      | Draft6Schema
+      | Draft7Schema
+      | SwaggerV2Schema
+      | OpenapiV3Schema
+      | AsyncapiV2Schema
+      | boolean,
+    options?: ProcessorOptions
+  ): MetaModel {
+    const commonModel = this.convertSchemaToCommonModel(schema, options);
+    return convertToMetaModel({
+      jsonSchemaModel: commonModel,
+      options: { ...defaultJsonSchemaProcessorOptions, ...options?.jsonSchema },
+      alreadySeenModels: new Map()
+    });
   }
 }

@@ -20,64 +20,53 @@ import * as path from 'path';
 const generatorsToTest = [
   {
     generator: new GoFileGenerator(),
-    generatorOptions: { packageName: 'some_package' },
-    fileExtension: 'go'
+    generatorOptions: { packageName: 'some_package' }
   },
   {
     generator: new DartFileGenerator(),
-    generatorOptions: { packageName: 'SomePackage' },
-    fileExtension: 'dart'
+    generatorOptions: { packageName: 'SomePackage' }
   },
   {
     generator: new JavaFileGenerator(),
-    generatorOptions: { packageName: 'SomePackage' },
-    fileExtension: 'java'
+    generatorOptions: { packageName: 'SomePackage' }
   },
   {
     generator: new JavaScriptFileGenerator(),
-    generatorOptions: {},
-    fileExtension: 'js'
+    generatorOptions: {}
   },
   {
     generator: new TypeScriptFileGenerator(),
-    generatorOptions: {},
-    fileExtension: 'ts'
+    generatorOptions: {}
   },
   {
     generator: new CSharpFileGenerator(),
-    generatorOptions: { namespace: 'SomeNamespace' },
-    fileExtension: 'cs'
+    generatorOptions: { namespace: 'SomeNamespace' }
   },
   {
     generator: new RustFileGenerator(),
-    generatorOptions: { namespace: 'SomeNamespace' },
-    fileExtension: 'rs'
+    generatorOptions: { namespace: 'SomeNamespace' }
   },
   {
     generator: new PythonFileGenerator(),
-    generatorOptions: {},
-    fileExtension: 'py'
+    generatorOptions: {}
   },
   {
     generator: new KotlinFileGenerator(),
-    generatorOptions: { packageName: 'SomePackage' },
-    fileExtension: 'kt'
+    generatorOptions: { packageName: 'SomePackage' }
   },
   {
     generator: new PhpFileGenerator(),
-    generatorOptions: { packageName: 'SomePackage' },
-    fileExtension: 'php'
+    generatorOptions: { packageName: 'SomePackage' }
   },
   {
     generator: new CplusplusFileGenerator(),
-    generatorOptions: { namespace: 'SomeNamespace' },
-    fileExtension: 'hpp'
+    generatorOptions: { namespace: 'SomeNamespace' }
   }
 ];
 
 describe.each(generatorsToTest)(
   'generateToFiles',
-  ({ generator, generatorOptions, fileExtension }) => {
+  ({ generator, generatorOptions }) => {
     afterEach(() => {
       jest.restoreAllMocks();
     });
@@ -106,7 +95,7 @@ describe.each(generatorsToTest)(
         .mockResolvedValue([
           new OutputModel(
             'content',
-            new ConstrainedAnyModel('', undefined, ''),
+            new ConstrainedAnyModel('', undefined, {}, ''),
             'test',
             new InputMetaModel(),
             []
@@ -122,14 +111,6 @@ describe.each(generatorsToTest)(
     test('should try and generate models to files', async () => {
       const outputDir = './test';
       const expectedOutputDirPath = path.resolve(outputDir);
-      const expectedOutputFilePath = path.resolve(
-        `${outputDir}/test.${fileExtension}`
-      );
-      const expectedWriteToFileParameters = [
-        'content',
-        expectedOutputFilePath,
-        false
-      ];
       jest
         .spyOn(FileHelpers, 'writerToFileSystem')
         .mockResolvedValue(undefined);
@@ -138,8 +119,8 @@ describe.each(generatorsToTest)(
         .mockResolvedValue([
           new OutputModel(
             'content',
-            new ConstrainedAnyModel('', undefined, ''),
-            'test',
+            new ConstrainedAnyModel('', undefined, {}, ''),
+            'TestModel',
             new InputMetaModel(),
             []
           )
@@ -153,8 +134,18 @@ describe.each(generatorsToTest)(
       expect(generator.generateCompleteModels).toHaveBeenCalledTimes(1);
       expect(FileHelpers.writerToFileSystem).toHaveBeenCalledTimes(1);
       expect(
-        (FileHelpers.writerToFileSystem as jest.Mock).mock.calls[0]
-      ).toEqual(expectedWriteToFileParameters);
+        (FileHelpers.writerToFileSystem as jest.Mock).mock.calls.at(0).at(0)
+      ).toEqual('content');
+      const filePath: string = (
+        FileHelpers.writerToFileSystem as jest.Mock
+      ).mock.calls
+        .at(0)
+        .at(1);
+      expect(filePath).toMatch(expectedOutputDirPath);
+      expect(path.basename(filePath)).toMatchSnapshot();
+      expect(
+        (FileHelpers.writerToFileSystem as jest.Mock).mock.calls.at(0).at(2)
+      ).toEqual(false);
     });
     test('should ignore models that have not been rendered', async () => {
       const outputDir = './test';
@@ -167,7 +158,7 @@ describe.each(generatorsToTest)(
         .mockResolvedValue([
           new OutputModel(
             '',
-            new ConstrainedAnyModel('', undefined, ''),
+            new ConstrainedAnyModel('', undefined, {}, ''),
             '',
             new InputMetaModel(),
             []

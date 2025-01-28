@@ -5,6 +5,7 @@ exports[`JSON serializer preset should render serialize and deserialize converte
 public partial class Test
 {
   private string stringProp;
+  private const string? constStringProp = \\"abc\\";
   private double? numberProp;
   private EnumTest? enumProp;
   private NestedTest? objectProp;
@@ -14,6 +15,11 @@ public partial class Test
   {
     get { return stringProp; }
     set { this.stringProp = value; }
+  }
+
+  public string? ConstStringProp 
+  {
+    get { return constStringProp; }
   }
 
   public double? NumberProp 
@@ -39,6 +45,22 @@ public partial class Test
     get { return additionalProperties; }
     set { this.additionalProperties = value; }
   }
+
+
+    public string Serialize()
+    {
+      return this.Serialize(null);
+    }
+    public string Serialize(JsonSerializerOptions options = null) 
+    {
+      return JsonSerializer.Serialize(this, options);
+    }
+    public static Test Deserialize(string json)
+    {
+      var deserializeOptions = new JsonSerializerOptions();
+      deserializeOptions.Converters.Add(new TestConverter());
+      return JsonSerializer.Deserialize<Test>(json, deserializeOptions);
+    }
 }
 
 internal class TestConverter : JsonConverter<Test>
@@ -118,6 +140,11 @@ internal class TestConverter : JsonConverter<Test>
       // write property name and let the serializer serialize the value itself
       writer.WritePropertyName(\\"string prop\\");
       JsonSerializer.Serialize(writer, value.StringProp, options);
+    }
+    if(value.ConstStringProp != null) {
+      // write property name and let the serializer serialize the value itself
+      writer.WritePropertyName(\\"const string prop\\");
+      JsonSerializer.Serialize(writer, value.ConstStringProp, options);
     }
     if(value.NumberProp != null) {
       // write property name and let the serializer serialize the value itself
@@ -212,6 +239,22 @@ public partial class NestedTest
     get { return additionalProperties; }
     set { this.additionalProperties = value; }
   }
+
+
+    public string Serialize()
+    {
+      return this.Serialize(null);
+    }
+    public string Serialize(JsonSerializerOptions options = null) 
+    {
+      return JsonSerializer.Serialize(this, options);
+    }
+    public static NestedTest Deserialize(string json)
+    {
+      var deserializeOptions = new JsonSerializerOptions();
+      deserializeOptions.Converters.Add(new NestedTestConverter());
+      return JsonSerializer.Deserialize<NestedTest>(json, deserializeOptions);
+    }
 }
 
 internal class NestedTestConverter : JsonConverter<NestedTest>

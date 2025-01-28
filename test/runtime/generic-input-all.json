@@ -1,0 +1,78 @@
+{
+  "$id": "TestObject",
+  "description": "This object contains all types of MetaModel generations",
+  "type": "object",
+  "properties": {
+    "string_type": {
+      "type": "string"
+    },
+    "number_type": {
+      "type": "number"
+    },
+    "boolean_type": {
+      "type": "boolean",
+      "description": "Status if marriage live in given house"
+    },
+    "union_type": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "number"
+        },
+        {
+          "type": "boolean"
+        }
+      ]
+    },
+    "array_type": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      }
+    },
+    "tuple_type": {
+      "type": "array",
+      "items": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "number"
+        }
+      ],
+      "additionalItems": false
+    },
+    "object_type": {
+      "type": "object",
+      "properties": {
+        "test": {
+          "type": "string"
+        }
+      }
+    },
+    "dictionary_type": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "enum_type": {
+      "enum": ["test", 1, true, {"test": 2}]
+    }
+  },
+  "patternProperties": {
+    "^S(.?*)test&": {
+      "type": "string"
+    }
+  },
+  "required": ["string_type", "boolean_type"]
+}

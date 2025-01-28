@@ -7,15 +7,15 @@ import {
   SchemaInterface as AsyncAPISchemaInterface,
   SchemaV2 as AsyncAPISchema,
   fromFile,
-  createAsyncAPIDocument
+  createAsyncAPIDocument,
+  MessagesInterface
 } from '@asyncapi/parser';
-
+import yaml from 'js-yaml';
 import { AbstractInputProcessor } from './AbstractInputProcessor';
 import { JsonSchemaInputProcessor } from './JsonSchemaInputProcessor';
 import { InputMetaModel, ProcessorOptions } from '../models';
 import { Logger } from '../utils';
 import { AsyncapiV2Schema } from '../models/AsyncapiV2Schema';
-import { convertToMetaModel } from '../helpers';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
 import {
@@ -69,7 +69,7 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
       doc = ConvertDocumentParserAPIVersion(rawInput, 2) as any;
     } else {
       const parserOptions = options?.asyncapi || {};
-      const parser = NewParser(2, {
+      const parser = NewParser(3, {
         parserOptions,
         includeSchemaParsers: true
       });
@@ -104,24 +104,17 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
 
     const addToInputModel = (payload: AsyncAPISchemaInterface) => {
       const schema = AsyncAPIInputProcessor.convertToInternalSchema(payload);
-      const newCommonModel =
-        JsonSchemaInputProcessor.convertSchemaToCommonModel(schema, options);
-
-      if (newCommonModel.$id !== undefined) {
-        if (inputModel.models[newCommonModel.$id] !== undefined) {
-          Logger.warn(
-            `Overwriting existing model with $id ${newCommonModel.$id}, are there two models with the same id present?`,
-            newCommonModel
-          );
-        }
-        const metaModel = convertToMetaModel(newCommonModel);
-        inputModel.models[metaModel.name] = metaModel;
-      } else {
+      const newMetaModel = JsonSchemaInputProcessor.convertSchemaToMetaModel(
+        schema,
+        options
+      );
+      if (inputModel.models[newMetaModel.name] !== undefined) {
         Logger.warn(
-          'Model did not have $id which is required, ignoring.',
-          newCommonModel
+          `Overwriting existing model with name ${newMetaModel.name}, are there two models with the same name present? Overwriting the old model.`,
+          newMetaModel.name
         );
       }
+      inputModel.models[newMetaModel.name] = newMetaModel;
     };
 
     // Go over all the message payloads and convert them to models
@@ -130,37 +123,50 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
     if (channels.length) {
       for (const channel of doc.channels()) {
         for (const operation of channel.operations()) {
-          const operationMessages = operation.messages();
+          const handleMessages = (messages: MessagesInterface) => {
+            // treat multiple messages as oneOf
+            if (messages.length > 1) {
+              const oneOf: any[] = [];
 
-          // treat multiple messages as oneOf
-          if (operationMessages.length > 1) {
-            const oneOf: any[] = [];
+              for (const message of messages) {
+                const payload = message.payload();
 
-            for (const message of operationMessages) {
-              const payload = message.payload();
+                if (!payload) {
+                  continue;
+                }
 
-              if (!payload) {
-                continue;
+                oneOf.push(payload.json());
               }
 
-              oneOf.push(payload.json());
-            }
+              const payload = new AsyncAPISchema(
+                {
+                  $id: channel.id(),
+                  oneOf
+                },
+                channel.meta()
+              );
 
-            const payload = new AsyncAPISchema(
-              {
-                $id: channel.id(),
-                oneOf
-              },
-              channel.meta()
-            );
-
-            addToInputModel(payload);
-          } else if (operationMessages.length === 1) {
-            const payload = operationMessages[0].payload();
-            if (payload) {
               addToInputModel(payload);
+            } else if (messages.length === 1) {
+              const payload = messages[0].payload();
+              if (payload) {
+                addToInputModel(payload);
+              }
+            }
+          };
+          const replyOperation = operation.reply();
+          if (replyOperation !== undefined) {
+            const replyMessages = replyOperation.messages();
+            if (replyMessages.length > 0) {
+              handleMessages(replyMessages);
+            } else {
+              const replyChannelMessages = replyOperation.channel()?.messages();
+              if (replyChannelMessages) {
+                handleMessages(replyChannelMessages);
+              }
             }
           }
+          handleMessages(operation.messages());
         }
       }
     } else {
@@ -209,10 +215,7 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
       return alreadyIteratedSchemas.get(schemaUid) as AsyncapiV2Schema;
     }
 
-    const convertedSchema = Object.assign(
-      new AsyncapiV2Schema(),
-      schema.json()
-    );
+    const convertedSchema = AsyncapiV2Schema.toSchema(schema.json());
     convertedSchema[this.MODELGEN_INFFERED_NAME] = schemaUid;
     alreadyIteratedSchemas.set(schemaUid, convertedSchema);
 
@@ -401,6 +404,20 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
   tryGetVersionOfDocument(input?: any): string | undefined {
     if (!input) {
       return;
+    }
+    if (typeof input === 'string') {
+      //If string input, it could be stringified JSON or YAML format, lets check
+      let loadedObj;
+      try {
+        loadedObj = yaml.load(input);
+      } catch (e) {
+        try {
+          loadedObj = JSON.parse(input);
+        } catch (e) {
+          return undefined;
+        }
+      }
+      return loadedObj?.asyncapi;
     }
     if (AsyncAPIInputProcessor.isFromParser(input)) {
       return input.version();

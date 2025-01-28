@@ -19,6 +19,15 @@ public partial class Root
     get { return name; }
     set { this.name = value; }
   }
+
+    public string Serialize()
+    {
+      return JsonConvert.SerializeObject(this);
+    }
+    public static Root Deserialize(string json)
+    {
+      return JsonConvert.DeserializeObject<Root>(json);
+    }
 }
 
 public class RootConverter : JsonConverter<Root>
@@ -31,7 +40,6 @@ public class RootConverter : JsonConverter<Root>
   if(jo[\\"email\\"] is null){
   throw new JsonSerializationException(\\"Required property 'email' is missing\\");
 }
-
 value.Email = jo[\\"email\\"].ToObject<string>(serializer);
 
 if(jo[\\"name\\"] != null) {

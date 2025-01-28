@@ -2,7 +2,15 @@
 
 exports[`TypeScriptInputProcessor process() should be able to process input 1`] = `
 InputMetaModel {
-  "models": Object {},
+  "models": Object {
+    "undefined": AnyModel {
+      "name": "undefined",
+      "options": Object {
+        "isNullable": false,
+      },
+      "originalInput": undefined,
+    },
+  },
   "originalInput": "export type Shape = {
   size: number;
 };
@@ -24,7 +32,15 @@ export interface ShapesData {
 
 exports[`TypeScriptInputProcessor process() should be able to process input with user provided options 1`] = `
 InputMetaModel {
-  "models": Object {},
+  "models": Object {
+    "undefined": AnyModel {
+      "name": "undefined",
+      "options": Object {
+        "isNullable": false,
+      },
+      "originalInput": undefined,
+    },
+  },
   "originalInput": "export type Shape = {
   size: number;
 };
