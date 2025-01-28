@@ -11,7 +11,7 @@ describe('PythonRenderer', () => {
       PythonGenerator.defaultOptions,
       new PythonGenerator(),
       [],
-      new ConstrainedObjectModel('', undefined, '', {}),
+      new ConstrainedObjectModel('', undefined, {}, '', {}),
       new InputMetaModel(),
       new PythonDependencyManager(PythonGenerator.defaultOptions)
     );

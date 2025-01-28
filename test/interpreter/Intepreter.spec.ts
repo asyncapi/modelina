@@ -1,5 +1,5 @@
-import { CommonModel } from '../../src';
 import { Interpreter } from '../../src/interpreter/Interpreter';
+import { removeEmptyPropertiesFromObjects } from '../TestUtils/GeneralUtils';
 
 describe('Interpreter', () => {
   test('should return multiple separate models', () => {
@@ -14,14 +14,8 @@ describe('Interpreter', () => {
     };
     const interpreter = new Interpreter();
     const interpretedModel = interpreter.interpret(schema);
-    expect(interpretedModel).not.toBeUndefined();
-    const expectedModel = new CommonModel();
-    expectedModel.$id = 'schema1';
-    const expectedPropertyModel = new CommonModel();
-    expectedPropertyModel.$id = 'schema2';
-    expectedModel.properties = {
-      testProp: expectedPropertyModel
-    };
-    expect(interpretedModel).toMatchObject(expectedModel);
+    expect(
+      removeEmptyPropertiesFromObjects(interpretedModel)
+    ).toMatchSnapshot();
   });
 });

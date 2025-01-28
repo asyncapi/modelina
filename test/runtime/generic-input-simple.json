@@ -1,0 +1,49 @@
+{
+  "$id": "TestObject",
+  "description": "This object contains simple types of MetaModel generations. Object, enum, number, boolean array, tuple.",
+  "type": "object",
+  "properties": {
+    "string_type": {
+      "type": "string"
+    },
+    "number_type": {
+      "type": "number"
+    },
+    "boolean_type": {
+      "type": "boolean",
+      "description": "Status if marriage live in given house"
+    },
+    "array_type": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "tuple_type": {
+      "type": "array",
+      "items": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "number"
+        }
+      ],
+      "additionalItems": false
+    },
+    "object_type": {
+      "type": "object",
+      "properties": {
+        "test": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "enum_type": {
+      "enum": ["test", 1, true, {"test": 2}]
+    }
+  },
+  "additionalProperties": false,
+  "required": ["string_type", "boolean_type"]
+}

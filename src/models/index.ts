@@ -12,3 +12,4 @@ export * from './OpenapiV3Schema';
 export * from './MetaModel';
 export * from './ConstrainedMetaModel';
 export * from './InputMetaModel';
+export * from './AvroSchema';

@@ -5,6 +5,7 @@ import { ProcessorOptions, InputMetaModel } from '../models';
 import { SwaggerInputProcessor } from './SwaggerInputProcessor';
 import { OpenAPIInputProcessor } from './OpenAPIInputProcessor';
 import { TypeScriptInputProcessor } from './TypeScriptInputProcessor';
+import { AvroSchemaInputProcessor } from './AvroSchemaInputProcessor';
 
 /**
  * Main input processor which figures out the type of input it receives and delegates the processing into separate individual processors.
@@ -19,6 +20,7 @@ export class InputProcessor {
     this.setProcessor('openapi', new OpenAPIInputProcessor());
     this.setProcessor('default', new JsonSchemaInputProcessor());
     this.setProcessor('typescript', new TypeScriptInputProcessor());
+    this.setProcessor('avro', new AvroSchemaInputProcessor());
   }
 
   /**

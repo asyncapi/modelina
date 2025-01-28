@@ -6,8 +6,8 @@
 export type DeepPartial<T> = T extends Function
   ? T
   : T extends object
-  ? { [P in keyof T]?: DeepPartial<T[P]> }
-  : T;
+    ? { [P in keyof T]?: DeepPartial<T[P]> }
+    : T;
 
 /**
  * Return true or false based on whether the input object is a regular object or a class

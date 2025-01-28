@@ -10,7 +10,7 @@ Modelina uses something called **presets** to extend the rendered model. You can
   * [Hello world!](#hello-world)
   * [Presets in depth](#presets-in-depth)
     + [Overwriting existing rendered content](#overwriting-existing-rendered-content)
-    + [Ap/pre-pending to existng rendered content](#appre-pending-to-existng-rendered-content)
+    + [Ap/pre-pending to existing rendered content](#appre-pending-to-existing-rendered-content)
     + [Reusing presets (options)](#reusing-presets-options)
     + [Adding new dependencies](#adding-new-dependencies)
     + [Overriding the default preset](#overriding-the-default-preset)
@@ -27,30 +27,31 @@ Modelina uses something called **presets** to extend the rendered model. You can
       - [**Type**](#type)
     + [Go](#go)
       - [**Struct**](#struct)
+      - [**Enum**](#enum-2)
     + [C#](#c%23)
       - [**Class**](#class-3)
-      - [**Enum**](#enum-2)
+      - [**Enum**](#enum-3)
     + [Rust](#rust)
       - [**Struct**](#struct-1)
-      - [**Enum**](#enum-3)
+      - [**Enum**](#enum-4)
       - [**Package**](#package)
       - [**Union**](#union)
       - [**Tuple**](#tuple)
     + [Dart](#dart)
       - [**Class**](#class-4)
-      - [**Enum**](#enum-4)
+      - [**Enum**](#enum-5)
     + [Python](#python)
       - [**Class**](#class-5)
-      - [**Enum**](#enum-5)
+      - [**Enum**](#enum-6)
     + [C++ (csplusplus)](#c-csplusplus)
       - [**Class**](#class-6)
-      - [**Enum**](#enum-6)
+      - [**Enum**](#enum-7)
     + [Kotlin](#kotlin)
       - [**Class**](#class-7)
-      - [**Enum**](#enum-7)
+      - [**Enum**](#enum-8)
     + [PHP](#php)
       - [**Class**](#class-8)
-      - [**Enum**](#enum-8)
+      - [**Enum**](#enum-9)
 - [Limitations](#limitations)
   * [Hard for two presets to write to the exact same location within a class](#hard-for-two-presets-to-write-to-the-exact-same-location-within-a-class)
 
@@ -187,7 +188,7 @@ class Root {
 }
 ```
 
-### Ap/pre-pending to existng rendered content
+### Ap/pre-pending to existing rendered content
 As the hello world example appended content, this time lets prepend some content to the properties.
 ```ts
 import { TypeScriptGenerator } from '@asyncapi/modelina';
@@ -198,7 +199,7 @@ const generator = new TypeScriptGenerator({
       class: {
         property({ content }) {
           const description = '// Hello world!'
-          return `${description}\n${content}`;
+          return `${content}\n${description}`;
         }
       }
     }
@@ -304,7 +305,7 @@ self({ dependencyManager, content }) {
 
 Some languages has specific helper functions, and some very basic interfaces, such as for Java.
 
-In TypeScript because you can have different import syntaxes based on the module system such as [CJS](../examples/typescript-use-cjs/) or [ESM](../examples/typescript-use-esm/), therefore it provies a specific function `addTypeScriptDependency` that takes care of that logic, and you just have to remember `addTypeScriptDependency('ImportanWhat', 'FromWhere')`.
+In TypeScript because you can have different import syntaxes based on the module system such as [CJS](../examples/typescript-use-cjs/) or [ESM](../examples/typescript-use-esm/), therefore it provides a specific function `addTypeScriptDependency` that takes care of that logic, and you just have to remember `addTypeScriptDependency('Import what', 'From where')`.
 
 ### Overriding the default preset
 
@@ -415,6 +416,14 @@ This preset is a generator for the meta model `ConstrainedObjectModel` and [can 
 | Method | Description | Additional arguments |
 |---|---|---|
 | `field` | A method to extend rendered given field. | `field` object as a [`ConstrainedObjectPropertyModel`](./internal-model.md#the-constrained-meta-model) instance. |
+
+#### **Enum**
+
+This preset is a generator for the meta model `ConstrainedEnumModel` and [can be accessed through the `model` argument](#presets-shape).
+
+| Method | Description | Additional arguments |
+|---|---|---|
+| `item` | A method to extend rendering the enum items. | `item` object as a [`ConstrainedEnumValueModel`](./internal-model.md#the-constrained-meta-model) instance. `index` as `number`, the current enum item being rendered. |
 
 ### C#
 

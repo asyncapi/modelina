@@ -23,6 +23,7 @@ export class ConstrainedMetaModelOptions extends MetaModelOptions {
   discriminator?: ConstrainedMetaModelOptionsDiscriminator;
   parents?: ConstrainedMetaModel[];
   extend?: ConstrainedMetaModel[];
+  implementedBy?: ConstrainedMetaModel[];
 }
 
 export interface GetNearestDependenciesArgument {

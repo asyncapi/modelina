@@ -6,9 +6,15 @@ import {
   defaultGeneratorOptions
 } from '../AbstractGenerator';
 import {
+  ConstrainedAnyModel,
+  ConstrainedBooleanModel,
   ConstrainedEnumModel,
+  ConstrainedFloatModel,
+  ConstrainedIntegerModel,
   ConstrainedMetaModel,
   ConstrainedObjectModel,
+  ConstrainedReferenceModel,
+  ConstrainedStringModel,
   InputMetaModel,
   MetaModel,
   RenderOutput
@@ -52,6 +58,21 @@ export type CplusplusPropertyKeyConstraint =
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface CplusplusRenderCompleteModelOptions {}
+
+/**
+ * All the constrained models that do not depend on others to determine the type
+ */
+const SAFE_MODEL_TYPES: any[] = [
+  ConstrainedObjectModel,
+  ConstrainedReferenceModel,
+  ConstrainedAnyModel,
+  ConstrainedFloatModel,
+  ConstrainedIntegerModel,
+  ConstrainedStringModel,
+  ConstrainedBooleanModel,
+  ConstrainedEnumModel
+];
+
 export class CplusplusGenerator extends AbstractGenerator<
   CplusplusOptions,
   CplusplusRenderCompleteModelOptions
@@ -126,7 +147,8 @@ export class CplusplusGenerator extends AbstractGenerator<
         dependencyManager: dependencyManagerToUse,
         options: this.options,
         constrainedName: '' //This is just a placeholder, it will be constrained within the function
-      }
+      },
+      SAFE_MODEL_TYPES
     );
   }
 

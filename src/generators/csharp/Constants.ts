@@ -97,6 +97,13 @@ export function isReservedCSharpKeyword(
   );
 }
 
+const STRING_RENDERING_TYPES = [
+  'System.TimeSpan',
+  'System.DateTime',
+  'System.DateTimeOffset',
+  'System.Guid'
+];
+
 const PRIMITIVES = [
   'bool',
   'byte',
@@ -112,6 +119,13 @@ const PRIMITIVES = [
   'short',
   'ushort'
 ];
+
+export function isStringRenderingType(
+  property: ConstrainedObjectPropertyModel
+): boolean {
+  return STRING_RENDERING_TYPES.includes(property.property.type);
+}
+
 export function isPrimitive(property: ConstrainedObjectPropertyModel): boolean {
   return PRIMITIVES.includes(property.property.type);
 }

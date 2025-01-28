@@ -16,6 +16,7 @@ For more specific integration options, please check out the [integration documen
   * [Limitations and Compatibility](#limitations-and-compatibility)
     + [Polymorphism](#polymorphism)
 - [Generate models from JSON Schema documents](#generate-models-from-json-schema-documents)
+- [Generate models from Avro Schema documents](#generate-models-from-avro-schema-documents)
 - [Generate models from Swagger 2.0 documents](#generate-models-from-swagger-20-documents)
   * [Limitations and Compatibility](#limitations-and-compatibility-1)
     + [Polymorphism](#polymorphism-1)
@@ -64,7 +65,7 @@ generator.render(model, inputModel, { ...options });
 
 The output format is designed for you to use the generated models in further contexts. It might be part of a larger code generation such as AsyncAPI templates. This means that you can glue multiple models together into one large file, or split it out as you see fit.
 
-All [generate functions](./generators.md) return an array of `OutputModel`s, which contains the following properties.
+All `generate` functions return an array of `OutputModel`s, which contains the following properties.
 
 | Property | Type | Description |
 |---|---|---|
@@ -107,6 +108,16 @@ There are three ways to generate models for a JSON Schema document.
 
 The library expects the `$schema` property for the document to be set in order to understand the input format. By default, if no other inputs are detected, it defaults to `JSON Schema draft 7`. The process of interpreting a JSON Schema to a model can be read [here](./inputs/JSON_Schema.md).
 
+## Generate models from Avro Schema documents
+
+See the below example to get started with Avro Schema for generating models.
+
+- [Generate from an Avro Schema JS Object](../examples/avro-schema-from-object)
+
+The Avro input processor expects the `name` and `type` property, as per [Avro Schema specs](https://avro.apache.org/docs/1.11.1/specification/#schema-declaration), in the input object in order to proceed successfully.
+
+> Note: Currently, we do not have a support for `map`, `fixed` and `byte` data type. It would be introduced soon.
+
 ## Generate models from Swagger 2.0 documents
 
 There are one way to generate models from a Swagger 2.0 document.
@@ -132,6 +143,7 @@ There are one way to generate models from an OpenAPI document
 
 - [Generate from OpenAPI 3.0 JS object](../examples/openapi-from-object)
 - [Generate from OpenAPI 3.1 JS object](../examples/openapi-v3_1-from-object)
+- [Generate from OpenAPI components](../examples/openapi-include-components)
 
 The OpenAPI input processor expects that the property `openapi` is defined in order to know it should be processed.
 

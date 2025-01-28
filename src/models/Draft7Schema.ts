@@ -67,6 +67,8 @@ export class Draft7Schema {
     }
     throw new Error('Could not convert input to expected copy of Draft7Schema');
   }
+
+  // eslint-disable-next-line sonarjs/cognitive-complexity
   private static internalToSchema(
     object: any,
     seenSchemas: Map<any, Draft7Schema> = new Map()
@@ -94,8 +96,10 @@ export class Draft7Schema {
     const schema = new Draft7Schema();
     seenSchemas.set(object, schema);
     for (const [propName, prop] of Object.entries(object)) {
-      let copyProp = prop;
-
+      if (prop === undefined) {
+        continue;
+      }
+      let copyProp: any = prop;
       // Ignore value properties (those with `any` type) as they should be saved as is regardless of value
       if (
         propName !== 'default' &&
@@ -103,7 +107,23 @@ export class Draft7Schema {
         propName !== 'const' &&
         propName !== 'enum'
       ) {
-        copyProp = Draft7Schema.internalToSchema(prop, seenSchemas);
+        // Special cases are properties that should be a basic object
+        if (
+          propName === 'properties' ||
+          propName === 'patternProperties' ||
+          propName === 'definitions' ||
+          propName === 'dependencies'
+        ) {
+          copyProp = {};
+          for (const [propName2, prop2] of Object.entries(prop as any)) {
+            copyProp[String(propName2)] = Draft7Schema.internalToSchema(
+              prop2,
+              seenSchemas
+            );
+          }
+        } else {
+          copyProp = Draft7Schema.internalToSchema(prop, seenSchemas);
+        }
       }
       (schema as any)[String(propName)] = copyProp;
     }

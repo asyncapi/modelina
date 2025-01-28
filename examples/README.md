@@ -43,10 +43,16 @@ These examples show a specific input and how they can be used:
 - [asyncapi-raml-schema](./asyncapi-raml-schema) - A basic example of how to use Modelina with an AsyncAPI document using RAML 1.0 data types as payload format.
 - [asyncapi-from-parser](./asyncapi-from-parser) - A basic example where an AsyncAPI JS object from the [parser-js](https://github.com/asyncapi/parser-js) is used to generate models.
 - [asyncapi-from-v1-parser](./asyncapi-from-v1-parser) - A basic example where an AsyncAPI JS object from the old v1 [parser-js](https://github.com/asyncapi/parser-js) is used to generate models.
+- [avro-schema-from-object](./avro-schema-from-object) - A basic example where an Avro Schema JS Object is used to generate models.
 - [json-schema-draft7-from-object](./json-schema-draft7-from-object) - A basic example where a JSON Schema draft 7 JS object is used to generate models.
 - [json-schema-draft6-from-object](./json-schema-draft6-from-object) - A basic example where a JSON Schema draft 6 JS object is used to generate models.
 - [json-schema-draft4-from-object](./json-schema-draft4-from-object) - A basic example where a JSON Schema draft 4 JS object is used to generate models.
+- [json-schema-single-enum-as-const](./json-schema-single-enum-as-const) - An advanced example that shows how to change how `enum` are interpreted when containing a single value.
+- [json-schema-additional-properties-representation](./json-schema-additional-properties-representation) - An advanced example that shows how to change the property name for additional properties
 - [swagger2.0-from-object](./swagger2.0-from-object) - A basic example where a Swagger 2.0 JS object is used to generate models.
+- [openapi-from-object](./openapi-from-object) - A basic example where an OpenAPI v3.0 JS object is used to generate models.
+- [openapi-include-components](./openapi-include-components) - A basic example where an OpenAPI document without paths is used to generate models by iterating the components.
+- [openapi-v3_1-from-object](./openapi-v3_1-from-object) - A basic example where an OpenAPI v3.1 JS object is used to generate models.
 - [meta-model](./meta-model) - A basic example how to provide a meta model for the generator
 
 ## General examples
