@@ -88,31 +88,32 @@ function renderDeserialize({
       prop.property.serializationType === 'normal'
   );
 
-  const corePropsRead = coreProps.map((prop) => {
-    const propertyAccessor = pascalCase(prop.propertyName);
-    let toValue = `jo["${prop.unconstrainedPropertyName}"].ToObject<${prop.property.type}>(serializer)`;
-    if (
-      prop.property instanceof ConstrainedReferenceModel &&
-      prop.property.ref instanceof ConstrainedEnumModel
-    ) {
-      toValue = `${prop.property.name}Extensions.To${prop.property.name}(jo["${
-        prop.unconstrainedPropertyName
-      }"].ToString())${prop.required ? '.Value' : ''}`;
-    }
+  const corePropsRead = coreProps
+    .map((prop) => {
+      const propertyAccessor = pascalCase(prop.propertyName);
+      let toValue = `jo["${prop.unconstrainedPropertyName}"].ToObject<${prop.property.type}>(serializer)`;
+      if (
+        prop.property instanceof ConstrainedReferenceModel &&
+        prop.property.ref instanceof ConstrainedEnumModel
+      ) {
+        toValue = `${prop.property.name}Extensions.To${prop.property.name}(jo["${
+          prop.unconstrainedPropertyName
+        }"].ToString())${prop.required ? '.Value' : ''}`;
+      }
 
-    if (
-      options?.enforceRequired !== undefined &&
-      options?.enforceRequired &&
-      prop.required
-    ) {
-      return `if(jo["${prop.unconstrainedPropertyName}"] is null){
+      if (
+        options?.enforceRequired !== undefined &&
+        options?.enforceRequired &&
+        prop.required
+      ) {
+        return `if(jo["${prop.unconstrainedPropertyName}"] is null){
   throw new JsonSerializationException("Required property '${prop.unconstrainedPropertyName}' is missing");
 }
 value.${propertyAccessor} = ${toValue};
 `;
-    }
+      }
 
-    return `if(jo["${prop.unconstrainedPropertyName}"] != null) {
+      return `if(jo["${prop.unconstrainedPropertyName}"] != null) {
   value.${propertyAccessor} = ${toValue};
 }`;
     })
