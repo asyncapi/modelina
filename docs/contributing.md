@@ -132,7 +132,6 @@ Time to adapt the tests, cause without tests, it's just an empty promise. The te
 4. Adapt the [generator tests](../test/generators/template/TemplateGenerator.spec.ts)
 5. Adapt the [renderer tests](../test/generators/template/TemplateRenderer.spec.ts)
 6. Add your generator to the [FileGenerators test](../test/generators/FileGenerators.spec.ts) to ensure the models are accurately written to files.
-7. Lastly, we have (arguably) the most important tests, [the BlackBox tests](./development.md#blackbox-testing). They are to ensure that real-world inputs generate usable models that do not contain syntax errors. You can read more about the BlackBox tests [here](./development.md#blackbox-testing).
 
 Lastly, we need to adapt some of the docs to showcase your new awesome generator! Cause if the users cant find it, it dont exist.
 1. Add your [generator specific documentation under languages](./languages/) and add it to the [list of generators](./README.md#languages)
@@ -163,7 +162,6 @@ That said, here is a general rundown on what's triggered by each PR:
 
 - We inherit all [AsyncAPI core GitHub workflows](https://github.com/asyncapi/.github/tree/master/.github/workflows), including the most important one:
     - [A standard PR workflow](https://github.com/asyncapi/.github/blob/master/.github/workflows/if-nodejs-pr-testing.yml) which ensures that the following commands need to succeed: `npm run test`, `npm run lint`, and `npm run generate:assets`.
-- [BlackBox testing](https://github.com/asyncapi/modelina/tree/master/test/blackbox) has its [own workflow](https://github.com/asyncapi/modelina/blob/master/.github/workflows/blackbox-testing.yml) which ensures that all supported inputs generate syntactically correct outputs to any of the output languages. This check takes a while (usually +5 minutes). Generally, you don't need to worry about this one, unless the code were to suddenly generate syntactically incorrect code (we will guide you if this happens). 
 - [Coverall](https://github.com/asyncapi/modelina/blob/master/.github/workflows/coverall.yml) ensures we get test coverage statistics in each PR, thus ensuring we see how it affects overall test coverage. It creates a comment on the PR with the coverage status.
 - [SonarCloud](https://sonarcloud.io/dashboard?id=asyncapi_generator-model-sdk) runs a code analysis to ensure no bugs, security concerns, code smells, or duplicated code blocks. Make sure you address any concerns found by this bot, because it generates a comment to the PR if it finds any issue.
 

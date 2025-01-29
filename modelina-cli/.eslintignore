@@ -1,0 +1,5 @@
+/lib
+/tmp
+/scripts
+/test/helpers/init.js
+/test/fixtures/generate

@@ -1,99 +1,152 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`PythonGenerator Class should handle self reference models 1`] = `
+"class Address: 
+  def __init__(self, input: Dict):
+    if 'self_model' in input:
+      self._self_model: Address = Address(input['self_model'])
+    if 'array_model' in input:
+      self._array_model: List[Address] = input['array_model']
+    if 'tuple_model' in input:
+      self._tuple_model: tuple[Address, str] = input['tuple_model']
+    if 'map_model' in input:
+      self._map_model: dict[str, Address] = input['map_model']
+    if 'union_model' in input:
+      self._union_model: Address | str = input['union_model']
+
+  @property
+  def self_model(self) -> Address:
+    return self._self_model
+  @self_model.setter
+  def self_model(self, self_model: Address):
+    self._self_model = self_model
+
+  @property
+  def array_model(self) -> List[Address]:
+    return self._array_model
+  @array_model.setter
+  def array_model(self, array_model: List[Address]):
+    self._array_model = array_model
+
+  @property
+  def tuple_model(self) -> tuple[Address, str]:
+    return self._tuple_model
+  @tuple_model.setter
+  def tuple_model(self, tuple_model: tuple[Address, str]):
+    self._tuple_model = tuple_model
+
+  @property
+  def map_model(self) -> dict[str, Address]:
+    return self._map_model
+  @map_model.setter
+  def map_model(self, map_model: dict[str, Address]):
+    self._map_model = map_model
+
+  @property
+  def union_model(self) -> Address | str:
+    return self._union_model
+  @union_model.setter
+  def union_model(self, union_model: Address | str):
+    self._union_model = union_model
+"
+`;
+
 exports[`PythonGenerator Class should not render reserved keyword 1`] = `
 "class Address: 
-  def __init__(self, input):
-    if hasattr(input, 'reservedReservedDel'):
-    	self._reservedReservedDel = input.reservedReservedDel
-    if hasattr(input, 'reservedDel'):
-    	self._reservedDel = input.reservedDel
+  def __init__(self, input: Dict):
+    if 'reserved_del' in input:
+      self._reserved_del: str = input['reserved_del']
 
   @property
-  def reservedReservedDel(self):
-  	return self._reservedReservedDel
-  @reservedReservedDel.setter
-  def reservedReservedDel(self, reservedReservedDel):
-  	self._reservedReservedDel = reservedReservedDel
-
-  @property
-  def reservedDel(self):
-  	return self._reservedDel
-  @reservedDel.setter
-  def reservedDel(self, reservedDel):
-  	self._reservedDel = reservedDel
+  def reserved_del(self) -> str:
+    return self._reserved_del
+  @reserved_del.setter
+  def reserved_del(self, reserved_del: str):
+    self._reserved_del = reserved_del
 "
 `;
 
 exports[`PythonGenerator Class should render \`class\` type 1`] = `
 "class Address: 
-  def __init__(self, input):
-    self._streetName = input.streetName
-    self._city = input.city
-    self._state = input.state
-    self._houseNumber = input.houseNumber
-    if hasattr(input, 'marriage'):
-    	self._marriage = input.marriage
-    if hasattr(input, 'members'):
-    	self._members = input.members
-    self._arrayType = input.arrayType
-    if hasattr(input, 'additionalProperties'):
-    	self._additionalProperties = input.additionalProperties
+  def __init__(self, input: Dict):
+    self._street_name: str = input['street_name']
+    self._city: str = input['city']
+    self._state: str = input['state']
+    self._house_number: float = input['house_number']
+    if 'marriage' in input:
+      self._marriage: bool = input['marriage']
+    if 'members' in input:
+      self._members: str | float | bool = input['members']
+    self._array_type: List[str | float | Any] = input['array_type']
+    if 'additional_properties' in input:
+      self._additional_properties: dict[str, Any | str] = input['additional_properties']
 
   @property
-  def streetName(self):
-  	return self._streetName
-  @streetName.setter
-  def streetName(self, streetName):
-  	self._streetName = streetName
+  def street_name(self) -> str:
+    return self._street_name
+  @street_name.setter
+  def street_name(self, street_name: str):
+    self._street_name = street_name
 
   @property
-  def city(self):
-  	return self._city
+  def city(self) -> str:
+    return self._city
   @city.setter
-  def city(self, city):
-  	self._city = city
+  def city(self, city: str):
+    self._city = city
 
   @property
-  def state(self):
-  	return self._state
+  def state(self) -> str:
+    return self._state
   @state.setter
-  def state(self, state):
-  	self._state = state
+  def state(self, state: str):
+    self._state = state
 
   @property
-  def houseNumber(self):
-  	return self._houseNumber
-  @houseNumber.setter
-  def houseNumber(self, houseNumber):
-  	self._houseNumber = houseNumber
+  def house_number(self) -> float:
+    return self._house_number
+  @house_number.setter
+  def house_number(self, house_number: float):
+    self._house_number = house_number
 
   @property
-  def marriage(self):
-  	return self._marriage
+  def marriage(self) -> bool:
+    return self._marriage
   @marriage.setter
-  def marriage(self, marriage):
-  	self._marriage = marriage
+  def marriage(self, marriage: bool):
+    self._marriage = marriage
 
   @property
-  def members(self):
-  	return self._members
+  def members(self) -> str | float | bool:
+    return self._members
   @members.setter
-  def members(self, members):
-  	self._members = members
+  def members(self, members: str | float | bool):
+    self._members = members
 
   @property
-  def arrayType(self):
-  	return self._arrayType
-  @arrayType.setter
-  def arrayType(self, arrayType):
-  	self._arrayType = arrayType
+  def array_type(self) -> List[str | float | Any]:
+    return self._array_type
+  @array_type.setter
+  def array_type(self, array_type: List[str | float | Any]):
+    self._array_type = array_type
 
   @property
-  def additionalProperties(self):
-  	return self._additionalProperties
-  @additionalProperties.setter
-  def additionalProperties(self, additionalProperties):
-  	self._additionalProperties = additionalProperties
+  def additional_properties(self) -> dict[str, Any | str]:
+    return self._additional_properties
+  @additional_properties.setter
+  def additional_properties(self, additional_properties: dict[str, Any | str]):
+    self._additional_properties = additional_properties
+"
+`;
+
+exports[`PythonGenerator Class should render constant types 1`] = `
+"class Address: 
+  def __init__(self, input: Dict):
+    self._street_name: str = 'someAddress'
+
+  @property
+  def street_name(self) -> str:
+    return self._street_name
 "
 `;
 
@@ -104,35 +157,35 @@ exports[`PythonGenerator Class should work with custom preset for \`class\` type
   test1
 
 
-  def __init__(self, input):
-    if hasattr(input, 'property'):
-    	self._property = input.property
-    if hasattr(input, 'additionalProperties'):
-    	self._additionalProperties = input.additionalProperties
+  def __init__(self, input: Dict):
+    if 'property' in input:
+      self._property: str = input['property']
+    if 'additional_properties' in input:
+      self._additional_properties: dict[str, Any] = input['additional_properties']
 
   test2
   @property
-  def property(self):
-  	return self._property
+  def property(self) -> str:
+    return self._property
   test3
   @property.setter
-  def property(self, property):
-  	self._property = property
+  def property(self, property: str):
+    self._property = property
 
   test2
   @property
-  def additionalProperties(self):
-  	return self._additionalProperties
+  def additional_properties(self) -> dict[str, Any]:
+    return self._additional_properties
   test3
-  @additionalProperties.setter
-  def additionalProperties(self, additionalProperties):
-  	self._additionalProperties = additionalProperties
+  @additional_properties.setter
+  def additional_properties(self, additional_properties: dict[str, Any]):
+    self._additional_properties = additional_properties
 "
 `;
 
 exports[`PythonGenerator Class should work with empty objects 1`] = `
 "class CustomClass: 
-  def __init__(self, input):
+  def __init__(self, input: Dict):
     \\"\\"\\"
     No properties
     \\"\\"\\"

@@ -97,6 +97,8 @@ export class AsyncapiV2Schema {
       'Could not convert input to expected copy of AsyncapiV2Schema'
     );
   }
+
+  // eslint-disable-next-line sonarjs/cognitive-complexity
   private static internalToSchema(
     object: any,
     seenSchemas: Map<any, AsyncapiV2Schema> = new Map()
@@ -124,7 +126,10 @@ export class AsyncapiV2Schema {
     const schema = new AsyncapiV2Schema();
     seenSchemas.set(object, schema);
     for (const [propName, prop] of Object.entries(object)) {
-      let copyProp = prop;
+      if (prop === undefined) {
+        continue;
+      }
+      let copyProp: any = prop;
 
       // Ignore value properties (those with `any` type) as they should be saved as is regardless of value
       if (
@@ -138,8 +143,23 @@ export class AsyncapiV2Schema {
           schema.externalDocs =
             AsyncapiV2ExternalDocumentation.toExternalDocumentation(prop);
           continue;
+        } else if (
+          propName === 'properties' ||
+          propName === 'patternProperties' ||
+          propName === 'definitions' ||
+          propName === 'dependencies'
+        ) {
+          // Special cases are properties that should be a basic object
+          copyProp = {};
+          for (const [propName2, prop2] of Object.entries(prop as any)) {
+            copyProp[String(propName2)] = AsyncapiV2Schema.internalToSchema(
+              prop2,
+              seenSchemas
+            );
+          }
+        } else {
+          copyProp = AsyncapiV2Schema.internalToSchema(prop, seenSchemas);
         }
-        copyProp = AsyncapiV2Schema.internalToSchema(prop, seenSchemas);
       }
       (schema as any)[String(propName)] = copyProp;
     }

@@ -6,9 +6,17 @@ import {
   defaultGeneratorOptions
 } from '../AbstractGenerator';
 import {
+  ConstrainedAnyModel,
+  ConstrainedBooleanModel,
   ConstrainedEnumModel,
+  ConstrainedFloatModel,
+  ConstrainedIntegerModel,
   ConstrainedMetaModel,
   ConstrainedObjectModel,
+  ConstrainedReferenceModel,
+  ConstrainedStringModel,
+  ConstrainedTupleModel,
+  ConstrainedUnionModel,
   InputMetaModel,
   MetaModel,
   RenderOutput
@@ -52,6 +60,23 @@ export type KotlinTypeMapping = TypeMapping<
 export interface KotlinRenderCompleteModelOptions {
   packageName: string;
 }
+
+/**
+ * All the constrained models that do not depend on others to determine the type
+ */
+const SAFE_MODEL_TYPES: any[] = [
+  ConstrainedObjectModel,
+  ConstrainedReferenceModel,
+  ConstrainedAnyModel,
+  ConstrainedFloatModel,
+  ConstrainedIntegerModel,
+  ConstrainedStringModel,
+  ConstrainedBooleanModel,
+  ConstrainedTupleModel,
+  ConstrainedEnumModel,
+  ConstrainedUnionModel
+];
+
 export class KotlinGenerator extends AbstractGenerator<
   KotlinOptions,
   KotlinRenderCompleteModelOptions
@@ -127,7 +152,8 @@ export class KotlinGenerator extends AbstractGenerator<
         dependencyManager: dependencyManagerToUse,
         options: optionsToUse,
         constrainedName: '' //This is just a placeholder, it will be constrained within the function
-      }
+      },
+      SAFE_MODEL_TYPES
     );
   }
 

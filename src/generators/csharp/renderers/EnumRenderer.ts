@@ -33,9 +33,7 @@ return null;`;
 ${this.indent(enumValueSwitch)}
 }
 
-public static ${this.model.name}? To${this.model.name}(${
-      this.model.type
-    }? value)
+public static ${this.model.name}? To${this.model.name}(dynamic? value)
 {
 ${this.indent(valueSwitch)}
 }`;

@@ -1,4 +1,8 @@
-import { ConstrainedUnionModel } from '../../../models';
+import {
+  ConstrainedDictionaryModel,
+  ConstrainedObjectPropertyModel,
+  ConstrainedUnionModel
+} from '../../../models';
 import { PythonOptions } from '../PythonGenerator';
 import { ClassPresetType, PythonPreset } from '../PythonPreset';
 
@@ -18,47 +22,109 @@ const PYTHON_PYDANTIC_CLASS_PRESET: ClassPresetType<PythonOptions> = {
       `class ${model.name}(BaseModel):`
     );
   },
-  property(params) {
-    let type = params.property.property.type;
-    const propertyName = params.property.propertyName;
+  property({ property, model, renderer }) {
+    let type = property.property.type;
+    const propertyName = property.propertyName;
 
-    if (params.property.property instanceof ConstrainedUnionModel) {
-      const unionTypes = params.property.property.union.map(
+    if (property.property instanceof ConstrainedUnionModel) {
+      const unionTypes = property.property.union.map(
         (unionModel) => unionModel.type
       );
       type = `Union[${unionTypes.join(', ')}]`;
     }
 
     const isOptional =
-      !params.property.required ||
-      params.property.property.options.isNullable === true;
+      !property.required || property.property.options.isNullable === true;
     if (isOptional) {
       type = `Optional[${type}]`;
     }
+    type = renderer.renderPropertyType({
+      modelType: model.type,
+      propertyType: type
+    });
 
     const decoratorArgs: string[] = [];
 
-    if (params.property.property.originalInput['description']) {
+    if (property.property.originalInput['description']) {
       decoratorArgs.push(
-        `description='''${params.property.property.originalInput['description']}'''`
+        `description='''${property.property.originalInput['description']}'''`
       );
     }
     if (isOptional) {
       decoratorArgs.push('default=None');
     }
     if (
-      params.property.propertyName !== params.property.unconstrainedPropertyName
+      property.property instanceof ConstrainedDictionaryModel &&
+      property.property.serializationType === 'unwrap'
     ) {
-      decoratorArgs.push(
-        `alias='''${params.property.unconstrainedPropertyName}'''`
-      );
+      decoratorArgs.push('exclude=True');
+    }
+    if (!property.required) {
+      decoratorArgs.push('default=None');
     }
 
     return `${propertyName}: ${type} = Field(${decoratorArgs.join(', ')})`;
   },
   ctor: () => '',
   getter: () => '',
-  setter: () => ''
+  setter: () => '',
+  additionalContent: ({ content, model, renderer }) => {
+    const allProperties = Object.keys(model.properties);
+    let dictionaryModel: ConstrainedObjectPropertyModel | undefined;
+    for (const property of Object.values(model.properties)) {
+      if (
+        property.property instanceof ConstrainedDictionaryModel &&
+        property.property.serializationType === 'unwrap'
+      ) {
+        dictionaryModel = property;
+      }
+    }
+    const shouldHaveFunctions = dictionaryModel !== undefined;
+    if (!shouldHaveFunctions) {
+      return content;
+    }
+
+    renderer.dependencyManager.addDependency(
+      'from pydantic import model_serializer, model_validator'
+    );
+    // eslint-disable-next-line prettier/prettier
+    return `@model_serializer(mode='wrap')
+def custom_serializer(self, handler):
+  serialized_self = handler(self)
+  ${dictionaryModel?.propertyName} = getattr(self, "${dictionaryModel?.propertyName}")
+  if ${dictionaryModel?.propertyName} is not None:
+    for key, value in ${dictionaryModel?.propertyName}.items():
+      # Never overwrite existing values, to avoid clashes
+      if not hasattr(serialized_self, key):
+        serialized_self[key] = value
+
+  return serialized_self
+
+@model_validator(mode='before')
+@classmethod
+def unwrap_${dictionaryModel?.propertyName}(cls, data):
+  if not isinstance(data, dict):
+    data = data.model_dump()
+  json_properties = list(data.keys())
+  known_object_properties = [${allProperties
+    .map((value) => `'${value}'`)
+    .join(', ')}]
+  unknown_object_properties = [element for element in json_properties if element not in known_object_properties]
+  # Ignore attempts that validate regular models, only when unknown input is used we add unwrap extensions
+  if len(unknown_object_properties) == 0: 
+    return data
+  
+  known_json_properties = [${Object.values(model.properties)
+    .map((value) => `'${value.unconstrainedPropertyName}'`)
+    .join(', ')}]
+  ${dictionaryModel?.propertyName} = data.get('${dictionaryModel?.propertyName}', {})
+  for obj_key in list(data.keys()):
+    if not known_json_properties.__contains__(obj_key):
+      ${dictionaryModel?.propertyName}[obj_key] = data.pop(obj_key, None)
+  data['${dictionaryModel?.propertyName}'] = ${dictionaryModel?.propertyName}
+  return data
+${content}`;
+  }
 };
 
 export const PYTHON_PYDANTIC_PRESET: PythonPreset<PythonOptions> = {
