@@ -9,6 +9,7 @@ Array [
   @NotNull
   @Max(99)
   private double maxNumberProp;
+  @Valid
   @Size(min=2, max=3)
   private Object[] arrayProp;
   @Pattern(regexp=\\"^I_\\")
