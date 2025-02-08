@@ -30,6 +30,7 @@ exports[`JAVA_CONSTRAINTS_PRESET should render jakarta constraints annotations f
   @NotNull
   @Max(99)
   private double maxNumberProp;
+  @Valid
   @Size(min=2, max=3)
   private Object[] arrayProp;
   @Pattern(regexp=\\"^\\\\\\\\w+(\\\\\\"\\\\\\\\.\\\\\\\\w+)*$\\")
@@ -62,6 +63,7 @@ exports[`JAVA_CONSTRAINTS_PRESET should render javax constraints annotations by 
   @NotNull
   @Max(99)
   private double maxNumberProp;
+  @Valid
   @Size(min=2, max=3)
   private Object[] arrayProp;
   @Pattern(regexp=\\"^\\\\\\\\w+(\\\\\\"\\\\\\\\.\\\\\\\\w+)*$\\")
@@ -94,6 +96,7 @@ exports[`JAVA_CONSTRAINTS_PRESET should render javax constraints annotations whe
   @NotNull
   @Max(99)
   private double maxNumberProp;
+  @Valid
   @Size(min=2, max=3)
   private Object[] arrayProp;
   @Pattern(regexp=\\"^\\\\\\\\w+(\\\\\\"\\\\\\\\.\\\\\\\\w+)*$\\")
