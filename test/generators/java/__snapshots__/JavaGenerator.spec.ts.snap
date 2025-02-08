@@ -196,6 +196,7 @@ public interface Vehicle {
 exports[`JavaGenerator oneOf/discriminator with jackson preset date-time format should render java.time.OffsetDateTime 1`] = `
 Array [
   "public class Event {
+  @Valid
   @NotNull
   @JsonProperty(\\"action\\")
   private Action action;
@@ -311,6 +312,7 @@ public interface Pet {
   @NotNull
   @JsonProperty(\\"specversion\\")
   private final String specversion = \\"1.0\\";
+  @Valid
   @NotNull
   @JsonProperty(\\"type\\")
   private final CloudEventType type = CloudEventType.DOG;
@@ -431,6 +433,7 @@ public interface Pet {
   @NotNull
   @JsonProperty(\\"specversion\\")
   private final String specversion = \\"1.0\\";
+  @Valid
   @NotNull
   @JsonProperty(\\"type\\")
   private final CloudEventType type = CloudEventType.CAT;
@@ -521,6 +524,7 @@ Array [
   @NotNull
   @JsonProperty(\\"id\\")
   private String id;
+  @Valid
   @NotNull
   @JsonProperty(\\"type\\")
   private final CloudEventType type = CloudEventType.DOG;
@@ -623,6 +627,7 @@ public interface Pet {
   
 }",
   "public class Dog implements Pet {
+  @Valid
   @NotNull
   @JsonProperty(\\"type\\")
   private final DogType type = DogType.DOG;
@@ -704,6 +709,7 @@ public interface Pet {
   }
 }",
   "public class Cat implements Pet {
+  @Valid
   @NotNull
   @JsonProperty(\\"type\\")
   private final CatType type = CatType.CAT;
@@ -801,6 +807,7 @@ public interface Vehicle {
   VehicleType getVehicleType();
 }",
   "public class Cargo {
+  @Valid
   @JsonProperty(\\"vehicle\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Vehicle vehicle;
@@ -854,6 +861,7 @@ public interface Vehicle {
   }
 }",
   "public class Car implements Vehicle {
+  @Valid
   @NotNull
   @JsonProperty(\\"vehicleType\\")
   private final VehicleType vehicleType = VehicleType.CAR;
@@ -935,6 +943,7 @@ public interface Vehicle {
   }
 }",
   "public class Truck implements Vehicle {
+  @Valid
   @NotNull
   @JsonProperty(\\"vehicleType\\")
   private final VehicleType vehicleType = VehicleType.TRUCK;
