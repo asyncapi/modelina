@@ -2,6 +2,8 @@ import {
   ConstrainedArrayModel,
   ConstrainedFloatModel,
   ConstrainedIntegerModel,
+  ConstrainedObjectModel,
+  ConstrainedReferenceModel,
   ConstrainedStringModel
 } from '../../../models';
 import { JavaPreset } from '../JavaPreset';
@@ -32,6 +34,15 @@ export const JAVA_CONSTRAINTS_PRESET: JavaPreset<JavaConstraintsPresetOptions> =
         }
 
         const annotations: string[] = [];
+
+        // needs cascade validation
+        if (
+          property.property instanceof ConstrainedReferenceModel ||
+          property.property instanceof ConstrainedObjectModel ||
+          property.property instanceof ConstrainedArrayModel
+        ) {
+          annotations.push(renderer.renderAnnotation('Valid'));
+        }
 
         if (property.required) {
           annotations.push(renderer.renderAnnotation('NotNull'));
