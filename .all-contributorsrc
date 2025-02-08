@@ -1083,6 +1083,16 @@
         "test",
         "doc"
       ]
+    },
+    {
+      "login": "istvan-nagy-epam",
+      "name": "Istvan Zoltan Nagy",
+      "avatar_url": "https://avatars.githubusercontent.com/u/15124019?v=4",
+      "profile": "https://github.com/istvan-nagy-epam",
+      "contributions": [
+        "code",
+        "test"
+      ]
     }
   ],
   "contributorsPerLine": 7,
