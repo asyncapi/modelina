@@ -25,6 +25,9 @@ export const JAVA_CONSTRAINTS_PRESET: JavaPreset<JavaConstraintsPresetOptions> =
         renderer.dependencyManager.addDependency(
           `import ${importFrom}.validation.constraints.*;`
         );
+        renderer.dependencyManager.addDependency(
+          `import ${importFrom}.validation.Valid;`
+        );
         return content;
       },
       // eslint-disable-next-line sonarjs/cognitive-complexity
