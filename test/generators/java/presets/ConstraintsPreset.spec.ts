@@ -24,7 +24,8 @@ describe('JAVA_CONSTRAINTS_PRESET', () => {
     const generator = new JavaGenerator({ presets: [JAVA_CONSTRAINTS_PRESET] });
     const expectedDependencies = [
       'import java.util.Map;',
-      'import javax.validation.constraints.*;'
+      'import javax.validation.constraints.*;',
+      'import javax.validation.Valid;'
     ];
 
     const models = await generator.generate(doc);
@@ -46,7 +47,8 @@ describe('JAVA_CONSTRAINTS_PRESET', () => {
     });
     const expectedDependencies = [
       'import java.util.Map;',
-      'import javax.validation.constraints.*;'
+      'import javax.validation.constraints.*;',
+      'import javax.validation.Valid;'
     ];
 
     const models = await generator.generate(doc);
@@ -68,7 +70,8 @@ describe('JAVA_CONSTRAINTS_PRESET', () => {
     });
     const expectedDependencies = [
       'import java.util.Map;',
-      'import jakarta.validation.constraints.*;'
+      'import jakarta.validation.constraints.*;',
+      'import jakarta.validation.Valid;'
     ];
 
     const models = await generator.generate(doc);
