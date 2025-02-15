@@ -3,7 +3,7 @@
 exports[`Should be able to render python models and should log expected output to console: class-model 1`] = `
 Array [
   "class Root(BaseModel): 
-  optional_field: Optional[str] = Field(description='''this field is optional''', default=None, default=None)
+  optional_field: Optional[str] = Field(description='''this field is optional''', default=None)
   required_field: str = Field(description='''this field is required''')
   no_description: Optional[str] = Field(default=None)
   options: Optional[Options.Options] = Field(default=None)
