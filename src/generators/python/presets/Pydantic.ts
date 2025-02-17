@@ -59,9 +59,6 @@ const PYTHON_PYDANTIC_CLASS_PRESET: ClassPresetType<PythonOptions> = {
     ) {
       decoratorArgs.push('exclude=True');
     }
-    if (!property.required) {
-      decoratorArgs.push('default=None');
-    }
 
     return `${propertyName}: ${type} = Field(${decoratorArgs.join(', ')})`;
   },

@@ -4,7 +4,7 @@ exports[`PYTHON_PYDANTIC_PRESET should render nullable union 1`] = `
 Array [
   "class NullableUnionTest(BaseModel): 
   nullable_union_test: Optional[Union[Union1.Union1]] = Field(default=None)
-  additional_properties: Optional[dict[str, Any]] = Field(default=None, exclude=True, default=None)
+  additional_properties: Optional[dict[str, Any]] = Field(default=None, exclude=True)
 
   @model_serializer(mode='wrap')
   def custom_serializer(self, handler):
@@ -40,8 +40,8 @@ Array [
 
 ",
   "class Union1(BaseModel): 
-  test_prop1: Optional[str] = Field(default=None, default=None)
-  additional_properties: Optional[dict[str, Any]] = Field(default=None, exclude=True, default=None)
+  test_prop1: Optional[str] = Field(default=None)
+  additional_properties: Optional[dict[str, Any]] = Field(default=None, exclude=True)
 
   @model_serializer(mode='wrap')
   def custom_serializer(self, handler):
@@ -84,8 +84,8 @@ exports[`PYTHON_PYDANTIC_PRESET should render pydantic for class 1`] = `
   prop: Optional[str] = Field(description='''test
     multi
     line
-    description''', default=None, default=None)
-  additional_properties: Optional[dict[str, Any]] = Field(default=None, exclude=True, default=None)
+    description''', default=None)
+  additional_properties: Optional[dict[str, Any]] = Field(default=None, exclude=True)
 
   @model_serializer(mode='wrap')
   def custom_serializer(self, handler):
@@ -125,8 +125,8 @@ exports[`PYTHON_PYDANTIC_PRESET should render pydantic for class 1`] = `
 exports[`PYTHON_PYDANTIC_PRESET should render union to support Python < 3.10 1`] = `
 Array [
   "class UnionTest(BaseModel): 
-  union_test: Optional[Union[Union1.Union1, Union2.Union2]] = Field(default=None, default=None)
-  additional_properties: Optional[dict[str, Any]] = Field(default=None, exclude=True, default=None)
+  union_test: Optional[Union[Union1.Union1, Union2.Union2]] = Field(default=None)
+  additional_properties: Optional[dict[str, Any]] = Field(default=None, exclude=True)
 
   @model_serializer(mode='wrap')
   def custom_serializer(self, handler):
@@ -162,8 +162,8 @@ Array [
 
 ",
   "class Union1(BaseModel): 
-  test_prop1: Optional[str] = Field(default=None, default=None)
-  additional_properties: Optional[dict[str, Any]] = Field(default=None, exclude=True, default=None)
+  test_prop1: Optional[str] = Field(default=None)
+  additional_properties: Optional[dict[str, Any]] = Field(default=None, exclude=True)
 
   @model_serializer(mode='wrap')
   def custom_serializer(self, handler):
@@ -199,8 +199,8 @@ Array [
 
 ",
   "class Union2(BaseModel): 
-  test_prop2: Optional[str] = Field(default=None, default=None)
-  additional_properties: Optional[dict[str, Any]] = Field(default=None, exclude=True, default=None)
+  test_prop2: Optional[str] = Field(default=None)
+  additional_properties: Optional[dict[str, Any]] = Field(default=None, exclude=True)
 
   @model_serializer(mode='wrap')
   def custom_serializer(self, handler):
