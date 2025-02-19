@@ -628,7 +628,6 @@ export function convertToObjectModel(
     );
     metaModel.properties[String(propertyName)] = propertyModel;
   }
-  // console.log(metaModel);
   return metaModel;
 }
 
