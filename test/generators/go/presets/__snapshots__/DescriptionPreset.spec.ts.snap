@@ -7,6 +7,8 @@ type Test struct {
   // Description
   NumberProp float64
   ObjectProp *NestedTest
+  // AnyTest description
+  AnyProp map[string]interface{}
 }"
 `;
 
