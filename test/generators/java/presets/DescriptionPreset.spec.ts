@@ -20,6 +20,12 @@ describe('JAVA_DESCRIPTION_PRESET', () => {
           type: 'string',
           description: 'Description for prop',
           examples: ['exampleValue']
+        },
+        anyProp: {
+          type: 'object',
+          $id: 'AnyTest',
+          properties: {},
+          description: 'AnyTest description'
         }
       }
     };
