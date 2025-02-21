@@ -97,7 +97,7 @@ Array [
   private _specversion: string;
   private _reservedType: DogType.DOG = DogType.DOG;
   private _dataschema?: string;
-  private _time?: string;
+  private _time?: string | Date;
   private _additionalProperties?: Map<string, any>;
 
   constructor(input: {
@@ -105,7 +105,7 @@ Array [
     source: string,
     specversion: string,
     dataschema?: string,
-    time?: string,
+    time?: string | Date,
     additionalProperties?: Map<string, any>,
   }) {
     this._id = input.id;
@@ -130,8 +130,8 @@ Array [
   get dataschema(): string | undefined { return this._dataschema; }
   set dataschema(dataschema: string | undefined) { this._dataschema = dataschema; }
 
-  get time(): string | undefined { return this._time; }
-  set time(time: string | undefined) { this._time = time; }
+  get time(): string | Date | undefined { return this._time; }
+  set time(time: string | Date | undefined) { this._time = time; }
 
   get additionalProperties(): Map<string, any> | undefined { return this._additionalProperties; }
   set additionalProperties(additionalProperties: Map<string, any> | undefined) { this._additionalProperties = additionalProperties; }
@@ -145,7 +145,7 @@ Array [
   private _specversion: string;
   private _reservedType: CatType.CAT = CatType.CAT;
   private _dataschema?: string;
-  private _time?: string;
+  private _time?: string | Date;
   private _additionalProperties?: Map<string, any>;
 
   constructor(input: {
@@ -153,7 +153,7 @@ Array [
     source: string,
     specversion: string,
     dataschema?: string,
-    time?: string,
+    time?: string | Date,
     additionalProperties?: Map<string, any>,
   }) {
     this._id = input.id;
@@ -178,8 +178,8 @@ Array [
   get dataschema(): string | undefined { return this._dataschema; }
   set dataschema(dataschema: string | undefined) { this._dataschema = dataschema; }
 
-  get time(): string | undefined { return this._time; }
-  set time(time: string | undefined) { this._time = time; }
+  get time(): string | Date | undefined { return this._time; }
+  set time(time: string | Date | undefined) { this._time = time; }
 
   get additionalProperties(): Map<string, any> | undefined { return this._additionalProperties; }
   set additionalProperties(additionalProperties: Map<string, any> | undefined) { this._additionalProperties = additionalProperties; }
