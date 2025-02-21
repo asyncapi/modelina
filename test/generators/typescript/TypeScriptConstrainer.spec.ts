@@ -79,7 +79,7 @@ describe('TypeScriptConstrainer', () => {
     });
   });
   describe('String', () => {
-    test('should render type', () => {
+    test('should render string type for string', () => {
       const model = new ConstrainedStringModel('test', undefined, {}, '');
       const type = TypeScriptDefaultTypeMapping.String({
         constrainedModel: model,
@@ -87,6 +87,24 @@ describe('TypeScriptConstrainer', () => {
         dependencyManager: undefined as never
       });
       expect(type).toEqual('string');
+    });
+    test('should render Date type for date', () => {
+      const model = new ConstrainedStringModel('test', undefined, { format: 'date' }, '');
+      const type = TypeScriptDefaultTypeMapping.String({
+        constrainedModel: model,
+        options: TypeScriptGenerator.defaultOptions,
+        dependencyManager: undefined as never
+      });
+      expect(type).toEqual('Date');
+    });
+    test('should render Date type for date-time', () => {
+      const model = new ConstrainedStringModel('test', undefined, { format: 'date-time' }, '');
+      const type = TypeScriptDefaultTypeMapping.String({
+        constrainedModel: model,
+        options: TypeScriptGenerator.defaultOptions,
+        dependencyManager: undefined as never
+      });
+      expect(type).toEqual('Date');
     });
   });
   describe('Boolean', () => {
