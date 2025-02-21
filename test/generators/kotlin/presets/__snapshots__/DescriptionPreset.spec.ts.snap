@@ -5,6 +5,7 @@ exports[`KOTLIN_DESCRIPTION_PRESET should render description and examples for cl
  * Description for class
  * 
  * @property prop Description for prop
+ * @property anyProp AnyTest description
  * @property additionalProperties
  * 
  * Examples: 
@@ -12,6 +13,7 @@ exports[`KOTLIN_DESCRIPTION_PRESET should render description and examples for cl
  */
 data class Clazz(
     val prop: String? = null,
+    val anyProp: Map<String, Any>? = null,
     val additionalProperties: Map<String, Any>? = null,
 )"
 `;
