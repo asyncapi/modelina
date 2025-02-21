@@ -359,9 +359,19 @@ export function convertToAnyModel(
   if (!Array.isArray(jsonSchemaModel.type) || !isAnyType) {
     return undefined;
   }
+  let originalInput = jsonSchemaModel.originalInput;
+  if (typeof jsonSchemaModel.originalInput !== 'object') {
+    originalInput = {
+      value: jsonSchemaModel.originalInput,
+      ...(jsonSchemaModel.originalInput?.description !== undefined && {
+        description: jsonSchemaModel.originalInput.description
+      })
+    };
+  }
+
   return new AnyModel(
     name,
-    jsonSchemaModel.originalInput,
+    originalInput,
     getMetaModelOptions(jsonSchemaModel, options)
   );
 }
@@ -519,9 +529,17 @@ export function convertToDictionaryModel(
     getOriginalInputFromAdditionalAndPatterns(jsonSchemaModel);
   const keyModel = new StringModel(name, originalInput, {});
   const valueModel = convertAdditionalAndPatterns(context);
+
+  const input = {
+    originalInput,
+    ...(jsonSchemaModel.originalInput?.description !== undefined && {
+      description: jsonSchemaModel.originalInput.description
+    })
+  };
+
   return new DictionaryModel(
     name,
-    originalInput,
+    input,
     getMetaModelOptions(jsonSchemaModel, options),
     keyModel,
     valueModel,
