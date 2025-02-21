@@ -52,7 +52,9 @@ Object {
             "options": Object {
               "isNullable": true,
             },
-            "originalInput": true,
+            "originalInput": Object {
+              "value": true,
+            },
           },
         },
         "propertyName": "additionalProperties",
@@ -149,7 +151,9 @@ Object {
             "options": Object {
               "isNullable": true,
             },
-            "originalInput": true,
+            "originalInput": Object {
+              "value": true,
+            },
           },
         },
         "propertyName": "additionalProperties",
@@ -4265,7 +4269,9 @@ InputMetaModel {
               "options": Object {
                 "isNullable": true,
               },
-              "originalInput": true,
+              "originalInput": Object {
+                "value": true,
+              },
             },
           },
           "propertyName": "additionalProperties",
@@ -4438,7 +4444,9 @@ InputMetaModel {
               "options": Object {
                 "isNullable": true,
               },
-              "originalInput": true,
+              "originalInput": Object {
+                "value": true,
+              },
             },
           },
           "propertyName": "additionalProperties",
@@ -4611,7 +4619,9 @@ InputMetaModel {
               "options": Object {
                 "isNullable": true,
               },
-              "originalInput": true,
+              "originalInput": Object {
+                "value": true,
+              },
             },
           },
           "propertyName": "additionalProperties",
