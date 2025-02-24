@@ -14,18 +14,18 @@ public interface Animal {
   String getPetType();
 }",
   "public class Boxer implements Animal, Dog {
-  @JsonProperty(\\"breed\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private final String breed = \\"Boxer\\";
-  @JsonProperty(\\"petType\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private String petType;
   @JsonAnySetter
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
+  @JsonProperty(\\"breed\\")
   public String getBreed() { return this.breed; }
 
+  @JsonProperty(\\"petType\\")
   @Override
   public String getPetType() { return this.petType; }
   @Override
@@ -82,13 +82,13 @@ public interface Animal {
   
 }",
   "public class Cat implements Animal, Pet {
-  @JsonProperty(\\"petType\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private String petType;
   @JsonAnySetter
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
+  @JsonProperty(\\"petType\\")
   public String getPetType() { return this.petType; }
   public void setPetType(String petType) { this.petType = petType; }
 
@@ -198,18 +198,18 @@ Array [
   "public class Event {
   @Valid
   @NotNull
-  @JsonProperty(\\"action\\")
   private Action action;
-  @JsonProperty(\\"event_time\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private java.time.OffsetDateTime eventTime;
   @JsonAnySetter
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
+  @JsonProperty(\\"action\\")
   public Action getAction() { return this.action; }
   public void setAction(Action action) { this.action = action; }
 
+  @JsonProperty(\\"event_time\\")
   public java.time.OffsetDateTime getEventTime() { return this.eventTime; }
   public void setEventTime(java.time.OffsetDateTime eventTime) { this.eventTime = eventTime; }
 
@@ -304,41 +304,41 @@ public interface Pet {
 }",
   "public class Dog implements Pet {
   @NotNull
-  @JsonProperty(\\"id\\")
   private String id;
   @NotNull
-  @JsonProperty(\\"source\\")
   private String source;
   @NotNull
-  @JsonProperty(\\"specversion\\")
   private final String specversion = \\"1.0\\";
   @Valid
   @NotNull
-  @JsonProperty(\\"type\\")
   private final CloudEventType type = CloudEventType.DOG;
-  @JsonProperty(\\"dataschema\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private String dataschema;
-  @JsonProperty(\\"time\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private java.time.OffsetDateTime time;
   @JsonAnySetter
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
+  @JsonProperty(\\"id\\")
   public String getId() { return this.id; }
   public void setId(String id) { this.id = id; }
 
+  @JsonProperty(\\"source\\")
   public String getSource() { return this.source; }
   public void setSource(String source) { this.source = source; }
 
+  @JsonProperty(\\"specversion\\")
   public String getSpecversion() { return this.specversion; }
 
+  @JsonProperty(\\"type\\")
   public CloudEventType getType() { return this.type; }
 
+  @JsonProperty(\\"dataschema\\")
   public String getDataschema() { return this.dataschema; }
   public void setDataschema(String dataschema) { this.dataschema = dataschema; }
 
+  @JsonProperty(\\"time\\")
   public java.time.OffsetDateTime getTime() { return this.time; }
   public void setTime(java.time.OffsetDateTime time) { this.time = time; }
 
@@ -425,41 +425,41 @@ public interface Pet {
 }",
   "public class Cat implements Pet {
   @NotNull
-  @JsonProperty(\\"id\\")
   private String id;
   @NotNull
-  @JsonProperty(\\"source\\")
   private String source;
   @NotNull
-  @JsonProperty(\\"specversion\\")
   private final String specversion = \\"1.0\\";
   @Valid
   @NotNull
-  @JsonProperty(\\"type\\")
   private final CloudEventType type = CloudEventType.CAT;
-  @JsonProperty(\\"dataschema\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private String dataschema;
-  @JsonProperty(\\"time\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private java.time.OffsetDateTime time;
   @JsonAnySetter
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
+  @JsonProperty(\\"id\\")
   public String getId() { return this.id; }
   public void setId(String id) { this.id = id; }
 
+  @JsonProperty(\\"source\\")
   public String getSource() { return this.source; }
   public void setSource(String source) { this.source = source; }
 
+  @JsonProperty(\\"specversion\\")
   public String getSpecversion() { return this.specversion; }
 
+  @JsonProperty(\\"type\\")
   public CloudEventType getType() { return this.type; }
 
+  @JsonProperty(\\"dataschema\\")
   public String getDataschema() { return this.dataschema; }
   public void setDataschema(String dataschema) { this.dataschema = dataschema; }
 
+  @JsonProperty(\\"time\\")
   public java.time.OffsetDateTime getTime() { return this.time; }
   public void setTime(java.time.OffsetDateTime time) { this.time = time; }
 
@@ -522,19 +522,19 @@ exports[`JavaGenerator oneOf/discriminator with jackson preset handle one const 
 Array [
   "public class Dog {
   @NotNull
-  @JsonProperty(\\"id\\")
   private String id;
   @Valid
   @NotNull
-  @JsonProperty(\\"type\\")
   private final CloudEventType type = CloudEventType.DOG;
   @JsonAnySetter
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
+  @JsonProperty(\\"id\\")
   public String getId() { return this.id; }
   public void setId(String id) { this.id = id; }
 
+  @JsonProperty(\\"type\\")
   public CloudEventType getType() { return this.type; }
 
   @JsonAnyGetter
@@ -629,12 +629,12 @@ public interface Pet {
   "public class Dog implements Pet {
   @Valid
   @NotNull
-  @JsonProperty(\\"type\\")
   private final DogType type = DogType.DOG;
   @JsonAnySetter
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
+  @JsonProperty(\\"type\\")
   public DogType getType() { return this.type; }
 
   @JsonAnyGetter
@@ -711,12 +711,12 @@ public interface Pet {
   "public class Cat implements Pet {
   @Valid
   @NotNull
-  @JsonProperty(\\"type\\")
   private final CatType type = CatType.CAT;
   @JsonAnySetter
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
+  @JsonProperty(\\"type\\")
   public CatType getType() { return this.type; }
 
   @JsonAnyGetter
@@ -808,13 +808,13 @@ public interface Vehicle {
 }",
   "public class Cargo {
   @Valid
-  @JsonProperty(\\"vehicle\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Vehicle vehicle;
   @JsonAnySetter
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
+  @JsonProperty(\\"vehicle\\")
   public Vehicle getVehicle() { return this.vehicle; }
   public void setVehicle(Vehicle vehicle) { this.vehicle = vehicle; }
 
@@ -863,12 +863,12 @@ public interface Vehicle {
   "public class Car implements Vehicle {
   @Valid
   @NotNull
-  @JsonProperty(\\"vehicleType\\")
   private final VehicleType vehicleType = VehicleType.CAR;
   @JsonAnySetter
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
+  @JsonProperty(\\"vehicleType\\")
   public VehicleType getVehicleType() { return this.vehicleType; }
 
   @JsonAnyGetter
@@ -945,12 +945,12 @@ public interface Vehicle {
   "public class Truck implements Vehicle {
   @Valid
   @NotNull
-  @JsonProperty(\\"vehicleType\\")
   private final VehicleType vehicleType = VehicleType.TRUCK;
   @JsonAnySetter
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
+  @JsonProperty(\\"vehicleType\\")
   public VehicleType getVehicleType() { return this.vehicleType; }
 
   @JsonAnyGetter
