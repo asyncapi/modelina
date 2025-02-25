@@ -71,6 +71,28 @@ describe('JAVA_JACKSON_PRESET', () => {
     expect(models.map((model) => model.result)).toMatchSnapshot();
   });
 
+  test('should place @JsonProperty annotation on the getter', async () => {
+    const doc = {
+      $id: 'AnnotateGetterWithJsonProperty',
+      type: 'object',
+      properties: {
+        a_property: { type: 'string' }
+      }
+    };
+
+    const generator = new JavaGenerator({
+      presets: [JAVA_JACKSON_PRESET],
+      processorOptions: {
+        interpreter: {
+          ignoreAdditionalProperties: true
+        }
+      }
+    });
+
+    const models = await generator.generate(doc);
+    expect(models[0].result).toMatchSnapshot();
+  });
+
   describe('union', () => {
     test('handle oneOf with AsyncAPI discriminator with Jackson', async () => {
       const asyncapiDoc = {
