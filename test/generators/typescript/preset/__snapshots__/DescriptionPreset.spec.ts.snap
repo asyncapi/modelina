@@ -8,17 +8,20 @@ class Test {
   private _stringProp: string;
   private _numberProp?: number;
   private _objectProp?: NestedTest;
+  private _anyProp?: Map<string, any>;
   private _additionalProperties?: Map<string, any>;
 
   constructor(input: {
     stringProp: string,
     numberProp?: number,
     objectProp?: NestedTest,
+    anyProp?: Map<string, any>,
     additionalProperties?: Map<string, any>,
   }) {
     this._stringProp = input.stringProp;
     this._numberProp = input.numberProp;
     this._objectProp = input.objectProp;
+    this._anyProp = input.anyProp;
     this._additionalProperties = input.additionalProperties;
   }
 
@@ -37,6 +40,12 @@ class Test {
    */
   get objectProp(): NestedTest | undefined { return this._objectProp; }
   set objectProp(objectProp: NestedTest | undefined) { this._objectProp = objectProp; }
+
+  /**
+   * AnyTest description
+   */
+  get anyProp(): Map<string, any> | undefined { return this._anyProp; }
+  set anyProp(anyProp: Map<string, any> | undefined) { this._anyProp = anyProp; }
 
   get additionalProperties(): Map<string, any> | undefined { return this._additionalProperties; }
   set additionalProperties(additionalProperties: Map<string, any> | undefined) { this._additionalProperties = additionalProperties; }

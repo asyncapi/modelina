@@ -66,6 +66,7 @@ exports[`JAVA_DESCRIPTION_PRESET should render description and examples for clas
  */
 public class Clazz {
   private String prop;
+  private Map<String, Object> anyProp;
   private Map<String, Object> additionalProperties;
 
   /**
@@ -74,6 +75,12 @@ public class Clazz {
    */
   public String getProp() { return this.prop; }
   public void setProp(String prop) { this.prop = prop; }
+
+  /**
+   * AnyTest description
+   */
+  public Map<String, Object> getAnyProp() { return this.anyProp; }
+  public void setAnyProp(Map<String, Object> anyProp) { this.anyProp = anyProp; }
 
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
   public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }

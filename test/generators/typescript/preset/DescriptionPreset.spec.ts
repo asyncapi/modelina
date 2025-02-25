@@ -18,6 +18,12 @@ const doc = {
       $id: 'NestedTest',
       properties: { stringProp: { type: 'string' } },
       examples: ['Example 1', 'Example 2']
+    },
+    anyProp: {
+      type: 'object',
+      $id: 'AnyTest',
+      properties: {},
+      description: 'AnyTest description'
     }
   }
 };
