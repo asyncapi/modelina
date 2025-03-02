@@ -97,7 +97,7 @@ Array [
   private _specversion: string;
   private _reservedType: DogType.DOG = DogType.DOG;
   private _dataschema?: string;
-  private _time?: string;
+  private _time?: Date;
   private _additionalProperties?: Map<string, any>;
 
   constructor(input: {
@@ -105,7 +105,7 @@ Array [
     source: string,
     specversion: string,
     dataschema?: string,
-    time?: string,
+    time?: Date,
     additionalProperties?: Map<string, any>,
   }) {
     this._id = input.id;
@@ -130,8 +130,8 @@ Array [
   get dataschema(): string | undefined { return this._dataschema; }
   set dataschema(dataschema: string | undefined) { this._dataschema = dataschema; }
 
-  get time(): string | undefined { return this._time; }
-  set time(time: string | undefined) { this._time = time; }
+  get time(): Date | undefined { return this._time; }
+  set time(time: Date | undefined) { this._time = time; }
 
   get additionalProperties(): Map<string, any> | undefined { return this._additionalProperties; }
   set additionalProperties(additionalProperties: Map<string, any> | undefined) { this._additionalProperties = additionalProperties; }
@@ -145,7 +145,7 @@ Array [
   private _specversion: string;
   private _reservedType: CatType.CAT = CatType.CAT;
   private _dataschema?: string;
-  private _time?: string;
+  private _time?: Date;
   private _additionalProperties?: Map<string, any>;
 
   constructor(input: {
@@ -153,7 +153,7 @@ Array [
     source: string,
     specversion: string,
     dataschema?: string,
-    time?: string,
+    time?: Date,
     additionalProperties?: Map<string, any>,
   }) {
     this._id = input.id;
@@ -178,8 +178,8 @@ Array [
   get dataschema(): string | undefined { return this._dataschema; }
   set dataschema(dataschema: string | undefined) { this._dataschema = dataschema; }
 
-  get time(): string | undefined { return this._time; }
-  set time(time: string | undefined) { this._time = time; }
+  get time(): Date | undefined { return this._time; }
+  set time(time: Date | undefined) { this._time = time; }
 
   get additionalProperties(): Map<string, any> | undefined { return this._additionalProperties; }
   set additionalProperties(additionalProperties: Map<string, any> | undefined) { this._additionalProperties = additionalProperties; }
@@ -379,13 +379,13 @@ Array [
   "class ReservedEvent {
   private _id: string;
   private _action?: Action;
-  private _eventTime?: string;
+  private _eventTime?: Date;
   private _additionalProperties?: Map<string, any>;
 
   constructor(input: {
     id: string,
     action?: Action,
-    eventTime?: string,
+    eventTime?: Date,
     additionalProperties?: Map<string, any>,
   }) {
     this._id = input.id;
@@ -400,8 +400,8 @@ Array [
   get action(): Action | undefined { return this._action; }
   set action(action: Action | undefined) { this._action = action; }
 
-  get eventTime(): string | undefined { return this._eventTime; }
-  set eventTime(eventTime: string | undefined) { this._eventTime = eventTime; }
+  get eventTime(): Date | undefined { return this._eventTime; }
+  set eventTime(eventTime: Date | undefined) { this._eventTime = eventTime; }
 
   get additionalProperties(): Map<string, any> | undefined { return this._additionalProperties; }
   set additionalProperties(additionalProperties: Map<string, any> | undefined) { this._additionalProperties = additionalProperties; }
