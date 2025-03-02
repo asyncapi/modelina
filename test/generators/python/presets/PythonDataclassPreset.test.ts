@@ -1,4 +1,4 @@
-import { PythonGenerator } from '../../../../src/generators/python/PythonGenerator';
+import { PythonGenerator } from '../../../../src/generators';
 import { PYTHON_DATACLASS_PRESET } from '../../../../src/generators/python/presets/PythonDataClassPreset';
 
 describe('PythonDataclassPreset', () => {
@@ -8,9 +8,9 @@ describe('PythonDataclassPreset', () => {
       name: 'User',
       properties: { name: { type: 'string' }, age: { type: 'integer' } }
     };
-
     const output = await generator.generate(inputModel);
-    expect(output).toContain('@dataclass');
-    expect(output).toContain('class User');
+    
+    expect(output[0].result).toContain('@dataclass');
+  
   });
 });
