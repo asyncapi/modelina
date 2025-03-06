@@ -23,7 +23,7 @@
   "include": [
     "src/**/*.ts",
   ],
-  "exclude": ["node_modules", "lib", "examples", "src/generator/template", "src/processors/TemplateInputProcessor", "modelina-website"],
+  "exclude": ["node_modules", "lib", "../Sample/examples", "src/generator/template", "src/processors/TemplateInputProcessor", "modelina-website"],
   "ts-node": {
     "compilerOptions": {
       "module": "CommonJS"
