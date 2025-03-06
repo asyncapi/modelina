@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Should be able to render models with custom constrain logic and should log expected output to console 1`] = `
+Array [
+  "class MyOwnCustomModelName {
+  private _MyCustomPropertyKey?: string;
+
+  constructor(input: {
+    MyCustomPropertyKey?: string,
+  }) {
+    this._MyCustomPropertyKey = input.MyCustomPropertyKey;
+  }
+
+  get MyCustomPropertyKey(): string | undefined { return this._MyCustomPropertyKey; }
+  set MyCustomPropertyKey(MyCustomPropertyKey: string | undefined) { this._MyCustomPropertyKey = MyCustomPropertyKey; }
+}",
+]
+`;

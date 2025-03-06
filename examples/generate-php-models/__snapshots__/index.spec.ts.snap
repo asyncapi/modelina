@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Should be able to render PHP and should log expected output to console 1`] = `
+Array [
+  "final class Root
+{
+  private ?string $email;
+
+  public function getEmail(): ?string { return $this->email; }
+  public function setEmail(?string $email): void { $this->email = $email; }
+}
+",
+]
+`;

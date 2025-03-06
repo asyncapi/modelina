@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Should be able to generate Java model from a TypeScript type file and should log expected output to console 1`] = `
+Array [
+  "public class InnerData {
+  private double age;
+  private String name;
+  private boolean free;
+  private Map<String, Object> additionalProperties;
+
+  public double getAge() { return this.age; }
+  public void setAge(double age) { this.age = age; }
+
+  public String getName() { return this.name; }
+  public void setName(String name) { this.name = name; }
+
+  public boolean getFree() { return this.free; }
+  public void setFree(boolean free) { this.free = free; }
+
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+}",
+]
+`;

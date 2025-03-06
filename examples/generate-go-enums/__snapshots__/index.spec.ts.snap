@@ -1,0 +1,68 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Should be able to render Go Enums and should log expected output to console 1`] = `
+Array [
+  "type Root struct {
+  Cities *Cities
+  Options *Options
+}",
+]
+`;
+
+exports[`Should be able to render Go Enums and should log expected output to console 2`] = `
+Array [
+  "type Cities uint
+
+const (
+  CitiesLondon Cities = iota
+  CitiesRome
+  CitiesBrussels
+)
+
+// Value returns the value of the enum.
+func (op Cities) Value() any {
+	if op >= Cities(len(CitiesValues)) {
+		return nil
+	}
+	return CitiesValues[op]
+}
+
+var CitiesValues = []any{\\"London\\",\\"Rome\\",\\"Brussels\\"}
+var ValuesToCities = map[any]Cities{
+  CitiesValues[CitiesLondon]: CitiesLondon,
+  CitiesValues[CitiesRome]: CitiesRome,
+  CitiesValues[CitiesBrussels]: CitiesBrussels,
+}
+",
+]
+`;
+
+exports[`Should be able to render Go Enums and should log expected output to console 3`] = `
+Array [
+  "type Options uint
+
+const (
+  OptionsNumber_123 Options = iota
+  OptionsNumber_213
+  OptionsTrue
+  OptionsRun
+)
+
+// Value returns the value of the enum.
+func (op Options) Value() any {
+	if op >= Options(len(OptionsValues)) {
+		return nil
+	}
+	return OptionsValues[op]
+}
+
+var OptionsValues = []any{123,213,true,\\"Run\\"}
+var ValuesToOptions = map[any]Options{
+  OptionsValues[OptionsNumber_123]: OptionsNumber_123,
+  OptionsValues[OptionsNumber_213]: OptionsNumber_213,
+  OptionsValues[OptionsTrue]: OptionsTrue,
+  OptionsValues[OptionsRun]: OptionsRun,
+}
+",
+]
+`;

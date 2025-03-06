@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Should be able to render Java Models and should log expected output to console 1`] = `
+Array [
+  "public class Root {
+  private String email;
+
+  public String getEmail() { return this.email; }
+  public void setEmail(String email) { this.email = email; }
+}",
+]
+`;

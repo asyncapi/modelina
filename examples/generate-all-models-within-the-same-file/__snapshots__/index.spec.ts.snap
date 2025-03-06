@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Should be able to generate models to files and should log expected output to console 1`] = `
+Array [
+  "
+
+  public class Root {
+  private Email email;
+
+  public Email getEmail() { return this.email; }
+  public void setEmail(Email email) { this.email = email; }
+}
+public enum Email {
+  EXAMPLE1_AT_TEST_DOT_COM((String)\\"example1@test.com\\"), EXAMPLE2_AT_TEST_DOT_COM((String)\\"example2@test.com\\");
+
+  private String value;
+
+  Email(String value) {
+    this.value = value;
+  }
+
+  public String getValue() {
+    return value;
+  }
+
+  public static Email fromValue(String value) {
+    for (Email e : Email.values()) {
+      if (e.value.equals(value)) {
+        return e;
+      }
+    }
+    throw new IllegalArgumentException(\\"Unexpected value '\\" + value + \\"'\\");
+  }
+
+  @Override
+  public String toString() {
+    return String.valueOf(value);
+  }
+}",
+]
+`;

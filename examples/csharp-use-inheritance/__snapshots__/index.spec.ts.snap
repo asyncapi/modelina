@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Should be able to render inheritance and should log expected output to console 1`] = `
+Array [
+  "public class Root : IEvent
+{
+  private string[]? email;
+
+  public string[]? Email 
+  {
+    get { return email; }
+    set { this.email = value; }
+  }
+}",
+]
+`;

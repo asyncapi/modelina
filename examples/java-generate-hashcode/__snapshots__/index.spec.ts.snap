@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Should be able to generate a model to overwrite the hashCode method and should log expected output to console 1`] = `
+Array [
+  "public class Root {
+  private String email;
+
+  public String getEmail() { return this.email; }
+  public void setEmail(String email) { this.email = email; }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash((Object)email);
+  }
+}",
+]
+`;

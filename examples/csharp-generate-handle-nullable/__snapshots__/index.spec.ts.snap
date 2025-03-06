@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Should be able to render a C# class with null warning removed with handleNullable option and should log expected output to console 1`] = `
+Array [
+  "public partial class Root
+{
+  public string? Email { get; set; }
+  public string Name { get; set; } = null!;
+  public int Age { get; set; }
+  public System.DateTime ApplicationDate { get; set; }
+  public System.DateTimeOffset Timestamp { get; set; }
+  public System.DateTime? ApplicationDate2 { get; set; }
+  public System.DateTimeOffset? Timestamp2 { get; set; }
+  public Dictionary<string, dynamic>[]? NullableFoos { get; set; }
+  public Dictionary<string, dynamic>[] MandatoryFoos { get; set; } = null!;
+}",
+]
+`;

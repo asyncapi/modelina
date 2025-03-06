@@ -1,0 +1,73 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Should be able to generate a model with functions to serialize the data model into JSON and should log expected output to console 1`] = `
+Array [
+  "[JsonConverter(typeof(RootConverter))]
+public partial class Root
+{
+  private string email;
+  private string? name;
+
+  public string Email 
+  {
+    get { return email; }
+    set { this.email = value; }
+  }
+
+  public string? Name 
+  {
+    get { return name; }
+    set { this.name = value; }
+  }
+
+    public string Serialize()
+    {
+      return JsonConvert.SerializeObject(this);
+    }
+    public static Root Deserialize(string json)
+    {
+      return JsonConvert.DeserializeObject<Root>(json);
+    }
+}
+
+public class RootConverter : JsonConverter<Root>
+{
+  public override Root ReadJson(JsonReader reader, System.Type objectType, Root existingValue, bool hasExistingValue, JsonSerializer serializer)
+{
+  JObject jo = JObject.Load(reader);
+  Root value = new Root();
+
+  if(jo[\\"email\\"] is null){
+  throw new JsonSerializationException(\\"Required property 'email' is missing\\");
+}
+value.Email = jo[\\"email\\"].ToObject<string>(serializer);
+
+if(jo[\\"name\\"] != null) {
+  value.Name = jo[\\"name\\"].ToObject<string?>(serializer);
+}
+
+  
+  return value;
+}
+  public override void WriteJson(JsonWriter writer, Root value, JsonSerializer serializer)
+{
+  JObject jo = new JObject();
+
+  if (value.Email != null)
+{
+  jo.Add(\\"email\\", JToken.FromObject(value.Email, serializer));
+}
+if (value.Name != null)
+{
+  jo.Add(\\"name\\", JToken.FromObject(value.Name, serializer));
+}
+  
+
+  jo.WriteTo(writer);
+}
+
+  public override bool CanRead => true;
+  public override bool CanWrite => true;
+}",
+]
+`;

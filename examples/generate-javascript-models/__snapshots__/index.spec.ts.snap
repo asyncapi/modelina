@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Should be able to render Javascript models and should log expected output to console 1`] = `
+Array [
+  "class Root {
+  email;
+
+  constructor(input) {
+    if (input.hasOwnProperty('email')) {
+      this.email = input.email;
+    }
+  }
+
+  get email() { return this.email; }
+  set email(email) { this.email = email; }
+}",
+]
+`;

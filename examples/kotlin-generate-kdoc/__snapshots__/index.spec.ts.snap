@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Should be able to generate KDoc and should log expected output to console 1`] = `
+Array [
+  "/**
+ * Description for class
+ * 
+ * @property prop Description for prop
+ * @property enum Description for enum
+ * @property nodesc
+ * @property additionalProperties
+ * 
+ * Examples: 
+ * {\\"prop\\":\\"value\\"}, {\\"prop\\":\\"test\\"}
+ */
+data class KDoc(
+    val prop: String? = null,
+    val enum: Enum? = null,
+    val nodesc: String? = null,
+    val additionalProperties: Map<String, Any>? = null,
+)",
+]
+`;

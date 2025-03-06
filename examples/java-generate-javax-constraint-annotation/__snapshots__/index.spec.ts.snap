@@ -1,0 +1,36 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Should be able to generate models with javax.validation.constraints annotations and should log expected output to console 1`] = `
+Array [
+  "public class JavaxAnnotation {
+  @NotNull
+  @Min(0)
+  private double minNumberProp;
+  @NotNull
+  @Max(99)
+  private double maxNumberProp;
+  @Valid
+  @Size(min=2, max=3)
+  private Object[] arrayProp;
+  @Pattern(regexp=\\"^I_\\")
+  @Size(min=3)
+  private String stringProp;
+  private Map<String, Object> additionalProperties;
+
+  public double getMinNumberProp() { return this.minNumberProp; }
+  public void setMinNumberProp(double minNumberProp) { this.minNumberProp = minNumberProp; }
+
+  public double getMaxNumberProp() { return this.maxNumberProp; }
+  public void setMaxNumberProp(double maxNumberProp) { this.maxNumberProp = maxNumberProp; }
+
+  public Object[] getArrayProp() { return this.arrayProp; }
+  public void setArrayProp(Object[] arrayProp) { this.arrayProp = arrayProp; }
+
+  public String getStringProp() { return this.stringProp; }
+  public void setStringProp(String stringProp) { this.stringProp = stringProp; }
+
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+}",
+]
+`;

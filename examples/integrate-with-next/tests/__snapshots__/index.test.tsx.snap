@@ -1,0 +1,109 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Jest Snapshot testing suite Matches DOM Snapshot 1`] = `
+<div>
+  <main
+    class="main"
+  >
+    <div
+      class="center"
+    >
+      <h1>
+        Modelina generated code
+      </h1>
+    </div>
+    <div
+      style="padding: 15px;"
+    >
+      <h4>
+        Model: 
+        LightMeasured
+      </h4>
+      <div
+        class="grid"
+        style="overflow: auto; padding: 15px;"
+      >
+        <pre>
+          <code>
+            
+class LightMeasured {
+  private _id?: number;
+  private _lumens?: number;
+  private _sentAt?: string;
+  private _additionalProperties?: Map&lt;string, any&gt;;
+
+  constructor(input: {
+    id?: number,
+    lumens?: number,
+    sentAt?: string,
+    additionalProperties?: Map&lt;string, any&gt;,
+  }) {
+    this._id = input.id;
+    this._lumens = input.lumens;
+    this._sentAt = input.sentAt;
+    this._additionalProperties = input.additionalProperties;
+  }
+
+  get id(): number | undefined { return this._id; }
+  set id(id: number | undefined) { this._id = id; }
+
+  get lumens(): number | undefined { return this._lumens; }
+  set lumens(lumens: number | undefined) { this._lumens = lumens; }
+
+  get sentAt(): string | undefined { return this._sentAt; }
+  set sentAt(sentAt: string | undefined) { this._sentAt = sentAt; }
+
+  get additionalProperties(): Map&lt;string, any&gt; | undefined { return this._additionalProperties; }
+  set additionalProperties(additionalProperties: Map&lt;string, any&gt; | undefined) { this._additionalProperties = additionalProperties; }
+}
+export { LightMeasured };
+          </code>
+        </pre>
+      </div>
+    </div>
+    <div
+      style="padding: 15px;"
+    >
+      <h4>
+        Model: 
+        TurnOn
+      </h4>
+      <div
+        class="grid"
+        style="overflow: auto; padding: 15px;"
+      >
+        <pre>
+          <code>
+            
+class TurnOn {
+  private _id?: number;
+  private _sentAt?: string;
+  private _additionalProperties?: Map&lt;string, any&gt;;
+
+  constructor(input: {
+    id?: number,
+    sentAt?: string,
+    additionalProperties?: Map&lt;string, any&gt;,
+  }) {
+    this._id = input.id;
+    this._sentAt = input.sentAt;
+    this._additionalProperties = input.additionalProperties;
+  }
+
+  get id(): number | undefined { return this._id; }
+  set id(id: number | undefined) { this._id = id; }
+
+  get sentAt(): string | undefined { return this._sentAt; }
+  set sentAt(sentAt: string | undefined) { this._sentAt = sentAt; }
+
+  get additionalProperties(): Map&lt;string, any&gt; | undefined { return this._additionalProperties; }
+  set additionalProperties(additionalProperties: Map&lt;string, any&gt; | undefined) { this._additionalProperties = additionalProperties; }
+}
+export { TurnOn };
+          </code>
+        </pre>
+      </div>
+    </div>
+  </main>
+</div>
+`;

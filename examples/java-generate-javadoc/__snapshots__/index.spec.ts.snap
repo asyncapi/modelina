@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Should be able to generate JavaDocs and should log expected output to console 1`] = `
+Array [
+  "/**
+ * Description for class
+ * Examples: {\\"prop\\":\\"value\\"}
+ */
+public class JavaDoc {
+  private String prop;
+  private Map<String, Object> additionalProperties;
+
+  /**
+   * Description for prop
+   * Examples: exampleValue
+   */
+  public String getProp() { return this.prop; }
+  public void setProp(String prop) { this.prop = prop; }
+
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+}",
+]
+`;

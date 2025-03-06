@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Should be able to render correct enums based on options and should log expected output to console 1`] = `
+"Generator output with Union:
+class Root {
+  private _eventType?: EventType;
+
+  constructor(input: {
+    eventType?: EventType,
+  }) {
+    this._eventType = input.eventType;
+  }
+
+  get eventType(): EventType | undefined { return this._eventType; }
+  set eventType(eventType: EventType | undefined) { this._eventType = eventType; }
+}
+type EventType = \\"ping\\" | \\"pong\\";
+Generator output with Enum:
+class Root {
+  private _eventType?: EventType;
+
+  constructor(input: {
+    eventType?: EventType,
+  }) {
+    this._eventType = input.eventType;
+  }
+
+  get eventType(): EventType | undefined { return this._eventType; }
+  set eventType(eventType: EventType | undefined) { this._eventType = eventType; }
+}
+enum EventType {
+  PING = \\"ping\\",
+  PONG = \\"pong\\",
+}"
+`;
