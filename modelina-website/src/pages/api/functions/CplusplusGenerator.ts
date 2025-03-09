@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import type { CplusplusOptions } from '@/../../';
+import type { CplusplusOptions } from '@/./';
 import {
   cplusplusDefaultEnumKeyConstraints,
   cplusplusDefaultModelNameConstraints,

@@ -88,6 +88,7 @@ function getColors(color, shades) {
 
 module.exports = {
   content: ['./src/pages/**/*.tsx', './src/components/**/*.tsx'],
+  darkMode: 'class',
   theme: {
     fontWeight: {
       'extra-light': 200,

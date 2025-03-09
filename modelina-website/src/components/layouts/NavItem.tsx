@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { useTheme } from '../contexts/ThemeContext';
 
 export default function NavItem({
   text,
@@ -9,13 +10,19 @@ export default function NavItem({
   hasDropdown = false,
   className = ''
 }: any) {
+  const { isDark } = useTheme();
+  
+  const textColorClass = isDark 
+    ? 'text-gray-300 hover:text-white focus:text-white' 
+    : 'text-gray-700 hover:text-gray-900 focus:text-gray-900';
+
   if (href && !hasDropdown) {
     return (
       <Link
         href={href}
         target={target}
         rel='noopener noreferrer'
-        className={`${className} font-body text-base font-semibold leading-6 text-gray-700 transition duration-150 ease-in-out hover:text-gray-900 focus:text-gray-900 focus:outline-none`}
+        className={`${className} font-body text-base font-semibold leading-6 ${textColorClass} transition duration-150 ease-in-out focus:outline-none`}
       >
         {text}
       </Link>
@@ -27,14 +34,14 @@ export default function NavItem({
       type='button'
       onClick={href ? undefined : onClick}
       onMouseEnter={onMouseEnter}
-      className={`${className} group inline-flex items-center space-x-2 text-base font-semibold leading-6 tracking-heading text-gray-700 transition duration-150 ease-in-out hover:text-gray-900 focus:text-gray-900 focus:outline-none`}
+      className={`${className} group inline-flex items-center space-x-2 text-base font-semibold leading-6 tracking-heading ${textColorClass} transition duration-150 ease-in-out focus:outline-none`}
     >
       {href ? (
         <Link
           href={href}
           target={target}
           rel='noopener noreferrer'
-          className={`${className} font-body text-base font-semibold leading-6 text-gray-700 transition duration-150 ease-in-out hover:text-gray-900 focus:text-gray-900 focus:outline-none`}
+          className={`${className} font-body text-base font-semibold leading-6 ${textColorClass} transition duration-150 ease-in-out focus:outline-none`}
         >
           {text}
         </Link>
@@ -44,7 +51,7 @@ export default function NavItem({
       {hasDropdown && (
         <div className='inline-block'>
           <svg
-            className='size-5 text-gray-400 transition duration-150 ease-in-out group-hover:text-gray-500 group-focus:text-gray-500'
+            className={`size-5 ${isDark ? 'text-gray-400 group-hover:text-gray-300' : 'text-gray-400 group-hover:text-gray-500'} transition duration-150 ease-in-out`}
             fill='currentColor'
             viewBox='0 0 20 20'
           >
@@ -59,3 +66,4 @@ export default function NavItem({
     </button>
   );
 }
+

@@ -17,17 +17,17 @@ export default function Index() {
     <GenericLayout title='Modelina' description={description} image={image} wide>
       <div className='overflow-hidden py-16 lg:py-24'>
         <div className='relative text-center'>
-          <Heading level='h1' typeStyle='heading-xl' className='mb-4'>
+          <Heading level='h1' typeStyle='heading-xl' className='mb-4 dark:text-white'>
             Generate data models for payload
           </Heading>
-          <Paragraph className='mx-auto mt-4 max-w-3xl'>{description}</Paragraph>
+          <Paragraph className='mx-auto mt-4 max-w-3xl dark:text-gray-300'>{description}</Paragraph>
         </div>
 
         <div className='relative mt-12 text-center'>
-          <Heading level='h1' typeStyle='heading-lg'>
+          <Heading level='h1' typeStyle='heading-lg' className='dark:text-white'>
             How to get started
           </Heading>
-          <Paragraph className='mx-auto mt-4 max-w-3xl'>
+          <Paragraph className='mx-auto mt-4 max-w-3xl dark:text-gray-300'>
             You can use through the AsyncAPI CLI or install it as a library.
           </Paragraph>
         </div>
@@ -38,10 +38,10 @@ export default function Index() {
               <Image src={'/img/card/cli-card.jpg'} fill sizes='100%' alt={'CLI card'} />
             </div>
             <div className='relative mb-8 overflow-x-auto'>
-              <Heading level='h4' typeStyle='heading-md-semibold'>
+              <Heading level='h4' typeStyle='heading-md-semibold' className='dark:text-white'>
                 AsyncAPI CLI
               </Heading>
-              <Paragraph className='mt-3 md:pr-4'>
+              <Paragraph className='mt-3 md:pr-4 dark:text-gray-300'>
                 Get started immediately with Modelina through the AsyncAPI CLI or by installing it as a library.
               </Paragraph>
               <div className='mt-8'>
@@ -68,10 +68,10 @@ export default function Index() {
               <Image src={'/img/card/modelina-card.jpg'} fill sizes='100%' alt={'Modelina card'} />
             </div>
             <div className='relative mb-8'>
-              <Heading level='h4' typeStyle='heading-md-semibold'>
+              <Heading level='h4' typeStyle='heading-md-semibold' className='dark:text-white'>
                 Installation
               </Heading>
-              <Paragraph className='mt-3 lg:pr-4'>Install Modelina as a library to take full control.</Paragraph>
+              <Paragraph className='mt-3 lg:pr-4 dark:text-gray-300'>Install Modelina as a library to take full control.</Paragraph>
               <div className='mt-8'>
                 <CodeBlock language='bash' showLineNumbers={false} className='mt-8' textSizeClassName='text-sm'>
                   npm install @asyncapi/modelina
@@ -90,10 +90,10 @@ export default function Index() {
         </div>
 
         <div className='relative mt-12 text-center'>
-          <Heading level='h1' typeStyle='heading-lg'>
+          <Heading level='h1' typeStyle='heading-lg' className='dark:text-white'>
             Usage
           </Heading>
-          <Paragraph className='mx-auto mt-4 max-w-3xl'>
+          <Paragraph className='mx-auto mt-4 max-w-3xl dark:text-gray-300'>
             Modelina can be used in a wide range of scenarios, and is build to be apart of the core toolbox you can
             customize to your hearts desire. <b>Here is just a fraction of what you can do with Modelina.</b>
           </Paragraph>
@@ -102,15 +102,15 @@ export default function Index() {
         <table className='mt-8 flex flex-col md:mt-20'>
           <tbody>
             <tr className='mt-6 flex flex-col border-b md:mt-0 md:flex-row-reverse'>
-              <td className='flex items-center justify-center px-6 py-4 text-sm font-light text-gray-900 md:w-1/2'>
+              <td className='flex items-center justify-center px-6 py-4 text-sm font-light text-gray-900 dark:text-gray-300 md:w-1/2'>
                 <b>
                   Modelina lets you generate data models from many types of{' '}
-                  <a href='#inputs' className='italic underline underline-offset-2'>
+                  <a href='#inputs' className='italic underline underline-offset-2 dark:text-blue-400'>
                     inputs
                   </a>
                 </b>
               </td>
-              <td className='px-6 py-4 text-sm font-light text-gray-900 md:w-1/2'>
+              <td className='px-6 py-4 text-sm font-light text-gray-900 dark:text-gray-300 md:w-1/2'>
                 <CodeBlock language='typescript' showLineNumbers={false} textSizeClassName='text-sm'>
                   {`const asyncapi = ...
 const jsonschema = ...
@@ -125,15 +125,15 @@ const models = await generator.generate(
             </tr>
 
             <tr className='mt-6 flex flex-col border-b md:mt-0 md:flex-row'>
-              <td className='flex items-center justify-center px-6 py-4 text-sm font-light text-gray-900 md:w-1/2'>
+              <td className='flex items-center justify-center px-6 py-4 text-sm font-light text-gray-900 dark:text-gray-300 md:w-1/2'>
                 <b>
                   Use the same inputs across a range of different{' '}
-                  <a href='#outputs' className='italic underline underline-offset-2'>
+                  <a href='#outputs' className='italic underline underline-offset-2 dark:text-blue-400'>
                     generators
                   </a>
                 </b>
               </td>
-              <td className='px-6 py-4 text-sm font-light text-gray-900 md:w-1/2'>
+              <td className='px-6 py-4 text-sm font-light text-gray-900 dark:text-gray-300 md:w-1/2'>
                 <CodeBlock language='typescript' showLineNumbers={false} textSizeClassName='text-sm'>
                   {`const generator = new TypeScriptGenerator();
 const generator = new CsharpGenerator();
@@ -146,14 +146,14 @@ const models = await generator.generate(input);`}
             </tr>
 
             <tr className='mt-6 flex flex-col border-b md:mt-0 md:flex-row-reverse'>
-              <td className='flex items-center justify-center px-6 py-4 text-sm font-light text-gray-900 md:w-1/2'>
+              <td className='flex items-center justify-center px-6 py-4 text-sm font-light text-gray-900 dark:text-gray-300 md:w-1/2'>
                 <p>
                   <b>Easily let you interact with the generated models.</b>- Want to show the generated models on a
                   website? Sure! - Want to generate the models into files? Sure! - Want to combine all the models into
                   one single file? Sure! Whatever interaction you need, you can create.
                 </p>
               </td>
-              <td className='px-6 py-4 text-sm font-light text-gray-900 md:w-1/2'>
+              <td className='px-6 py-4 text-sm font-light text-gray-900 dark:text-gray-300 md:w-1/2'>
                 <CodeBlock language='typescript' showLineNumbers={false} textSizeClassName='text-sm'>
                   {`const models = await generator.generate(input);
 for (const model in models) { 
@@ -168,16 +168,16 @@ for (const model in models) {
             </tr>
 
             <tr className='mt-6 flex flex-col border-b md:mt-0 md:flex-row'>
-              <td className='flex items-center justify-center px-6 py-4 text-sm font-light text-gray-900 md:w-1/2'>
+              <td className='flex items-center justify-center px-6 py-4 text-sm font-light text-gray-900 dark:text-gray-300 md:w-1/2'>
                 <b>
                   Easily modify how models are{' '}
-                  <a href='./docs/constraints/README.md' className='italic underline underline-offset-2'>
+                  <a href='./docs/constraints/README.md' className='italic underline underline-offset-2 dark:text-blue-400'>
                     constrained
                   </a>{' '}
                   into the into the output
                 </b>
               </td>
-              <td className='px-6 py-4 text-sm font-light text-gray-900 md:w-1/2'>
+              <td className='px-6 py-4 text-sm font-light text-gray-900 dark:text-gray-300 md:w-1/2'>
                 <CodeBlock language='typescript' showLineNumbers={false} textSizeClassName='text-sm'>
                   {`const generator = new TypeScriptGenerator({
   constraints: {
@@ -192,16 +192,16 @@ for (const model in models) {
             </tr>
 
             <tr className='mt-6 flex flex-col border-b md:mt-0 md:flex-row-reverse'>
-              <td className='flex items-center justify-center px-6 py-4 text-sm font-light text-gray-900 md:w-1/2'>
+              <td className='flex items-center justify-center px-6 py-4 text-sm font-light text-gray-900 dark:text-gray-300 md:w-1/2'>
                 <b>
                   Seamlessly layer additional or replacement code{' '}
-                  <a href='./docs/presets.md' className='italic underline underline-offset-2'>
+                  <a href='./docs/presets.md' className='italic underline underline-offset-2 dark:text-blue-400'>
                     on top of each other to customize the models
                   </a>{' '}
                   to your use-case
                 </b>
               </td>
-              <td className='px-6 py-4 text-sm font-light text-gray-900 md:w-1/2'>
+              <td className='px-6 py-4 text-sm font-light text-gray-900 dark:text-gray-300 md:w-1/2'>
                 <CodeBlock language='typescript' showLineNumbers={false} textSizeClassName='text-sm'>
                   {`const generator = new TypeScriptGenerator({
   presets: [
@@ -223,15 +223,15 @@ const models = await generator.generate(input);`}
             </tr>
 
             <tr className='mt-6 flex flex-col border-b md:mt-0 md:flex-row'>
-              <td className='flex items-center justify-center px-6 py-4 text-sm font-light text-gray-900 md:w-1/2'>
+              <td className='flex items-center justify-center px-6 py-4 text-sm font-light text-gray-900 dark:text-gray-300 md:w-1/2'>
                 <b>
                   Seamlessly lets you{' '}
-                  <a href='./docs/presets.md' className='italic underline underline-offset-2'>
+                  <a href='./docs/presets.md' className='italic underline underline-offset-2 dark:text-blue-400'>
                     combine multiple layers of additional or replacement code
                   </a>
                 </b>
               </td>
-              <td className='px-6 py-4 text-sm font-light text-gray-900 md:w-1/2'>
+              <td className='px-6 py-4 text-sm font-light text-gray-900 dark:text-gray-300 md:w-1/2'>
                 <CodeBlock language='typescript' showLineNumbers={false} textSizeClassName='text-sm'>
                   {`const myCustomFunction1 = {
   class: {
