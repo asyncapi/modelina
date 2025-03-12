@@ -10,6 +10,5 @@ describe('PythonAttrsPreset', () => {
     };
     const output = await generator.generate(inputModel);
     expect(output[0].result).toContain('@attr.s(auto_attribs=True)');
-
   });
 });
