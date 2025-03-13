@@ -1,14 +1,14 @@
 import Button from '@/components/buttons/Button';
 import GithubButton from '@/components/buttons/GithubButton';
-import ModelinaLogo from '@/components/icons/ModelinaLogo';
+import ModelinaLogoDark from '@/components/icons/ModelinaLogoDark';
 import IconRocket from '@/components/icons/Rocket';
 
 const Custom404 = () => (
     <div className='flex h-screen w-screen items-center justify-center'>
       <div className='flex flex-col items-center p-8'>
-        <ModelinaLogo className='h-24 w-auto' />
-        <h2 className='mt-2 text-3xl font-bold'>Page Not Found</h2>
-        <p className='mt-2 text-center text-2xl'>The page you are looking for does not exist.</p>
+        <ModelinaLogoDark className='h-24 w-auto' />
+        <h2 className='mt-2 text-3xl font-bold dark:text-white'>Page Not Found</h2>
+        <p className='mt-2 text-center text-2xl dark:text-gray-300'>The page you are looking for does not exist.</p>
         <div className='mt-4 flex flex-col gap-10 md:flex-row'>
           <GithubButton
             className='mt-4'
@@ -24,6 +24,6 @@ const Custom404 = () => (
         </div>
       </div>
     </div>
-  );
+);
 
 export default Custom404;

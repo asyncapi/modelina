@@ -13,6 +13,20 @@
 @tailwind utilities;
 @tailwind variants;
 
+:root {
+  --background: 255 255 255;
+  --text-primary: 51 51 51;
+  --text-secondary: 102 102 102;
+  --accent: 0 112 243;
+}
+
+.dark {
+  --background: 26 26 26;
+  --text-primary: 255 255 255;
+  --text-secondary: 160 160 160;
+  --accent: 50 145 255;
+}
+
 html,
 body {
   -webkit-font-smoothing: antialiased;
