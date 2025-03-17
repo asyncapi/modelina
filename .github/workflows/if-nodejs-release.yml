@@ -71,7 +71,7 @@ jobs:
         run: npm test --if-present
       - if: failure() # Only, on failure, send a message on the 94_bot-failing-ci slack channel
         name: Report workflow run status to Slack
-        uses: 8398a7/action-slack@v3
+        uses: 8398a7/action-slack@28ba43ae48961b90635b50953d216767a6bea486 #using https://github.com/8398a7/action-slack/releases/tag/v3.16.2
         with:
           status: ${{ job.status }}
           fields: repo,action,workflow
@@ -125,7 +125,7 @@ jobs:
         run: npx semantic-release@19.0.4
       - if: failure() # Only, on failure, send a message on the 94_bot-failing-ci slack channel
         name: Report workflow run status to Slack
-        uses: 8398a7/action-slack@v3
+        uses: 8398a7/action-slack@28ba43ae48961b90635b50953d216767a6bea486 #using https://github.com/8398a7/action-slack/releases/tag/v3.16.2
         with:
           status: ${{ job.status }}
           fields: repo,action,workflow
