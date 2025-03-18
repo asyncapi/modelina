@@ -289,16 +289,41 @@ export const RustDefaultTypeMapping: RustTypeMapping = {
     }
   },
   Integer({ constrainedModel }): string {
-    const type = 'i32';
     switch (constrainedModel.options.format) {
-      case 'integer':
+      case 'int8':
+      case 'i8':
+        return 'i8';
+      case 'int16':
+      case 'i16':
+        return 'i16';
       case 'int32':
-        return type;
-      case 'long':
+      case 'integer':
+      case 'i32':
+        return 'i32';
       case 'int64':
+      case 'long':
+      case 'i64':
         return 'i64';
+      case 'int128':
+      case 'i128':
+        return 'i128';
+      case 'uint8':
+      case 'u8':
+        return 'u8';
+      case 'uint16':
+      case 'u16':
+        return 'u16';
+      case 'uint32':
+      case 'u32':
+        return 'u32';
+      case 'uint64':
+      case 'u64':
+        return 'u64';
+      case 'uint128':
+      case 'u128':
+        return 'u128';
       default:
-        return type;
+        return 'i32';
     }
   },
   String({ constrainedModel }): string {

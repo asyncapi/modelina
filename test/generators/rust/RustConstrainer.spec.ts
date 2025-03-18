@@ -149,6 +149,201 @@ describe('RustConstrainer', () => {
       });
       expect(type).toEqual('i64');
     });
+    test('should render u8 when format is u8', () => {
+      const model = new ConstrainedIntegerModel(
+        'test',
+        {},
+        { format: 'u8' },
+        ''
+      );
+      const type = RustDefaultTypeMapping.Integer({
+        constrainedModel: model,
+        ...defaultOptions
+      });
+      expect(type).toEqual('u8');
+    });
+
+    test('should render u16 when format is u16', () => {
+      const model = new ConstrainedIntegerModel(
+        'test',
+        {},
+        { format: 'u16' },
+        ''
+      );
+      const type = RustDefaultTypeMapping.Integer({
+        constrainedModel: model,
+        ...defaultOptions
+      });
+      expect(type).toEqual('u16');
+    });
+
+    test('should render u32 when format is u32', () => {
+      const model = new ConstrainedIntegerModel(
+        'test',
+        {},
+        { format: 'u32' },
+        ''
+      );
+      const type = RustDefaultTypeMapping.Integer({
+        constrainedModel: model,
+        ...defaultOptions
+      });
+      expect(type).toEqual('u32');
+    });
+
+    test('should render u64 when format is u64', () => {
+      const model = new ConstrainedIntegerModel(
+        'test',
+        {},
+        { format: 'u64' },
+        ''
+      );
+      const type = RustDefaultTypeMapping.Integer({
+        constrainedModel: model,
+        ...defaultOptions
+      });
+      expect(type).toEqual('u64');
+    });
+
+    test('should render u128 when format is u128', () => {
+      const model = new ConstrainedIntegerModel(
+        'test',
+        {},
+        { format: 'u128' },
+        ''
+      );
+      const type = RustDefaultTypeMapping.Integer({
+        constrainedModel: model,
+        ...defaultOptions
+      });
+      expect(type).toEqual('u128');
+    });
+
+    test('should render uint32 format as u32', () => {
+      const model = new ConstrainedIntegerModel(
+        'test',
+        {},
+        { format: 'uint32' },
+        ''
+      );
+      const type = RustDefaultTypeMapping.Integer({
+        constrainedModel: model,
+        ...defaultOptions
+      });
+      expect(type).toEqual('u32');
+    });
+
+    test('should render uint64 format as u64', () => {
+      const model = new ConstrainedIntegerModel(
+        'test',
+        {},
+        { format: 'uint64' },
+        ''
+      );
+      const type = RustDefaultTypeMapping.Integer({
+        constrainedModel: model,
+        ...defaultOptions
+      });
+      expect(type).toEqual('u64');
+    });
+
+    test('should render i8 when format is int8', () => {
+      const model = new ConstrainedIntegerModel(
+        'test',
+        {},
+        { format: 'int8' },
+        ''
+      );
+      const type = RustDefaultTypeMapping.Integer({
+        constrainedModel: model,
+        ...defaultOptions
+      });
+      expect(type).toEqual('i8');
+    });
+
+    test('should render i16 when format is int16', () => {
+      const model = new ConstrainedIntegerModel(
+        'test',
+        {},
+        { format: 'int16' },
+        ''
+      );
+      const type = RustDefaultTypeMapping.Integer({
+        constrainedModel: model,
+        ...defaultOptions
+      });
+      expect(type).toEqual('i16');
+    });
+
+    test('should render i128 when format is int128', () => {
+      const model = new ConstrainedIntegerModel(
+        'test',
+        {},
+        { format: 'int128' },
+        ''
+      );
+      const type = RustDefaultTypeMapping.Integer({
+        constrainedModel: model,
+        ...defaultOptions
+      });
+      expect(type).toEqual('i128');
+    });
+
+    test('should render u8 when format is uint8', () => {
+      const model = new ConstrainedIntegerModel(
+        'test',
+        {},
+        { format: 'uint8' },
+        ''
+      );
+      const type = RustDefaultTypeMapping.Integer({
+        constrainedModel: model,
+        ...defaultOptions
+      });
+      expect(type).toEqual('u8');
+    });
+
+    test('should render u16 when format is uint16', () => {
+      const model = new ConstrainedIntegerModel(
+        'test',
+        {},
+        { format: 'uint16' },
+        ''
+      );
+      const type = RustDefaultTypeMapping.Integer({
+        constrainedModel: model,
+        ...defaultOptions
+      });
+      expect(type).toEqual('u16');
+    });
+
+    test('should render u128 when format is uint128', () => {
+      const model = new ConstrainedIntegerModel(
+        'test',
+        {},
+        { format: 'uint128' },
+        ''
+      );
+      const type = RustDefaultTypeMapping.Integer({
+        constrainedModel: model,
+        ...defaultOptions
+      });
+      expect(type).toEqual('u128');
+    });
+
+    test('should render default i32 when format is unknown', () => {
+      const model = new ConstrainedIntegerModel(
+        'test',
+        {},
+        { format: 'unknown' },
+        ''
+      );
+      const type = RustDefaultTypeMapping.Integer({
+        constrainedModel: model,
+        ...defaultOptions
+      });
+      expect(type).toEqual('i32');
+    });
   });
   describe('String', () => {
     test('should render type', () => {
