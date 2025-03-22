@@ -45,10 +45,6 @@ export interface PythonOptions
   extends CommonGeneratorOptions<PythonPreset, PythonDependencyManager> {
   typeMapping: TypeMapping<PythonOptions, PythonDependencyManager>;
   constraints: Constraints<PythonOptions>;
-  /**
-   * @deprecated no longer in use - we had to switch to using explicit import style, always to support circular model dependencies.
-   */
-  importsStyle: 'explicit' | 'implicit';
 }
 export type PythonConstantConstraint = ConstantConstraint<PythonOptions>;
 export type PythonEnumKeyConstraint = EnumKeyConstraint<PythonOptions>;
@@ -85,7 +81,6 @@ export class PythonGenerator extends AbstractGenerator<
     defaultPreset: PYTHON_DEFAULT_PRESET,
     typeMapping: PythonDefaultTypeMapping,
     constraints: PythonDefaultConstraints,
-    importsStyle: 'explicit',
     // Temporarily set
     dependencyManager: () => {
       return {} as PythonDependencyManager;
