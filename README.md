@@ -8,7 +8,7 @@
 [![Discussions](https://img.shields.io/github/discussions/asyncapi/modelina)](https://github.com/asyncapi/modelina/discussions)
 [![Website](https://img.shields.io/website?label=website&url=https%3A%2F%2Fwww.modelina.org)](https://www.modelina.org)
 [![Playground](https://img.shields.io/website?label=playground&url=https%3A%2F%2Fwww.modelina.org%2Fplayground)](https://www.modelina.org/playground) <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-102-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-103-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 
@@ -455,6 +455,7 @@ Thanks go out to these wonderful people ([emoji key](https://allcontributors.org
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/fr-th"><img src="https://avatars.githubusercontent.com/u/61010557?v=4?s=100" width="100px;" alt="fr-th"/><br /><sub><b>fr-th</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/commits?author=fr-th" title="Code">💻</a> <a href="https://github.com/asyncapi/modelina/commits?author=fr-th" title="Tests">⚠️</a> <a href="https://github.com/asyncapi/modelina/commits?author=fr-th" title="Documentation">📖</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/istvan-nagy-epam"><img src="https://avatars.githubusercontent.com/u/15124019?v=4?s=100" width="100px;" alt="Istvan Zoltan Nagy"/><br /><sub><b>Istvan Zoltan Nagy</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/commits?author=istvan-nagy-epam" title="Code">💻</a> <a href="https://github.com/asyncapi/modelina/commits?author=istvan-nagy-epam" title="Tests">⚠️</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/Manancode"><img src="https://avatars.githubusercontent.com/u/144525586?v=4?s=100" width="100px;" alt="Manan Arora"/><br /><sub><b>Manan Arora</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/commits?author=Manancode" title="Code">💻</a> <a href="https://github.com/asyncapi/modelina/commits?author=Manancode" title="Tests">⚠️</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/timeder-xitaso"><img src="https://avatars.githubusercontent.com/u/149670052?v=4?s=100" width="100px;" alt="timeder-xitaso"/><br /><sub><b>timeder-xitaso</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/commits?author=timeder-xitaso" title="Code">💻</a> <a href="https://github.com/asyncapi/modelina/commits?author=timeder-xitaso" title="Tests">⚠️</a> <a href="https://github.com/asyncapi/modelina/issues?q=author%3Atimeder-xitaso" title="Bug reports">🐛</a></td>
     </tr>
   </tbody>
 </table>

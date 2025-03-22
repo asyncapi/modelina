@@ -1103,6 +1103,17 @@
         "code",
         "test"
       ]
+    },
+    {
+      "login": "timeder-xitaso",
+      "name": "timeder-xitaso",
+      "avatar_url": "https://avatars.githubusercontent.com/u/149670052?v=4",
+      "profile": "https://github.com/timeder-xitaso",
+      "contributions": [
+        "code",
+        "test",
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,
