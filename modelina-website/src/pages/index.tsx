@@ -171,7 +171,7 @@ for (const model in models) {
               <td className='flex items-center justify-center px-6 py-4 text-sm font-light text-gray-900 md:w-1/2'>
                 <b>
                   Easily modify how models are{' '}
-                  <a href='./docs/constraints/README.md' className='italic underline underline-offset-2'>
+                  <a href='./docs/constraints/' className='italic underline underline-offset-2'>
                     constrained
                   </a>{' '}
                   into the into the output
@@ -195,7 +195,7 @@ for (const model in models) {
               <td className='flex items-center justify-center px-6 py-4 text-sm font-light text-gray-900 md:w-1/2'>
                 <b>
                   Seamlessly layer additional or replacement code{' '}
-                  <a href='./docs/presets.md' className='italic underline underline-offset-2'>
+                  <a href='./docs/presets' className='italic underline underline-offset-2'>
                     on top of each other to customize the models
                   </a>{' '}
                   to your use-case
@@ -226,7 +226,7 @@ const models = await generator.generate(input);`}
               <td className='flex items-center justify-center px-6 py-4 text-sm font-light text-gray-900 md:w-1/2'>
                 <b>
                   Seamlessly lets you{' '}
-                  <a href='./docs/presets.md' className='italic underline underline-offset-2'>
+                  <a href='./docs/presets' className='italic underline underline-offset-2'>
                     combine multiple layers of additional or replacement code
                   </a>
                 </b>
