@@ -50,7 +50,8 @@ export const RESERVED_JAVA_KEYWORDS = [
   'float',
   'native',
   'super',
-  'while'
+  'while',
+  'record'
 ];
 
 export function isReservedJavaKeyword(
