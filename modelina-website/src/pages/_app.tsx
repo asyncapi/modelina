@@ -1,9 +1,10 @@
 import '../styles/globals.css';
 
-import Head from 'next/head';
+import Script from 'next/script';
 import { useMemo } from 'react';
 
 import AppContext from '../components/contexts/AppContext';
+import { ThemeProvider } from '../components/contexts/ThemeContext';
 import Footer from '../components/layouts/Footer';
 
 export default function App({ Component, pageProps, router }: any) {
@@ -11,15 +12,18 @@ export default function App({ Component, pageProps, router }: any) {
 
   return (
     <AppContext.Provider value={contextValue}>
-      <Head>
-        <script async defer src='https://buttons.github.io/buttons.js'></script>
-      </Head>
-      <div className='flex min-h-screen flex-col'>
-        <Component {...pageProps} />
-        <div className='mt-auto'>
-          <Footer />
+      <ThemeProvider>
+        <Script 
+          src="https://buttons.github.io/buttons.js"
+          strategy="lazyOnload"
+        />
+        <div className='flex min-h-screen flex-col bg-white dark:bg-dark transition-colors'>
+          <Component {...pageProps} />
+          <div className='mt-auto'>
+            <Footer />
+          </div>
         </div>
-      </div>
+      </ThemeProvider>
     </AppContext.Provider>
   );
 }

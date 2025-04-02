@@ -64,14 +64,14 @@ const Examples: React.FC<ModelinaExamplesProps> = ({ router }) => {
 
   return (
     <div className='py-4 lg:py-8'>
-      <div className='w-full bg-white px-4 sm:px-6 lg:px-8 xl:mx-auto xl:max-w-7xl'>
+      <div className='w-full bg-white dark:bg-dark px-4 sm:px-6 lg:px-8 xl:mx-auto xl:max-w-7xl'>
         {!showMenu && (
           <div className='lg:hidden'>
             <button
               onClick={() => {
                 setShowMenu(true);
               }}
-              className='ml-6 flex text-gray-500  hover:text-gray-900 focus:outline-none'
+              className='ml-6 flex text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 focus:outline-none'
               aria-label='Open sidebar'
             >
               <span>Open Navigation ➔</span>
@@ -83,20 +83,20 @@ const Examples: React.FC<ModelinaExamplesProps> = ({ router }) => {
             <div className='fixed inset-0 z-40 flex'>
               <div className='fixed inset-0'>
                 <div
-                  className='absolute inset-0 bg-gray-600 opacity-75'
+                  className='absolute inset-0 bg-gray-600 dark:bg-gray-800 opacity-75'
                   onClick={() => {
                     setShowMenu(false);
                   }}
                 ></div>
               </div>
 
-              <div className='relative flex w-full max-w-xs flex-1 flex-col bg-white'>
+              <div className='relative flex w-full max-w-xs flex-1 flex-col bg-white dark:bg-dark'>
                 <div className='absolute right-0 top-0 -mr-14 p-1'>
                   <button
                     onClick={() => {
                       setShowMenu(false);
                     }}
-                    className='flex size-12 items-center justify-center rounded-full focus:bg-gray-600 focus:outline-none'
+                    className='flex size-12 items-center justify-center rounded-full focus:bg-gray-600 dark:focus:bg-gray-800 focus:outline-none'
                     aria-label='Close sidebar'
                   >
                     <svg className='size-6 text-white' stroke='currentColor' fill='none' viewBox='0 0 24 24'>
@@ -107,20 +107,20 @@ const Examples: React.FC<ModelinaExamplesProps> = ({ router }) => {
                 <div className='h-0 flex-1 overflow-y-auto pt-5'>
                   <nav className='mb-4 mt-5 px-2'>
                     <p
-                      className='cursor-pointer p-2 text-lg font-semibold'
+                      className='cursor-pointer p-2 text-lg font-semibold text-gray-900 dark:text-gray-100'
                       onClick={() => {
                         setSelectedExample(undefined);
                       }}
                     >
                       Examples
                     </p>
-                    <ul className='ml-3 mt-1 border-l border-gray-200 pl-4'>
+                    <ul className='ml-3 mt-1 border-l border-gray-200 dark:border-gray-700 pl-4'>
                       {examplesIterator.map((value) => (
                         <li
                           key={value[0]}
                           className={`cursor-pointer hover:bg-sky-500/[.3] ${
                             value[0] === selectedExample && 'bg-sky-500/[.3]'
-                          } p-2`}
+                          } p-2 text-gray-800 dark:text-gray-200`}
                           onClick={() => {
                             setNewQuery('selectedExample', value[0]);
                             setShowMenu(false);
@@ -140,24 +140,24 @@ const Examples: React.FC<ModelinaExamplesProps> = ({ router }) => {
 
         <div className='flex flex-row' id='main-content'>
           <div className='hidden lg:flex lg:shrink-0'>
-            <div className='flex w-64 flex-col border-r border-gray-200 bg-white py-2'>
+            <div className='flex w-64 flex-col border-r border-gray-200 dark:border-gray-700 bg-white dark:bg-dark py-2'>
               <div className='flex flex-1 flex-col md:sticky md:top-20 md:max-h-(screen-14) md:overflow-y-auto'>
-                <nav className='flex-1 bg-white'>
+                <nav className='flex-1 bg-white dark:bg-dark'>
                   <p
-                    className='cursor-pointer p-2 text-lg font-semibold'
+                    className='cursor-pointer p-2 text-lg font-semibold text-gray-900 dark:text-gray-100'
                     onClick={() => {
                       setNewQuery('selectedExample', undefined);
                     }}
                   >
                     Examples
                   </p>
-                  <ul className='ml-3 mt-1 border-l border-gray-200 pl-4'>
+                  <ul className='ml-3 mt-1 border-l border-gray-200 dark:border-gray-700 pl-4'>
                     {examplesIterator.map((value) => (
                       <li
                         key={value[0]}
                         className={`cursor-pointer hover:bg-sky-500/[.3] ${
                           value[0] === selectedExample && 'bg-sky-500/[.3]'
-                        } p-2`}
+                        } p-2 text-gray-800 dark:text-gray-200`}
                         onClick={() => {
                           setNewQuery('selectedExample', value[0]);
                         }}
@@ -179,11 +179,11 @@ const Examples: React.FC<ModelinaExamplesProps> = ({ router }) => {
                     href={`https://github.com/asyncapi/modelina/tree/master/examples/${selectedExample}`}
                     inNav='true'
                   />
-                  <div className='prose py-6'>
+                  <div className='prose dark:prose-invert py-6'>
                     <ReactMarkdown>{example.description}</ReactMarkdown>
                     <a
                       href={`https://github.com/asyncapi/modelina/edit/master/examples/${selectedExample}/README.md`}
-                      className='rounded border border-blue-400 bg-blue-100 p-2 text-xs font-semibold text-blue-800 hover:bg-blue-200'
+                      className='rounded border border-blue-400 bg-blue-100 dark:border-blue-500 dark:bg-blue-900 p-2 text-xs font-semibold text-blue-800 dark:text-blue-200 hover:bg-blue-200 dark:hover:bg-blue-800'
                     >
                       Edit Description
                     </a>
@@ -221,7 +221,7 @@ const Examples: React.FC<ModelinaExamplesProps> = ({ router }) => {
                 </div>
               </div>
             ) : (
-              <div className='prose' style={{ maxWidth: '100%' }}>
+              <div className='prose dark:prose-invert' style={{ maxWidth: '100%' }}>
                 <div className={'my-4 flex md:my-0 md:justify-end'}>
                   <GithubButton
                     text='Edit readme on GitHub'
