@@ -118,6 +118,7 @@ These are all specific examples only relevant to the Java generator:
 - [java-generate-javax-constraint-annotation](./java-generate-javax-constraint-annotation) - A basic example that shows how Java data models having `javax.validation.constraints` annotations can be generated.
 - [java-generate-javadoc](./java-generate-javadoc) - A basic example of how to generate Java models including JavaDocs.
 - [integrate-into-maven](./integrate-with-maven/) - A basic example that shows how you can integrate Modelina into the Java Maven build process.
+- [java-generate-records](./java-generate-records/) - A basic example that shows how to change Java model type from class to record.
 
 ### C#
 These are all specific examples only relevant to the C# generator:
