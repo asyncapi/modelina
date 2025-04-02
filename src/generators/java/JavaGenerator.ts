@@ -46,11 +46,13 @@ import {
 import { DeepPartial, mergePartialAndDefault } from '../../utils/Partials';
 import { JavaDependencyManager } from './JavaDependencyManager';
 import { UnionRenderer } from './renderers/UnionRenderer';
+import { RecordRenderer } from './renderers/RecordRenderer';
 
 export interface JavaOptions extends CommonGeneratorOptions<JavaPreset> {
   collectionType: 'List' | 'Array';
   typeMapping: TypeMapping<JavaOptions, JavaDependencyManager>;
   constraints: Constraints<JavaOptions>;
+  modelType: 'class' | 'record';
 }
 export type JavaConstantConstraint = ConstantConstraint<JavaOptions>;
 export type JavaEnumKeyConstraint = EnumKeyConstraint<JavaOptions>;
@@ -87,7 +89,8 @@ export class JavaGenerator extends AbstractGenerator<
     defaultPreset: JAVA_DEFAULT_PRESET,
     collectionType: 'Array',
     typeMapping: JavaDefaultTypeMapping,
-    constraints: JavaDefaultConstraints
+    constraints: JavaDefaultConstraints,
+    modelType: 'class'
   };
 
   static defaultCompleteModelOptions: JavaRenderCompleteModelOptions = {
@@ -169,6 +172,13 @@ export class JavaGenerator extends AbstractGenerator<
       ...args.options
     });
     if (args.constrainedModel instanceof ConstrainedObjectModel) {
+      if (this.options.modelType === 'record') {
+        return this.renderRecord(
+          args.constrainedModel,
+          args.inputModel,
+          optionsToUse
+        );
+      }
       return this.renderClass({
         ...args,
         constrainedModel: args.constrainedModel,
@@ -330,6 +340,33 @@ ${outputModel.result}`;
     const presets = this.getPresets('union');
     const renderer = new UnionRenderer(
       optionsToUse,
+      this,
+      presets,
+      model,
+      inputModel,
+      dependencyManagerToUse
+    );
+    const result = await renderer.runSelfPreset();
+    return RenderOutput.toRenderOutput({
+      result,
+      renderedName: model.name,
+      dependencies: dependencyManagerToUse.dependencies
+    });
+  }
+
+  async renderRecord(
+    model: ConstrainedObjectModel,
+    inputModel: InputMetaModel,
+    options?: Partial<JavaOptions>
+  ): Promise<RenderOutput> {
+    const optionsToUse = JavaGenerator.getJavaOptions({
+      ...this.options,
+      ...options
+    });
+    const dependencyManagerToUse = this.getDependencyManager(optionsToUse);
+    const presets = this.getPresets('record');
+    const renderer = new RecordRenderer(
+      this.options,
       this,
       presets,
       model,

@@ -7,7 +7,8 @@ import {
   EnumArgs,
   ConstrainedEnumModel,
   CommonPreset,
-  ConstrainedUnionModel
+  ConstrainedUnionModel,
+  InterfacePreset
 } from '../../models';
 import { JavaOptions } from './JavaGenerator';
 import {
@@ -18,6 +19,10 @@ import {
   EnumRenderer,
   JAVA_DEFAULT_ENUM_PRESET
 } from './renderers/EnumRenderer';
+import {
+  JAVA_DEFAULT_RECORD_PRESET,
+  RecordRenderer
+} from './renderers/RecordRenderer';
 import {
   JAVA_DEFAULT_UNION_PRESET,
   UnionRenderer
@@ -45,13 +50,17 @@ export interface UnionPreset<R extends AbstractRenderer, O>
   ) => string;
 }
 
+export type RecordPresetType<O> = InterfacePreset<RecordRenderer, O>;
+
 export type JavaPreset<O = any> = Preset<{
+  record: RecordPresetType<O>;
   class: ClassPresetType<O>;
   enum: EnumPresetType<O>;
   union: UnionPresetType<O>;
 }>;
 
 export const JAVA_DEFAULT_PRESET: JavaPreset<JavaOptions> = {
+  record: JAVA_DEFAULT_RECORD_PRESET,
   class: JAVA_DEFAULT_CLASS_PRESET,
   enum: JAVA_DEFAULT_ENUM_PRESET,
   union: JAVA_DEFAULT_UNION_PRESET
