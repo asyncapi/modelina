@@ -1114,6 +1114,18 @@
         "test",
         "bug"
       ]
+    },
+    {
+      "login": "Sm0keySa1m0n",
+      "name": "Joseph Tarbit",
+      "avatar_url": "https://avatars.githubusercontent.com/u/26169906?v=4",
+      "profile": "https://github.com/Sm0keySa1m0n",
+      "contributions": [
+        "code",
+        "test",
+        "example",
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,
