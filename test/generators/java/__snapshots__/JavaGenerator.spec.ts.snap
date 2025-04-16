@@ -17,8 +17,8 @@ public interface Animal {
   @JsonProperty(\\"breed\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private final String breed = \\"Boxer\\";
+  @NotNull
   @JsonProperty(\\"petType\\")
-  @JsonInclude(JsonInclude.Include.NON_NULL)
   private String petType;
   @JsonAnySetter
   @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -82,8 +82,8 @@ public interface Animal {
   
 }",
   "public class Cat implements Animal, Pet {
+  @NotNull
   @JsonProperty(\\"petType\\")
-  @JsonInclude(JsonInclude.Include.NON_NULL)
   private String petType;
   @JsonAnySetter
   @JsonInclude(JsonInclude.Include.NON_NULL)
