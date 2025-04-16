@@ -398,10 +398,10 @@ describe('JavaGenerator', () => {
               message: {
                 oneOf: [
                   {
-                    $ref: '#/components/messages/Boxer'
+                    $ref: '#/components/messages/FlyingFish'
                   },
                   {
-                    $ref: '#/components/messages/Cat'
+                    $ref: '#/components/messages/Bird'
                   }
                 ]
               }
@@ -410,56 +410,56 @@ describe('JavaGenerator', () => {
         },
         components: {
           messages: {
-            Boxer: {
+            FlyingFish: {
               payload: {
-                $ref: '#/components/schemas/Boxer'
+                $ref: '#/components/schemas/FlyingFish'
               }
             },
-            Cat: {
+            Bird: {
               payload: {
-                $ref: '#/components/schemas/Cat'
+                $ref: '#/components/schemas/Bird'
               }
             }
           },
           schemas: {
-            Pet: {
-              title: 'Pet',
+            Animal: {
+              title: 'Animal',
               type: 'object',
-              discriminator: '@petType',
+              discriminator: '@animalType',
               properties: {
-                '@petType': {
+                '@animalType': {
                   type: 'string'
                 }
               },
-              required: ['@petType']
+              required: ['@animalType']
             },
-            Cat: {
-              title: 'Cat',
+            Bird: {
+              title: 'Bird',
               allOf: [
                 {
-                  $ref: '#/components/schemas/Pet'
+                  $ref: '#/components/schemas/Animal'
                 }
               ]
             },
-            Dog: {
-              title: 'Dog',
+            Fish: {
+              title: 'Fish',
               allOf: [
                 {
-                  $ref: '#/components/schemas/Pet'
+                  $ref: '#/components/schemas/Animal'
                 }
               ]
             },
-            Boxer: {
-              title: 'Boxer',
+            FlyingFish: {
+              title: 'FlyingFish',
               type: 'object',
               allOf: [
                 {
-                  $ref: '#/components/schemas/Dog'
+                  $ref: '#/components/schemas/Fish'
                 }
               ],
               properties: {
                 breed: {
-                  const: 'Boxer'
+                  const: 'FlyingNemo'
                 }
               }
             }

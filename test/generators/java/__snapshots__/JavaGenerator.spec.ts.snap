@@ -139,24 +139,24 @@ public interface Animal {
 
 exports[`JavaGenerator allowInheritance with discriminator containing a special character should create interface for Animal, Pet and Dog 1`] = `
 Array [
-  "@JsonTypeInfo(use=JsonTypeInfo.Id.NAME, include=JsonTypeInfo.As.EXISTING_PROPERTY, property=\\"@petType\\", visible=true)
+  "@JsonTypeInfo(use=JsonTypeInfo.Id.NAME, include=JsonTypeInfo.As.EXISTING_PROPERTY, property=\\"@animalType\\", visible=true)
 @JsonSubTypes({
-  @JsonSubTypes.Type(value = Boxer.class, name = \\"Boxer\\"),
-  @JsonSubTypes.Type(value = Cat.class, name = \\"Cat\\")
+  @JsonSubTypes.Type(value = FlyingFish.class, name = \\"FlyingFish\\"),
+  @JsonSubTypes.Type(value = Bird.class, name = \\"Bird\\")
 })
 /**
- * Animal represents a union of types: Boxer, Cat
+ * Animal represents a union of types: FlyingFish, Bird
  */
 public interface Animal {
-  String getAtPetType();
+  String getAtAnimalType();
 }",
-  "public class Boxer implements Animal, Dog {
+  "public class FlyingFish implements Animal, Fish {
   @JsonProperty(\\"breed\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
-  private final String breed = \\"Boxer\\";
+  private final String breed = \\"FlyingNemo\\";
   @NotNull
-  @JsonProperty(\\"@petType\\")
-  private String atPetType;
+  @JsonProperty(\\"@animalType\\")
+  private String atAnimalType;
   @JsonAnySetter
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
@@ -164,9 +164,9 @@ public interface Animal {
   public String getBreed() { return this.breed; }
 
   @Override
-  public String getAtPetType() { return this.atPetType; }
+  public String getAtAnimalType() { return this.atAnimalType; }
   @Override
-  public void setAtPetType(String atPetType) { this.atPetType = atPetType; }
+  public void setAtAnimalType(String atAnimalType) { this.atAnimalType = atAnimalType; }
 
   @JsonAnyGetter
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
@@ -180,23 +180,23 @@ public interface Animal {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    Boxer self = (Boxer) o;
+    FlyingFish self = (FlyingFish) o;
       return 
         Objects.equals(this.breed, self.breed) &&
-        Objects.equals(this.atPetType, self.atPetType) &&
+        Objects.equals(this.atAnimalType, self.atAnimalType) &&
         Objects.equals(this.additionalProperties, self.additionalProperties);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash((Object)breed, (Object)atPetType, (Object)additionalProperties);
+    return Objects.hash((Object)breed, (Object)atAnimalType, (Object)additionalProperties);
   }
 
   @Override
   public String toString() {
-    return \\"class Boxer {\\\\n\\" +   
+    return \\"class FlyingFish {\\\\n\\" +   
       \\"    breed: \\" + toIndentedString(breed) + \\"\\\\n\\" +
-      \\"    atPetType: \\" + toIndentedString(atPetType) + \\"\\\\n\\" +
+      \\"    atAnimalType: \\" + toIndentedString(atAnimalType) + \\"\\\\n\\" +
       \\"    additionalProperties: \\" + toIndentedString(additionalProperties) + \\"\\\\n\\" +
     \\"}\\";
   }
@@ -212,22 +212,22 @@ public interface Animal {
     return o.toString().replace(\\"\\\\n\\", \\"\\\\n    \\");
   }
 }",
-  "public interface Dog extends Pet {
+  "public interface Fish extends Animal {
   
 }",
-  "public interface Pet {
+  "public interface Animal {
   
 }",
-  "public class Cat implements Animal, Pet {
+  "public class Bird implements Animal, Animal {
   @NotNull
-  @JsonProperty(\\"@petType\\")
-  private String atPetType;
+  @JsonProperty(\\"@animalType\\")
+  private String atAnimalType;
   @JsonAnySetter
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
-  public String getAtPetType() { return this.atPetType; }
-  public void setAtPetType(String atPetType) { this.atPetType = atPetType; }
+  public String getAtAnimalType() { return this.atAnimalType; }
+  public void setAtAnimalType(String atAnimalType) { this.atAnimalType = atAnimalType; }
 
   @JsonAnyGetter
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
@@ -241,21 +241,21 @@ public interface Animal {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    Cat self = (Cat) o;
+    Bird self = (Bird) o;
       return 
-        Objects.equals(this.atPetType, self.atPetType) &&
+        Objects.equals(this.atAnimalType, self.atAnimalType) &&
         Objects.equals(this.additionalProperties, self.additionalProperties);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash((Object)atPetType, (Object)additionalProperties);
+    return Objects.hash((Object)atAnimalType, (Object)additionalProperties);
   }
 
   @Override
   public String toString() {
-    return \\"class Cat {\\\\n\\" +   
-      \\"    atPetType: \\" + toIndentedString(atPetType) + \\"\\\\n\\" +
+    return \\"class Bird {\\\\n\\" +   
+      \\"    atAnimalType: \\" + toIndentedString(atAnimalType) + \\"\\\\n\\" +
       \\"    additionalProperties: \\" + toIndentedString(additionalProperties) + \\"\\\\n\\" +
     \\"}\\";
   }
