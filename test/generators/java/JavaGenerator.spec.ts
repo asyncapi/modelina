@@ -328,7 +328,110 @@ describe('JavaGenerator', () => {
                   type: 'string'
                 }
               },
-              required: ['type']
+              required: ['petType']
+            },
+            Cat: {
+              title: 'Cat',
+              allOf: [
+                {
+                  $ref: '#/components/schemas/Pet'
+                }
+              ]
+            },
+            Dog: {
+              title: 'Dog',
+              allOf: [
+                {
+                  $ref: '#/components/schemas/Pet'
+                }
+              ]
+            },
+            Boxer: {
+              title: 'Boxer',
+              type: 'object',
+              allOf: [
+                {
+                  $ref: '#/components/schemas/Dog'
+                }
+              ],
+              properties: {
+                breed: {
+                  const: 'Boxer'
+                }
+              }
+            }
+          }
+        }
+      };
+
+      generator = new JavaGenerator({
+        presets: [
+          JAVA_COMMON_PRESET,
+          JAVA_JACKSON_PRESET,
+          JAVA_DESCRIPTION_PRESET,
+          JAVA_CONSTRAINTS_PRESET
+        ],
+        collectionType: 'List',
+        processorOptions: {
+          interpreter: {
+            allowInheritance: true
+          }
+        }
+      });
+
+      const models = await generator.generate(asyncapiDoc);
+      expect(models.map((model) => model.result)).toMatchSnapshot();
+    });
+  });
+
+  describe('allowInheritance with discriminator containing a special character', () => {
+    test('should create interface for Animal, Pet and Dog', async () => {
+      const asyncapiDoc = {
+        asyncapi: '2.5.0',
+        info: {
+          title: 'CloudEvent example',
+          version: '1.0.0'
+        },
+        channels: {
+          animal: {
+            publish: {
+              message: {
+                oneOf: [
+                  {
+                    $ref: '#/components/messages/Boxer'
+                  },
+                  {
+                    $ref: '#/components/messages/Cat'
+                  }
+                ]
+              }
+            }
+          }
+        },
+        components: {
+          messages: {
+            Boxer: {
+              payload: {
+                $ref: '#/components/schemas/Boxer'
+              }
+            },
+            Cat: {
+              payload: {
+                $ref: '#/components/schemas/Cat'
+              }
+            }
+          },
+          schemas: {
+            Pet: {
+              title: 'Pet',
+              type: 'object',
+              discriminator: '@petType',
+              properties: {
+                '@petType': {
+                  type: 'string'
+                }
+              },
+              required: ['@petType']
             },
             Cat: {
               title: 'Cat',
