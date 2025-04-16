@@ -7,7 +7,7 @@ public partial class Root
 {
   private string? email;
 
-  public string? Email
+  public string? Email 
   {
     get { return email; }
     set { this.email = value; }
@@ -18,7 +18,7 @@ public partial class Root
     {
       return this.Serialize(null);
     }
-    public string Serialize(JsonSerializerOptions options = null)
+    public string Serialize(JsonSerializerOptions options = null) 
     {
       return JsonSerializer.Serialize(this, options);
     }
@@ -40,7 +40,7 @@ internal class RootConverter : JsonConverter<Root>
     }
 
     var instance = new Root();
-
+  
     while (reader.Read())
     {
       if (reader.TokenType == JsonTokenType.EndObject)
@@ -62,7 +62,7 @@ internal class RootConverter : JsonConverter<Root>
           continue;
         }
     }
-
+  
     throw new JsonException();
   }
   public override void Write(Utf8JsonWriter writer, Root value, JsonSerializerOptions options)
@@ -73,7 +73,7 @@ internal class RootConverter : JsonConverter<Root>
       return;
     }
     var properties = value.GetType().GetProperties();
-
+  
     writer.WriteStartObject();
 
     if(value.Email != null) {
