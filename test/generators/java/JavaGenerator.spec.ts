@@ -385,7 +385,7 @@ describe('JavaGenerator', () => {
   });
 
   describe('allowInheritance with discriminator containing a special character', () => {
-    test('should create interface for Animal, Pet and Dog', async () => {
+    test('should create interface for Animal, Pet and Fish', async () => {
       const asyncapiDoc = {
         asyncapi: '2.5.0',
         info: {
@@ -422,12 +422,12 @@ describe('JavaGenerator', () => {
             }
           },
           schemas: {
-            Animal: {
-              title: 'Animal',
+            Pet: {
+              title: 'Pet',
               type: 'object',
-              discriminator: '@animalType',
+              discriminator: '@petType',
               properties: {
-                '@animalType': {
+                '@petType': {
                   type: 'string'
                 }
               },
