@@ -20,7 +20,8 @@ export class UnionRenderer extends JavaRenderer<ConstrainedUnionModel> {
     const content = [];
 
     if (this.model.options.discriminator) {
-      content.push(await this.runDiscriminatorAccessorPreset());
+      content.push(await this.runDiscriminatorGetterPreset());
+      content.push(await this.runDiscriminatorSetterPreset());
     }
     content.push(await this.runAdditionalContentPreset());
 
@@ -32,8 +33,12 @@ export class UnionRenderer extends JavaRenderer<ConstrainedUnionModel> {
     ]);
   }
 
-  runDiscriminatorAccessorPreset(): Promise<string> {
+  runDiscriminatorGetterPreset(): Promise<string> {
     return this.runPreset('discriminatorGetter');
+  }
+
+  runDiscriminatorSetterPreset(): Promise<string> {
+    return this.runPreset('discriminatorSetter');
   }
 }
 
@@ -49,5 +54,16 @@ export const JAVA_DEFAULT_UNION_PRESET: UnionPresetType<JavaOptions> = {
     return `${model.options.discriminator.type} get${FormatHelpers.toPascalCase(
       model.options.discriminator.discriminator
     )}();`;
+  },
+  discriminatorSetter({ model }) {
+    if (!model.options.discriminator?.type) {
+      return '';
+    }
+
+    return `void set${FormatHelpers.toPascalCase(
+      model.options.discriminator.discriminator
+    )}(${model.options.discriminator.type} ${FormatHelpers.toCamelCase(
+      model.options.discriminator.discriminator
+    )});`;
   }
 };

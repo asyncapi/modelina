@@ -12,6 +12,7 @@ Array [
  */
 public interface Animal {
   String getPetType();
+  void setPetType(String petType);
 }",
   "public class Boxer implements Animal, Dog {
   @JsonProperty(\\"breed\\")
@@ -144,6 +145,7 @@ Array [
  */
 public interface Vehicle {
   VehicleType getVehicleType();
+  void setVehicleType(VehicleType vehicleType);
 }",
   "public class Car implements Vehicle {
   private final VehicleType vehicleType = VehicleType.CAR;
