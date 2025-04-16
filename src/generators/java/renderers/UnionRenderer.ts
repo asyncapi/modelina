@@ -4,7 +4,6 @@ import { JavaOptions } from '../JavaGenerator';
 import { UnionPresetType } from '../JavaPreset';
 import { FormatHelpers } from '../../../helpers';
 
-
 /**
  * Renderer for Java's `union` type
  *
@@ -47,15 +46,15 @@ export const JAVA_DEFAULT_UNION_PRESET: UnionPresetType<JavaOptions> = {
       return '';
     }
     const sanitizedDiscriminator = FormatHelpers.replaceSpecialCharacters(
-        model.options.discriminator.discriminator,
-        {
-          exclude: [' ', '_'],
-          separator: '_'
-        }
+      model.options.discriminator.discriminator,
+      {
+        exclude: [' ', '_'],
+        separator: '_'
+      }
     );
 
     return `${model.options.discriminator.type} get${FormatHelpers.toPascalCase(
-        sanitizedDiscriminator
+      sanitizedDiscriminator
     )}();`;
   }
 };
