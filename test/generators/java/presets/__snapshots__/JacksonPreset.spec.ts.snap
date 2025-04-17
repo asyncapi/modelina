@@ -93,6 +93,7 @@ Array [
  */
 public interface Vehicle {
   String getVehicleType();
+  void setVehicleType(String vehicleType);
 }",
   "public class Car implements Vehicle {
   @JsonProperty(\\"vehicle_type\\")
@@ -151,6 +152,7 @@ Array [
  */
 public interface Vehicle {
   String getVehicleType();
+  void setVehicleType(String vehicleType);
 }",
   "public class Car implements Vehicle {
   @JsonProperty(\\"vehicleType\\")
@@ -197,6 +199,7 @@ Array [
  */
 public interface Vehicle {
   String getVehicleType();
+  void setVehicleType(String vehicleType);
 }",
   "public class Car implements Vehicle {
   @JsonProperty(\\"vehicleType\\")

@@ -303,6 +303,7 @@ Array [
  */
 public interface Pet {
   CloudEventType getType();
+  void setType(CloudEventType type);
 }",
   "public class Dog implements Pet {
   @NotNull
@@ -807,6 +808,7 @@ Array [
  */
 public interface Vehicle {
   VehicleType getVehicleType();
+  void setVehicleType(VehicleType vehicleType);
 }",
   "public class Cargo {
   @Valid
