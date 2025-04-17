@@ -1138,6 +1138,16 @@
         "test",
         "bug"
       ]
+    },
+    {
+      "login": "ThomasVerhoeven1998",
+      "name": "Thomas Verhoeven",
+      "avatar_url": "https://avatars.githubusercontent.com/u/35959140?v=4",
+      "profile": "https://github.com/ThomasVerhoeven1998",
+      "contributions": [
+        "code",
+        "test"
+      ]
     }
   ],
   "contributorsPerLine": 7,
