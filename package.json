@@ -1,6 +1,6 @@
 {
   "name": "@asyncapi/modelina",
-  "version": "4.2.0",
+  "version": "4.3.0",
   "description": "Library for generating data models based on inputs such as AsyncAPI, OpenAPI, or JSON Schema documents",
   "license": "Apache-2.0",
   "homepage": "https://www.modelina.org",
