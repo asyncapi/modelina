@@ -65,11 +65,6 @@ public partial class Test
 
 internal class TestConverter : JsonConverter<Test>
 {
-  public override bool CanConvert(System.Type objectType)
-  {
-    // this converter can be applied to any type
-    return true;
-  }
   public override Test Read(ref Utf8JsonReader reader, System.Type typeToConvert, JsonSerializerOptions options)
   {
     if (reader.TokenType != JsonTokenType.StartObject)
@@ -259,11 +254,6 @@ public partial class NestedTest
 
 internal class NestedTestConverter : JsonConverter<NestedTest>
 {
-  public override bool CanConvert(System.Type objectType)
-  {
-    // this converter can be applied to any type
-    return true;
-  }
   public override NestedTest Read(ref Utf8JsonReader reader, System.Type typeToConvert, JsonSerializerOptions options)
   {
     if (reader.TokenType != JsonTokenType.StartObject)

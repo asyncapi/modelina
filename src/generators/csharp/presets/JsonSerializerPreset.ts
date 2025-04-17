@@ -244,11 +244,6 @@ ${content}
 
 internal class ${model.name}Converter : JsonConverter<${model.name}>
 {
-  public override bool CanConvert(System.Type objectType)
-  {
-    // this converter can be applied to any type
-    return true;
-  }
 ${renderer.indent(deserialize)}
 ${renderer.indent(serialize)}
 
