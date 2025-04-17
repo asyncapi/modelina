@@ -48,6 +48,9 @@ export interface UnionPreset<R extends AbstractRenderer, O>
   discriminatorGetter?: (
     args: PresetArgs<R, O, ConstrainedUnionModel>
   ) => string;
+  discriminatorSetter?: (
+    args: PresetArgs<R, O, ConstrainedUnionModel>
+  ) => string;
 }
 
 export type RecordPresetType<O> = InterfacePreset<RecordRenderer, O>;
