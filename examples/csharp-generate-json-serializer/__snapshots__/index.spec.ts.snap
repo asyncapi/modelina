@@ -36,7 +36,7 @@ internal class RootConverter : JsonConverter<Root>
   {
     if (reader.TokenType != JsonTokenType.StartObject)
     {
-      throw new JsonException();
+      throw new JsonException(\\"Unexpected start of JSON\\");
     }
 
     var instance = new Root();
@@ -51,7 +51,7 @@ internal class RootConverter : JsonConverter<Root>
       // Get the key.
       if (reader.TokenType != JsonTokenType.PropertyName)
       {
-        throw new JsonException();
+        throw new JsonException(\\"Unexpected property name token in JSON\\");
       }
 
       string propertyName = reader.GetString();
@@ -61,9 +61,11 @@ internal class RootConverter : JsonConverter<Root>
           instance.Email = value;
           continue;
         }
+      // Gracefully handle/ignore unknown fields
+      JsonSerilizer.Deserialize(ref reader, options);
     }
   
-    throw new JsonException();
+    throw new JsonException(\\"Unexpected end of JSON\\");
   }
   public override void Write(Utf8JsonWriter writer, Root value, JsonSerializerOptions options)
   {

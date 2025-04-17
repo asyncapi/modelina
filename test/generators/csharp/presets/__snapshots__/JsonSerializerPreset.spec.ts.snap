@@ -69,7 +69,7 @@ internal class TestConverter : JsonConverter<Test>
   {
     if (reader.TokenType != JsonTokenType.StartObject)
     {
-      throw new JsonException();
+      throw new JsonException(\\"Unexpected start of JSON\\");
     }
 
     var instance = new Test();
@@ -84,7 +84,7 @@ internal class TestConverter : JsonConverter<Test>
       // Get the key.
       if (reader.TokenType != JsonTokenType.PropertyName)
       {
-        throw new JsonException();
+        throw new JsonException(\\"Unexpected property name token in JSON\\");
       }
 
       string propertyName = reader.GetString();
@@ -116,9 +116,11 @@ internal class TestConverter : JsonConverter<Test>
             var deserializedValue = JsonSerializer.Deserialize<Dictionary<string, dynamic>?>(ref reader, options);
             instance.AdditionalProperties.Add(propertyName, deserializedValue);
             continue;
+      // Gracefully handle/ignore unknown fields
+      JsonSerilizer.Deserialize(ref reader, options);
     }
   
-    throw new JsonException();
+    throw new JsonException(\\"Unexpected end of JSON\\");
   }
   public override void Write(Utf8JsonWriter writer, Test value, JsonSerializerOptions options)
   {
@@ -258,7 +260,7 @@ internal class NestedTestConverter : JsonConverter<NestedTest>
   {
     if (reader.TokenType != JsonTokenType.StartObject)
     {
-      throw new JsonException();
+      throw new JsonException(\\"Unexpected start of JSON\\");
     }
 
     var instance = new NestedTest();
@@ -273,7 +275,7 @@ internal class NestedTestConverter : JsonConverter<NestedTest>
       // Get the key.
       if (reader.TokenType != JsonTokenType.PropertyName)
       {
-        throw new JsonException();
+        throw new JsonException(\\"Unexpected property name token in JSON\\");
       }
 
       string propertyName = reader.GetString();
@@ -287,9 +289,11 @@ internal class NestedTestConverter : JsonConverter<NestedTest>
             var deserializedValue = JsonSerializer.Deserialize<Dictionary<string, dynamic>?>(ref reader, options);
             instance.AdditionalProperties.Add(propertyName, deserializedValue);
             continue;
+      // Gracefully handle/ignore unknown fields
+      JsonSerilizer.Deserialize(ref reader, options);
     }
   
-    throw new JsonException();
+    throw new JsonException(\\"Unexpected end of JSON\\");
   }
   public override void Write(Utf8JsonWriter writer, NestedTest value, JsonSerializerOptions options)
   {
