@@ -431,13 +431,13 @@ describe('JavaGenerator', () => {
                   type: 'string'
                 }
               },
-              required: ['@animalType']
+              required: ['@petType']
             },
             Bird: {
               title: 'Bird',
               allOf: [
                 {
-                  $ref: '#/components/schemas/Animal'
+                  $ref: '#/components/schemas/Pet'
                 }
               ]
             },
@@ -445,7 +445,7 @@ describe('JavaGenerator', () => {
               title: 'Fish',
               allOf: [
                 {
-                  $ref: '#/components/schemas/Animal'
+                  $ref: '#/components/schemas/Pet'
                 }
               ]
             },
