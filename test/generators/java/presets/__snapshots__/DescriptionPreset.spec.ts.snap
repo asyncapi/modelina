@@ -8,6 +8,7 @@ Array [
   private String test2;
   private Map<String, Object> additionalProperties;
 
+  @Override
   public DiscriminatorTest getType() { return this.type; }
 
   @Override

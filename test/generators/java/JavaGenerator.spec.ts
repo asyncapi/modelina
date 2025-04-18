@@ -326,6 +326,9 @@ describe('JavaGenerator', () => {
               properties: {
                 petType: {
                   type: 'string'
+                },
+                color: {
+                  type: 'string'
                 }
               },
               required: ['petType']

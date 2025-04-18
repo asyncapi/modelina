@@ -21,6 +21,9 @@ public interface Animal {
   @NotNull
   @JsonProperty(\\"petType\\")
   private String petType;
+  @JsonProperty(\\"color\\")
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private String color;
   @JsonAnySetter
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
@@ -31,6 +34,11 @@ public interface Animal {
   public String getPetType() { return this.petType; }
   @Override
   public void setPetType(String petType) { this.petType = petType; }
+
+  @Override
+  public String getColor() { return this.color; }
+  @Override
+  public void setColor(String color) { this.color = color; }
 
   @JsonAnyGetter
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
@@ -48,12 +56,13 @@ public interface Animal {
       return 
         Objects.equals(this.breed, self.breed) &&
         Objects.equals(this.petType, self.petType) &&
+        Objects.equals(this.color, self.color) &&
         Objects.equals(this.additionalProperties, self.additionalProperties);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash((Object)breed, (Object)petType, (Object)additionalProperties);
+    return Objects.hash((Object)breed, (Object)petType, (Object)color, (Object)additionalProperties);
   }
 
   @Override
@@ -61,6 +70,7 @@ public interface Animal {
     return \\"class Boxer {\\\\n\\" +   
       \\"    breed: \\" + toIndentedString(breed) + \\"\\\\n\\" +
       \\"    petType: \\" + toIndentedString(petType) + \\"\\\\n\\" +
+      \\"    color: \\" + toIndentedString(color) + \\"\\\\n\\" +
       \\"    additionalProperties: \\" + toIndentedString(additionalProperties) + \\"\\\\n\\" +
     \\"}\\";
   }
@@ -77,21 +87,33 @@ public interface Animal {
   }
 }",
   "public interface Dog extends Pet {
-  
+  public String getColor();
+  public void setColor(String color);
 }",
   "public interface Pet {
-  
+  public String getColor();
+  public void setColor(String color);
 }",
   "public class Cat implements Animal, Pet {
   @NotNull
   @JsonProperty(\\"petType\\")
   private String petType;
+  @JsonProperty(\\"color\\")
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private String color;
   @JsonAnySetter
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
+  @Override
   public String getPetType() { return this.petType; }
+  @Override
   public void setPetType(String petType) { this.petType = petType; }
+
+  @Override
+  public String getColor() { return this.color; }
+  @Override
+  public void setColor(String color) { this.color = color; }
 
   @JsonAnyGetter
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
@@ -108,18 +130,20 @@ public interface Animal {
     Cat self = (Cat) o;
       return 
         Objects.equals(this.petType, self.petType) &&
+        Objects.equals(this.color, self.color) &&
         Objects.equals(this.additionalProperties, self.additionalProperties);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash((Object)petType, (Object)additionalProperties);
+    return Objects.hash((Object)petType, (Object)color, (Object)additionalProperties);
   }
 
   @Override
   public String toString() {
     return \\"class Cat {\\\\n\\" +   
       \\"    petType: \\" + toIndentedString(petType) + \\"\\\\n\\" +
+      \\"    color: \\" + toIndentedString(color) + \\"\\\\n\\" +
       \\"    additionalProperties: \\" + toIndentedString(additionalProperties) + \\"\\\\n\\" +
     \\"}\\";
   }
