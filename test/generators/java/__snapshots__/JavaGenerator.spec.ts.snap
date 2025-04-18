@@ -228,7 +228,9 @@ public interface Animal {
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
+  @Override
   public String getAtPetType() { return this.atPetType; }
+  @Override
   public void setAtPetType(String atPetType) { this.atPetType = atPetType; }
 
   @JsonAnyGetter

@@ -138,10 +138,7 @@ const getOverride = (
   property: ConstrainedObjectPropertyModel
 ) => {
   const isOverride = model.options.extend?.find((extend) => {
-    if (
-      !extend.options.isExtended ||
-      isDiscriminatorOrDictionary(model, property)
-    ) {
+    if (!extend.options.isExtended || isDictionary(model, property)) {
       return false;
     }
 
@@ -169,8 +166,12 @@ export const isDiscriminatorOrDictionary = (
   property: ConstrainedObjectPropertyModel
 ): boolean =>
   model.options.discriminator?.discriminator ===
-    property.unconstrainedPropertyName ||
-  property.property instanceof ConstrainedDictionaryModel;
+    property.unconstrainedPropertyName || isDictionary(model, property);
+
+export const isDictionary = (
+  model: ConstrainedObjectModel,
+  property: ConstrainedObjectPropertyModel
+): boolean => property.property instanceof ConstrainedDictionaryModel;
 
 const isEnumImplementedByConstValue = (
   model: ConstrainedObjectModel,
