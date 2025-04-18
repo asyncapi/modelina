@@ -150,6 +150,7 @@ Array [
  */
 public interface Animal {
   String getAtPetType();
+  void setAtPetType(String atPetType);
 }",
   "public class FlyingFish implements Animal, Fish {
   @JsonProperty(\\"breed\\")

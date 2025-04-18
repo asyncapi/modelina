@@ -50,16 +50,9 @@ export const JAVA_DEFAULT_UNION_PRESET: UnionPresetType<JavaOptions> = {
     if (!model.options.discriminator?.type) {
       return '';
     }
-    const sanitizedDiscriminator = FormatHelpers.replaceSpecialCharacters(
-      model.options.discriminator.discriminator,
-      {
-        exclude: [' ', '_'],
-        separator: '_'
-      }
-    );
 
     return `${model.options.discriminator.type} get${FormatHelpers.toPascalCase(
-      sanitizedDiscriminator
+      getSanitizedDiscriminatorName(model)
     )}();`;
   },
   discriminatorSetter({ model }) {
@@ -68,9 +61,19 @@ export const JAVA_DEFAULT_UNION_PRESET: UnionPresetType<JavaOptions> = {
     }
 
     return `void set${FormatHelpers.toPascalCase(
-      model.options.discriminator.discriminator
+      getSanitizedDiscriminatorName(model)
     )}(${model.options.discriminator.type} ${FormatHelpers.toCamelCase(
-      model.options.discriminator.discriminator
+      getSanitizedDiscriminatorName(model)
     )});`;
   }
 };
+
+function getSanitizedDiscriminatorName(model: ConstrainedUnionModel): string {
+  return FormatHelpers.replaceSpecialCharacters(
+    model.options.discriminator!.discriminator,
+    {
+      exclude: [' ', '_'],
+      separator: '_'
+    }
+  );
+}
