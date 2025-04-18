@@ -117,7 +117,7 @@ internal class TestConverter : JsonConverter<Test>
             instance.AdditionalProperties.Add(propertyName, deserializedValue);
             continue;
       // Gracefully handle/ignore unknown fields
-      JsonSerilizer.Deserialize(ref reader, options);
+      JsonSerializer.Deserialize<JsonElement>(ref reader, options);
     }
   
     throw new JsonException(\\"Unexpected end of JSON\\");
@@ -290,7 +290,7 @@ internal class NestedTestConverter : JsonConverter<NestedTest>
             instance.AdditionalProperties.Add(propertyName, deserializedValue);
             continue;
       // Gracefully handle/ignore unknown fields
-      JsonSerilizer.Deserialize(ref reader, options);
+      JsonSerializer.Deserialize<JsonElement>(ref reader, options);
     }
   
     throw new JsonException(\\"Unexpected end of JSON\\");

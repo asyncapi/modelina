@@ -62,7 +62,7 @@ internal class RootConverter : JsonConverter<Root>
           continue;
         }
       // Gracefully handle/ignore unknown fields
-      JsonSerilizer.Deserialize(ref reader, options);
+      JsonSerializer.Deserialize<JsonElement>(ref reader, options);
     }
   
     throw new JsonException(\\"Unexpected end of JSON\\");

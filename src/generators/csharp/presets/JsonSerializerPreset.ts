@@ -198,7 +198,7 @@ function renderDeserialize({
     string propertyName = reader.GetString();
 ${renderer.indent(deserializeProperties, 4)}
     // Gracefully handle/ignore unknown fields
-    JsonSerilizer.Deserialize(ref reader, options);
+    JsonSerializer.Deserialize<JsonElement>(ref reader, options);
   }
   
   throw new JsonException("Unexpected end of JSON");
