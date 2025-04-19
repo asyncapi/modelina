@@ -62,7 +62,7 @@ exports[`Should be able to render python models and should generate \`implicit\`
 Array [
   "from __future__ import annotations
 from typing import Any, Dict
-from . import ObjProperty
+from .ObjProperty import ObjProperty
 class Root: 
   def __init__(self, input: Dict):
     if 'email' in input:
@@ -91,7 +91,7 @@ exports[`Should be able to render python models and should generate \`implicit\`
 Array [
   "from __future__ import annotations
 from typing import Any, Dict
-from . import ObjProperty
+from .ObjProperty import ObjProperty
 class Root: 
   def __init__(self, input: Dict):
     if 'email' in input:
