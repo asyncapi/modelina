@@ -326,9 +326,12 @@ describe('JavaGenerator', () => {
               properties: {
                 petType: {
                   type: 'string'
+                },
+                color: {
+                  type: 'string'
                 }
               },
-              required: ['type']
+              required: ['petType']
             },
             Cat: {
               title: 'Cat',
@@ -357,6 +360,109 @@ describe('JavaGenerator', () => {
               properties: {
                 breed: {
                   const: 'Boxer'
+                }
+              }
+            }
+          }
+        }
+      };
+
+      generator = new JavaGenerator({
+        presets: [
+          JAVA_COMMON_PRESET,
+          JAVA_JACKSON_PRESET,
+          JAVA_DESCRIPTION_PRESET,
+          JAVA_CONSTRAINTS_PRESET
+        ],
+        collectionType: 'List',
+        processorOptions: {
+          interpreter: {
+            allowInheritance: true
+          }
+        }
+      });
+
+      const models = await generator.generate(asyncapiDoc);
+      expect(models.map((model) => model.result)).toMatchSnapshot();
+    });
+  });
+
+  describe('allowInheritance with discriminator containing a special character', () => {
+    test('should create interface for Animal, Pet and Fish', async () => {
+      const asyncapiDoc = {
+        asyncapi: '2.5.0',
+        info: {
+          title: 'CloudEvent example',
+          version: '1.0.0'
+        },
+        channels: {
+          animal: {
+            publish: {
+              message: {
+                oneOf: [
+                  {
+                    $ref: '#/components/messages/FlyingFish'
+                  },
+                  {
+                    $ref: '#/components/messages/Bird'
+                  }
+                ]
+              }
+            }
+          }
+        },
+        components: {
+          messages: {
+            FlyingFish: {
+              payload: {
+                $ref: '#/components/schemas/FlyingFish'
+              }
+            },
+            Bird: {
+              payload: {
+                $ref: '#/components/schemas/Bird'
+              }
+            }
+          },
+          schemas: {
+            Pet: {
+              title: 'Pet',
+              type: 'object',
+              discriminator: '@petType',
+              properties: {
+                '@petType': {
+                  type: 'string'
+                }
+              },
+              required: ['@petType']
+            },
+            Bird: {
+              title: 'Bird',
+              allOf: [
+                {
+                  $ref: '#/components/schemas/Pet'
+                }
+              ]
+            },
+            Fish: {
+              title: 'Fish',
+              allOf: [
+                {
+                  $ref: '#/components/schemas/Pet'
+                }
+              ]
+            },
+            FlyingFish: {
+              title: 'FlyingFish',
+              type: 'object',
+              allOf: [
+                {
+                  $ref: '#/components/schemas/Fish'
+                }
+              ],
+              properties: {
+                breed: {
+                  const: 'FlyingNemo'
                 }
               }
             }

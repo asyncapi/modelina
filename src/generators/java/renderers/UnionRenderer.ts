@@ -2,7 +2,7 @@ import { JavaRenderer } from '../JavaRenderer';
 import { ConstrainedUnionModel } from '../../../models';
 import { JavaOptions } from '../JavaGenerator';
 import { UnionPresetType } from '../JavaPreset';
-import { FormatHelpers } from '../../../index';
+import { FormatHelpers } from '../../../helpers';
 
 /**
  * Renderer for Java's `union` type
@@ -52,7 +52,7 @@ export const JAVA_DEFAULT_UNION_PRESET: UnionPresetType<JavaOptions> = {
     }
 
     return `${model.options.discriminator.type} get${FormatHelpers.toPascalCase(
-      model.options.discriminator.discriminator
+      getSanitizedDiscriminatorName(model)
     )}();`;
   },
   discriminatorSetter({ model }) {
@@ -61,9 +61,19 @@ export const JAVA_DEFAULT_UNION_PRESET: UnionPresetType<JavaOptions> = {
     }
 
     return `void set${FormatHelpers.toPascalCase(
-      model.options.discriminator.discriminator
+      getSanitizedDiscriminatorName(model)
     )}(${model.options.discriminator.type} ${FormatHelpers.toCamelCase(
-      model.options.discriminator.discriminator
+      getSanitizedDiscriminatorName(model)
     )});`;
   }
 };
+
+function getSanitizedDiscriminatorName(model: ConstrainedUnionModel): string {
+  return FormatHelpers.replaceSpecialCharacters(
+    model.options.discriminator!.discriminator,
+    {
+      exclude: [' ', '_'],
+      separator: '_'
+    }
+  );
+}
