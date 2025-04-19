@@ -177,7 +177,7 @@ function renderDeserialize({
 {
   if (reader.TokenType != JsonTokenType.StartObject)
   {
-    throw new JsonException();
+    throw new JsonException("Unexpected start of JSON");
   }
 
   var instance = new ${model.name}();
@@ -192,14 +192,16 @@ function renderDeserialize({
     // Get the key.
     if (reader.TokenType != JsonTokenType.PropertyName)
     {
-      throw new JsonException();
+      throw new JsonException("Unexpected property name token in JSON");
     }
 
     string propertyName = reader.GetString();
 ${renderer.indent(deserializeProperties, 4)}
+    // Gracefully handle/ignore unknown fields
+    JsonSerializer.Deserialize<JsonElement>(ref reader, options);
   }
   
-  throw new JsonException();
+  throw new JsonException("Unexpected end of JSON");
 }`;
 }
 
