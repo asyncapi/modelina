@@ -1,4 +1,4 @@
-import { TypeScriptGenerator } from '../../src';
+import { TypeScriptGenerator } from '../../../modelina/src';
 
 const generator = new TypeScriptGenerator();
 const swaggerDocument = {
