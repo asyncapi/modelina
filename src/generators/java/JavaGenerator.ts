@@ -37,20 +37,19 @@ import { JavaPreset, JAVA_DEFAULT_PRESET } from './JavaPreset';
 import { ClassRenderer } from './renderers/ClassRenderer';
 import { EnumRenderer } from './renderers/EnumRenderer';
 import { isReservedJavaKeyword } from './Constants';
-import { Logger } from '../../';
+import { AbstractDependencyManager, Logger } from '../../';
 import {
   JavaDefaultConstraints,
   JavaDefaultTypeMapping,
   unionIncludesBuiltInTypes
 } from './JavaConstrainer';
 import { DeepPartial, mergePartialAndDefault } from '../../utils/Partials';
-import { JavaDependencyManager } from './JavaDependencyManager';
 import { UnionRenderer } from './renderers/UnionRenderer';
 import { RecordRenderer } from './renderers/RecordRenderer';
 
 export interface JavaOptions extends CommonGeneratorOptions<JavaPreset> {
   collectionType: 'List' | 'Array';
-  typeMapping: TypeMapping<JavaOptions, JavaDependencyManager>;
+  typeMapping: TypeMapping<JavaOptions, AbstractDependencyManager>;
   constraints: Constraints<JavaOptions>;
   modelType: 'class' | 'record';
 }
@@ -59,7 +58,7 @@ export type JavaEnumKeyConstraint = EnumKeyConstraint<JavaOptions>;
 export type JavaEnumValueConstraint = EnumValueConstraint<JavaOptions>;
 export type JavaModelNameConstraint = ModelNameConstraint<JavaOptions>;
 export type JavaPropertyKeyConstraint = PropertyKeyConstraint<JavaOptions>;
-export type JavaTypeMapping = TypeMapping<JavaOptions, JavaDependencyManager>;
+export type JavaTypeMapping = TypeMapping<JavaOptions, AbstractDependencyManager>;
 export interface JavaRenderCompleteModelOptions {
   packageName: string;
 }
@@ -113,7 +112,7 @@ export class JavaGenerator extends AbstractGenerator<
     //Always overwrite the dependency manager unless user explicitly state they want it (ignore default temporary dependency manager)
     if (options?.dependencyManager === undefined) {
       optionsToUse.dependencyManager = () => {
-        return new JavaDependencyManager(optionsToUse);
+        return new AbstractDependencyManager();
       };
     }
     return optionsToUse;
@@ -122,8 +121,8 @@ export class JavaGenerator extends AbstractGenerator<
   /**
    * Wrapper to get an instance of the dependency manager
    */
-  getDependencyManager(options: JavaOptions): JavaDependencyManager {
-    return this.getDependencyManagerInstance(options) as JavaDependencyManager;
+  getDependencyManager(options: JavaOptions): AbstractDependencyManager {
+    return this.getDependencyManagerInstance(options);
   }
 
   splitMetaModel(model: MetaModel): MetaModel[] {
@@ -145,7 +144,7 @@ export class JavaGenerator extends AbstractGenerator<
       ...options
     });
     const dependencyManagerToUse = this.getDependencyManager(optionsToUse);
-    return constrainMetaModel<JavaOptions, JavaDependencyManager>(
+    return constrainMetaModel<JavaOptions, AbstractDependencyManager>(
       this.options.typeMapping,
       this.options.constraints,
       {
@@ -236,7 +235,6 @@ export class JavaGenerator extends AbstractGenerator<
       ...this.options,
       ...args.options
     });
-    const dependencyManagerToUse = this.getDependencyManager(optionsToUse);
 
     this.assertPackageIsValid(completeModelOptionsToUse);
 
@@ -244,13 +242,9 @@ export class JavaGenerator extends AbstractGenerator<
       ...args,
       options: optionsToUse
     });
-    const modelDependencies = dependencyManagerToUse.renderAllModelDependencies(
-      args.constrainedModel,
-      completeModelOptionsToUse.packageName
-    );
+    const imports = outputModel.dependencies.join('\n') + '\n';
     const outputContent = `package ${completeModelOptionsToUse.packageName};
-${modelDependencies}
-${outputModel.dependencies.join('\n')}
+${imports ? '\n' + imports : ''}
 ${outputModel.result}`;
     return RenderOutput.toRenderOutput({
       result: outputContent,

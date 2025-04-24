@@ -2,7 +2,7 @@ import { AbstractRenderer } from '../AbstractRenderer';
 import { JavaGenerator, JavaOptions } from './JavaGenerator';
 import { ConstrainedMetaModel, InputMetaModel, Preset } from '../../models';
 import { FormatHelpers } from '../../helpers';
-import { JavaDependencyManager } from './JavaDependencyManager';
+import { AbstractDependencyManager } from '../AbstractDependencyManager';
 
 /**
  * Common renderer for Java types
@@ -18,7 +18,7 @@ export abstract class JavaRenderer<
     presets: Array<[Preset, unknown]>,
     model: RendererModelType,
     inputModel: InputMetaModel,
-    public dependencyManager: JavaDependencyManager
+    public dependencyManager: AbstractDependencyManager
   ) {
     super(options, generator, presets, model, inputModel);
   }

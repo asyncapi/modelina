@@ -42,10 +42,6 @@ export class ClassRenderer extends JavaRenderer<ConstrainedObjectModel> {
     const parents = [...(parentUnions ?? []), ...(extend ?? [])];
 
     if (parents.length) {
-      for (const i of parents) {
-        this.dependencyManager.addModelDependency(i);
-      }
-
       const inheritanceKeyworkd = this.model.options.isExtended
         ? 'extends'
         : 'implements';

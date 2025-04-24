@@ -33,10 +33,6 @@ export class RecordRenderer extends JavaRenderer<ConstrainedObjectModel> {
     const recordProperties = await this.renderProperties();
 
     if (parents.length) {
-      for (const i of parents) {
-        this.dependencyManager.addModelDependency(i);
-      }
-
       const inheritanceKeyworkd = 'implements';
 
       return `public record ${this.model.name}(${recordProperties}) ${inheritanceKeyworkd} ${parents.map((i) => i.name).join(', ')} {
