@@ -260,6 +260,20 @@ function walkUnionNode<
       // eslint-disable-next-line security/detect-object-injection
       unionModel.union[index] = overwriteUnionModel;
     }
+
+    for (const [propertyKey, propertyModel] of Object.entries({
+      ...unionModel.properties
+    })) {
+      const overWriteModel = applyTypesAndConst({
+        ...context,
+        constrainedModel: propertyModel.property,
+        partOfProperty: propertyModel
+      });
+      if (overWriteModel) {
+        // eslint-disable-next-line security/detect-object-injection
+        unionModel.properties[propertyKey].property = overWriteModel;
+      }
+    }
   }
 }
 

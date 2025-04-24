@@ -2,7 +2,8 @@ import {
   ConstrainedObjectModel,
   ConstrainedObjectPropertyModel,
   ObjectModel,
-  ObjectPropertyModel
+  ObjectPropertyModel,
+  CplusplusGenerator
 } from '../../../../src';
 import {
   PropertyKeyConstraintOptions,
@@ -35,7 +36,8 @@ describe('C++ PropertyKeyConstrainer', () => {
       constrainedObjectModel,
       objectModel,
       objectPropertyModel,
-      constrainedObjectPropertyModel
+      constrainedObjectPropertyModel,
+      options: CplusplusGenerator.defaultOptions
     });
   };
   test('should never render special chars', () => {
@@ -72,7 +74,8 @@ describe('C++ PropertyKeyConstrainer', () => {
       constrainedObjectModel,
       objectModel,
       objectPropertyModel,
-      constrainedObjectPropertyModel
+      constrainedObjectPropertyModel,
+      options: CplusplusGenerator.defaultOptions
     });
     expect(constrainedKey).toEqual('reserved_return');
   });
@@ -96,7 +99,8 @@ describe('C++ PropertyKeyConstrainer', () => {
         '',
         false,
         constrainedObjectModel
-      )
+      ),
+      options: CplusplusGenerator.defaultOptions
     });
 
     expect(constrainedKey).toEqual('_DEFAULT');

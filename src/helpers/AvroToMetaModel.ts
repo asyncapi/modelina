@@ -245,7 +245,8 @@ export function toUnionModel(
     name,
     avroSchemaModel.originalInput,
     getMetaModelOptions(avroSchemaModel),
-    []
+    [],
+    {}
   );
 
   //cache model before continuing

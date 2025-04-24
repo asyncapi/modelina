@@ -8,7 +8,8 @@ import {
   ConstrainedEnumModel,
   CommonPreset,
   ConstrainedUnionModel,
-  InterfacePreset
+  InterfacePreset,
+  PropertyArgs
 } from '../../models';
 import { JavaOptions } from './JavaGenerator';
 import {
@@ -48,9 +49,12 @@ export interface UnionPreset<R extends AbstractRenderer, O>
   discriminatorGetter?: (
     args: PresetArgs<R, O, ConstrainedUnionModel>
   ) => string;
-  discriminatorSetter?: (
-    args: PresetArgs<R, O, ConstrainedUnionModel>
-  ) => string;
+  getter?: (
+    args: PresetArgs<R, O, ConstrainedUnionModel> & PropertyArgs
+  ) => Promise<string> | string;
+  setter?: (
+    args: PresetArgs<R, O, ConstrainedUnionModel> & PropertyArgs
+  ) => Promise<string> | string;
 }
 
 export type RecordPresetType<O> = InterfacePreset<RecordRenderer, O>;

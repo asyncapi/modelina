@@ -1,8 +1,9 @@
 import {
   ConstrainedObjectModel,
-  ConstrainedEnumModel
+  ConstrainedEnumModel,
+  ConstrainedUnionModel
 } from '../models/ConstrainedMetaModel';
-import { ObjectModel, EnumModel } from '../models/MetaModel';
+import { ObjectModel, EnumModel, UnionModel } from '../models/MetaModel';
 
 export function NO_NUMBER_START_CHAR(value: string): string {
   const firstChar = value.charAt(0);
@@ -23,8 +24,8 @@ export function NO_NUMBER_START_CHAR(value: string): string {
  * @param namingFormatter the name formatter which are used to format the property key
  */
 export function NO_DUPLICATE_PROPERTIES(
-  constrainedObjectModel: ConstrainedObjectModel,
-  objectModel: ObjectModel,
+  constrainedObjectModel: ConstrainedObjectModel | ConstrainedUnionModel,
+  objectModel: ObjectModel | UnionModel,
   propertyName: string,
   namingFormatter: (value: string) => string
 ): string {

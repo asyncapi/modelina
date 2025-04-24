@@ -170,10 +170,13 @@ describe('ConstrainedMetaModel', () => {
     test('should return inner reference dependencies', () => {
       const stringModel = new StringModel('', undefined, {});
       const referenceModel = new ReferenceModel('', undefined, {}, stringModel);
-      const unionModel = new UnionModel('union', undefined, {}, [
-        stringModel,
-        referenceModel
-      ]);
+      const unionModel = new UnionModel(
+        'union',
+        undefined,
+        {},
+        [stringModel, referenceModel],
+        {}
+      );
       const unionTupleModel = new TupleValueModel(0, unionModel);
       const stringTupleModel = new TupleValueModel(1, stringModel);
       const rawModel = new TupleModel('test', undefined, {}, [
@@ -243,10 +246,13 @@ describe('ConstrainedMetaModel', () => {
     test('should return inner reference dependencies', () => {
       const stringModel = new StringModel('', undefined, {});
       const referenceModel = new ReferenceModel('', undefined, {}, stringModel);
-      const unionModel = new UnionModel('union', undefined, {}, [
-        stringModel,
-        referenceModel
-      ]);
+      const unionModel = new UnionModel(
+        'union',
+        undefined,
+        {},
+        [stringModel, referenceModel],
+        {}
+      );
       const unionObjectPropertyModel = new ObjectPropertyModel(
         'union',
         false,
@@ -526,10 +532,13 @@ describe('ConstrainedMetaModel', () => {
     test('should return inner reference dependencies', () => {
       const stringModel = new StringModel('', undefined, {});
       const referenceModel = new ReferenceModel('', undefined, {}, stringModel);
-      const unionModel = new UnionModel('union', undefined, {}, [
-        stringModel,
-        referenceModel
-      ]);
+      const unionModel = new UnionModel(
+        'union',
+        undefined,
+        {},
+        [stringModel, referenceModel],
+        {}
+      );
       const rawModel = new DictionaryModel(
         'test',
         undefined,
@@ -634,10 +643,13 @@ describe('ConstrainedMetaModel', () => {
     test('should return inner reference dependencies', () => {
       const stringModel = new StringModel('', undefined, {});
       const referenceModel = new ReferenceModel('', undefined, {}, stringModel);
-      const unionModel = new UnionModel('union', undefined, {}, [
-        stringModel,
-        referenceModel
-      ]);
+      const unionModel = new UnionModel(
+        'union',
+        undefined,
+        {},
+        [stringModel, referenceModel],
+        {}
+      );
       const rawModel = new ArrayModel('', undefined, {}, unionModel);
 
       const model = constrainMetaModel(mockedTypeMapping, mockedConstraints, {
@@ -657,10 +669,13 @@ describe('ConstrainedMetaModel', () => {
     test('should return all reference dependencies', () => {
       const stringModel = new StringModel('', undefined, {});
       const referenceModel = new ReferenceModel('', undefined, {}, stringModel);
-      const rawModel = new UnionModel('test', undefined, {}, [
-        referenceModel,
-        stringModel
-      ]);
+      const rawModel = new UnionModel(
+        'test',
+        undefined,
+        {},
+        [referenceModel, stringModel],
+        {}
+      );
 
       const model = constrainMetaModel(mockedTypeMapping, mockedConstraints, {
         metaModel: rawModel,
@@ -676,10 +691,13 @@ describe('ConstrainedMetaModel', () => {
     test('should not return duplicate dependencies', () => {
       const stringModel = new StringModel('', undefined, {});
       const referenceModel = new ReferenceModel('', undefined, {}, stringModel);
-      const rawModel = new UnionModel('test', undefined, {}, [
-        referenceModel,
-        referenceModel
-      ]);
+      const rawModel = new UnionModel(
+        'test',
+        undefined,
+        {},
+        [referenceModel, referenceModel],
+        {}
+      );
 
       const model = constrainMetaModel(mockedTypeMapping, mockedConstraints, {
         metaModel: rawModel,
@@ -695,7 +713,13 @@ describe('ConstrainedMetaModel', () => {
     test('should handle shallow recursive models', () => {
       const stringModel = new StringModel('', undefined, {});
       const referenceModel = new ReferenceModel('', undefined, {}, stringModel);
-      const rawModel = new UnionModel('test', undefined, {}, [referenceModel]);
+      const rawModel = new UnionModel(
+        'test',
+        undefined,
+        {},
+        [referenceModel],
+        {}
+      );
       rawModel.union.push(rawModel);
 
       const model = constrainMetaModel(mockedTypeMapping, mockedConstraints, {
@@ -712,10 +736,13 @@ describe('ConstrainedMetaModel', () => {
     test('should handle deep recursive models', () => {
       const stringModel = new StringModel('', undefined, {});
       const referenceModel = new ReferenceModel('', undefined, {}, stringModel);
-      const rawModel = new UnionModel('test', undefined, {}, [
-        stringModel,
-        referenceModel
-      ]);
+      const rawModel = new UnionModel(
+        'test',
+        undefined,
+        {},
+        [stringModel, referenceModel],
+        {}
+      );
       rawModel.union.push(rawModel);
       referenceModel.ref = rawModel;
 
@@ -739,10 +766,13 @@ describe('ConstrainedMetaModel', () => {
         {},
         stringModel
       );
-      const rawModel = new UnionModel('test', undefined, {}, [
-        referenceModel,
-        referenceModel2
-      ]);
+      const rawModel = new UnionModel(
+        'test',
+        undefined,
+        {},
+        [referenceModel, referenceModel2],
+        {}
+      );
 
       const model = constrainMetaModel(mockedTypeMapping, mockedConstraints, {
         metaModel: rawModel,

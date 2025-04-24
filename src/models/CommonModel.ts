@@ -463,7 +463,9 @@ export class CommonModel {
       return;
     }
     this.extend = this.extend ?? [];
-    this.extend.push(extendedModel);
+    if (!this.extend.some((item) => item.$id === extendedModel.$id)) {
+      this.extend.push(extendedModel);
+    }
   }
 
   /**

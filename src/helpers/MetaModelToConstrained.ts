@@ -79,8 +79,8 @@ export type ModelNameConstraint<Options> = (
 export type PropertyKeyContext<Options> = {
   constrainedObjectPropertyModel: ConstrainedObjectPropertyModel;
   objectPropertyModel: ObjectPropertyModel;
-  constrainedObjectModel: ConstrainedObjectModel;
-  objectModel: ObjectModel;
+  constrainedObjectModel: ConstrainedObjectModel | ConstrainedUnionModel;
+  objectModel: ObjectModel | UnionModel;
   options: Options;
 };
 
@@ -289,7 +289,8 @@ function unionModelFactory<
     context.metaModel.originalInput,
     getConstrainedMetaModelOptions(context.metaModel),
     '',
-    []
+    [],
+    {}
   );
   alreadySeenModels.set(context.metaModel, constrainedModel);
 
@@ -301,6 +302,18 @@ function unionModelFactory<
     );
   });
   constrainedModel.union = constrainedUnionModels;
+
+  for (const propertyMetaModel of Object.values(context.metaModel.properties)) {
+    const constrainedPropertyModel = createConstrainedPropertyModel(
+      propertyMetaModel,
+      constrainedModel,
+      constrainRules,
+      context,
+      alreadySeenModels
+    );
+    constrainedModel.properties[String(constrainedPropertyModel.propertyName)] =
+      constrainedPropertyModel;
+  }
 
   return constrainedModel;
 }
@@ -381,35 +394,60 @@ function objectModelFactory<
   alreadySeenModels.set(context.metaModel, constrainedModel);
 
   for (const propertyMetaModel of Object.values(context.metaModel.properties)) {
-    const constrainedPropertyModel = new ConstrainedObjectPropertyModel(
-      '',
-      propertyMetaModel.propertyName,
-      propertyMetaModel.required,
-      constrainedModel
-    );
-    const constrainedPropertyName = constrainRules.propertyKey({
-      objectPropertyModel: propertyMetaModel,
-      constrainedObjectPropertyModel: constrainedPropertyModel,
-      constrainedObjectModel: constrainedModel,
-      objectModel: context.metaModel,
-      options: context.options
-    });
-    constrainedPropertyModel.propertyName = constrainedPropertyName;
-    const constrainedProperty = metaModelFactory(
+    const constrainedPropertyModel = createConstrainedPropertyModel(
+      propertyMetaModel,
+      constrainedModel,
       constrainRules,
-      {
-        ...context,
-        metaModel: propertyMetaModel.property,
-        partOfProperty: constrainedPropertyModel
-      },
+      context,
       alreadySeenModels
     );
-    constrainedPropertyModel.property = constrainedProperty;
-
-    constrainedModel.properties[String(constrainedPropertyName)] =
+    constrainedModel.properties[String(constrainedPropertyModel.propertyName)] =
       constrainedPropertyModel;
   }
+
   return constrainedModel;
+}
+
+function createConstrainedPropertyModel<
+  Options,
+  DependencyManager extends AbstractDependencyManager
+>(
+  propertyMetaModel: ObjectPropertyModel,
+  constrainedModel: ConstrainedObjectModel | ConstrainedUnionModel,
+  constrainRules: Constraints<Options>,
+  context: ConstrainContext<
+    Options,
+    ObjectModel | UnionModel,
+    DependencyManager
+  >,
+  alreadySeenModels: Map<MetaModel, ConstrainedMetaModel>
+): ConstrainedObjectPropertyModel {
+  const constrainedPropertyModel = new ConstrainedObjectPropertyModel(
+    '',
+    propertyMetaModel.propertyName,
+    propertyMetaModel.required,
+    constrainedModel
+  );
+  const constrainedPropertyName = constrainRules.propertyKey({
+    objectPropertyModel: propertyMetaModel,
+    constrainedObjectPropertyModel: constrainedPropertyModel,
+    constrainedObjectModel: constrainedModel,
+    objectModel: context.metaModel,
+    options: context.options
+  });
+  constrainedPropertyModel.propertyName = constrainedPropertyName;
+  const constrainedProperty = metaModelFactory(
+    constrainRules,
+    {
+      ...context,
+      metaModel: propertyMetaModel.property,
+      partOfProperty: constrainedPropertyModel
+    },
+    alreadySeenModels
+  );
+  constrainedPropertyModel.property = constrainedProperty;
+
+  return constrainedPropertyModel;
 }
 
 function enumModelFactory<

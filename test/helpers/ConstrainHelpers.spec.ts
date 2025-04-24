@@ -372,7 +372,13 @@ describe('ConstrainHelpers', () => {
   describe('constrain UnionModel', () => {
     test('should constrain correctly', () => {
       const stringModel = new StringModel('', undefined, {});
-      const metaModel = new UnionModel('test2', undefined, {}, [stringModel]);
+      const metaModel = new UnionModel(
+        'test2',
+        undefined,
+        {},
+        [stringModel],
+        {}
+      );
       const constrainedModel = constrainMetaModel(
         mockedTypeMapping,
         mockedConstraints,
@@ -393,7 +399,7 @@ describe('ConstrainHelpers', () => {
       expect(mockedTypeMapping.String).toHaveBeenCalledTimes(1);
     });
     test('should handle recursive models', () => {
-      const metaModel = new UnionModel('test2', undefined, {}, []);
+      const metaModel = new UnionModel('test2', undefined, {}, [], {});
       metaModel.union.push(metaModel);
       const constrainedModel = constrainMetaModel(
         mockedTypeMapping,
@@ -425,7 +431,8 @@ describe('ConstrainHelpers', () => {
         '',
         undefined,
         { discriminator: { discriminator: 'testDiscriminator' } },
-        [refModel]
+        [refModel],
+        {}
       );
       const constrainedModel = constrainMetaModel(
         mockedTypeMapping,
@@ -534,8 +541,8 @@ describe('ConstrainHelpers', () => {
   describe('constrain circular models', () => {
     test('should handle recursive models', () => {
       const stringModel = new StringModel('c', undefined, {});
-      const unionA = new UnionModel('a', undefined, {}, [stringModel]);
-      const unionB = new UnionModel('b', undefined, {}, [stringModel]);
+      const unionA = new UnionModel('a', undefined, {}, [stringModel], {});
+      const unionB = new UnionModel('b', undefined, {}, [stringModel], {});
       unionA.union.push(unionB);
       unionB.union.push(unionA);
       const constrainedModel = constrainMetaModel(

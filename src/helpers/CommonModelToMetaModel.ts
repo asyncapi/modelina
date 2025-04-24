@@ -236,12 +236,27 @@ export function convertToUnionModel(
     name,
     jsonSchemaModel.originalInput,
     getMetaModelOptions(jsonSchemaModel, options),
-    []
+    [],
+    {}
   );
 
   //cache model before continuing
   if (!alreadySeenModels.has(jsonSchemaModel)) {
     alreadySeenModels.set(jsonSchemaModel, unionModel);
+  }
+
+  for (const [propertyName, prop] of Object.entries(
+    jsonSchemaModel.properties || {}
+  )) {
+    const isRequired = jsonSchemaModel.isRequired(propertyName);
+
+    const propertyModel = new ObjectPropertyModel(
+      propertyName,
+      isRequired,
+      convertToMetaModel({ ...context, jsonSchemaModel: prop })
+    );
+
+    unionModel.properties[String(propertyName)] = propertyModel;
   }
 
   // Has multiple types, so convert to union
@@ -513,7 +528,8 @@ function convertAdditionalAndPatterns(context: ConverterContext) {
     name,
     getOriginalInputFromAdditionalAndPatterns(jsonSchemaModel),
     getMetaModelOptions(jsonSchemaModel, options),
-    Array.from(modelsAsValue.values())
+    Array.from(modelsAsValue.values()),
+    {}
   );
 }
 
@@ -669,7 +685,8 @@ export function convertToArrayModel(
     'union',
     jsonSchemaModel.originalInput,
     getMetaModelOptions(jsonSchemaModel, options),
-    []
+    [],
+    {}
   );
   const metaModel = new ArrayModel(
     name,

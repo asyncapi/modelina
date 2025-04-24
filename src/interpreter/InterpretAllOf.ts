@@ -52,8 +52,7 @@ export default function interpretAllOf(
 
     if (interpreterOptions.allowInheritance === true) {
       const allOfModelWithoutCache = interpreter.interpret(allOfSchema, {
-        ...interpreterOptions,
-        disableCache: true
+        ...interpreterOptions
       });
 
       if (allOfModelWithoutCache && isModelObject(allOfModelWithoutCache)) {

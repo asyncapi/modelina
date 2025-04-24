@@ -37,6 +37,18 @@ export default function interpretOneOfWithProperties(
   };
   model.discriminator = discriminator;
 
+  for (const [propertyName, propertySchema] of Object.entries(
+    schema.properties
+  )) {
+    const propertyModel = interpreter.interpret(
+      propertySchema,
+      interpreterOptions
+    );
+    if (propertyModel !== undefined) {
+      model.addProperty(propertyName, propertyModel, schema);
+    }
+  }
+
   for (const oneOfSchema of schema.oneOf) {
     const oneOfModel = interpreter.interpret(oneOfSchema, interpreterOptions);
 
@@ -44,27 +56,23 @@ export default function interpretOneOfWithProperties(
       continue;
     }
 
-    const schemaModel = interpreter.interpret(
+    const unionModel = interpreter.interpret(
       {
         ...schema,
         oneOf: undefined
       },
       interpreterOptions
-    );
-
-    if (!schemaModel) {
-      continue;
-    }
+    )!;
 
     interpreter.interpretAndCombineSchema(
       oneOfSchema,
-      schemaModel,
+      unionModel,
       schema,
       interpreterOptions
     );
     model.setType(undefined);
-    schemaModel.$id = oneOfModel.$id;
+    unionModel.$id = oneOfModel.$id;
 
-    model.addItemUnion(schemaModel);
+    model.addItemUnion(unionModel);
   }
 }

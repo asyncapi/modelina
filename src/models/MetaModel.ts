@@ -87,7 +87,8 @@ export class UnionModel extends MetaModel {
     name: string,
     originalInput: any,
     options: MetaModelOptions,
-    public union: MetaModel[]
+    public union: MetaModel[],
+    public properties: { [key: string]: ObjectPropertyModel }
   ) {
     super(name, originalInput, options);
   }

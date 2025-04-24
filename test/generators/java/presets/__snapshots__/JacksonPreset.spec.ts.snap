@@ -93,7 +93,6 @@ Array [
  */
 public interface Vehicle {
   String getVehicleType();
-  void setVehicleType(String vehicleType);
 }",
   "public class Car implements Vehicle {
   @JsonProperty(\\"vehicle_type\\")
@@ -107,7 +106,6 @@ public interface Vehicle {
   private Map<String, Object> additionalProperties;
 
   public String getVehicleType() { return this.vehicleType; }
-  public void setVehicleType(String vehicleType) { this.vehicleType = vehicleType; }
 
   public String getName() { return this.name; }
   public void setName(String name) { this.name = name; }
@@ -128,7 +126,6 @@ public interface Vehicle {
   private Map<String, Object> additionalProperties;
 
   public String getVehicleType() { return this.vehicleType; }
-  public void setVehicleType(String vehicleType) { this.vehicleType = vehicleType; }
 
   public String getName() { return this.name; }
   public void setName(String name) { this.name = name; }
@@ -152,7 +149,6 @@ Array [
  */
 public interface Vehicle {
   String getVehicleType();
-  void setVehicleType(String vehicleType);
 }",
   "public class Car implements Vehicle {
   @JsonProperty(\\"vehicleType\\")
@@ -163,7 +159,6 @@ public interface Vehicle {
   private Map<String, Object> additionalProperties;
 
   public String getVehicleType() { return this.vehicleType; }
-  public void setVehicleType(String vehicleType) { this.vehicleType = vehicleType; }
 
   @JsonAnyGetter
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
@@ -178,7 +173,6 @@ public interface Vehicle {
   private Map<String, Object> additionalProperties;
 
   public String getVehicleType() { return this.vehicleType; }
-  public void setVehicleType(String vehicleType) { this.vehicleType = vehicleType; }
 
   @JsonAnyGetter
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
@@ -199,7 +193,6 @@ Array [
  */
 public interface Vehicle {
   String getVehicleType();
-  void setVehicleType(String vehicleType);
 }",
   "public class Car implements Vehicle {
   @JsonProperty(\\"vehicleType\\")
@@ -210,7 +203,6 @@ public interface Vehicle {
   private Map<String, Object> additionalProperties;
 
   public String getVehicleType() { return this.vehicleType; }
-  public void setVehicleType(String vehicleType) { this.vehicleType = vehicleType; }
 
   @JsonAnyGetter
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
@@ -225,7 +217,6 @@ public interface Vehicle {
   private Map<String, Object> additionalProperties;
 
   public String getVehicleType() { return this.vehicleType; }
-  public void setVehicleType(String vehicleType) { this.vehicleType = vehicleType; }
 
   @JsonAnyGetter
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }

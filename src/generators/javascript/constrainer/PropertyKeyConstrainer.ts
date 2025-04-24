@@ -1,4 +1,9 @@
-import { ConstrainedObjectModel, ObjectModel } from '../../../models';
+import {
+  ConstrainedObjectModel,
+  ConstrainedUnionModel,
+  ObjectModel,
+  UnionModel
+} from '../../../models';
 import {
   NO_NUMBER_START_CHAR,
   NO_DUPLICATE_PROPERTIES,
@@ -13,8 +18,8 @@ export type PropertyKeyConstraintOptions = {
   NO_SPECIAL_CHAR: (value: string) => string;
   NO_NUMBER_START_CHAR: (value: string) => string;
   NO_DUPLICATE_PROPERTIES: (
-    constrainedObjectModel: ConstrainedObjectModel,
-    objectModel: ObjectModel,
+    constrainedObjectModel: ConstrainedObjectModel | ConstrainedUnionModel,
+    objectModel: ObjectModel | UnionModel,
     propertyName: string,
     namingFormatter: (value: string) => string
   ) => string;

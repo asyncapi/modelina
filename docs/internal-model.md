@@ -62,6 +62,7 @@ classDiagram
     class UnionModel{
         <<class>>
         MetaModel[] unionModels
+        &lt;String, ObjectPropertyModel&gt; properties
     }
 
     class EnumValueModel{
@@ -180,7 +181,7 @@ classDiagram
 
     class ConstrainedObjectModel{
         <<class>>
-        &lt;String, ObjectPropertyModel&gt; properties
+        &lt;String, ConstrainedObjectPropertyModel&gt; properties
     }
 
     class ConstrainedObjectPropertyModel{
@@ -198,6 +199,7 @@ classDiagram
     class ConstrainedUnionModel{
         <<class>>
         ConstrainedMetaModel[] unionModels
+        &lt;String, ConstrainedObjectPropertyModel&gt; properties
     }
 
     class ConstrainedEnumValueModel{

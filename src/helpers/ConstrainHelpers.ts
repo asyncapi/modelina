@@ -18,6 +18,7 @@ import {
 import {
   ObjectModel,
   EnumModel,
+  UnionModel,
   MetaModel,
   ObjectPropertyModel
 } from '../models/MetaModel';
@@ -68,8 +69,8 @@ export type ModelNameConstraint<Options> = (
 export type PropertyKeyContext<Options> = {
   constrainedObjectPropertyModel: ConstrainedObjectPropertyModel;
   objectPropertyModel: ObjectPropertyModel;
-  constrainedObjectModel: ConstrainedObjectModel;
-  objectModel: ObjectModel;
+  constrainedObjectModel: ConstrainedObjectModel | ConstrainedUnionModel;
+  objectModel: ObjectModel | UnionModel;
   options: Options;
 };
 
