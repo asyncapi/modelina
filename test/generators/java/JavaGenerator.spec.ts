@@ -601,6 +601,117 @@ describe('JavaGenerator', () => {
     });
   });
 
+  describe('allowInheritance with common properties and with special character', () => {
+    test('should create interface for Pet with common properties', async () => {
+      const asyncapiDoc = {
+        asyncapi: '2.5.0',
+        info: {
+          title: 'CloudEvent example',
+          version: '1.0.0'
+        },
+        channels: {
+          owner: {
+            publish: {
+              message: {
+                $ref: '#/components/messages/Owner'
+              }
+            }
+          }
+        },
+        components: {
+          messages: {
+            Cat: {
+              payload: {
+                $ref: '#/components/schemas/Cat'
+              }
+            },
+            Owner: {
+              payload: {
+                $ref: '#/components/schemas/Owner'
+              }
+            }
+          },
+          schemas: {
+            Pet: {
+              title: 'Pet',
+              type: 'object',
+              discriminator: '@petType',
+              properties: {
+                '@petType': {
+                  type: 'string'
+                },
+                color: {
+                  type: 'string'
+                }
+              },
+              oneOf: [
+                {
+                  $ref: '#/components/schemas/Cat'
+                },
+                {
+                  $ref: '#/components/schemas/Dog'
+                }
+              ],
+              required: ['@petType', 'color']
+            },
+            Cat: {
+              title: 'Cat',
+              allOf: [
+                {
+                  $ref: '#/components/schemas/Pet'
+                }
+              ]
+            },
+            Dog: {
+              title: 'Dog',
+              allOf: [
+                {
+                  $ref: '#/components/schemas/Pet'
+                }
+              ]
+            },
+            Owner: {
+              title: 'Owner',
+              type: 'object',
+              properties: {
+                name: {
+                  type: 'string'
+                },
+                age: {
+                  type: 'integer'
+                },
+                pet: {
+                  items: {
+                    $ref: '#/components/schemas/Pet'
+                  }
+                }
+              }
+            }
+          }
+        }
+      };
+
+      generator = new JavaGenerator({
+        presets: [
+          JAVA_COMMON_PRESET,
+          JAVA_JACKSON_PRESET,
+          JAVA_DESCRIPTION_PRESET,
+          JAVA_CONSTRAINTS_PRESET
+        ],
+        collectionType: 'List',
+        processorOptions: {
+          jsonSchema: {
+            disableCache: false,
+            allowInheritance: true
+          }
+        }
+      });
+
+      const models = await generator.generate(asyncapiDoc);
+      expect(models.map((model) => model.result)).toMatchSnapshot();
+    });
+  });
+
   describe('allowInheritance with common properties, using asyncapi 3.0', () => {
     test('should create interface for Pet with common properties', async () => {
       const asyncapiDoc = {

@@ -86,7 +86,10 @@ export const JAVA_DEFAULT_UNION_PRESET: UnionPresetType<JavaOptions> = {
     )}();`;
   },
   getter({ property, model, options }) {
-    if (property.propertyName === model.options.discriminator?.discriminator) {
+    if (
+      property.unconstrainedPropertyName ===
+      model.options.discriminator?.discriminator
+    ) {
       return '';
     }
     return `${property.property.type} ${getterName(
@@ -95,7 +98,10 @@ export const JAVA_DEFAULT_UNION_PRESET: UnionPresetType<JavaOptions> = {
     )}();`;
   },
   setter({ property, model, options }) {
-    if (property.propertyName === model.options.discriminator?.discriminator) {
+    if (
+      property.unconstrainedPropertyName ===
+      model.options.discriminator?.discriminator
+    ) {
       return '';
     }
     if (options.modelType === 'record') {
