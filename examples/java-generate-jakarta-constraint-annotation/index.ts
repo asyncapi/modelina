@@ -5,7 +5,7 @@ const generator = new JavaGenerator({
     {
       preset: JAVA_CONSTRAINTS_PRESET,
       options: {
-        importFrom: 'jakarta'
+        useJakarta: true
       }
     }
   ]
