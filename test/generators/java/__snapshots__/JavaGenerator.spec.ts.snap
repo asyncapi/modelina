@@ -373,6 +373,142 @@ public interface Pet {
 ]
 `;
 
+exports[`JavaGenerator allowInheritance with common properties in allOf should create interface for Pet with common properties 1`] = `
+Array [
+  "public class Owner {
+  @JsonProperty(\\"name\\")
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private String name;
+  @JsonProperty(\\"age\\")
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private Integer age;
+  @Valid
+  @JsonProperty(\\"pet\\")
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private List<Pet> pet;
+  @JsonAnySetter
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private Map<String, Object> additionalProperties;
+
+  public String getName() { return this.name; }
+  public void setName(String name) { this.name = name; }
+
+  public Integer getAge() { return this.age; }
+  public void setAge(Integer age) { this.age = age; }
+
+  public List<Pet> getPet() { return this.pet; }
+  public void setPet(List<Pet> pet) { this.pet = pet; }
+
+  @JsonAnyGetter
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Owner self = (Owner) o;
+      return 
+        Objects.equals(this.name, self.name) &&
+        Objects.equals(this.age, self.age) &&
+        Objects.equals(this.pet, self.pet) &&
+        Objects.equals(this.additionalProperties, self.additionalProperties);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash((Object)name, (Object)age, (Object)pet, (Object)additionalProperties);
+  }
+
+  @Override
+  public String toString() {
+    return \\"class Owner {\\\\n\\" +   
+      \\"    name: \\" + toIndentedString(name) + \\"\\\\n\\" +
+      \\"    age: \\" + toIndentedString(age) + \\"\\\\n\\" +
+      \\"    pet: \\" + toIndentedString(pet) + \\"\\\\n\\" +
+      \\"    additionalProperties: \\" + toIndentedString(additionalProperties) + \\"\\\\n\\" +
+    \\"}\\";
+  }
+
+  /**
+   * Convert the given object to string with each line indented by 4 spaces
+   * (except the first line).
+   */
+  private String toIndentedString(Object o) {
+    if (o == null) {
+      return \\"null\\";
+    }
+    return o.toString().replace(\\"\\\\n\\", \\"\\\\n    \\");
+  }
+}",
+  "public class Pet {
+  @NotNull
+  @JsonProperty(\\"petType\\")
+  private String petType;
+  @NotNull
+  @JsonProperty(\\"color\\")
+  private String color;
+  @JsonAnySetter
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private Map<String, Object> additionalProperties;
+
+  public String getPetType() { return this.petType; }
+  public void setPetType(String petType) { this.petType = petType; }
+
+  public String getColor() { return this.color; }
+  public void setColor(String color) { this.color = color; }
+
+  @JsonAnyGetter
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Pet self = (Pet) o;
+      return 
+        Objects.equals(this.petType, self.petType) &&
+        Objects.equals(this.color, self.color) &&
+        Objects.equals(this.additionalProperties, self.additionalProperties);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash((Object)petType, (Object)color, (Object)additionalProperties);
+  }
+
+  @Override
+  public String toString() {
+    return \\"class Pet {\\\\n\\" +   
+      \\"    petType: \\" + toIndentedString(petType) + \\"\\\\n\\" +
+      \\"    color: \\" + toIndentedString(color) + \\"\\\\n\\" +
+      \\"    additionalProperties: \\" + toIndentedString(additionalProperties) + \\"\\\\n\\" +
+    \\"}\\";
+  }
+
+  /**
+   * Convert the given object to string with each line indented by 4 spaces
+   * (except the first line).
+   */
+  private String toIndentedString(Object o) {
+    if (o == null) {
+      return \\"null\\";
+    }
+    return o.toString().replace(\\"\\\\n\\", \\"\\\\n    \\");
+  }
+}",
+]
+`;
+
 exports[`JavaGenerator allowInheritance with common properties should create interface for Pet with common properties 1`] = `
 Array [
   "@JsonTypeInfo(use=JsonTypeInfo.Id.NAME, include=JsonTypeInfo.As.EXISTING_PROPERTY, property=\\"petType\\", visible=true)
