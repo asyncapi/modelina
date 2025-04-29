@@ -46,13 +46,13 @@ export class ClassRenderer extends JavaRenderer<ConstrainedObjectModel> {
         this.dependencyManager.addModelDependency(i);
       }
 
-      const inheritanceKeyworkd = this.model.options.isExtended
+      const inheritanceKeyword = this.model.options.isExtended
         ? 'extends'
         : 'implements';
 
       return `public ${abstractType} ${
         this.model.name
-      } ${inheritanceKeyworkd} ${parents.map((i) => i.name).join(', ')} {
+      } ${inheritanceKeyword} ${parents.map((i) => i.name).join(', ')} {
 ${this.indent(this.renderBlock(content, 2))}
 }`;
     }
@@ -138,7 +138,10 @@ const getOverride = (
   property: ConstrainedObjectPropertyModel
 ) => {
   const isOverride = model.options.extend?.find((extend) => {
-    if (!extend.options.isExtended || isDictionary(model, property)) {
+    if (
+      !extend.options.isExtended ||
+      property.property instanceof ConstrainedDictionaryModel
+    ) {
       return false;
     }
 
@@ -166,12 +169,18 @@ export const isDiscriminatorOrDictionary = (
   property: ConstrainedObjectPropertyModel
 ): boolean =>
   model.options.discriminator?.discriminator ===
-    property.unconstrainedPropertyName || isDictionary(model, property);
+    property.unconstrainedPropertyName ||
+  property.property instanceof ConstrainedDictionaryModel;
 
-export const isDictionary = (
+export const isDiscriminatorInTree = (
   model: ConstrainedObjectModel,
   property: ConstrainedObjectPropertyModel
-): boolean => property.property instanceof ConstrainedDictionaryModel;
+): boolean =>
+  model.options?.extend?.some(
+    (ext) =>
+      ext?.options?.discriminator?.discriminator ===
+      property.unconstrainedPropertyName
+  ) ?? false;
 
 const isEnumImplementedByConstValue = (
   model: ConstrainedObjectModel,
@@ -267,6 +276,10 @@ export const JAVA_DEFAULT_CLASS_PRESET: ClassPresetType<JavaOptions> = {
       }
 
       return `public void set${setterName}(${property.property.type} ${property.propertyName});`;
+    }
+
+    if (isDiscriminatorInTree(model, property)) {
+      return '';
     }
 
     // don't render override for enums that are set with a const value

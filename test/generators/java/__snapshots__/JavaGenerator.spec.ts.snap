@@ -12,7 +12,6 @@ Array [
  */
 public interface Animal {
   String getPetType();
-  void setPetType(String petType);
 }",
   "public class Boxer implements Animal, Dog {
   @JsonProperty(\\"breed\\")
@@ -32,8 +31,6 @@ public interface Animal {
 
   @Override
   public String getPetType() { return this.petType; }
-  @Override
-  public void setPetType(String petType) { this.petType = petType; }
 
   @Override
   public String getColor() { return this.color; }
@@ -107,8 +104,6 @@ public interface Animal {
 
   @Override
   public String getPetType() { return this.petType; }
-  @Override
-  public void setPetType(String petType) { this.petType = petType; }
 
   @Override
   public String getColor() { return this.color; }
@@ -175,7 +170,6 @@ Array [
  */
 public interface Pet {
   String getPetType();
-  void setPetType(String petType);
 }",
   "public class Owner {
   @JsonProperty(\\"name\\")
@@ -365,7 +359,6 @@ public interface Pet {
   private Map<String, Object> additionalProperties;
 
   public String getPetType() { return this.petType; }
-  public void setPetType(String petType) { this.petType = petType; }
 
   public String getBreed() { return this.breed; }
 
@@ -428,7 +421,6 @@ Array [
  */
 public interface Animal {
   String getAtPetType();
-  void setAtPetType(String atPetType);
 }",
   "public class FlyingFish implements Animal, Fish {
   @JsonProperty(\\"breed\\")
@@ -445,8 +437,6 @@ public interface Animal {
 
   @Override
   public String getAtPetType() { return this.atPetType; }
-  @Override
-  public void setAtPetType(String atPetType) { this.atPetType = atPetType; }
 
   @JsonAnyGetter
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
@@ -508,8 +498,6 @@ public interface Animal {
 
   @Override
   public String getAtPetType() { return this.atPetType; }
-  @Override
-  public void setAtPetType(String atPetType) { this.atPetType = atPetType; }
 
   @JsonAnyGetter
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
@@ -563,7 +551,6 @@ Array [
  */
 public interface Vehicle {
   VehicleType getVehicleType();
-  void setVehicleType(VehicleType vehicleType);
 }",
   "public class Car implements Vehicle {
   private final VehicleType vehicleType = VehicleType.CAR;
@@ -721,7 +708,6 @@ Array [
  */
 public interface Pet {
   CloudEventType getType();
-  void setType(CloudEventType type);
 }",
   "public class Dog implements Pet {
   @NotNull
@@ -1226,7 +1212,6 @@ Array [
  */
 public interface Vehicle {
   VehicleType getVehicleType();
-  void setVehicleType(VehicleType vehicleType);
 }",
   "public class Cargo {
   @Valid
