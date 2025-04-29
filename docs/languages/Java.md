@@ -58,6 +58,12 @@ In some cases, when you generate the models from JSON Schema, you may want to in
 
 Check out this [example for a live demonstration](../../examples/java-generate-javax-constraint-annotation).
 
+## Include Jakarta validation constraint annotations for properties
+
+In some cases, when you generate the models from JSON Schema, you may want to include `jakarta.validation.constraint` annotations.
+
+Check out this [example for a live demonstration](../../examples/java-generate-jakarta-constraint-annotation).
+
 ## Generate serializer and deserializer functionality
 
 The most widely used usecase for Modelina is to generate models that include serilization and deserialization functionality to convert the models into payload data. This payload data can of course be many different kinds, JSON, XML, raw binary, you name it.
