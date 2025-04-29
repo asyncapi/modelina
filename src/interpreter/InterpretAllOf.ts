@@ -32,49 +32,49 @@ export default function interpretAllOf(
     return;
   }
 
-  for (const allOfSchema of schema.allOf) {
-    const discriminator = interpreter.discriminatorProperty(allOfSchema);
+  for (const subSchema of schema.allOf) {
+    const discriminator = interpreter.discriminatorProperty(subSchema);
     if (discriminator !== undefined) {
-      interpreterOptions = {
-        ...interpreterOptions,
-        discriminator
-      };
+      interpreterOptions = { ...interpreterOptions, discriminator };
       model.discriminator = discriminator;
     }
   }
 
-  for (const allOfSchema of schema.allOf) {
-    const allOfModel = interpreter.interpret(allOfSchema, interpreterOptions);
-
-    if (allOfModel === undefined) {
+  // Interpret each sub-schema in allOf
+  for (const subSchema of schema.allOf) {
+    const subModel = interpreter.interpret(subSchema, interpreterOptions);
+    if (!subModel) {
       continue;
     }
 
+    // If inheritance is allowed, add subModel as an extended model
     if (interpreterOptions.allowInheritance === true) {
-      const allOfModelWithoutCache = interpreter.interpret(allOfSchema, {
-        ...interpreterOptions,
-        disableCache: true
-      });
-
-      if (allOfModelWithoutCache && isModelObject(allOfModelWithoutCache)) {
-        Logger.info(
-          `Processing allOf, inheritance is enabled, ${model.$id} inherits from ${allOfModelWithoutCache.$id}`,
-          model,
-          allOfModel
+      if (interpreterOptions.disableCache === true) {
+        throw new Error(
+          `Inheritance is enabled in combination with allOf but cache is disabled. Inheritance will not work as expected.`
         );
-
-        model.addExtendedModel(allOfModelWithoutCache);
+      }
+      const freshModel = interpreter.interpret(subSchema, {
+        ...interpreterOptions
+      });
+      if (freshModel && isModelObject(freshModel)) {
+        Logger.info(
+          `Processing allOf, inheritance is enabled, ${model.$id} inherits from ${freshModel.$id}`,
+          model,
+          subModel
+        );
+        model.addExtendedModel(freshModel);
       }
     }
 
     Logger.info(
       'Processing allOf, inheritance is not enabled. AllOf model is merged together with already interpreted model',
       model,
-      allOfModel
+      subModel
     );
 
     interpreter.interpretAndCombineSchema(
-      allOfSchema,
+      subSchema,
       model,
       schema,
       interpreterOptions

@@ -490,6 +490,231 @@ describe('JavaGenerator', () => {
     });
   });
 
+  describe('allowInheritance with allOf with caching enabled', () => {
+    test('should create interface for Pet without causing infinite loop', async () => {
+      const asyncapiDoc = {
+        asyncapi: '2.5.0',
+        info: {
+          title: 'CloudEvent example',
+          version: '1.0.0'
+        },
+        channels: {
+          animal: {
+            publish: {
+              message: {
+                oneOf: [
+                  {
+                    $ref: '#/components/messages/FlyingFish'
+                  },
+                  {
+                    $ref: '#/components/messages/Bird'
+                  }
+                ]
+              }
+            }
+          }
+        },
+        components: {
+          messages: {
+            FlyingFish: {
+              payload: {
+                $ref: '#/components/schemas/FlyingFish'
+              }
+            },
+            Bird: {
+              payload: {
+                $ref: '#/components/schemas/Bird'
+              }
+            }
+          },
+          schemas: {
+            Pet: {
+              title: 'Pet',
+              type: 'object',
+              discriminator: '@petType',
+              properties: {
+                '@petType': {
+                  type: 'string'
+                }
+              },
+              required: ['@petType'],
+              oneOf: [
+                {
+                  $ref: '#/components/schemas/Fish'
+                },
+                {
+                  $ref: '#/components/schemas/FlyingFish'
+                }
+              ]
+            },
+            Bird: {
+              title: 'Bird',
+              allOf: [
+                {
+                  $ref: '#/components/schemas/Pet'
+                }
+              ]
+            },
+            Fish: {
+              title: 'Fish',
+              allOf: [
+                {
+                  $ref: '#/components/schemas/Pet'
+                }
+              ]
+            },
+            FlyingFish: {
+              title: 'FlyingFish',
+              type: 'object',
+              allOf: [
+                {
+                  $ref: '#/components/schemas/Fish'
+                }
+              ],
+              properties: {
+                breed: {
+                  const: 'FlyingNemo'
+                }
+              }
+            }
+          }
+        }
+      };
+
+      generator = new JavaGenerator({
+        presets: [
+          JAVA_COMMON_PRESET,
+          JAVA_JACKSON_PRESET,
+          JAVA_DESCRIPTION_PRESET,
+          JAVA_CONSTRAINTS_PRESET
+        ],
+        collectionType: 'List',
+        processorOptions: {
+          jsonSchema: {
+            allowInheritance: true,
+            disableCache: false
+          }
+        }
+      });
+
+      const models = await generator.generate(asyncapiDoc);
+      expect(models.map((model) => model.result)).toMatchSnapshot();
+    });
+  });
+
+  describe('throw error when allowInheritance enabled with caching disabled', () => {
+    test('should throw error cause caching is disabled', async () => {
+      const asyncapiDoc = {
+        asyncapi: '2.5.0',
+        info: {
+          title: 'CloudEvent example',
+          version: '1.0.0'
+        },
+        channels: {
+          animal: {
+            publish: {
+              message: {
+                oneOf: [
+                  {
+                    $ref: '#/components/messages/FlyingFish'
+                  },
+                  {
+                    $ref: '#/components/messages/Bird'
+                  }
+                ]
+              }
+            }
+          }
+        },
+        components: {
+          messages: {
+            FlyingFish: {
+              payload: {
+                $ref: '#/components/schemas/FlyingFish'
+              }
+            },
+            Bird: {
+              payload: {
+                $ref: '#/components/schemas/Bird'
+              }
+            }
+          },
+          schemas: {
+            Pet: {
+              title: 'Pet',
+              type: 'object',
+              discriminator: '@petType',
+              properties: {
+                '@petType': {
+                  type: 'string'
+                }
+              },
+              required: ['@petType'],
+              oneOf: [
+                {
+                  $ref: '#/components/schemas/Fish'
+                },
+                {
+                  $ref: '#/components/schemas/FlyingFish'
+                }
+              ]
+            },
+            Bird: {
+              title: 'Bird',
+              allOf: [
+                {
+                  $ref: '#/components/schemas/Pet'
+                }
+              ]
+            },
+            Fish: {
+              title: 'Fish',
+              allOf: [
+                {
+                  $ref: '#/components/schemas/Pet'
+                }
+              ]
+            },
+            FlyingFish: {
+              title: 'FlyingFish',
+              type: 'object',
+              allOf: [
+                {
+                  $ref: '#/components/schemas/Fish'
+                }
+              ],
+              properties: {
+                breed: {
+                  const: 'FlyingNemo'
+                }
+              }
+            }
+          }
+        }
+      };
+
+      generator = new JavaGenerator({
+        presets: [
+          JAVA_COMMON_PRESET,
+          JAVA_JACKSON_PRESET,
+          JAVA_DESCRIPTION_PRESET,
+          JAVA_CONSTRAINTS_PRESET
+        ],
+        collectionType: 'List',
+        processorOptions: {
+          jsonSchema: {
+            allowInheritance: true,
+            disableCache: true
+          }
+        }
+      });
+
+      await expect(generator.generate(asyncapiDoc)).rejects.toEqual(
+        'Inheritance is enabled in combination with allOf but cache is disabled. Inheritance will not work as expected.'
+      );
+    });
+  });
+
   describe('oneOf/discriminator', () => {
     test('should create an interface', async () => {
       const asyncapiDoc = {

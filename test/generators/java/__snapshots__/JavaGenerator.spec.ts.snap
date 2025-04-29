@@ -162,6 +162,64 @@ public interface Animal {
 ]
 `;
 
+exports[`JavaGenerator allowInheritance with allOf with caching enabled should create interface for Pet without causing infinite loop 1`] = `
+Array [
+  "",
+  "public class FlyingFish {
+  @JsonProperty(\\"breed\\")
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private final String breed = \\"FlyingNemo\\";
+  @JsonAnySetter
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private Map<String, Object> additionalProperties;
+
+  public String getBreed() { return this.breed; }
+
+  @JsonAnyGetter
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    FlyingFish self = (FlyingFish) o;
+      return 
+        Objects.equals(this.breed, self.breed) &&
+        Objects.equals(this.additionalProperties, self.additionalProperties);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash((Object)breed, (Object)additionalProperties);
+  }
+
+  @Override
+  public String toString() {
+    return \\"class FlyingFish {\\\\n\\" +   
+      \\"    breed: \\" + toIndentedString(breed) + \\"\\\\n\\" +
+      \\"    additionalProperties: \\" + toIndentedString(additionalProperties) + \\"\\\\n\\" +
+    \\"}\\";
+  }
+
+  /**
+   * Convert the given object to string with each line indented by 4 spaces
+   * (except the first line).
+   */
+  private String toIndentedString(Object o) {
+    if (o == null) {
+      return \\"null\\";
+    }
+    return o.toString().replace(\\"\\\\n\\", \\"\\\\n    \\");
+  }
+}",
+]
+`;
+
 exports[`JavaGenerator allowInheritance with discriminator containing a special character should create interface for Animal, Pet and Fish 1`] = `
 Array [
   "@JsonTypeInfo(use=JsonTypeInfo.Id.NAME, include=JsonTypeInfo.As.EXISTING_PROPERTY, property=\\"@petType\\", visible=true)
