@@ -46,13 +46,13 @@ export class ClassRenderer extends JavaRenderer<ConstrainedObjectModel> {
         this.dependencyManager.addModelDependency(i);
       }
 
-      const inheritanceKeyworkd = this.model.options.isExtended
+      const inheritanceKeyword = this.model.options.isExtended
         ? 'extends'
         : 'implements';
 
       return `public ${abstractType} ${
         this.model.name
-      } ${inheritanceKeyworkd} ${parents.map((i) => i.name).join(', ')} {
+      } ${inheritanceKeyword} ${parents.map((i) => i.name).join(', ')} {
 ${this.indent(this.renderBlock(content, 2))}
 }`;
     }
@@ -164,9 +164,24 @@ const getOverride = (
 export const isDiscriminatorOrDictionary = (
   model: ConstrainedObjectModel,
   property: ConstrainedObjectPropertyModel
+): boolean => isDiscriminator(model, property) || isDictionary(model, property);
+
+export const isDiscriminator = (
+  model: ConstrainedObjectModel,
+  property: ConstrainedObjectPropertyModel
 ): boolean =>
   model.options.discriminator?.discriminator ===
-    property.unconstrainedPropertyName || isDictionary(model, property);
+  property.unconstrainedPropertyName;
+
+export const isDiscriminatorInReference = (
+  model: ConstrainedObjectModel,
+  property: ConstrainedObjectPropertyModel
+): boolean =>
+  model.options?.extend?.some(
+    (ext) =>
+      ext?.options?.discriminator?.discriminator ===
+      property.unconstrainedPropertyName
+  ) ?? false;
 
 export const isDictionary = (
   model: ConstrainedObjectModel,
@@ -267,6 +282,13 @@ export const JAVA_DEFAULT_CLASS_PRESET: ClassPresetType<JavaOptions> = {
       }
 
       return `public void set${setterName}(${property.property.type} ${property.propertyName});`;
+    }
+
+    if (
+      isDiscriminator(model, property) ||
+      isDiscriminatorInReference(model, property)
+    ) {
+      return '';
     }
 
     // don't render override for enums that are set with a const value
