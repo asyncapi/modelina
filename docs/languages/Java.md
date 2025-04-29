@@ -12,6 +12,7 @@ There are special use-cases that each language supports; this document pertains 
 - [Include toString function for the class](#include-tostring-function-for-the-class)
 - [Include JavaDoc for properties](#include-javadoc-for-properties)
 - [Include Javax validation constraint annotations for properties](#include-javax-validation-constraint-annotations-for-properties)
+- [Include Jakarta validation constraint annotations for properties](#include-jakarta-validation-constraint-annotations-for-properties)
 - [Generate serializer and deserializer functionality](#generate-serializer-and-deserializer-functionality)
   * [To and from JSON](#to-and-from-json)
     + [Jackson annotation](#jackson-annotation)
