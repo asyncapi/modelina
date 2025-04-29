@@ -40,6 +40,15 @@ export default function interpretAllOf(
     }
   }
 
+  if (
+    interpreterOptions.allowInheritance &&
+    interpreterOptions.disableCache === true
+  ) {
+    throw new Error(
+      `Inheritance is enabled in combination with allOf but cache is disabled. Inheritance will not work as expected.`
+    );
+  }
+
   // Interpret each sub-schema in allOf
   for (const subSchema of schema.allOf) {
     const subModel = interpreter.interpret(subSchema, interpreterOptions);
@@ -48,12 +57,7 @@ export default function interpretAllOf(
     }
 
     // If inheritance is allowed, add subModel as an extended model
-    if (interpreterOptions.allowInheritance === true) {
-      if (interpreterOptions.disableCache === true) {
-        throw new Error(
-          `Inheritance is enabled in combination with allOf but cache is disabled. Inheritance will not work as expected.`
-        );
-      }
+    if (interpreterOptions.allowInheritance) {
       const freshModel = interpreter.interpret(subSchema, {
         ...interpreterOptions
       });

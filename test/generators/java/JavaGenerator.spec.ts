@@ -5,6 +5,7 @@ import {
   JAVA_JACKSON_PRESET,
   JavaGenerator
 } from '../../../src/generators';
+import objectContaining = jasmine.objectContaining;
 
 describe('JavaGenerator', () => {
   let generator: JavaGenerator;
@@ -499,48 +500,53 @@ describe('JavaGenerator', () => {
           version: '1.0.0'
         },
         channels: {
-          animal: {
+          owner: {
             publish: {
               message: {
-                oneOf: [
-                  {
-                    $ref: '#/components/messages/FlyingFish'
-                  },
-                  {
-                    $ref: '#/components/messages/Bird'
-                  }
-                ]
+                $ref: '#/components/messages/Owner'
               }
             }
           }
         },
         components: {
           messages: {
-            FlyingFish: {
+            Owner: {
               payload: {
-                $ref: '#/components/schemas/FlyingFish'
-              }
-            },
-            Bird: {
-              payload: {
-                $ref: '#/components/schemas/Bird'
+                $ref: '#/components/schemas/Owner'
               }
             }
           },
           schemas: {
+            Owner: {
+              type: 'object',
+              properties: {
+                name: {
+                  type: 'string'
+                },
+                pets: {
+                  type: 'array',
+                  items: {
+                    $ref: '#/components/schemas/Pet'
+                  }
+                }
+              }
+            },
             Pet: {
               title: 'Pet',
               type: 'object',
-              discriminator: '@petType',
+              discriminator: 'petType',
               properties: {
-                '@petType': {
+                petType: {
                   type: 'string'
                 }
               },
-              required: ['@petType'],
+              required: ['petType'],
               oneOf: [
                 {
                   $ref: '#/components/schemas/Fish'
+                },
+                {
+                  $ref: '#/components/schemas/Bird'
                 },
                 {
                   $ref: '#/components/schemas/FlyingFish'
@@ -549,6 +555,11 @@ describe('JavaGenerator', () => {
             },
             Bird: {
               title: 'Bird',
+              properties: {
+                breed: {
+                  type: String
+                }
+              },
               allOf: [
                 {
                   $ref: '#/components/schemas/Pet'
@@ -611,48 +622,53 @@ describe('JavaGenerator', () => {
           version: '1.0.0'
         },
         channels: {
-          animal: {
+          owner: {
             publish: {
               message: {
-                oneOf: [
-                  {
-                    $ref: '#/components/messages/FlyingFish'
-                  },
-                  {
-                    $ref: '#/components/messages/Bird'
-                  }
-                ]
+                $ref: '#/components/messages/Owner'
               }
             }
           }
         },
         components: {
           messages: {
-            FlyingFish: {
+            Owner: {
               payload: {
-                $ref: '#/components/schemas/FlyingFish'
-              }
-            },
-            Bird: {
-              payload: {
-                $ref: '#/components/schemas/Bird'
+                $ref: '#/components/schemas/Owner'
               }
             }
           },
           schemas: {
+            Owner: {
+              type: 'object',
+              properties: {
+                name: {
+                  type: 'string'
+                },
+                pets: {
+                  type: 'array',
+                  items: {
+                    $ref: '#/components/schemas/Pet'
+                  }
+                }
+              }
+            },
             Pet: {
               title: 'Pet',
               type: 'object',
-              discriminator: '@petType',
+              discriminator: 'petType',
               properties: {
-                '@petType': {
+                petType: {
                   type: 'string'
                 }
               },
-              required: ['@petType'],
+              required: ['petType'],
               oneOf: [
                 {
                   $ref: '#/components/schemas/Fish'
+                },
+                {
+                  $ref: '#/components/schemas/Bird'
                 },
                 {
                   $ref: '#/components/schemas/FlyingFish'
@@ -661,6 +677,11 @@ describe('JavaGenerator', () => {
             },
             Bird: {
               title: 'Bird',
+              properties: {
+                breed: {
+                  type: String
+                }
+              },
               allOf: [
                 {
                   $ref: '#/components/schemas/Pet'
@@ -710,7 +731,9 @@ describe('JavaGenerator', () => {
       });
 
       await expect(generator.generate(asyncapiDoc)).rejects.toEqual(
-        'Inheritance is enabled in combination with allOf but cache is disabled. Inheritance will not work as expected.'
+        new Error(
+          'Inheritance is enabled in combination with allOf but cache is disabled. Inheritance will not work as expected.'
+        )
       );
     });
   });
