@@ -5,6 +5,7 @@ import {
   JAVA_JACKSON_PRESET,
   JavaGenerator
 } from '../../../src/generators';
+import objectContaining = jasmine.objectContaining;
 
 describe('JavaGenerator', () => {
   let generator: JavaGenerator;
@@ -487,6 +488,253 @@ describe('JavaGenerator', () => {
 
       const models = await generator.generate(asyncapiDoc);
       expect(models.map((model) => model.result)).toMatchSnapshot();
+    });
+  });
+
+  describe('allowInheritance with allOf with caching enabled', () => {
+    test('should create interface for Pet without causing infinite loop', async () => {
+      const asyncapiDoc = {
+        asyncapi: '2.5.0',
+        info: {
+          title: 'CloudEvent example',
+          version: '1.0.0'
+        },
+        channels: {
+          owner: {
+            publish: {
+              message: {
+                $ref: '#/components/messages/Owner'
+              }
+            }
+          }
+        },
+        components: {
+          messages: {
+            Owner: {
+              payload: {
+                $ref: '#/components/schemas/Owner'
+              }
+            }
+          },
+          schemas: {
+            Owner: {
+              type: 'object',
+              properties: {
+                name: {
+                  type: 'string'
+                },
+                pets: {
+                  type: 'array',
+                  items: {
+                    $ref: '#/components/schemas/Pet'
+                  }
+                }
+              }
+            },
+            Pet: {
+              title: 'Pet',
+              type: 'object',
+              discriminator: 'petType',
+              properties: {
+                petType: {
+                  type: 'string'
+                }
+              },
+              required: ['petType'],
+              oneOf: [
+                {
+                  $ref: '#/components/schemas/Fish'
+                },
+                {
+                  $ref: '#/components/schemas/Bird'
+                },
+                {
+                  $ref: '#/components/schemas/FlyingFish'
+                }
+              ]
+            },
+            Bird: {
+              title: 'Bird',
+              properties: {
+                breed: {
+                  type: String
+                }
+              },
+              allOf: [
+                {
+                  $ref: '#/components/schemas/Pet'
+                }
+              ]
+            },
+            Fish: {
+              title: 'Fish',
+              allOf: [
+                {
+                  $ref: '#/components/schemas/Pet'
+                }
+              ]
+            },
+            FlyingFish: {
+              title: 'FlyingFish',
+              type: 'object',
+              allOf: [
+                {
+                  $ref: '#/components/schemas/Fish'
+                }
+              ],
+              properties: {
+                breed: {
+                  const: 'FlyingNemo'
+                }
+              }
+            }
+          }
+        }
+      };
+
+      generator = new JavaGenerator({
+        presets: [
+          JAVA_COMMON_PRESET,
+          JAVA_JACKSON_PRESET,
+          JAVA_DESCRIPTION_PRESET,
+          JAVA_CONSTRAINTS_PRESET
+        ],
+        collectionType: 'List',
+        processorOptions: {
+          jsonSchema: {
+            allowInheritance: true,
+            disableCache: false
+          }
+        }
+      });
+
+      const models = await generator.generate(asyncapiDoc);
+      expect(models.map((model) => model.result)).toMatchSnapshot();
+    });
+  });
+
+  describe('throw error when allowInheritance enabled with caching disabled', () => {
+    test('should throw error cause caching is disabled', async () => {
+      const asyncapiDoc = {
+        asyncapi: '2.5.0',
+        info: {
+          title: 'CloudEvent example',
+          version: '1.0.0'
+        },
+        channels: {
+          owner: {
+            publish: {
+              message: {
+                $ref: '#/components/messages/Owner'
+              }
+            }
+          }
+        },
+        components: {
+          messages: {
+            Owner: {
+              payload: {
+                $ref: '#/components/schemas/Owner'
+              }
+            }
+          },
+          schemas: {
+            Owner: {
+              type: 'object',
+              properties: {
+                name: {
+                  type: 'string'
+                },
+                pets: {
+                  type: 'array',
+                  items: {
+                    $ref: '#/components/schemas/Pet'
+                  }
+                }
+              }
+            },
+            Pet: {
+              title: 'Pet',
+              type: 'object',
+              discriminator: 'petType',
+              properties: {
+                petType: {
+                  type: 'string'
+                }
+              },
+              required: ['petType'],
+              oneOf: [
+                {
+                  $ref: '#/components/schemas/Fish'
+                },
+                {
+                  $ref: '#/components/schemas/Bird'
+                },
+                {
+                  $ref: '#/components/schemas/FlyingFish'
+                }
+              ]
+            },
+            Bird: {
+              title: 'Bird',
+              properties: {
+                breed: {
+                  type: String
+                }
+              },
+              allOf: [
+                {
+                  $ref: '#/components/schemas/Pet'
+                }
+              ]
+            },
+            Fish: {
+              title: 'Fish',
+              allOf: [
+                {
+                  $ref: '#/components/schemas/Pet'
+                }
+              ]
+            },
+            FlyingFish: {
+              title: 'FlyingFish',
+              type: 'object',
+              allOf: [
+                {
+                  $ref: '#/components/schemas/Fish'
+                }
+              ],
+              properties: {
+                breed: {
+                  const: 'FlyingNemo'
+                }
+              }
+            }
+          }
+        }
+      };
+
+      generator = new JavaGenerator({
+        presets: [
+          JAVA_COMMON_PRESET,
+          JAVA_JACKSON_PRESET,
+          JAVA_DESCRIPTION_PRESET,
+          JAVA_CONSTRAINTS_PRESET
+        ],
+        collectionType: 'List',
+        processorOptions: {
+          jsonSchema: {
+            allowInheritance: true,
+            disableCache: true
+          }
+        }
+      });
+
+      await expect(generator.generate(asyncapiDoc)).rejects.toEqual(
+        new Error(
+          'Inheritance is enabled in combination with allOf but cache is disabled. Inheritance will not work as expected.'
+        )
+      );
     });
   });
 
