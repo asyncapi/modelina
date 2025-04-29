@@ -138,7 +138,10 @@ const getOverride = (
   property: ConstrainedObjectPropertyModel
 ) => {
   const isOverride = model.options.extend?.find((extend) => {
-    if (!extend.options.isExtended || isDictionary(model, property)) {
+    if (
+      !extend.options.isExtended ||
+      property.property instanceof ConstrainedDictionaryModel
+    ) {
       return false;
     }
 
@@ -164,16 +167,12 @@ const getOverride = (
 export const isDiscriminatorOrDictionary = (
   model: ConstrainedObjectModel,
   property: ConstrainedObjectPropertyModel
-): boolean => isDiscriminator(model, property) || isDictionary(model, property);
-
-export const isDiscriminator = (
-  model: ConstrainedObjectModel,
-  property: ConstrainedObjectPropertyModel
 ): boolean =>
   model.options.discriminator?.discriminator ===
-  property.unconstrainedPropertyName;
+    property.unconstrainedPropertyName ||
+  property.property instanceof ConstrainedDictionaryModel;
 
-export const isDiscriminatorInReference = (
+export const isDiscriminatorInTree = (
   model: ConstrainedObjectModel,
   property: ConstrainedObjectPropertyModel
 ): boolean =>
@@ -182,11 +181,6 @@ export const isDiscriminatorInReference = (
       ext?.options?.discriminator?.discriminator ===
       property.unconstrainedPropertyName
   ) ?? false;
-
-export const isDictionary = (
-  model: ConstrainedObjectModel,
-  property: ConstrainedObjectPropertyModel
-): boolean => property.property instanceof ConstrainedDictionaryModel;
 
 const isEnumImplementedByConstValue = (
   model: ConstrainedObjectModel,
@@ -284,10 +278,7 @@ export const JAVA_DEFAULT_CLASS_PRESET: ClassPresetType<JavaOptions> = {
       return `public void set${setterName}(${property.property.type} ${property.propertyName});`;
     }
 
-    if (
-      isDiscriminator(model, property) ||
-      isDiscriminatorInReference(model, property)
-    ) {
+    if (isDiscriminatorInTree(model, property)) {
       return '';
     }
 
