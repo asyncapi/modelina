@@ -27,7 +27,10 @@ export class ClassRenderer extends JavaRenderer<ConstrainedObjectModel> {
       await this.runAdditionalContentPreset()
     ];
 
-    if (this.model.containsPropertyType(ConstrainedArrayModel) && this.options?.collectionType === 'List') {
+    if (
+      this.model.containsPropertyType(ConstrainedArrayModel) &&
+      this.options?.collectionType === 'List'
+    ) {
       this.dependencyManager.addDependency('import java.util.List;');
     }
     if (this.model.containsPropertyType(ConstrainedDictionaryModel)) {
