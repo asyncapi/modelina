@@ -106,7 +106,6 @@ public interface Vehicle {
   private Map<String, Object> additionalProperties;
 
   public String getVehicleType() { return this.vehicleType; }
-  public void setVehicleType(String vehicleType) { this.vehicleType = vehicleType; }
 
   public String getName() { return this.name; }
   public void setName(String name) { this.name = name; }
@@ -127,7 +126,6 @@ public interface Vehicle {
   private Map<String, Object> additionalProperties;
 
   public String getVehicleType() { return this.vehicleType; }
-  public void setVehicleType(String vehicleType) { this.vehicleType = vehicleType; }
 
   public String getName() { return this.name; }
   public void setName(String name) { this.name = name; }

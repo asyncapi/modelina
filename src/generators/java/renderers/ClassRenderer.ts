@@ -176,11 +176,17 @@ export const isDiscriminatorInTree = (
   model: ConstrainedObjectModel,
   property: ConstrainedObjectPropertyModel
 ): boolean =>
-  model.options?.extend?.some(
+  (model.options?.extend?.some(
     (ext) =>
       ext?.options?.discriminator?.discriminator ===
       property.unconstrainedPropertyName
-  ) ?? false;
+  ) ||
+    model.options?.parents?.some(
+      (parent) =>
+        parent?.options?.discriminator?.discriminator ===
+        property.unconstrainedPropertyName
+    )) ??
+  false;
 
 const isEnumImplementedByConstValue = (
   model: ConstrainedObjectModel,

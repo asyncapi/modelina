@@ -5,7 +5,6 @@ import {
   JAVA_JACKSON_PRESET,
   JavaGenerator
 } from '../../../src/generators';
-import objectContaining = jasmine.objectContaining;
 
 describe('JavaGenerator', () => {
   let generator: JavaGenerator;
