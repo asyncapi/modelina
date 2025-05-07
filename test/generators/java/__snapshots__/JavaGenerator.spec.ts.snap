@@ -1707,3 +1707,28 @@ exports[`JavaGenerator should work custom preset for \`class\` type 1`] = `
   public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
 }"
 `;
+
+exports[`JavaGenerator with inheritance using records should create interface with getters without "get" prefix 1`] = `
+Array [
+  "@JsonTypeInfo(use=JsonTypeInfo.Id.NAME, include=JsonTypeInfo.As.EXISTING_PROPERTY, property=\\"petType\\", visible=true)
+@JsonSubTypes({
+  @JsonSubTypes.Type(value = Cat.class, name = \\"Cat\\"),
+  @JsonSubTypes.Type(value = Dog.class, name = \\"Dog\\")
+})
+/**
+ * Pet represents a union of types: Cat, Dog
+ */
+public interface Pet {
+  String petType();
+}",
+  "public record Owner(String name, List<Pet> pet) {
+  
+}",
+  "public record Cat(String petType, String color) implements Pet {
+  
+}",
+  "public record Dog(String petType, String color) implements Pet {
+  
+}",
+]
+`;
