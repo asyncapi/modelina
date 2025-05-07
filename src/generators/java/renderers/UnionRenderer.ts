@@ -21,7 +21,6 @@ export class UnionRenderer extends JavaRenderer<ConstrainedUnionModel> {
 
     if (this.model.options.discriminator) {
       content.push(await this.runDiscriminatorGetterPreset());
-      content.push(await this.runDiscriminatorSetterPreset());
     }
     content.push(await this.runAdditionalContentPreset());
 
@@ -36,35 +35,27 @@ export class UnionRenderer extends JavaRenderer<ConstrainedUnionModel> {
   runDiscriminatorGetterPreset(): Promise<string> {
     return this.runPreset('discriminatorGetter');
   }
-
-  runDiscriminatorSetterPreset(): Promise<string> {
-    return this.runPreset('discriminatorSetter');
-  }
 }
+
+const getterName = (sanitizedName: string, options: JavaOptions): string => {
+  return options.modelType === 'record'
+    ? FormatHelpers.toCamelCase(sanitizedName)
+    : `get${FormatHelpers.toPascalCase(sanitizedName)}`;
+};
 
 export const JAVA_DEFAULT_UNION_PRESET: UnionPresetType<JavaOptions> = {
   self({ renderer }) {
     return renderer.defaultSelf();
   },
-  discriminatorGetter({ model }) {
+  discriminatorGetter({ model, options }) {
     if (!model.options.discriminator?.type) {
       return '';
     }
 
-    return `${model.options.discriminator.type} get${FormatHelpers.toPascalCase(
-      getSanitizedDiscriminatorName(model)
+    return `${model.options.discriminator.type} ${getterName(
+      getSanitizedDiscriminatorName(model),
+      options
     )}();`;
-  },
-  discriminatorSetter({ model }) {
-    if (!model.options.discriminator?.type) {
-      return '';
-    }
-
-    return `void set${FormatHelpers.toPascalCase(
-      getSanitizedDiscriminatorName(model)
-    )}(${model.options.discriminator.type} ${FormatHelpers.toCamelCase(
-      getSanitizedDiscriminatorName(model)
-    )});`;
   }
 };
 

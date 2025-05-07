@@ -12,7 +12,6 @@ Array [
  */
 public interface Animal {
   String getPetType();
-  void setPetType(String petType);
 }",
   "public class Boxer implements Animal, Dog {
   @JsonProperty(\\"breed\\")
@@ -32,8 +31,6 @@ public interface Animal {
 
   @Override
   public String getPetType() { return this.petType; }
-  @Override
-  public void setPetType(String petType) { this.petType = petType; }
 
   @Override
   public String getColor() { return this.color; }
@@ -107,8 +104,6 @@ public interface Animal {
 
   @Override
   public String getPetType() { return this.petType; }
-  @Override
-  public void setPetType(String petType) { this.petType = petType; }
 
   @Override
   public String getColor() { return this.color; }
@@ -175,7 +170,6 @@ Array [
  */
 public interface Pet {
   String getPetType();
-  void setPetType(String petType);
 }",
   "public class Owner {
   @JsonProperty(\\"name\\")
@@ -248,7 +242,6 @@ public interface Pet {
   private Map<String, Object> additionalProperties;
 
   public String getPetType() { return this.petType; }
-  public void setPetType(String petType) { this.petType = petType; }
 
   @JsonAnyGetter
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
@@ -304,7 +297,6 @@ public interface Pet {
   private Map<String, Object> additionalProperties;
 
   public String getPetType() { return this.petType; }
-  public void setPetType(String petType) { this.petType = petType; }
 
   public Object getBreed() { return this.breed; }
   public void setBreed(Object breed) { this.breed = breed; }
@@ -365,7 +357,6 @@ public interface Pet {
   private Map<String, Object> additionalProperties;
 
   public String getPetType() { return this.petType; }
-  public void setPetType(String petType) { this.petType = petType; }
 
   public String getBreed() { return this.breed; }
 
@@ -428,7 +419,6 @@ Array [
  */
 public interface Animal {
   String getAtPetType();
-  void setAtPetType(String atPetType);
 }",
   "public class FlyingFish implements Animal, Fish {
   @JsonProperty(\\"breed\\")
@@ -445,8 +435,6 @@ public interface Animal {
 
   @Override
   public String getAtPetType() { return this.atPetType; }
-  @Override
-  public void setAtPetType(String atPetType) { this.atPetType = atPetType; }
 
   @JsonAnyGetter
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
@@ -508,8 +496,6 @@ public interface Animal {
 
   @Override
   public String getAtPetType() { return this.atPetType; }
-  @Override
-  public void setAtPetType(String atPetType) { this.atPetType = atPetType; }
 
   @JsonAnyGetter
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
@@ -563,7 +549,6 @@ Array [
  */
 public interface Vehicle {
   VehicleType getVehicleType();
-  void setVehicleType(VehicleType vehicleType);
 }",
   "public class Car implements Vehicle {
   private final VehicleType vehicleType = VehicleType.CAR;
@@ -721,7 +706,6 @@ Array [
  */
 public interface Pet {
   CloudEventType getType();
-  void setType(CloudEventType type);
 }",
   "public class Dog implements Pet {
   @NotNull
@@ -1226,7 +1210,6 @@ Array [
  */
 public interface Vehicle {
   VehicleType getVehicleType();
-  void setVehicleType(VehicleType vehicleType);
 }",
   "public class Cargo {
   @Valid
@@ -1723,4 +1706,29 @@ exports[`JavaGenerator should work custom preset for \`class\` type 1`] = `
   @JsonProperty(\\"additionalProperties\\")
   public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
 }"
+`;
+
+exports[`JavaGenerator with inheritance using records should create interface with getters without "get" prefix 1`] = `
+Array [
+  "@JsonTypeInfo(use=JsonTypeInfo.Id.NAME, include=JsonTypeInfo.As.EXISTING_PROPERTY, property=\\"petType\\", visible=true)
+@JsonSubTypes({
+  @JsonSubTypes.Type(value = Cat.class, name = \\"Cat\\"),
+  @JsonSubTypes.Type(value = Dog.class, name = \\"Dog\\")
+})
+/**
+ * Pet represents a union of types: Cat, Dog
+ */
+public interface Pet {
+  String petType();
+}",
+  "public record Owner(String name, List<Pet> pet) {
+  
+}",
+  "public record Cat(String petType, String color) implements Pet {
+  
+}",
+  "public record Dog(String petType, String color) implements Pet {
+  
+}",
+]
 `;
