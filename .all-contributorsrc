@@ -1158,6 +1158,17 @@
         "bug",
         "code"
       ]
+    },
+    {
+      "login": "reinaut-krekels-acerta",
+      "name": "Reinaut Krekels",
+      "avatar_url": "https://avatars.githubusercontent.com/u/93973899?v=4",
+      "profile": "https://github.com/reinaut-krekels-acerta",
+      "contributions": [
+        "code",
+        "test",
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,
