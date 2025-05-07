@@ -37,17 +37,24 @@ export class UnionRenderer extends JavaRenderer<ConstrainedUnionModel> {
   }
 }
 
+const getterName = (sanitizedName: string, options: JavaOptions): string => {
+  return options.modelType === 'record'
+    ? FormatHelpers.toCamelCase(sanitizedName)
+    : `get${FormatHelpers.toPascalCase(sanitizedName)}`;
+};
+
 export const JAVA_DEFAULT_UNION_PRESET: UnionPresetType<JavaOptions> = {
   self({ renderer }) {
     return renderer.defaultSelf();
   },
-  discriminatorGetter({ model }) {
+  discriminatorGetter({ model, options }) {
     if (!model.options.discriminator?.type) {
       return '';
     }
 
-    return `${model.options.discriminator.type} get${FormatHelpers.toPascalCase(
-      getSanitizedDiscriminatorName(model)
+    return `${model.options.discriminator.type} ${getterName(
+      getSanitizedDiscriminatorName(model),
+      options
     )}();`;
   }
 };
