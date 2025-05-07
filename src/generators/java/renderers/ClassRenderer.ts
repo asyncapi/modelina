@@ -231,13 +231,22 @@ export const JAVA_DEFAULT_CLASS_PRESET: ClassPresetType<JavaOptions> = {
   self({ renderer }) {
     return renderer.defaultSelf();
   },
-  property({ property, model }) {
+  property({ property, model, options }) {
     if (model.options.isExtended) {
       return '';
     }
 
     if (property.property.options.const?.value) {
       return `private final ${property.property.type} ${property.propertyName} = ${property.property.options.const.value};`;
+    }
+
+    if (
+      options.useModelNameAsConstForDiscriminatorProperty &&
+      property.unconstrainedPropertyName ===
+        model.options.discriminator?.discriminator &&
+      property.property.type === 'String'
+    ) {
+      return `private final ${property.property.type} ${property.propertyName} = "${model.name}";`;
     }
 
     return `private ${property.property.type} ${property.propertyName};`;
