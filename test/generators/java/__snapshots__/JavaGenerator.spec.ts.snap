@@ -242,7 +242,6 @@ public interface Pet {
   private Map<String, Object> additionalProperties;
 
   public String getPetType() { return this.petType; }
-  public void setPetType(String petType) { this.petType = petType; }
 
   @JsonAnyGetter
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
@@ -298,7 +297,6 @@ public interface Pet {
   private Map<String, Object> additionalProperties;
 
   public String getPetType() { return this.petType; }
-  public void setPetType(String petType) { this.petType = petType; }
 
   public Object getBreed() { return this.breed; }
   public void setBreed(Object breed) { this.breed = breed; }
