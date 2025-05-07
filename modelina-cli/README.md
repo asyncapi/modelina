@@ -162,7 +162,7 @@ $ npm install -g @asyncapi/modelina-cli
 $ modelina COMMAND
 running command...
 $ modelina (--version)
-@asyncapi/modelina-cli/5.0.1 linux-x64 node-v18.20.8
+@asyncapi/modelina-cli/5.0.2 linux-x64 node-v18.20.8
 $ modelina --help [COMMAND]
 USAGE
   $ modelina COMMAND
@@ -240,7 +240,7 @@ DESCRIPTION
   CLI config settings
 ```
 
-_See code: [src/commands/config/index.ts](https://github.com/asyncapi/modelina/blob/v5.0.1/modelina-cli/src/commands/config/index.ts)_
+_See code: [src/commands/config/index.ts](https://github.com/asyncapi/modelina/blob/v5.0.2/modelina-cli/src/commands/config/index.ts)_
 
 ## `modelina config context`
 
@@ -254,7 +254,7 @@ DESCRIPTION
   Manage short aliases for full paths to inputs
 ```
 
-_See code: [src/commands/config/context/index.ts](https://github.com/asyncapi/modelina/blob/v5.0.1/modelina-cli/src/commands/config/context/index.ts)_
+_See code: [src/commands/config/context/index.ts](https://github.com/asyncapi/modelina/blob/v5.0.2/modelina-cli/src/commands/config/context/index.ts)_
 
 ## `modelina config context add CONTEXT-NAME SPEC-FILE-PATH`
 
@@ -276,7 +276,7 @@ DESCRIPTION
   Add a context to the store
 ```
 
-_See code: [src/commands/config/context/add.ts](https://github.com/asyncapi/modelina/blob/v5.0.1/modelina-cli/src/commands/config/context/add.ts)_
+_See code: [src/commands/config/context/add.ts](https://github.com/asyncapi/modelina/blob/v5.0.2/modelina-cli/src/commands/config/context/add.ts)_
 
 ## `modelina config context current`
 
@@ -293,7 +293,7 @@ DESCRIPTION
   Shows the current context that is being used
 ```
 
-_See code: [src/commands/config/context/current.ts](https://github.com/asyncapi/modelina/blob/v5.0.1/modelina-cli/src/commands/config/context/current.ts)_
+_See code: [src/commands/config/context/current.ts](https://github.com/asyncapi/modelina/blob/v5.0.2/modelina-cli/src/commands/config/context/current.ts)_
 
 ## `modelina config context edit CONTEXT-NAME NEW-SPEC-FILE-PATH`
 
@@ -314,7 +314,7 @@ DESCRIPTION
   Edit a context in the store
 ```
 
-_See code: [src/commands/config/context/edit.ts](https://github.com/asyncapi/modelina/blob/v5.0.1/modelina-cli/src/commands/config/context/edit.ts)_
+_See code: [src/commands/config/context/edit.ts](https://github.com/asyncapi/modelina/blob/v5.0.2/modelina-cli/src/commands/config/context/edit.ts)_
 
 ## `modelina config context init [CONTEXT-FILE-PATH]`
 
@@ -337,7 +337,7 @@ DESCRIPTION
   Initialize context
 ```
 
-_See code: [src/commands/config/context/init.ts](https://github.com/asyncapi/modelina/blob/v5.0.1/modelina-cli/src/commands/config/context/init.ts)_
+_See code: [src/commands/config/context/init.ts](https://github.com/asyncapi/modelina/blob/v5.0.2/modelina-cli/src/commands/config/context/init.ts)_
 
 ## `modelina config context list`
 
@@ -354,7 +354,7 @@ DESCRIPTION
   List all the stored contexts in the store
 ```
 
-_See code: [src/commands/config/context/list.ts](https://github.com/asyncapi/modelina/blob/v5.0.1/modelina-cli/src/commands/config/context/list.ts)_
+_See code: [src/commands/config/context/list.ts](https://github.com/asyncapi/modelina/blob/v5.0.2/modelina-cli/src/commands/config/context/list.ts)_
 
 ## `modelina config context remove CONTEXT-NAME`
 
@@ -374,7 +374,7 @@ DESCRIPTION
   Delete a context from the store
 ```
 
-_See code: [src/commands/config/context/remove.ts](https://github.com/asyncapi/modelina/blob/v5.0.1/modelina-cli/src/commands/config/context/remove.ts)_
+_See code: [src/commands/config/context/remove.ts](https://github.com/asyncapi/modelina/blob/v5.0.2/modelina-cli/src/commands/config/context/remove.ts)_
 
 ## `modelina config context use CONTEXT-NAME`
 
@@ -394,7 +394,7 @@ DESCRIPTION
   Set a context as current
 ```
 
-_See code: [src/commands/config/context/use.ts](https://github.com/asyncapi/modelina/blob/v5.0.1/modelina-cli/src/commands/config/context/use.ts)_
+_See code: [src/commands/config/context/use.ts](https://github.com/asyncapi/modelina/blob/v5.0.2/modelina-cli/src/commands/config/context/use.ts)_
 
 ## `modelina generate LANGUAGE FILE`
 
@@ -458,7 +458,7 @@ DESCRIPTION
   Generates typed models
 ```
 
-_See code: [src/commands/generate.ts](https://github.com/asyncapi/modelina/blob/v5.0.1/modelina-cli/src/commands/generate.ts)_
+_See code: [src/commands/generate.ts](https://github.com/asyncapi/modelina/blob/v5.0.2/modelina-cli/src/commands/generate.ts)_
 
 ## `modelina help [COMMAND]`
 
