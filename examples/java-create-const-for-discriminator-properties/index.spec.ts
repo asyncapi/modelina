@@ -9,6 +9,7 @@ describe('Should be able to generate const for discriminator properties', () => 
   });
   test('and should log expected output to console', async () => {
     await generate();
-    expect(spy.mock.calls[0]).toMatchSnapshot();
+    expect(spy.mock.calls.length).toEqual(5);
+    expect(spy.mock.calls.map((call) => call)).toMatchSnapshot();
   });
 });

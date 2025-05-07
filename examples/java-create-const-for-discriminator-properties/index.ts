@@ -1,7 +1,13 @@
 import { JavaGenerator } from '../../src';
 
 const generator = new JavaGenerator({
-  useModelNameAsConstForDiscriminatorProperty: true
+  useModelNameAsConstForDiscriminatorProperty: true,
+  processorOptions: {
+    jsonSchema: {
+      allowInheritance: true,
+      disableCache: false
+    }
+  }
 });
 const jsonSchemaDraft7 = {
   asyncapi: '2.5.0',
