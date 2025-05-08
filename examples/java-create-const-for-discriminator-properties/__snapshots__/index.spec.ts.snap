@@ -1,0 +1,71 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Should be able to generate const for discriminator properties and should log expected output to console 1`] = `
+Array [
+  Array [
+    "/**
+ * Pet represents a union of types: Fish, Bird, FlyingFish
+ */
+public interface Pet {
+  String getPetType();
+}",
+  ],
+  Array [
+    "public class Owner {
+  private String name;
+  private Pet[] pets;
+  private Map<String, Object> additionalProperties;
+
+  public String getName() { return this.name; }
+  public void setName(String name) { this.name = name; }
+
+  public Pet[] getPets() { return this.pets; }
+  public void setPets(Pet[] pets) { this.pets = pets; }
+
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+}",
+  ],
+  Array [
+    "public class Fish implements Pet {
+  private final String petType = \\"Fish\\";
+  private Map<String, Object> additionalProperties;
+
+  public String getPetType() { return this.petType; }
+
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+}",
+  ],
+  Array [
+    "public class Bird implements Pet {
+  private final String petType = \\"Bird\\";
+  private String breed;
+  private Map<String, Object> additionalProperties;
+
+  public String getPetType() { return this.petType; }
+
+  public String getBreed() { return this.breed; }
+  public void setBreed(String breed) { this.breed = breed; }
+
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+}",
+  ],
+  Array [
+    "public class FlyingFish implements Pet, Fish {
+  private final String petType = \\"FlyingFish\\";
+  private Boolean hasWings;
+  private Map<String, Object> additionalProperties;
+
+  public String getPetType() { return this.petType; }
+
+  public Boolean getHasWings() { return this.hasWings; }
+  public void setHasWings(Boolean hasWings) { this.hasWings = hasWings; }
+
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+}",
+  ],
+]
+`;

@@ -101,5 +101,14 @@ Currently not supported, [let everyone know you need it](https://github.com/asyn
 ### To and from binary
 Currently not supported, [let everyone know you need it](https://github.com/asyncapi/modelina/issues/new?assignees=&labels=enhancement&template=enhancement.md)!
 
+## Automatically create const for discriminator properties based on model name
+
+Sometimes, we might want to immediately render the discriminator properties as constants defaulting with the model name. In this way, we do not have to define to const value our self in the schema. 
+This is especially useful when you have a lot of models, and you want to make sure that the discriminator properties are always the same. Of course, you can always change the value in the schema, but this way you do not have to worry about it.
+To do so, provide the option `useModelNameAsConstForDiscriminatorProperty: true`.
+
+
+Check out this [example for a live demonstration](../../examples/java-create-const-for-discriminator-properties).
+
 ## Integrate Modelina into Maven
 We have created an example Maven project to show you how to generate AsyncAPI payload models from your AsyncAPI file and integrate it into the build process. [You can find the integration example here](../integration.md#integrate-with-maven).

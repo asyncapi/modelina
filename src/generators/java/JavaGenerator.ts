@@ -53,6 +53,7 @@ export interface JavaOptions extends CommonGeneratorOptions<JavaPreset> {
   typeMapping: TypeMapping<JavaOptions, JavaDependencyManager>;
   constraints: Constraints<JavaOptions>;
   modelType: 'class' | 'record';
+  useModelNameAsConstForDiscriminatorProperty: boolean;
 }
 export type JavaConstantConstraint = ConstantConstraint<JavaOptions>;
 export type JavaEnumKeyConstraint = EnumKeyConstraint<JavaOptions>;
@@ -90,7 +91,8 @@ export class JavaGenerator extends AbstractGenerator<
     collectionType: 'Array',
     typeMapping: JavaDefaultTypeMapping,
     constraints: JavaDefaultConstraints,
-    modelType: 'class'
+    modelType: 'class',
+    useModelNameAsConstForDiscriminatorProperty: false
   };
 
   static defaultCompleteModelOptions: JavaRenderCompleteModelOptions = {
