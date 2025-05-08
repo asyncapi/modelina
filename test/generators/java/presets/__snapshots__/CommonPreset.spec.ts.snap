@@ -249,8 +249,8 @@ Array [
   }
 }",
   "public interface Extend {
-  public String getExtendProp();
-  public void setExtendProp(String extendProp);
+  String getExtendProp();
+  void setExtendProp(String extendProp);
 }",
 ]
 `;

@@ -16,8 +16,8 @@ Array [
   public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
 }",
   "public interface Extend {
-  public String getExtendProp();
-  public void setExtendProp(String extendProp);
+  String getExtendProp();
+  void setExtendProp(String extendProp);
 }",
 ]
 `;

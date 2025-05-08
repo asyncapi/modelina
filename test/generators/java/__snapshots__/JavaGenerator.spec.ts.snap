@@ -84,12 +84,12 @@ public interface Animal {
   }
 }",
   "public interface Dog extends Pet {
-  public String getColor();
-  public void setColor(String color);
+  String getColor();
+  void setColor(String color);
 }",
   "public interface Pet {
-  public String getColor();
-  public void setColor(String color);
+  String getColor();
+  void setColor(String color);
 }",
   "public class Cat implements Animal, Pet {
   @NotNull
