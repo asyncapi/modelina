@@ -53,7 +53,7 @@ exports[`JAVA_JACKSON_PRESET should render Jackson annotations for enum 1`] = `
 "public enum ReservedEnum {
   ON((String)\\"on\\"), OFF((String)\\"off\\");
 
-  private String value;
+  private final String value;
 
   ReservedEnum(String value) {
     this.value = value;
