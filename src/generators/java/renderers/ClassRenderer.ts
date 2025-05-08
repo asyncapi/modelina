@@ -1,5 +1,6 @@
 import { JavaRenderer } from '../JavaRenderer';
 import {
+  ConstrainedArrayModel,
   ConstrainedDictionaryModel,
   ConstrainedObjectModel,
   ConstrainedObjectPropertyModel,
@@ -26,7 +27,10 @@ export class ClassRenderer extends JavaRenderer<ConstrainedObjectModel> {
       await this.runAdditionalContentPreset()
     ];
 
-    if (this.options?.collectionType === 'List') {
+    if (
+      this.model.containsPropertyType(ConstrainedArrayModel) &&
+      this.options?.collectionType === 'List'
+    ) {
       this.dependencyManager.addDependency('import java.util.List;');
     }
     if (this.model.containsPropertyType(ConstrainedDictionaryModel)) {
@@ -176,11 +180,17 @@ export const isDiscriminatorInTree = (
   model: ConstrainedObjectModel,
   property: ConstrainedObjectPropertyModel
 ): boolean =>
-  model.options?.extend?.some(
+  (model.options?.extend?.some(
     (ext) =>
       ext?.options?.discriminator?.discriminator ===
       property.unconstrainedPropertyName
-  ) ?? false;
+  ) ||
+    model.options?.parents?.some(
+      (parent) =>
+        parent?.options?.discriminator?.discriminator ===
+        property.unconstrainedPropertyName
+    )) ??
+  false;
 
 const isEnumImplementedByConstValue = (
   model: ConstrainedObjectModel,

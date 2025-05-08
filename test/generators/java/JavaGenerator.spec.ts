@@ -5,7 +5,6 @@ import {
   JAVA_JACKSON_PRESET,
   JavaGenerator
 } from '../../../src/generators';
-import objectContaining = jasmine.objectContaining;
 
 describe('JavaGenerator', () => {
   let generator: JavaGenerator;
@@ -1394,6 +1393,122 @@ describe('JavaGenerator', () => {
         const models = await generator.generate(asyncapiDoc);
         expect(models.map((model) => model.result)).toMatchSnapshot();
       });
+    });
+  });
+
+  describe('with inheritance using records', () => {
+    test('should create interface with getters without "get" prefix', async () => {
+      const asyncapiDoc = {
+        asyncapi: '3.0.0',
+        info: {
+          title: 'Records succesfully implement interfaces',
+          version: '1.0.0'
+        },
+        channels: {
+          ownerCreated: {
+            address: 'owner-created',
+            messages: {
+              OwnerCreated: {
+                $ref: '#/components/messages/Owner'
+              }
+            }
+          }
+        },
+        operations: {
+          processOwnerCreated: {
+            action: 'receive',
+            channel: {
+              $ref: '#/channels/ownerCreated'
+            }
+          }
+        },
+        components: {
+          messages: {
+            Owner: {
+              payload: {
+                schema: {
+                  $ref: '#/components/schemas/Owner'
+                }
+              }
+            }
+          },
+          schemas: {
+            Pet: {
+              title: 'Pet',
+              type: 'object',
+              discriminator: 'petType',
+              properties: {
+                petType: {
+                  type: 'string'
+                },
+                color: {
+                  type: 'string'
+                }
+              },
+              oneOf: [
+                {
+                  $ref: '#/components/schemas/Cat'
+                },
+                {
+                  $ref: '#/components/schemas/Dog'
+                }
+              ],
+              required: ['petType', 'color']
+            },
+            Cat: {
+              title: 'Cat',
+              allOf: [
+                {
+                  $ref: '#/components/schemas/Pet'
+                }
+              ]
+            },
+            Dog: {
+              title: 'Dog',
+              allOf: [
+                {
+                  $ref: '#/components/schemas/Pet'
+                }
+              ]
+            },
+            Owner: {
+              title: 'Owner',
+              type: 'object',
+              properties: {
+                name: {
+                  type: 'string'
+                },
+                pet: {
+                  items: {
+                    $ref: '#/components/schemas/Pet'
+                  }
+                }
+              }
+            }
+          }
+        }
+      };
+
+      generator = new JavaGenerator({
+        presets: [
+          JAVA_COMMON_PRESET,
+          JAVA_JACKSON_PRESET,
+          JAVA_DESCRIPTION_PRESET,
+          JAVA_CONSTRAINTS_PRESET
+        ],
+        modelType: 'record',
+        collectionType: 'List',
+        processorOptions: {
+          jsonSchema: {
+            disableCache: false,
+            allowInheritance: true,
+            ignoreAdditionalProperties: true
+          }
+        }
+      });
+
+      const models = await generator.generate(asyncapiDoc);
+      expect(models.map((model) => model.result)).toMatchSnapshot();
     });
   });
 });
