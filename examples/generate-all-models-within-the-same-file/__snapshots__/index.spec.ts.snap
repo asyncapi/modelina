@@ -13,7 +13,7 @@ Array [
 public enum Email {
   EXAMPLE1_AT_TEST_DOT_COM((String)\\"example1@test.com\\"), EXAMPLE2_AT_TEST_DOT_COM((String)\\"example2@test.com\\");
 
-  private String value;
+  private final String value;
 
   Email(String value) {
     this.value = value;
