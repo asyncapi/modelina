@@ -94,4 +94,73 @@ describe('PYTHON_PYDANTIC_PRESET', () => {
     const models = await generator.generate(doc);
     expect(models.map((model) => model.result)).toMatchSnapshot();
   });
+
+  test('should render default value for discriminator when using polymorphism', async () => {
+    const doc = {
+      asyncapi: '3.0.0',
+      info: {
+        title: 'Vehicle Models',
+        version: '1.0.0'
+      },
+      components: {
+        messages: {
+          Vehicle: {
+            payload: {
+              oneOf: [
+                { $ref: '#/components/schemas/Car' },
+                { $ref: '#/components/schemas/Truck' }
+              ]
+            }
+          }
+        },
+        schemas: {
+          Vehicle: {
+            title: 'Vehicle',
+            type: 'object',
+            discriminator: 'vehicleType',
+            properties: {
+              vehicleType: {
+                title: 'VehicleType',
+                type: 'string'
+              },
+              length: {
+                type: 'number',
+                format: 'float'
+              }
+            },
+            required: ['vehicleType']
+          },
+          Car: {
+            allOf: [
+              { $ref: '#/components/schemas/Vehicle' },
+              {
+                type: 'object',
+                properties: {
+                  vehicleType: {
+                    const: 'Car'
+                  }
+                }
+              }
+            ]
+          },
+          Truck: {
+            allOf: [
+              { $ref: '#/components/schemas/Vehicle' },
+              {
+                type: 'object',
+                properties: {
+                  vehicleType: {
+                    const: 'Truck'
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    };
+
+    const models = await generator.generate(doc);
+    expect(models.map((model) => model.result)).toMatchSnapshot();
+  });
 });
