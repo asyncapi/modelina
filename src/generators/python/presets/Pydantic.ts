@@ -53,6 +53,10 @@ const PYTHON_PYDANTIC_CLASS_PRESET: ClassPresetType<PythonOptions> = {
     if (isOptional) {
       decoratorArgs.push('default=None');
     }
+    if (property.property.options.const) {
+      decoratorArgs.push(`default=${property.property.options.const.value}`);
+      decoratorArgs.push('frozen=True');
+    }
     if (
       property.property instanceof ConstrainedDictionaryModel &&
       property.property.serializationType === 'unwrap'
