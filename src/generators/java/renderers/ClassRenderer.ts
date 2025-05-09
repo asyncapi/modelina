@@ -31,8 +31,9 @@ export class ClassRenderer extends JavaRenderer<ConstrainedObjectModel> {
       this.model.containsPropertyType(ConstrainedArrayModel) &&
       this.options?.collectionType === 'List'
     ) {
-      this.dependencyManager.addDependency('import java.util.List;');
+      this.addCollectionDependencies();
     }
+
     if (this.model.containsPropertyType(ConstrainedDictionaryModel)) {
       this.dependencyManager.addDependency('import java.util.Map;');
     }
@@ -134,6 +135,33 @@ ${this.indent(this.renderBlock(content, 2))}
     }
 
     return parentUnions;
+  }
+
+  private addCollectionDependencies() {
+    const properties = Object.values(this.model.properties);
+
+    let needsList = false;
+    let needsSet = false;
+
+    for (const prop of properties) {
+      const propertyModel = prop.property;
+      if (propertyModel instanceof ConstrainedArrayModel) {
+        const isUnique = propertyModel.originalInput?.uniqueItems === true;
+        if (isUnique) {
+          needsSet = true;
+        } else {
+          needsList = true;
+        }
+      }
+    }
+
+    if (needsList) {
+      this.dependencyManager.addDependency('import java.util.List;');
+    }
+
+    if (needsSet) {
+      this.dependencyManager.addDependency('import java.util.Set;');
+    }
   }
 }
 

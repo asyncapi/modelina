@@ -1958,6 +1958,161 @@ exports[`JavaGenerator should work custom preset for \`class\` type 1`] = `
 }"
 `;
 
+exports[`JavaGenerator when collection type is list and unique items is true it should render a set should create a set for unique arrays 1`] = `
+Array [
+  "@JsonTypeInfo(use=JsonTypeInfo.Id.NAME, include=JsonTypeInfo.As.EXISTING_PROPERTY, property=\\"petType\\", visible=true)
+@JsonSubTypes({
+  @JsonSubTypes.Type(value = Bird.class, name = \\"Bird\\")
+})
+/**
+ * Pet represents a union of types: Bird
+ */
+public interface Pet {
+  String getPetType();
+}",
+  "public class Owner {
+  @JsonProperty(\\"name\\")
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private String name;
+  @Valid
+  @JsonProperty(\\"pets\\")
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private List<Pet> pets;
+  @Valid
+  @JsonProperty(\\"possibleDuplicatePets\\")
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private List<Pet> possibleDuplicatePets;
+  @Valid
+  @JsonProperty(\\"uniquePets\\")
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private Set<Pet> uniquePets;
+  @JsonAnySetter
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private Map<String, Object> additionalProperties;
+
+  public String getName() { return this.name; }
+  public void setName(String name) { this.name = name; }
+
+  public List<Pet> getPets() { return this.pets; }
+  public void setPets(List<Pet> pets) { this.pets = pets; }
+
+  public List<Pet> getPossibleDuplicatePets() { return this.possibleDuplicatePets; }
+  public void setPossibleDuplicatePets(List<Pet> possibleDuplicatePets) { this.possibleDuplicatePets = possibleDuplicatePets; }
+
+  public Set<Pet> getUniquePets() { return this.uniquePets; }
+  public void setUniquePets(Set<Pet> uniquePets) { this.uniquePets = uniquePets; }
+
+  @JsonAnyGetter
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Owner self = (Owner) o;
+      return 
+        Objects.equals(this.name, self.name) &&
+        Objects.equals(this.pets, self.pets) &&
+        Objects.equals(this.possibleDuplicatePets, self.possibleDuplicatePets) &&
+        Objects.equals(this.uniquePets, self.uniquePets) &&
+        Objects.equals(this.additionalProperties, self.additionalProperties);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash((Object)name, (Object)pets, (Object)possibleDuplicatePets, (Object)uniquePets, (Object)additionalProperties);
+  }
+
+  @Override
+  public String toString() {
+    return \\"class Owner {\\\\n\\" +   
+      \\"    name: \\" + toIndentedString(name) + \\"\\\\n\\" +
+      \\"    pets: \\" + toIndentedString(pets) + \\"\\\\n\\" +
+      \\"    possibleDuplicatePets: \\" + toIndentedString(possibleDuplicatePets) + \\"\\\\n\\" +
+      \\"    uniquePets: \\" + toIndentedString(uniquePets) + \\"\\\\n\\" +
+      \\"    additionalProperties: \\" + toIndentedString(additionalProperties) + \\"\\\\n\\" +
+    \\"}\\";
+  }
+
+  /**
+   * Convert the given object to string with each line indented by 4 spaces
+   * (except the first line).
+   */
+  private String toIndentedString(Object o) {
+    if (o == null) {
+      return \\"null\\";
+    }
+    return o.toString().replace(\\"\\\\n\\", \\"\\\\n    \\");
+  }
+}",
+  "public class Bird implements Pet {
+  @NotNull
+  @JsonProperty(\\"petType\\")
+  private final String petType = \\"Bird\\";
+  @JsonProperty(\\"breed\\")
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private Object breed;
+  @JsonAnySetter
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private Map<String, Object> additionalProperties;
+
+  public String getPetType() { return this.petType; }
+
+  public Object getBreed() { return this.breed; }
+  public void setBreed(Object breed) { this.breed = breed; }
+
+  @JsonAnyGetter
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Bird self = (Bird) o;
+      return 
+        Objects.equals(this.petType, self.petType) &&
+        Objects.equals(this.breed, self.breed) &&
+        Objects.equals(this.additionalProperties, self.additionalProperties);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash((Object)petType, (Object)breed, (Object)additionalProperties);
+  }
+
+  @Override
+  public String toString() {
+    return \\"class Bird {\\\\n\\" +   
+      \\"    petType: \\" + toIndentedString(petType) + \\"\\\\n\\" +
+      \\"    breed: \\" + toIndentedString(breed) + \\"\\\\n\\" +
+      \\"    additionalProperties: \\" + toIndentedString(additionalProperties) + \\"\\\\n\\" +
+    \\"}\\";
+  }
+
+  /**
+   * Convert the given object to string with each line indented by 4 spaces
+   * (except the first line).
+   */
+  private String toIndentedString(Object o) {
+    if (o == null) {
+      return \\"null\\";
+    }
+    return o.toString().replace(\\"\\\\n\\", \\"\\\\n    \\");
+  }
+}",
+]
+`;
+
 exports[`JavaGenerator with inheritance using records should create interface with getters without "get" prefix 1`] = `
 Array [
   "@JsonTypeInfo(use=JsonTypeInfo.Id.NAME, include=JsonTypeInfo.As.EXISTING_PROPERTY, property=\\"petType\\", visible=true)
