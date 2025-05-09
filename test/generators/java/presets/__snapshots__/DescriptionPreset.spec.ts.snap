@@ -54,8 +54,8 @@ Array [
   }
 }",
   "public interface Extend {
-  public String getTest3();
-  public void setTest3(String test3);
+  String getTest3();
+  void setTest3(String test3);
 }",
 ]
 `;
