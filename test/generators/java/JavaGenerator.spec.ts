@@ -735,6 +735,115 @@ describe('JavaGenerator', () => {
     });
   });
 
+  describe('when collection type is list and unique items is true it should render a set', () => {
+    test('should create a set for unique arrays', async () => {
+      const asyncapiDoc = {
+        asyncapi: '2.5.0',
+        info: {
+          title: 'CloudEvent example',
+          version: '1.0.0'
+        },
+        channels: {
+          owner: {
+            publish: {
+              message: {
+                $ref: '#/components/messages/Owner'
+              }
+            }
+          }
+        },
+        components: {
+          messages: {
+            Owner: {
+              payload: {
+                $ref: '#/components/schemas/Owner'
+              }
+            }
+          },
+          schemas: {
+            Owner: {
+              type: 'object',
+              properties: {
+                name: {
+                  type: 'string'
+                },
+                pets: {
+                  type: 'array',
+                  items: {
+                    $ref: '#/components/schemas/Pet'
+                  }
+                },
+                possibleDuplicatePets: {
+                  type: 'array',
+                  items: {
+                    $ref: '#/components/schemas/Pet'
+                  },
+                  uniqueItems: false
+                },
+                uniquePets: {
+                  type: 'array',
+                  items: {
+                    $ref: '#/components/schemas/Pet'
+                  },
+                  uniqueItems: true
+                }
+              }
+            },
+            Pet: {
+              title: 'Pet',
+              type: 'object',
+              discriminator: 'petType',
+              properties: {
+                petType: {
+                  type: 'string'
+                }
+              },
+              required: ['petType'],
+              oneOf: [
+                {
+                  $ref: '#/components/schemas/Bird'
+                }
+              ]
+            },
+            Bird: {
+              title: 'Bird',
+              properties: {
+                breed: {
+                  type: String
+                }
+              },
+              allOf: [
+                {
+                  $ref: '#/components/schemas/Pet'
+                }
+              ]
+            }
+          }
+        }
+      };
+
+      generator = new JavaGenerator({
+        presets: [
+          JAVA_COMMON_PRESET,
+          JAVA_JACKSON_PRESET,
+          JAVA_DESCRIPTION_PRESET,
+          JAVA_CONSTRAINTS_PRESET
+        ],
+        collectionType: 'List',
+        useModelNameAsConstForDiscriminatorProperty: true,
+        processorOptions: {
+          jsonSchema: {
+            allowInheritance: true,
+            disableCache: false
+          }
+        }
+      });
+
+      const models = await generator.generate(asyncapiDoc);
+      expect(models.map((model) => model.result)).toMatchSnapshot();
+    });
+  });
+
   describe('throw error when allowInheritance enabled with caching disabled', () => {
     test('should throw error cause caching is disabled', async () => {
       const asyncapiDoc = {
