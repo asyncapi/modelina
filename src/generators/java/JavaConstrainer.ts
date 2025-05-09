@@ -203,10 +203,18 @@ export const JavaDefaultTypeMapping: JavaTypeMapping = {
     return `${tupleType}[]`;
   },
   Array({ constrainedModel, options, dependencyManager }): string {
-    if (options.collectionType && options.collectionType === 'List') {
+    const isUnique = constrainedModel.originalInput?.uniqueItems === true;
+
+    if (options.collectionType === 'List' && !isUnique) {
       dependencyManager.addDependency('import java.util.List;');
       return `List<${constrainedModel.valueModel.type}>`;
     }
+
+    if (isUnique) {
+      dependencyManager.addDependency('import java.util.Set;');
+      return `Set<${constrainedModel.valueModel.type}>`;
+    }
+
     return `${constrainedModel.valueModel.type}[]`;
   },
   Enum({ constrainedModel }): string {
