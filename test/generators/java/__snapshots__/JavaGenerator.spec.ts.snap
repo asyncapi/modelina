@@ -812,7 +812,7 @@ public interface Vehicle {
   "public enum VehicleType {
   CAR((String)\\"Car\\"), TRUCK((String)\\"Truck\\");
 
-  private String value;
+  private final String value;
 
   VehicleType(String value) {
     this.value = value;
@@ -915,7 +915,7 @@ Array [
   "public enum Action {
   ADD((String)\\"ADD\\"), UPDATE((String)\\"UPDATE\\"), DELETE((String)\\"DELETE\\");
 
-  private String value;
+  private final String value;
 
   Action(String value) {
     this.value = value;
@@ -1052,7 +1052,7 @@ public interface Pet {
   "public enum CloudEventType {
   DOG((String)\\"Dog\\"), CAT((String)\\"Cat\\");
 
-  private String value;
+  private final String value;
 
   CloudEventType(String value) {
     this.value = value;
@@ -1239,7 +1239,7 @@ Array [
   "public enum CloudEventType {
   DOG((String)\\"Dog\\");
 
-  private String value;
+  private final String value;
 
   CloudEventType(String value) {
     this.value = value;
@@ -1337,7 +1337,7 @@ public interface Pet {
   "public enum DogType {
   DOG((String)\\"Dog\\");
 
-  private String value;
+  private final String value;
 
   DogType(String value) {
     this.value = value;
@@ -1419,7 +1419,7 @@ public interface Pet {
   "public enum CatType {
   CAT((String)\\"Cat\\");
 
-  private String value;
+  private final String value;
 
   CatType(String value) {
     this.value = value;
@@ -1571,7 +1571,7 @@ public interface Vehicle {
   "public enum VehicleType {
   CAR((String)\\"Car\\"), TRUCK((String)\\"Truck\\");
 
-  private String value;
+  private final String value;
 
   VehicleType(String value) {
     this.value = value;
@@ -1712,7 +1712,7 @@ exports[`JavaGenerator should render \`enum\` type (integer type) 1`] = `
 "public enum Numbers {
   NUMBER_0((int)0), NUMBER_1((int)1), NUMBER_2((int)2), NUMBER_3((int)3);
 
-  private int value;
+  private final int value;
 
   Numbers(int value) {
     this.value = value;
@@ -1742,7 +1742,7 @@ exports[`JavaGenerator should render \`enum\` type (string type) 1`] = `
 "public enum States {
   TEXAS((String)\\"Texas\\"), ALABAMA((String)\\"Alabama\\"), CALIFORNIA((String)\\"California\\"), NEW_YORK((String)\\"New York\\");
 
-  private String value;
+  private final String value;
 
   States(String value) {
     this.value = value;
@@ -1772,7 +1772,7 @@ exports[`JavaGenerator should render \`enum\` type (union type) 1`] = `
 "public enum Union {
   TEXAS((Object)\\"Texas\\"), ALABAMA((Object)\\"Alabama\\"), NUMBER_0((Object)0), NUMBER_1((Object)1), RESERVED_NUMBER_1((Object)\\"1\\"), TRUE((Object)\\"true\\"), CURLYLEFT_QUOTATION_TEST_QUOTATION_COLON_QUOTATION_TEST_QUOTATION_CURLYRIGHT((Object)\\"{\\\\\\"test\\\\\\":\\\\\\"test\\\\\\"}\\");
 
-  private Object value;
+  private final Object value;
 
   Union(Object value) {
     this.value = value;
@@ -1812,7 +1812,7 @@ exports[`JavaGenerator should render custom preset for \`enum\` type 1`] = `
 public enum CustomEnum {
   TEXAS((String)\\"Texas\\"), ALABAMA((String)\\"Alabama\\"), CALIFORNIA((String)\\"California\\");
 
-  private String value;
+  private final String value;
 
   CustomEnum(String value) {
     this.value = value;
@@ -1842,7 +1842,7 @@ exports[`JavaGenerator should render enums with translated special characters 1`
 "public enum States {
   TEST_PLUS((String)\\"test+\\"), TEST((String)\\"test\\"), TEST_MINUS((String)\\"test-\\"), TEST_QUESTION_EXCLAMATION((String)\\"test?!\\"), ASTERISK_TEST((String)\\"*test\\");
 
-  private String value;
+  private final String value;
 
   States(String value) {
     this.value = value;

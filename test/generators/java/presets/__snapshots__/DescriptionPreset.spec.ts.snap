@@ -29,7 +29,7 @@ Array [
   "public enum DiscriminatorTest {
   EXTEND_DOC((String)\\"ExtendDoc\\");
 
-  private String value;
+  private final String value;
 
   DiscriminatorTest(String value) {
     this.value = value;
@@ -96,7 +96,7 @@ exports[`JAVA_DESCRIPTION_PRESET should render description and examples for enum
 public enum ReservedEnum {
   ON((String)\\"on\\"), OFF((String)\\"off\\");
 
-  private String value;
+  private final String value;
 
   ReservedEnum(String value) {
     this.value = value;

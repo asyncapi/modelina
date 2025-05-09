@@ -61,7 +61,7 @@ export const JAVA_DEFAULT_ENUM_PRESET: EnumPresetType<JavaOptions> = {
     return `${item.key}((${model.type})${item.value})`;
   },
   ctor({ model }) {
-    return `private ${model.type} value;
+    return `private final ${model.type} value;
 
 ${model.name}(${model.type} value) {
   this.value = value;
