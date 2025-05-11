@@ -4,7 +4,7 @@ exports[`PYTHON_PYDANTIC_PRESET should render default value for discriminator wh
 Array [
   "",
   "class Car(BaseModel): 
-  vehicle_type: VehicleType.VehicleType = Field(default=VehicleType.VehicleType.CAR, frozen=True)
+  vehicle_type: VehicleType = Field(default=VehicleType.CAR, frozen=True)
   length: Optional[float] = Field(default=None)
   additional_properties: Optional[dict[str, Any]] = Field(default=None, exclude=True)
 
@@ -45,7 +45,7 @@ Array [
   CAR = \\"Car\\"
   TRUCK = \\"Truck\\"",
   "class Truck(BaseModel): 
-  vehicle_type: VehicleType.VehicleType = Field(default=VehicleType.VehicleType.TRUCK, frozen=True)
+  vehicle_type: VehicleType = Field(default=VehicleType.TRUCK, frozen=True)
   length: Optional[float] = Field(default=None)
   additional_properties: Optional[dict[str, Any]] = Field(default=None, exclude=True)
 
@@ -88,7 +88,7 @@ Array [
 exports[`PYTHON_PYDANTIC_PRESET should render nullable union 1`] = `
 Array [
   "class NullableUnionTest(BaseModel): 
-  nullable_union_test: Optional[Union[Union1.Union1]] = Field(default=None)
+  nullable_union_test: Optional[Union[Union1]] = Field(default=None)
   additional_properties: Optional[dict[str, Any]] = Field(default=None, exclude=True)
 
   @model_serializer(mode='wrap')
@@ -210,7 +210,7 @@ exports[`PYTHON_PYDANTIC_PRESET should render pydantic for class 1`] = `
 exports[`PYTHON_PYDANTIC_PRESET should render union to support Python < 3.10 1`] = `
 Array [
   "class UnionTest(BaseModel): 
-  union_test: Optional[Union[Union1.Union1, Union2.Union2]] = Field(default=None)
+  union_test: Optional[Union[Union1, Union2]] = Field(default=None)
   additional_properties: Optional[dict[str, Any]] = Field(default=None, exclude=True)
 
   @model_serializer(mode='wrap')

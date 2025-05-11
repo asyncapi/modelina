@@ -1,6 +1,6 @@
 import unittest
-from src.main.Address import Address
-from src.main.NestedObject import NestedObject
+from src.main.address import Address
+from src.main.nested_object import NestedObject
 import json
     
 class TestAddress(unittest.TestCase):

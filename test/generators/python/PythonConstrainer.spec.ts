@@ -47,7 +47,7 @@ describe('PythonConstrainer', () => {
         constrainedModel: model,
         ...defaultOptions
       });
-      expect(type).toEqual(`${model.name}.${model.name}`);
+      expect(type).toEqual(`${model.name}`);
     });
   });
   describe('Any', () => {

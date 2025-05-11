@@ -62,13 +62,13 @@ exports[`Should be able to render python models and should generate \`implicit\`
 Array [
   "from __future__ import annotations
 from typing import Any, Dict
-from . import ObjProperty
+from modelina.obj_property import ObjProperty
 class Root: 
   def __init__(self, input: Dict):
     if 'email' in input:
       self._email: str = input['email']
     if 'obj_property' in input:
-      self._obj_property: ObjProperty.ObjProperty = ObjProperty.ObjProperty(input['obj_property'])
+      self._obj_property: ObjProperty = ObjProperty(input['obj_property'])
 
   @property
   def email(self) -> str:
@@ -78,10 +78,10 @@ class Root:
     self._email = email
 
   @property
-  def obj_property(self) -> ObjProperty.ObjProperty:
+  def obj_property(self) -> ObjProperty:
     return self._obj_property
   @obj_property.setter
-  def obj_property(self, obj_property: ObjProperty.ObjProperty):
+  def obj_property(self, obj_property: ObjProperty):
     self._obj_property = obj_property
 ",
 ]
@@ -91,13 +91,13 @@ exports[`Should be able to render python models and should generate \`implicit\`
 Array [
   "from __future__ import annotations
 from typing import Any, Dict
-from . import ObjProperty
+from modelina.obj_property import ObjProperty
 class Root: 
   def __init__(self, input: Dict):
     if 'email' in input:
       self._email: str = input['email']
     if 'obj_property' in input:
-      self._obj_property: ObjProperty.ObjProperty = ObjProperty.ObjProperty(input['obj_property'])
+      self._obj_property: ObjProperty = ObjProperty(input['obj_property'])
 
   @property
   def email(self) -> str:
@@ -107,10 +107,10 @@ class Root:
     self._email = email
 
   @property
-  def obj_property(self) -> ObjProperty.ObjProperty:
+  def obj_property(self) -> ObjProperty:
     return self._obj_property
   @obj_property.setter
-  def obj_property(self, obj_property: ObjProperty.ObjProperty):
+  def obj_property(self, obj_property: ObjProperty):
     self._obj_property = obj_property
 ",
 ]

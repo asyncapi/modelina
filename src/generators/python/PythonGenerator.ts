@@ -60,7 +60,9 @@ export type PythonTypeMapping = TypeMapping<
   PythonDependencyManager
 >;
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface PythonRenderCompleteModelOptions {}
+export interface PythonRenderCompleteModelOptions {
+  packageName: string;
+}
 
 /**
  * All the constrained models that do not depend on others to determine the type
@@ -92,7 +94,9 @@ export class PythonGenerator extends AbstractGenerator<
     }
   };
 
-  static defaultCompleteModelOptions: PythonRenderCompleteModelOptions = {};
+  static defaultCompleteModelOptions: PythonRenderCompleteModelOptions = {
+    packageName: 'asyncapimodels'
+  };
 
   constructor(options?: DeepPartial<PythonOptions>) {
     const realizedOptions = PythonGenerator.getPythonOptions(options);
@@ -213,6 +217,10 @@ export class PythonGenerator extends AbstractGenerator<
     >
   ): Promise<RenderOutput> {
     //const completeModelOptionsToUse = mergePartialAndDefault(PythonGenerator.defaultCompleteModelOptions, completeModelOptions) as PythonRenderCompleteModelOptions;
+    const completeModelOptionsToUse = mergePartialAndDefault(
+      PythonGenerator.defaultCompleteModelOptions,
+      args.completeOptions
+    ) as PythonRenderCompleteModelOptions;
     const optionsToUse = PythonGenerator.getPythonOptions({
       ...this.options,
       ...args.options
@@ -228,7 +236,10 @@ export class PythonGenerator extends AbstractGenerator<
     const modelDependencies = args.constrainedModel
       .getNearestDependencies()
       .map((model) => {
-        return dependencyManagerToUse.renderDependency(model);
+        return dependencyManagerToUse.renderDependency(
+          model,
+          completeModelOptionsToUse.packageName
+        );
       });
     const outputContent = `${outputModel.dependencies.join('\n')}
 ${modelDependencies.join('\n')}
