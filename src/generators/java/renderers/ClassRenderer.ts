@@ -299,7 +299,7 @@ export const JAVA_DEFAULT_CLASS_PRESET: ClassPresetType<JavaOptions> = {
         return '';
       }
 
-      return `public ${property.property.type} ${getterName}();`;
+      return `${property.property.type} ${getterName}();`;
     }
 
     return `${getOverride(model, property)}public ${
@@ -322,7 +322,7 @@ export const JAVA_DEFAULT_CLASS_PRESET: ClassPresetType<JavaOptions> = {
         return '';
       }
 
-      return `public void set${setterName}(${property.property.type} ${property.propertyName});`;
+      return `void set${setterName}(${property.property.type} ${property.propertyName});`;
     }
 
     if (isDiscriminatorInTree(model, property)) {
