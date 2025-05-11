@@ -14,7 +14,7 @@ generator.generateToFiles(
         __dirname,
         "./runtime-python/src/main/"
     ),
-    {}
+  {packageName : "main"}
 );
 
 

@@ -2,7 +2,7 @@ import { PythonGenerator, PythonRenderCompleteModelOptions } from '.';
 import { InputMetaModel, OutputModel } from '../../models';
 import * as path from 'path';
 import { AbstractFileGenerator } from '../AbstractFileGenerator';
-import { FileHelpers } from '../../helpers';
+import { FileHelpers, FormatHelpers } from '../../helpers';
 
 export class PythonFileGenerator
   extends PythonGenerator
@@ -30,7 +30,7 @@ export class PythonFileGenerator
     for (const outputModel of generatedModels) {
       const filePath = path.resolve(
         outputDirectory,
-        `${outputModel.modelName}.py`
+        `${FormatHelpers.snakeCase(outputModel.modelName)}.py`
       );
       await FileHelpers.writerToFileSystem(
         outputModel.result,
