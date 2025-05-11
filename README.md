@@ -8,7 +8,7 @@
 [![Discussions](https://img.shields.io/github/discussions/asyncapi/modelina)](https://github.com/asyncapi/modelina/discussions)
 [![Website](https://img.shields.io/website?label=website&url=https%3A%2F%2Fwww.modelina.org)](https://www.modelina.org)
 [![Playground](https://img.shields.io/website?label=playground&url=https%3A%2F%2Fwww.modelina.org%2Fplayground)](https://www.modelina.org/playground) <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-108-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-109-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 
@@ -463,6 +463,7 @@ Thanks go out to these wonderful people ([emoji key](https://allcontributors.org
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/ThomasVerhoeven1998"><img src="https://avatars.githubusercontent.com/u/35959140?v=4?s=100" width="100px;" alt="Thomas Verhoeven"/><br /><sub><b>Thomas Verhoeven</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/commits?author=ThomasVerhoeven1998" title="Code">💻</a> <a href="https://github.com/asyncapi/modelina/commits?author=ThomasVerhoeven1998" title="Tests">⚠️</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/xeho91"><img src="https://avatars.githubusercontent.com/u/18627568?v=4?s=100" width="100px;" alt="Mateusz Kadlubowski"/><br /><sub><b>Mateusz Kadlubowski</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/issues?q=author%3Axeho91" title="Bug reports">🐛</a> <a href="https://github.com/asyncapi/modelina/commits?author=xeho91" title="Code">💻</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/reinaut-krekels-acerta"><img src="https://avatars.githubusercontent.com/u/93973899?v=4?s=100" width="100px;" alt="Reinaut Krekels"/><br /><sub><b>Reinaut Krekels</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/commits?author=reinaut-krekels-acerta" title="Code">💻</a> <a href="https://github.com/asyncapi/modelina/commits?author=reinaut-krekels-acerta" title="Tests">⚠️</a> <a href="https://github.com/asyncapi/modelina/issues?q=author%3Areinaut-krekels-acerta" title="Bug reports">🐛</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/412b"><img src="https://avatars.githubusercontent.com/u/12436202?v=4?s=100" width="100px;" alt="Kirill Plyashkevich"/><br /><sub><b>Kirill Plyashkevich</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/commits?author=412b" title="Code">💻</a> <a href="https://github.com/asyncapi/modelina/commits?author=412b" title="Tests">⚠️</a></td>
     </tr>
   </tbody>
 </table>

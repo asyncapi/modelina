@@ -1169,6 +1169,16 @@
         "test",
         "bug"
       ]
+    },
+    {
+      "login": "412b",
+      "name": "Kirill Plyashkevich",
+      "avatar_url": "https://avatars.githubusercontent.com/u/12436202?v=4",
+      "profile": "https://github.com/412b",
+      "contributions": [
+        "code",
+        "test"
+      ]
     }
   ],
   "contributorsPerLine": 7,
