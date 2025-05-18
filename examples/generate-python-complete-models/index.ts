@@ -24,7 +24,8 @@ export async function generate(): Promise<void> {
   const generator = new PythonGenerator();
 
   let models = await generator.generateCompleteModels(jsonSchemaDraft7, {
-    importsStyle: 'implicit'
+    importsStyle: 'implicit',
+    packageName: 'modelina'
   });
 
   for (const model of models) {
@@ -32,7 +33,8 @@ export async function generate(): Promise<void> {
   }
 
   models = await generator.generateCompleteModels(jsonSchemaDraft7, {
-    importsStyle: 'explicit'
+    importsStyle: 'explicit',
+    packageName: 'modelina'
   });
 
   for (const model of models) {

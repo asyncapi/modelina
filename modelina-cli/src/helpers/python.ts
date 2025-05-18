@@ -18,8 +18,13 @@ export const PythonOclifFlags = {
  * @returns 
  */
 export function buildPythonGenerator(flags: any): BuilderReturnType {
-  const {pyDantic} = flags;
-  const presets = [];
+  const {packageName, pyDantic} = flags;
+
+  if (packageName === undefined) {
+    throw new Error('In order to generate models to Python, we need to know which package they are under. Add `--packageName=PACKAGENAME` to set the desired package name.');
+  }
+  
+  const presets = [];  
   if (pyDantic) {
     presets.push(PYTHON_PYDANTIC_PRESET);
   }

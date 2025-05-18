@@ -1,6 +1,7 @@
 import { ConstrainedMetaModel } from '../../models';
 import { AbstractDependencyManager } from '../AbstractDependencyManager';
 import { PythonOptions } from './PythonGenerator';
+import { FormatHelpers } from '../../helpers';
 
 export class PythonDependencyManager extends AbstractDependencyManager {
   constructor(
@@ -13,8 +14,8 @@ export class PythonDependencyManager extends AbstractDependencyManager {
   /**
    * Simple helper function to render a dependency based on the module system that the user defines.
    */
-  renderDependency(model: ConstrainedMetaModel): string {
-    return `from . import ${model.name}`;
+  renderDependency(model: ConstrainedMetaModel, packageName: string): string {
+    return `from ${packageName}.${FormatHelpers.snakeCase(model.name)} import ${model.name}`;
   }
 
   /**
@@ -41,7 +42,7 @@ export class PythonDependencyManager extends AbstractDependencyManager {
     const importMap: Record<string, string[]> = {};
     const dependenciesToRender = [];
     for (const dependency of individualDependencies) {
-      const regex = /from ([A-Za-z0-9]+) import ([A-Za-z0-9_\-,\s]+)/g;
+      const regex = /from ([A-Za-z0-9._]+) import ([A-Za-z0-9_\-,\s]+)/g;
       const matches = regex.exec(dependency);
 
       if (!matches) {

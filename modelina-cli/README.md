@@ -434,7 +434,7 @@ FLAGS
       --javaJackson               Java specific, generate the models with Jackson serialization support
       --namespace=<value>         C#, C++ and PHP specific, define the namespace to use for the generated models. This
                                   is required when language is `csharp`,`c++` or `php`.
-      --packageName=<value>       Go, Java and Kotlin specific, define the package to use for the generated models. This
+      --packageName=<value>       Go, Java, Python and Kotlin specific, define the package to use for the generated models. This
                                   is required when language is `go`, `java` or `kotlin`.
       --pyDantic                  Python specific, generate the Pydantic models.
       --tsEnumType=<option>       [default: enum] TypeScript specific, define which type of enums needs to be generated.

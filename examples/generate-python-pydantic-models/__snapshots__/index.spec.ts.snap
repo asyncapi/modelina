@@ -6,7 +6,7 @@ Array [
   optional_field: Optional[str] = Field(description='''this field is optional''', default=None)
   required_field: str = Field(description='''this field is required''')
   no_description: Optional[str] = Field(default=None)
-  options: Optional[Options.Options] = Field(default=None)
+  options: Optional[Options] = Field(default=None)
   content_type: Optional[str] = Field(default=None)
 ",
 ]
