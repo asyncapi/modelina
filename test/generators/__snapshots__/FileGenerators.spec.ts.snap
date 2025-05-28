@@ -14,7 +14,7 @@ exports[`generateToFiles should try and generate models to files 6`] = `"TestMod
 
 exports[`generateToFiles should try and generate models to files 7`] = `"test_model.rs"`;
 
-exports[`generateToFiles should try and generate models to files 8`] = `"TestModel.py"`;
+exports[`generateToFiles should try and generate models to files 8`] = `"test_model.py"`;
 
 exports[`generateToFiles should try and generate models to files 9`] = `"TestModel.kt"`;
 

@@ -105,7 +105,10 @@ describe('PythonGenerator', () => {
         },
         additionalProperties: false
       };
-      const models = await generator.generate(doc);
+
+      const options = { packageName: 'test' };
+
+      const models = await generator.generate(doc, options);
       expect(models).toHaveLength(1);
       expect(models[0].result).toMatchSnapshot();
     });
@@ -137,7 +140,10 @@ describe('PythonGenerator', () => {
         },
         required: ['street_name', 'city', 'state', 'house_number', 'array_type']
       };
-      const models = await generator.generate(doc);
+
+      const options = { packageName: 'test' };
+
+      const models = await generator.generate(doc, options);
       expect(models).toHaveLength(1);
       expect(models[0].result).toMatchSnapshot();
     });
@@ -171,7 +177,9 @@ describe('PythonGenerator', () => {
         ]
       });
 
-      const models = await generator.generate(doc);
+      const options = { packageName: 'test' };
+
+      const models = await generator.generate(doc, options);
       expect(models).toHaveLength(1);
       expect(models[0].result).toMatchSnapshot();
     });

@@ -120,7 +120,7 @@ describe('models', () => {
     test
       .stderr()
       .stdout()
-      .command([...generalOptions, 'python', ASYNCAPI_V2_DOCUMENT, `-o=${ path.resolve(outputDir, './python')}`])
+      .command([...generalOptions, 'python', ASYNCAPI_V2_DOCUMENT, `-o=${ path.resolve(outputDir, './python')}`, '--packageName', 'test'])
       .it('works when file path is passed', (ctx, done) => {
         expect(ctx.stdout).to.contain(
           'Successfully generated the following models: '
@@ -130,11 +130,19 @@ describe('models', () => {
     test
       .stderr()
       .stdout()
-      .command([...generalOptions, 'python', ASYNCAPI_V2_DOCUMENT, '--pyDantic'])
+      .command([...generalOptions, 'python', ASYNCAPI_V2_DOCUMENT, '--pyDantic', '--packageName', 'test'])
       .it('works when --pyDantic is set', (ctx, done) => {
         expect(ctx.stdout).to.contain(
           'Successfully generated the following models: '
         );
+        done();
+      });
+    test
+      .stderr()
+      .stdout()
+      .command([...generalOptions, 'python', ASYNCAPI_V2_DOCUMENT, `-o=${ path.resolve(outputDir, './python')}`])
+      .it('fails when no package defined', (ctx, done) => {
+        expect(ctx.stderr).to.contain('Error: In order to generate models to Python, we need to know which package they are under. Add `--packageName=PACKAGENAME` to set the desired package name.\n');
         done();
       });
   });

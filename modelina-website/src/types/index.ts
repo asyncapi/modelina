@@ -95,7 +95,9 @@ export interface ModelinaScalaOptions extends ModelinaGeneralOptions {
   scalaCollectionType: 'List' | 'Array' | undefined;
   scalaPackageName?: string;
 }
-export interface ModelinaPythonOptions extends ModelinaGeneralOptions {}
+export interface ModelinaPythonOptions extends ModelinaGeneralOptions {
+  pythonPackageName?: string;
+}
 export interface ModelinaDartOptions extends ModelinaGeneralOptions {}
 
 export interface ModelinaGeneralQueryOptions {
@@ -140,7 +142,9 @@ export interface ModelinaScalaQueryOptions {
   scalaCollectionType?: string;
   scalaPackageName?: string;
 }
-export interface ModelinaPythonQueryOptions {}
+export interface ModelinaPythonQueryOptions {
+  pythonPackageName?: string;
+}
 export interface ModelinaCplusplusQueryOptions {
   cplusplusNamespace?: string;
 }
