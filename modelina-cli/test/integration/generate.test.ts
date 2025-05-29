@@ -2,6 +2,7 @@
 /* eslint-disable sonarjs/no-duplicate-string */
  
 import path from 'node:path';
+import fs from 'node:fs';
 import { expect, test } from '@oclif/test';
 const generalOptions = ['generate'];
 const outputDir = './test/fixtures/generate/models';
@@ -9,6 +10,7 @@ const ASYNCAPI_V2_DOCUMENT = path.resolve(__dirname, '../fixtures/asyncapi_v2.ym
 const ASYNCAPI_V3_DOCUMENT = path.resolve(__dirname, '../fixtures/asyncapi_v3.yml')
 
 describe('models', () => {
+  fs.rmSync(path.resolve(outputDir), { recursive: true, force: true });
   test
     .stderr()
     .stdout()
@@ -125,16 +127,18 @@ describe('models', () => {
         expect(ctx.stdout).to.contain(
           'Successfully generated the following models: '
         );
+        expect(fs.existsSync(path.resolve(outputDir, './python/user_signed_up_payload.py'))).to.equal(true);
         done();
       });
     test
       .stderr()
       .stdout()
-      .command([...generalOptions, 'python', ASYNCAPI_V2_DOCUMENT, '--pyDantic', '--packageName', 'test'])
+      .command([...generalOptions, 'python', ASYNCAPI_V3_DOCUMENT, '--pyDantic', '--packageName', 'test', `-o=${ path.resolve(outputDir, './python/pydantic')}`])
       .it('works when --pyDantic is set', (ctx, done) => {
         expect(ctx.stdout).to.contain(
           'Successfully generated the following models: '
         );
+        expect(fs.existsSync(path.resolve(outputDir, './python/pydantic/user_signed_up_payload.py'))).to.equal(true);
         done();
       });
     test
