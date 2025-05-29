@@ -30,7 +30,9 @@ export function buildPythonGenerator(flags: any): BuilderReturnType {
   }
 
   const fileGenerator = new PythonFileGenerator({presets});
-  const fileOptions = undefined;
+  const fileOptions = {
+    packageName
+  };
   return {
     fileOptions,
     fileGenerator
