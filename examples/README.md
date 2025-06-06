@@ -110,6 +110,7 @@ These are all specific examples only relevant to the Java generator:
 - [generate-java-models](./generate-java-models) - A basic example to generate Java data models.
 - [java-generate-tostring](./java-generate-tostring) - A basic example that shows how to generate models that overwrite the `toString` method
 - [java-change-collection-type](./java-change-collection-type) - An example to render collections as List in Java.
+- [java-use-optionals-for-non-required-fields](java-generate-optionals-for-non-required-fields) - An example to render non-required fields as `Optional` in Java.
 - [java-generate-hashcode](./java-generate-hashcode) - A basic example that shows how to generate models that overwrite the `hashCode` method
 - [java-from-typescript-type](./java-from-typescript-type) - A basic example that shows how to generate a Java model from a TypeScript type input file.
 - [java-generate-marshalling](./java-generate-marshalling) - A basic example of how to use the un/marshalling functionality of the java class.
