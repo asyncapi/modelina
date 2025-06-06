@@ -34,6 +34,16 @@ export class ClassRenderer extends JavaRenderer<ConstrainedObjectModel> {
       this.addCollectionDependencies();
     }
 
+    const useOptional =
+      this.options?.useOptionalForNullableProperties &&
+      this.doesContainOptionalProperties();
+    if (useOptional) {
+      this.dependencyManager.addDependency('import java.util.Optional;');
+      this.dependencyManager.addDependency(
+        'import static java.util.Optional.ofNullable;'
+      );
+    }
+
     if (this.model.containsPropertyType(ConstrainedDictionaryModel)) {
       this.dependencyManager.addDependency('import java.util.Map;');
     }
@@ -135,6 +145,11 @@ ${this.indent(this.renderBlock(content, 2))}
     }
 
     return parentUnions;
+  }
+
+  private doesContainOptionalProperties(): boolean {
+    const properties = Object.values(this.model.properties);
+    return properties.some((prop) => !prop.required);
   }
 
   private addCollectionDependencies() {
@@ -289,22 +304,31 @@ export const JAVA_DEFAULT_CLASS_PRESET: ClassPresetType<JavaOptions> = {
 
     return `private ${property.property.type} ${property.propertyName};`;
   },
-  getter({ property, model }) {
+  getter({ property, model, options }) {
     const getterName = `get${FormatHelpers.toPascalCase(
       property.propertyName
     )}`;
+
+    const useOptional =
+      options.useOptionalForNullableProperties && !property.required;
+
+    const returnType = useOptional
+      ? `Optional<${property.property.type}>`
+      : property.property.type;
+
+    const returnValue = useOptional
+      ? `ofNullable(this.${property.propertyName})`
+      : `this.${property.propertyName}`;
 
     if (model.options.isExtended) {
       if (isDiscriminatorOrDictionary(model, property)) {
         return '';
       }
 
-      return `${property.property.type} ${getterName}();`;
+      return `${returnType} ${getterName}();`;
     }
 
-    return `${getOverride(model, property)}public ${
-      property.property.type
-    } ${getterName}() { return this.${property.propertyName}; }`;
+    return `${getOverride(model, property)}public ${returnType} ${getterName}() { return ${returnValue}; }`;
   },
   setter({ property, model }) {
     if (property.property.options.const?.value) {
