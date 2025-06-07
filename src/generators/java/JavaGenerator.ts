@@ -54,6 +54,7 @@ export interface JavaOptions extends CommonGeneratorOptions<JavaPreset> {
   constraints: Constraints<JavaOptions>;
   modelType: 'class' | 'record';
   useModelNameAsConstForDiscriminatorProperty: boolean;
+  useOptionalForNullableProperties?: boolean;
 }
 export type JavaConstantConstraint = ConstantConstraint<JavaOptions>;
 export type JavaEnumKeyConstraint = EnumKeyConstraint<JavaOptions>;
@@ -92,7 +93,8 @@ export class JavaGenerator extends AbstractGenerator<
     typeMapping: JavaDefaultTypeMapping,
     constraints: JavaDefaultConstraints,
     modelType: 'class',
-    useModelNameAsConstForDiscriminatorProperty: false
+    useModelNameAsConstForDiscriminatorProperty: false,
+    useOptionalForNullableProperties: false
   };
 
   static defaultCompleteModelOptions: JavaRenderCompleteModelOptions = {

@@ -1653,6 +1653,15 @@ public interface Vehicle {
 ]
 `;
 
+exports[`JavaGenerator should not render optional imports when only required field 1`] = `
+"public class OtherClass {
+  private String color;
+
+  public String getColor() { return this.color; }
+  public void setColor(String color) { this.color = color; }
+}"
+`;
+
 exports[`JavaGenerator should not render reserved keyword 1`] = `
 "public class Address {
   private String reservedReservedEnum;
@@ -1937,6 +1946,19 @@ public class OtherModel {
   public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
 }",
 ]
+`;
+
+exports[`JavaGenerator should render optional for non-required field 1`] = `
+"public class OtherClass {
+  private String color;
+  private String[] tools;
+
+  public Optional<String> getColor() { return ofNullable(this.color); }
+  public void setColor(String color) { this.color = color; }
+
+  public Optional<String[]> getTools() { return ofNullable(this.tools); }
+  public void setTools(String[] tools) { this.tools = tools; }
+}"
 `;
 
 exports[`JavaGenerator should work custom preset for \`class\` type 1`] = `
