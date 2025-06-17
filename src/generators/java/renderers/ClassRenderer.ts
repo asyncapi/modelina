@@ -149,10 +149,7 @@ ${this.indent(this.renderBlock(content, 2))}
 
   private doesContainOptionalProperties(): boolean {
     const properties = Object.values(this.model.properties);
-    return properties.some(
-      (prop) =>
-        !prop.required && !(prop.property instanceof ConstrainedArrayModel)
-    );
+    return properties.some((prop) => !prop.required);
   }
 
   private addCollectionDependencies() {
@@ -313,9 +310,7 @@ export const JAVA_DEFAULT_CLASS_PRESET: ClassPresetType<JavaOptions> = {
     )}`;
 
     const useOptional =
-      options.useOptionalForNullableProperties &&
-      !property.required &&
-      !(property.property instanceof ConstrainedArrayModel);
+      options.useOptionalForNullableProperties && !property.required;
 
     const returnType = useOptional
       ? `Optional<${property.property.type}>`

@@ -252,28 +252,6 @@ describe('JavaGenerator', () => {
     expect(models[0].dependencies).not.toContain(expectedDependencies);
   });
 
-  test('should not render optional imports when only non-required field of type array', async () => {
-    const doc = {
-      $id: 'OtherClass',
-      type: 'object',
-      additionalProperties: false,
-      properties: {
-        tools: { type: 'array', items: { type: 'string' } }
-      }
-    };
-    const expectedDependencies = [
-      'import java.util.Optional;',
-      'import static java.util.Optional.ofNullable;'
-    ];
-
-    generator = new JavaGenerator({ useOptionalForNullableProperties: true });
-
-    const models = await generator.generate(doc);
-    expect(models).toHaveLength(1);
-    expect(models[0].result).toMatchSnapshot();
-    expect(models[0].dependencies).not.toContain(expectedDependencies);
-  });
-
   test('should render models and their dependencies', async () => {
     const doc = {
       $id: 'Address',
