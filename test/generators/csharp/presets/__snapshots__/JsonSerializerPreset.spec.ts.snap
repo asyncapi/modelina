@@ -205,7 +205,7 @@ public static class EnumTestExtensions
 
   public static EnumTest? ToEnumTest(dynamic? value)
   {
-    switch (value)
+    switch (value.ToString())
     {
       case \\"Some enum String\\": return EnumTest.SOME_SPACE_ENUM_SPACE_STRING;
       case true: return EnumTest.RESERVED_TRUE;
