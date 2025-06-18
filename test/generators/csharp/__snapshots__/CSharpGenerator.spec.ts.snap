@@ -155,7 +155,7 @@ public static class ThingsExtensions
 
   public static Things? ToThings(dynamic? value)
   {
-    switch (value.ToString())
+    switch (value)
     {
       case \\"Texas\\": return Things.TEXAS;
       case \\"1\\": return Things.NUMBER_1;
@@ -211,7 +211,7 @@ public static class StatesExtensions
 
   public static States? ToStates(dynamic? value)
   {
-    switch (value.ToString())
+    switch (value)
     {
       case \\"test+\\": return States.TEST_PLUS;
       case \\"test\\": return States.TEST;

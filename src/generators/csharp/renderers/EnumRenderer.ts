@@ -21,7 +21,7 @@ export class EnumRenderer extends CSharpRenderer<ConstrainedEnumModel> {
 ${this.indent(getValueCaseItemValues)}
 }
 return null;`;
-    const valueSwitch = `switch (value.ToString())
+    const valueSwitch = `switch (value)
 {
 ${this.indent(toEnumCaseItemValues)}
 }
