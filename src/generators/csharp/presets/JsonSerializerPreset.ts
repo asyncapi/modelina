@@ -3,14 +3,12 @@ import { CSharpPreset } from '../CSharpPreset';
 import {
   ConstrainedDictionaryModel,
   ConstrainedEnumModel,
-  ConstrainedMetaModel,
   ConstrainedObjectModel,
   ConstrainedObjectPropertyModel,
   ConstrainedReferenceModel
 } from '../../../models';
 import { CSharpOptions } from '../CSharpGenerator';
 import { pascalCase } from 'change-case';
-import { GoRenderer } from '../../go/GoRenderer';
 
 function renderSerializeProperty(
   modelInstanceVariable: string,
