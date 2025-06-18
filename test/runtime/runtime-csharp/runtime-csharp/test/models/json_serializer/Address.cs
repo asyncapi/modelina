@@ -48,7 +48,7 @@ public class AddressTests
         Assert.That(address.ArrayType.Length, Is.EqualTo(2));
         address.ArrayType[0].TryGetInt32(out int arrayTypeValue0);
         Assert.That(arrayTypeValue0, Is.EqualTo(1));
-        Assert.That(address.ArrayType[1].ToString(), Is.EqualTo("test"));
+        Assert.That(address.ArrayType[1].GetString(), Is.EqualTo("test"));
         Assert.That(address.NestedObject, Is.Not.Null);
         Assert.That(address.NestedObject.Test, Is.EqualTo("test"));
         Assert.That(address.EnumTest, Is.EqualTo(EnumTest.TEST));
