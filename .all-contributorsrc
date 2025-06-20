@@ -1146,7 +1146,9 @@
       "profile": "https://github.com/ThomasVerhoeven1998",
       "contributions": [
         "code",
-        "test"
+        "test",
+        "bug",
+        "doc"
       ]
     },
     {
