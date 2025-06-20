@@ -1653,15 +1653,6 @@ public interface Vehicle {
 ]
 `;
 
-exports[`JavaGenerator should not render optional imports when only non-required field of type array 1`] = `
-"public class OtherClass {
-  private String[] tools;
-
-  public String[] getTools() { return this.tools; }
-  public void setTools(String[] tools) { this.tools = tools; }
-}"
-`;
-
 exports[`JavaGenerator should not render optional imports when only required field 1`] = `
 "public class OtherClass {
   private String color;
@@ -1965,7 +1956,7 @@ exports[`JavaGenerator should render optional for non-required field 1`] = `
   public Optional<String> getColor() { return ofNullable(this.color); }
   public void setColor(String color) { this.color = color; }
 
-  public String[] getTools() { return this.tools; }
+  public Optional<String[]> getTools() { return ofNullable(this.tools); }
   public void setTools(String[] tools) { this.tools = tools; }
 }"
 `;
