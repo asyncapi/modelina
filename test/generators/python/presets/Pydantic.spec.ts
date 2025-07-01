@@ -171,7 +171,7 @@ describe('PYTHON_PYDANTIC_PRESET', () => {
       required: ['testAlias'],
       properties: {
         testAlias: {
-            type: 'string'
+          type: 'string'
         }
       }
     };
