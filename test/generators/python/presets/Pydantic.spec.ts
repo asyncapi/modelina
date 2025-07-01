@@ -163,4 +163,23 @@ describe('PYTHON_PYDANTIC_PRESET', () => {
     const models = await generator.generate(doc);
     expect(models.map((model) => model.result)).toMatchSnapshot();
   });
+
+  test('should always set alias', async () => {
+    const doc = {
+      title: 'AliasTest',
+      type: 'object',
+      required: ['testAlias'],
+      properties: {
+        testAlias: {
+            type: 'string'
+        }
+      }
+    };
+
+    const models = await generator.generate(doc);
+    // check alias='aliasTest' is set - dunno what model.result yields, tho
+    // in worst case check
+    //expect(models.map((model) => model.result)).toContain("alias='''testAlias'''"); // why multi-line string?
+    expect(models.map((model) => model.result)).toMatchSnapshot();
+  });
 });

@@ -63,6 +63,9 @@ const PYTHON_PYDANTIC_CLASS_PRESET: ClassPresetType<PythonOptions> = {
     ) {
       decoratorArgs.push('exclude=True');
     }
+    if (property.propertyName !== property.unconstrainedPropertyName && propertyName !== "additional_properties") {
+      decoratorArgs.push(`alias='''${property.unconstrainedPropertyName}'''`);
+    }
 
     return `${propertyName}: ${type} = Field(${decoratorArgs.join(', ')})`;
   },
