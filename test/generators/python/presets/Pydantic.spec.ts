@@ -177,9 +177,6 @@ describe('PYTHON_PYDANTIC_PRESET', () => {
     };
 
     const models = await generator.generate(doc);
-    // check alias='aliasTest' is set - dunno what model.result yields, tho
-    // in worst case check
-    //expect(models.map((model) => model.result)).toContain("alias='''testAlias'''"); // why multi-line string?
     expect(models.map((model) => model.result)).toMatchSnapshot();
   });
 });
