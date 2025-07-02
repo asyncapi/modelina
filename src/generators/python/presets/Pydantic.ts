@@ -65,7 +65,8 @@ const PYTHON_PYDANTIC_CLASS_PRESET: ClassPresetType<PythonOptions> = {
     }
     if (
       property.propertyName !== property.unconstrainedPropertyName &&
-      propertyName !== 'additional_properties'
+      property.property instanceof ConstrainedDictionaryModel &&
+      property.property.serializationType !== 'unwrap'
     ) {
       decoratorArgs.push(`alias='''${property.unconstrainedPropertyName}'''`);
     }
