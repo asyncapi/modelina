@@ -163,4 +163,20 @@ describe('PYTHON_PYDANTIC_PRESET', () => {
     const models = await generator.generate(doc);
     expect(models.map((model) => model.result)).toMatchSnapshot();
   });
+
+  test('should always set alias', async () => {
+    const doc = {
+      title: 'AliasTest',
+      type: 'object',
+      required: ['testAlias'],
+      properties: {
+        testAlias: {
+          type: 'string'
+        }
+      }
+    };
+
+    const models = await generator.generate(doc);
+    expect(models.map((model) => model.result)).toMatchSnapshot();
+  });
 });
