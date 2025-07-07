@@ -64,9 +64,8 @@ const PYTHON_PYDANTIC_CLASS_PRESET: ClassPresetType<PythonOptions> = {
       decoratorArgs.push('exclude=True');
     }
     if (
-      property.propertyName !== property.unconstrainedPropertyName &&
-      property.property instanceof ConstrainedDictionaryModel &&
-      property.property.serializationType !== 'unwrap'
+  property.propertyName !== property.unconstrainedPropertyName &&
+  (!(property.property instanceof ConstrainedDictionaryModel) || property.property.serializationType !== 'unwrap')
     ) {
       decoratorArgs.push(`alias='''${property.unconstrainedPropertyName}'''`);
     }
