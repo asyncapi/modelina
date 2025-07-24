@@ -1,5 +1,5 @@
 import { Flags } from "@oclif/core";
-import { PYTHON_PYDANTIC_PRESET, PythonFileGenerator } from "@asyncapi/modelina";
+import { PYTHON_PYDANTIC_PRESET, PYTHON_PYDANTIC_TYPE_MAPPING, PythonFileGenerator, PythonPreset} from "@asyncapi/modelina";
 import { BuilderReturnType } from "./generate";
 
 export const PythonOclifFlags = {
@@ -24,12 +24,18 @@ export function buildPythonGenerator(flags: any): BuilderReturnType {
     throw new Error('In order to generate models to Python, we need to know which package they are under. Add `--packageName=PACKAGENAME` to set the desired package name.');
   }
   
-  const presets = [];  
+  const presets: PythonPreset[] = [];
+  let options;
+
   if (pyDantic) {
     presets.push(PYTHON_PYDANTIC_PRESET);
+    const typeMapping = PYTHON_PYDANTIC_TYPE_MAPPING;
+    options = {presets, typeMapping};
+  } else {
+    options = {presets};
   }
 
-  const fileGenerator = new PythonFileGenerator({presets});
+  const fileGenerator = new PythonFileGenerator(options);
   const fileOptions = {
     packageName
   };

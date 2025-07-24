@@ -1,6 +1,7 @@
 import {
   PythonGenerator,
-  PYTHON_PYDANTIC_PRESET
+  PYTHON_PYDANTIC_PRESET,
+  PYTHON_PYDANTIC_TYPE_MAPPING
 } from '../../../../src/generators/python';
 
 describe('PYTHON_PYDANTIC_PRESET', () => {
@@ -8,7 +9,8 @@ describe('PYTHON_PYDANTIC_PRESET', () => {
 
   beforeEach(() => {
     generator = new PythonGenerator({
-      presets: [PYTHON_PYDANTIC_PRESET]
+      presets: [PYTHON_PYDANTIC_PRESET],
+      typeMapping: PYTHON_PYDANTIC_TYPE_MAPPING
     });
   });
 
@@ -104,18 +106,43 @@ describe('PYTHON_PYDANTIC_PRESET', () => {
       },
       components: {
         messages: {
+          Garage: {
+            payload: {
+              $ref: '#/components/schemas/Garage'
+            }
+          },
           Vehicle: {
             payload: {
-              oneOf: [
-                { $ref: '#/components/schemas/Car' },
-                { $ref: '#/components/schemas/Truck' }
-              ]
+              $ref: '#/components/schemas/Vehicle'
             }
           }
         },
         schemas: {
+          Garage: {
+            title: 'Garage',
+            type: 'object',
+            properties: {
+              favorite: {
+                $ref: '#/components/schemas/Vehicle'
+              },
+              vehicles: {
+                type: 'array',
+                items: {
+                  $ref: '#/components/schemas/Vehicle'
+                }
+              }
+            }
+          },
           Vehicle: {
             title: 'Vehicle',
+            type: 'object',
+            oneOf: [
+              { $ref: '#/components/schemas/Car' },
+              { $ref: '#/components/schemas/Truck' }
+            ]
+          },
+          VehicleBase: {
+            title: 'VehicleBase',
             type: 'object',
             discriminator: 'vehicleType',
             properties: {
@@ -132,7 +159,7 @@ describe('PYTHON_PYDANTIC_PRESET', () => {
           },
           Car: {
             allOf: [
-              { $ref: '#/components/schemas/Vehicle' },
+              { $ref: '#/components/schemas/VehicleBase' },
               {
                 type: 'object',
                 properties: {
@@ -145,7 +172,7 @@ describe('PYTHON_PYDANTIC_PRESET', () => {
           },
           Truck: {
             allOf: [
-              { $ref: '#/components/schemas/Vehicle' },
+              { $ref: '#/components/schemas/VehicleBase' },
               {
                 type: 'object',
                 properties: {
