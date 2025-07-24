@@ -12,7 +12,7 @@ exports[`PythonGenerator Class should handle self reference models 1`] = `
     if 'map_model' in input:
       self._map_model: dict[str, Address] = input['map_model']
     if 'union_model' in input:
-      self._union_model: Address | str = input['union_model']
+      self._union_model: Union[Address, str] = input['union_model']
 
   @property
   def self_model(self) -> Address:
@@ -43,10 +43,10 @@ exports[`PythonGenerator Class should handle self reference models 1`] = `
     self._map_model = map_model
 
   @property
-  def union_model(self) -> Address | str:
+  def union_model(self) -> Union[Address, str]:
     return self._union_model
   @union_model.setter
-  def union_model(self, union_model: Address | str):
+  def union_model(self, union_model: Union[Address, str]):
     self._union_model = union_model
 "
 `;
@@ -76,10 +76,10 @@ exports[`PythonGenerator Class should render \`class\` type 1`] = `
     if 'marriage' in input:
       self._marriage: bool = input['marriage']
     if 'members' in input:
-      self._members: str | float | bool = input['members']
-    self._array_type: List[str | float | Any] = input['array_type']
+      self._members: Union[str, float, bool] = input['members']
+    self._array_type: List[Union[str, float, Any]] = input['array_type']
     if 'additional_properties' in input:
-      self._additional_properties: dict[str, Any | str] = input['additional_properties']
+      self._additional_properties: dict[str, Union[Any, str]] = input['additional_properties']
 
   @property
   def street_name(self) -> str:
@@ -117,24 +117,24 @@ exports[`PythonGenerator Class should render \`class\` type 1`] = `
     self._marriage = marriage
 
   @property
-  def members(self) -> str | float | bool:
+  def members(self) -> Union[str, float, bool]:
     return self._members
   @members.setter
-  def members(self, members: str | float | bool):
+  def members(self, members: Union[str, float, bool]):
     self._members = members
 
   @property
-  def array_type(self) -> List[str | float | Any]:
+  def array_type(self) -> List[Union[str, float, Any]]:
     return self._array_type
   @array_type.setter
-  def array_type(self, array_type: List[str | float | Any]):
+  def array_type(self, array_type: List[Union[str, float, Any]]):
     self._array_type = array_type
 
   @property
-  def additional_properties(self) -> dict[str, Any | str]:
+  def additional_properties(self) -> dict[str, Union[Any, str]]:
     return self._additional_properties
   @additional_properties.setter
-  def additional_properties(self, additional_properties: dict[str, Any | str]):
+  def additional_properties(self, additional_properties: dict[str, Union[Any, str]]):
     self._additional_properties = additional_properties
 "
 `;

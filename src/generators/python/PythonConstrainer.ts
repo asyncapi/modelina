@@ -46,12 +46,14 @@ export const PythonDefaultTypeMapping: PythonTypeMapping = {
     //Returning name here because all enum models have been split out
     return constrainedModel.name;
   },
-  Union({ constrainedModel }): string {
+  Union({ constrainedModel, dependencyManager }): string {
+    dependencyManager.addDependency('from typing import Union');
     const unionTypes = constrainedModel.union.map((unionModel) => {
       return unionModel.type;
     });
     const uniqueSet = new Set(unionTypes);
-    return [...uniqueSet].join(' | ');
+    // support Python pre 3.10
+    return `Union[${[...uniqueSet].join(', ')}]`;
   },
   Dictionary({ constrainedModel }): string {
     return `dict[${constrainedModel.key.type}, ${constrainedModel.value.type}]`;
