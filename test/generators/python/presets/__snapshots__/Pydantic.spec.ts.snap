@@ -32,7 +32,7 @@ Array [
   
     known_json_properties = ['testAlias', 'additionalProperties']
     additional_properties = data.get('additional_properties', {})
-    for obj_key in list(data.keys()):
+    for obj_key in unknown_object_properties:
       if not known_json_properties.__contains__(obj_key):
         additional_properties[obj_key] = data.pop(obj_key, None)
     data['additional_properties'] = additional_properties
@@ -76,7 +76,7 @@ Array [
   
     known_json_properties = ['vehicleType', 'length', 'additionalProperties']
     additional_properties = data.get('additional_properties', {})
-    for obj_key in list(data.keys()):
+    for obj_key in unknown_object_properties:
       if not known_json_properties.__contains__(obj_key):
         additional_properties[obj_key] = data.pop(obj_key, None)
     data['additional_properties'] = additional_properties
@@ -117,7 +117,7 @@ Array [
   
     known_json_properties = ['vehicleType', 'length', 'additionalProperties']
     additional_properties = data.get('additional_properties', {})
-    for obj_key in list(data.keys()):
+    for obj_key in unknown_object_properties:
       if not known_json_properties.__contains__(obj_key):
         additional_properties[obj_key] = data.pop(obj_key, None)
     data['additional_properties'] = additional_properties
@@ -159,7 +159,7 @@ Array [
   
     known_json_properties = ['nullableUnionTest', 'additionalProperties']
     additional_properties = data.get('additional_properties', {})
-    for obj_key in list(data.keys()):
+    for obj_key in unknown_object_properties:
       if not known_json_properties.__contains__(obj_key):
         additional_properties[obj_key] = data.pop(obj_key, None)
     data['additional_properties'] = additional_properties
@@ -196,7 +196,7 @@ Array [
   
     known_json_properties = ['testProp1', 'additionalProperties']
     additional_properties = data.get('additional_properties', {})
-    for obj_key in list(data.keys()):
+    for obj_key in unknown_object_properties:
       if not known_json_properties.__contains__(obj_key):
         additional_properties[obj_key] = data.pop(obj_key, None)
     data['additional_properties'] = additional_properties
@@ -240,7 +240,7 @@ exports[`PYTHON_PYDANTIC_PRESET should render pydantic for class 1`] = `
   
     known_json_properties = ['prop', 'additionalProperties']
     additional_properties = data.get('additional_properties', {})
-    for obj_key in list(data.keys()):
+    for obj_key in unknown_object_properties:
       if not known_json_properties.__contains__(obj_key):
         additional_properties[obj_key] = data.pop(obj_key, None)
     data['additional_properties'] = additional_properties
@@ -281,7 +281,7 @@ Array [
   
     known_json_properties = ['unionTest', 'additionalProperties']
     additional_properties = data.get('additional_properties', {})
-    for obj_key in list(data.keys()):
+    for obj_key in unknown_object_properties:
       if not known_json_properties.__contains__(obj_key):
         additional_properties[obj_key] = data.pop(obj_key, None)
     data['additional_properties'] = additional_properties
@@ -318,7 +318,7 @@ Array [
   
     known_json_properties = ['testProp1', 'additionalProperties']
     additional_properties = data.get('additional_properties', {})
-    for obj_key in list(data.keys()):
+    for obj_key in unknown_object_properties:
       if not known_json_properties.__contains__(obj_key):
         additional_properties[obj_key] = data.pop(obj_key, None)
     data['additional_properties'] = additional_properties
@@ -355,7 +355,7 @@ Array [
   
     known_json_properties = ['testProp2', 'additionalProperties']
     additional_properties = data.get('additional_properties', {})
-    for obj_key in list(data.keys()):
+    for obj_key in unknown_object_properties:
       if not known_json_properties.__contains__(obj_key):
         additional_properties[obj_key] = data.pop(obj_key, None)
     data['additional_properties'] = additional_properties
