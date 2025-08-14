@@ -61,7 +61,7 @@ export const PythonDefaultTypeMapping: PythonTypeMapping = {
     let union = `Union[${[...uniqueSet].join(', ')}]`;
 
     if (
-      options.presets?.find((preset) => preset === PYTHON_PYDANTIC_PRESET) &&
+      options.presets?.includes(PYTHON_PYDANTIC_PRESET) &&
       constrainedModel.options.discriminator
     ) {
       const discriminator =
