@@ -1,12 +1,7 @@
-import {
-  PythonGenerator,
-  PYTHON_PYDANTIC_PRESET,
-  PYTHON_PYDANTIC_TYPE_MAPPING
-} from '../../src';
+import { PythonGenerator, PYTHON_PYDANTIC_PRESET } from '../../src';
 
 const generator = new PythonGenerator({
-  presets: [PYTHON_PYDANTIC_PRESET],
-  typeMapping: PYTHON_PYDANTIC_TYPE_MAPPING
+  presets: [PYTHON_PYDANTIC_PRESET]
 });
 const jsonSchemaDraft7 = {
   $schema: 'http://json-schema.org/draft-07/schema#',

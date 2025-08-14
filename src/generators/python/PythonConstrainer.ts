@@ -7,6 +7,11 @@ import { defaultModelNameConstraints } from './constrainer/ModelNameConstrainer'
 import { defaultPropertyKeyConstraints } from './constrainer/PropertyKeyConstrainer';
 import { defaultConstantConstraints } from './constrainer/ConstantConstrainer';
 import { PythonOptions, PythonTypeMapping } from './PythonGenerator';
+import { PYTHON_PYDANTIC_PRESET } from './presets';
+import {
+  ConstrainedObjectModel,
+  ConstrainedReferenceModel
+} from '../../models';
 
 export const PythonDefaultTypeMapping: PythonTypeMapping = {
   Object({ constrainedModel }): string {
@@ -46,14 +51,38 @@ export const PythonDefaultTypeMapping: PythonTypeMapping = {
     //Returning name here because all enum models have been split out
     return constrainedModel.name;
   },
-  Union({ constrainedModel, dependencyManager }): string {
+  Union({ constrainedModel, options, dependencyManager }): string {
     dependencyManager.addDependency('from typing import Union');
     const unionTypes = constrainedModel.union.map((unionModel) => {
       return unionModel.type;
     });
     const uniqueSet = new Set(unionTypes);
     // support Python pre 3.10
-    return `Union[${[...uniqueSet].join(', ')}]`;
+    let union = `Union[${[...uniqueSet].join(', ')}]`;
+
+    if (
+      options.presets?.find((preset) => preset === PYTHON_PYDANTIC_PRESET) &&
+      constrainedModel.options.discriminator
+    ) {
+      const discriminator =
+        constrainedModel.options.discriminator.discriminator;
+      const reference = constrainedModel.union[0];
+      if (reference instanceof ConstrainedReferenceModel) {
+        const ref = reference.ref;
+        if (ref instanceof ConstrainedObjectModel) {
+          const properties = ref.properties;
+          const property = Object.values(properties).find((property) => {
+            return property.unconstrainedPropertyName === discriminator;
+          });
+          if (property !== undefined) {
+            dependencyManager.addDependency('from typing import Annotated');
+            union = `Annotated[${union}, Field(discriminator='${property.propertyName}')]`;
+          }
+        }
+      }
+    }
+
+    return union;
   },
   Dictionary({ constrainedModel }): string {
     return `dict[${constrainedModel.key.type}, ${constrainedModel.value.type}]`;

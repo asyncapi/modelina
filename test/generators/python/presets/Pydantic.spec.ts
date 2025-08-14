@@ -1,7 +1,6 @@
 import {
   PythonGenerator,
-  PYTHON_PYDANTIC_PRESET,
-  PYTHON_PYDANTIC_TYPE_MAPPING
+  PYTHON_PYDANTIC_PRESET
 } from '../../../../src/generators/python';
 
 describe('PYTHON_PYDANTIC_PRESET', () => {
@@ -9,8 +8,7 @@ describe('PYTHON_PYDANTIC_PRESET', () => {
 
   beforeEach(() => {
     generator = new PythonGenerator({
-      presets: [PYTHON_PYDANTIC_PRESET],
-      typeMapping: PYTHON_PYDANTIC_TYPE_MAPPING
+      presets: [PYTHON_PYDANTIC_PRESET]
     });
   });
 
