@@ -2161,7 +2161,7 @@ Array [
   "public class Owner {
   @JsonProperty(\\"id\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
-  private String id = \\"e3395ed6-89e2-458a-b9e0-d2e2c2bab6e6\\";
+  private UUID id = UUID.fromString(\\"e3395ed6-89e2-458a-b9e0-d2e2c2bab6e6\\");
   @JsonProperty(\\"name\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private String name;
@@ -2190,8 +2190,8 @@ Array [
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
-  public String getId() { return this.id; }
-  public void setId(String id) { this.id = id; }
+  public UUID getId() { return this.id; }
+  public void setId(UUID id) { this.id = id; }
 
   public String getName() { return this.name; }
   public void setName(String name) { this.name = name; }

@@ -44,5 +44,11 @@ export class JavaImportUtils {
     if (containsDate) {
       dependencyManager.addDependency('import java.time.LocalDate;');
     }
+    const containsUUID = Object.values(properties).some(
+      (prop) => prop.property.options?.format === 'uuid'
+    );
+    if (containsUUID) {
+      dependencyManager.addDependency('import java.util.UUID;');
+    }
   }
 }

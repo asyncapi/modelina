@@ -181,6 +181,8 @@ export const JavaDefaultTypeMapping: JavaTypeMapping = {
         return 'Duration';
       case 'binary':
         return 'byte[]';
+      case 'uuid':
+        return 'UUID';
       default:
         return 'String';
     }
