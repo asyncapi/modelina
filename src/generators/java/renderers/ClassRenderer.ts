@@ -12,6 +12,7 @@ import { JavaOptions } from '../JavaGenerator';
 import { ClassPresetType } from '../JavaPreset';
 import { unionIncludesBuiltInTypes } from '../JavaConstrainer';
 import { isEnum } from '../../csharp/Constants';
+import { JavaImportUtils } from '../JavaImportUtils';
 
 /**
  * Renderer for Java's `class` type
@@ -27,13 +28,15 @@ export class ClassRenderer extends JavaRenderer<ConstrainedObjectModel> {
       await this.runAdditionalContentPreset()
     ];
 
-    if (
-      this.model.containsPropertyType(ConstrainedArrayModel) &&
-      this.options?.collectionType === 'List'
-    ) {
-      this.addCollectionDependencies();
-    }
-
+    JavaImportUtils.addCollectionDependencies(
+      this.options,
+      this.model.properties,
+      this.dependencyManager
+    );
+    JavaImportUtils.addImportForTypes(
+      this.model.properties,
+      this.dependencyManager
+    );
     const useOptional =
       this.options?.useOptionalForNullableProperties &&
       this.doesContainOptionalProperties();
@@ -151,33 +154,6 @@ ${this.indent(this.renderBlock(content, 2))}
     const properties = Object.values(this.model.properties);
     return properties.some((prop) => !prop.required);
   }
-
-  private addCollectionDependencies() {
-    const properties = Object.values(this.model.properties);
-
-    let needsList = false;
-    let needsSet = false;
-
-    for (const prop of properties) {
-      const propertyModel = prop.property;
-      if (propertyModel instanceof ConstrainedArrayModel) {
-        const isUnique = propertyModel.originalInput?.uniqueItems === true;
-        if (isUnique) {
-          needsSet = true;
-        } else {
-          needsList = true;
-        }
-      }
-    }
-
-    if (needsList) {
-      this.dependencyManager.addDependency('import java.util.List;');
-    }
-
-    if (needsSet) {
-      this.dependencyManager.addDependency('import java.util.Set;');
-    }
-  }
 }
 
 const getOverride = (
@@ -280,6 +256,32 @@ const isEnumOrEnumInExtended = (
   });
 };
 
+function renderFieldWithDefault(property: ConstrainedObjectPropertyModel) {
+  if (property.property.options?.format === 'date') {
+    return `private ${property.property.type} ${property.propertyName} = LocalDate.parse("${property.property.originalInput.default}");`;
+  }
+  if (property.property.options?.format === 'time') {
+    return `private ${property.property.type} ${property.propertyName} = OffsetTime.parse("${property.property.originalInput.default}");`;
+  }
+  if (property.property.options?.format === 'date-time') {
+    if (property.property.type === 'OffsetDateTime') {
+      return `private ${property.property.type} ${property.propertyName} = OffsetDateTime.parse("${property.property.originalInput.default}");`;
+    } else if (property.property.type === 'Instant') {
+      return `private ${property.property.type} ${property.propertyName} = Instant.parse("${property.property.originalInput.default}");`;
+    }
+  }
+  if (property.property.type === 'UUID') {
+    return `private ${property.property.type} ${property.propertyName} = UUID.fromString("${property.property.originalInput.default}");`;
+  }
+  if (property.property.type === 'String') {
+    return `private ${property.property.type} ${property.propertyName} = "${property.property.originalInput.default}";`;
+  }
+  if (property.property.type === 'BigDecimal') {
+    return `private ${property.property.type} ${property.propertyName} = BigDecimal.valueOf(${property.property.originalInput.default});`;
+  }
+  return `private ${property.property.type} ${property.propertyName} = ${property.property.originalInput.default};`;
+}
+
 export const JAVA_DEFAULT_CLASS_PRESET: ClassPresetType<JavaOptions> = {
   self({ renderer }) {
     return renderer.defaultSelf();
@@ -294,22 +296,7 @@ export const JAVA_DEFAULT_CLASS_PRESET: ClassPresetType<JavaOptions> = {
     }
 
     if (property.property.originalInput?.default) {
-      if (property.property.options?.format === 'date') {
-        return `private ${property.property.type} ${property.propertyName} = LocalDate.parse("${property.property.originalInput.default}");`;
-      }
-      if (property.property.options?.format === 'date-time') {
-        return `private ${property.property.type} ${property.propertyName} = Instant.parse("${property.property.originalInput.default}");`;
-      }
-      if (property.property.options?.format === 'uuid') {
-        return `private ${property.property.type} ${property.propertyName} = UUID.fromString("${property.property.originalInput.default}");`;
-      }
-      if (property.property.type === 'String') {
-        return `private ${property.property.type} ${property.propertyName} = "${property.property.originalInput.default}";`;
-      }
-      if (property.property.type === 'Double') {
-        return `private ${property.property.type} ${property.propertyName} = BigDecimal.valueOf(${property.property.originalInput.default});`;
-      }
-      return `private ${property.property.type} ${property.propertyName} = ${property.property.originalInput.default};`;
+      return renderFieldWithDefault(property);
     }
 
     if (

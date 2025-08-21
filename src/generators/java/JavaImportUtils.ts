@@ -1,0 +1,62 @@
+import {
+  ConstrainedArrayModel,
+  ConstrainedObjectPropertyModel
+} from '../../models';
+import { JavaOptions } from './JavaGenerator';
+
+export class JavaImportUtils {
+  public static addCollectionDependencies(
+    options: JavaOptions,
+    properties: Record<string, ConstrainedObjectPropertyModel>,
+    dependencyManager: any
+  ): void {
+    let needsList = false;
+    let needsSet = false;
+    for (const prop of Object.values(properties)) {
+      const propertyModel = prop.property;
+      if (
+        propertyModel instanceof ConstrainedArrayModel &&
+        options.collectionType === 'List'
+      ) {
+        const isUnique = propertyModel.originalInput?.uniqueItems === true;
+        if (isUnique) {
+          needsSet = true;
+        } else {
+          needsList = true;
+        }
+      }
+    }
+    if (needsList) {
+      dependencyManager.addDependency('import java.util.List;');
+    }
+    if (needsSet) {
+      dependencyManager.addDependency('import java.util.Set;');
+    }
+  }
+
+  public static addImportForTypes(
+    properties: Record<string, ConstrainedObjectPropertyModel>,
+    dependencyManager: any
+  ): void {
+    const containsDate = Object.values(properties).some(
+      (prop) => prop.property.options?.format === 'date'
+    );
+    if (containsDate) {
+      dependencyManager.addDependency('import java.time.LocalDate;');
+    }
+    const containsDateTime = Object.values(properties).some(
+      (prop) =>
+        prop.property.options?.format === 'dateTime' ||
+        prop.property.options?.format === 'date-time'
+    );
+    if (containsDateTime) {
+      dependencyManager.addDependency('import java.time.Instant;');
+    }
+    const containsUUID = Object.values(properties).some(
+      (prop) => prop.property.options?.format === 'uuid'
+    );
+    if (containsUUID) {
+      dependencyManager.addDependency('import java.util.UUID;');
+    }
+  }
+}

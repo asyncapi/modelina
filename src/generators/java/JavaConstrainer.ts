@@ -171,14 +171,14 @@ export const JavaDefaultTypeMapping: JavaTypeMapping = {
   String({ constrainedModel }): string {
     switch (constrainedModel.options.format) {
       case 'date':
-        return 'java.time.LocalDate';
+        return 'LocalDate';
       case 'time':
-        return 'java.time.OffsetTime';
+        return 'OffsetTime';
       case 'dateTime':
       case 'date-time':
-        return 'java.time.OffsetDateTime';
+        return 'OffsetDateTime';
       case 'duration':
-        return 'java.time.Duration';
+        return 'Duration';
       case 'binary':
         return 'byte[]';
       default:

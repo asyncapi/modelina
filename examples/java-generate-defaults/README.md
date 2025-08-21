@@ -1,6 +1,19 @@
 # Java generate defaults
 
-A basic example to defaults for properties
+A basic example to defaults for properties when using classes. (Not implemented for Java records)
+
+Supported types for defaults are:
+- `String`
+- `Integer`
+- `Long`
+- `Double`
+- `BigDecimal`
+- `Boolean`
+- `LocalDate`
+- `OffsetDateTime`
+- `OffsetTime`
+- `Instant`
+- `UUID`
 
 ## How to run this example
 
