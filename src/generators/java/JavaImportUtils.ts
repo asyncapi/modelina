@@ -34,7 +34,7 @@ export class JavaImportUtils {
     }
   }
 
-  public static addDependencyForDate(
+  public static addDependenciesForStringTypes(
     properties: Record<string, ConstrainedObjectPropertyModel>,
     dependencyManager: any
   ): void {
@@ -43,6 +43,27 @@ export class JavaImportUtils {
     );
     if (containsDate) {
       dependencyManager.addDependency('import java.time.LocalDate;');
+    }
+    const containsDateTime = Object.values(properties).some(
+      (prop) =>
+        (prop.property.options?.format === 'date-time' ||
+          prop.property.options?.format === 'dateTime') &&
+        prop.property.type === 'OffsetDateTime'
+    );
+    if (containsDateTime) {
+      dependencyManager.addDependency('import java.time.OffsetDateTime;');
+    }
+    const containsTime = Object.values(properties).some(
+      (prop) => prop.property.options?.format === 'time'
+    );
+    if (containsTime) {
+      dependencyManager.addDependency('import java.time.OffsetTime;');
+    }
+    const containsDuration = Object.values(properties).some(
+      (prop) => prop.property.options?.format === 'Duration'
+    );
+    if (containsDuration) {
+      dependencyManager.addDependency('import java.time.Duration;');
     }
     const containsUUID = Object.values(properties).some(
       (prop) => prop.property.options?.format === 'uuid'

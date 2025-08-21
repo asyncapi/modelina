@@ -33,7 +33,7 @@ export class ClassRenderer extends JavaRenderer<ConstrainedObjectModel> {
       this.model.properties,
       this.dependencyManager
     );
-    JavaImportUtils.addDependencyForDate(
+    JavaImportUtils.addDependenciesForStringTypes(
       this.model.properties,
       this.dependencyManager
     );
