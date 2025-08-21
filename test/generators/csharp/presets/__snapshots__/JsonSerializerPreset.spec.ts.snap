@@ -205,6 +205,30 @@ public static class EnumTestExtensions
 
   public static EnumTest? ToEnumTest(dynamic? value)
   {
+    if (value is JsonElement jsonElement)
+    {
+      if (jsonElement.ValueKind == JsonValueKind.String)
+      {
+        value = jsonElement.GetString();
+      }
+      else if (jsonElement.ValueKind == JsonValueKind.Number)
+      {
+        value = jsonElement.GetInt32();
+      }
+      else if (jsonElement.ValueKind == JsonValueKind.False || jsonElement.ValueKind == JsonValueKind.True)
+      {
+        value = jsonElement.GetBoolean();
+      }
+      else if (jsonElement.ValueKind == JsonValueKind.Object)
+      {
+        value = jsonElement.ToString();
+      }
+      else
+      {
+        return null;
+      }
+    }
+
     switch (value)
     {
       case \\"Some enum String\\": return EnumTest.SOME_SPACE_ENUM_SPACE_STRING;
