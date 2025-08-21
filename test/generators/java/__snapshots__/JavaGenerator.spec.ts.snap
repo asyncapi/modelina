@@ -2162,6 +2162,9 @@ Array [
   @JsonProperty(\\"birthdate\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private java.time.LocalDate birthdate = LocalDate.parse(\\"2000-01-01\\");
+  @JsonProperty(\\"isEmployed\\")
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private Boolean isEmployed = true;
   @JsonAnySetter
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
@@ -2190,6 +2193,9 @@ Array [
   public java.time.LocalDate getBirthdate() { return this.birthdate; }
   public void setBirthdate(java.time.LocalDate birthdate) { this.birthdate = birthdate; }
 
+  public Boolean getIsEmployed() { return this.isEmployed; }
+  public void setIsEmployed(Boolean isEmployed) { this.isEmployed = isEmployed; }
+
   @JsonAnyGetter
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
   public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
@@ -2212,12 +2218,13 @@ Array [
         Objects.equals(this.creationTime, self.creationTime) &&
         Objects.equals(this.gender, self.gender) &&
         Objects.equals(this.birthdate, self.birthdate) &&
+        Objects.equals(this.isEmployed, self.isEmployed) &&
         Objects.equals(this.additionalProperties, self.additionalProperties);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash((Object)id, (Object)name, (Object)age, (Object)daysSince, (Object)daysBefore, (Object)creationTime, (Object)gender, (Object)birthdate, (Object)additionalProperties);
+    return Objects.hash((Object)id, (Object)name, (Object)age, (Object)daysSince, (Object)daysBefore, (Object)creationTime, (Object)gender, (Object)birthdate, (Object)isEmployed, (Object)additionalProperties);
   }
 
   @Override
@@ -2231,6 +2238,7 @@ Array [
       \\"    creationTime: \\" + toIndentedString(creationTime) + \\"\\\\n\\" +
       \\"    gender: \\" + toIndentedString(gender) + \\"\\\\n\\" +
       \\"    birthdate: \\" + toIndentedString(birthdate) + \\"\\\\n\\" +
+      \\"    isEmployed: \\" + toIndentedString(isEmployed) + \\"\\\\n\\" +
       \\"    additionalProperties: \\" + toIndentedString(additionalProperties) + \\"\\\\n\\" +
     \\"}\\";
   }

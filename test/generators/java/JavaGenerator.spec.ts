@@ -954,6 +954,10 @@ describe('JavaGenerator', () => {
                   type: 'string',
                   format: 'date',
                   default: '2000-01-01'
+                },
+                isEmployed: {
+                  type: 'boolean',
+                  default: true
                 }
               }
             }
