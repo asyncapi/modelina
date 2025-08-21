@@ -1,8 +1,6 @@
 import { JavaGenerator } from '../../src';
 
-const generator = new JavaGenerator({
-  useOptionalForNullableProperties: true
-});
+const generator = new JavaGenerator();
 const jsonSchemaDraft7 = {
   $schema: 'http://json-schema.org/draft-07/schema#',
   type: 'object',
