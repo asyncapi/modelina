@@ -80,7 +80,7 @@ describe('EnumConstrainer', () => {
         'SOME_WEIRD_VALUE_EXCLAMATION_QUOTATION_HASH_2'
       );
     });
-    test('should never render reserved keywords', () => {
+    test('should never render lowercase reserved keywords', () => {
       const constrainedKey = JavaDefaultConstraints.enumKey({
         enumModel,
         constrainedEnumModel,
@@ -88,6 +88,15 @@ describe('EnumConstrainer', () => {
         options: JavaGenerator.defaultOptions
       });
       expect(constrainedKey).toEqual('RESERVED_RETURN');
+    });
+    test('should render uppercase reserved keywords', () => {
+      const constrainedKey = JavaDefaultConstraints.enumKey({
+        enumModel,
+        constrainedEnumModel,
+        enumKey: 'RETURN',
+        options: JavaGenerator.defaultOptions
+      });
+      expect(constrainedKey).toEqual('RETURN');
     });
   });
   describe('enum values', () => {

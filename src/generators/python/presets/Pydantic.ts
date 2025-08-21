@@ -63,6 +63,13 @@ const PYTHON_PYDANTIC_CLASS_PRESET: ClassPresetType<PythonOptions> = {
     ) {
       decoratorArgs.push('exclude=True');
     }
+    if (
+      property.propertyName !== property.unconstrainedPropertyName &&
+      (!(property.property instanceof ConstrainedDictionaryModel) ||
+        property.property.serializationType !== 'unwrap')
+    ) {
+      decoratorArgs.push(`alias='''${property.unconstrainedPropertyName}'''`);
+    }
 
     return `${propertyName}: ${type} = Field(${decoratorArgs.join(', ')})`;
   },
@@ -119,7 +126,7 @@ def unwrap_${dictionaryModel?.propertyName}(cls, data):
     .map((value) => `'${value.unconstrainedPropertyName}'`)
     .join(', ')}]
   ${dictionaryModel?.propertyName} = data.get('${dictionaryModel?.propertyName}', {})
-  for obj_key in list(data.keys()):
+  for obj_key in unknown_object_properties:
     if not known_json_properties.__contains__(obj_key):
       ${dictionaryModel?.propertyName}[obj_key] = data.pop(obj_key, None)
   data['${dictionaryModel?.propertyName}'] = ${dictionaryModel?.propertyName}
