@@ -38,7 +38,7 @@ export class RecordRenderer extends JavaRenderer<ConstrainedObjectModel> {
       this.model.properties,
       this.dependencyManager
     );
-    JavaImportUtils.addImportForTypes(
+    JavaImportUtils.addDependencyForDate(
       this.model.properties,
       this.dependencyManager
     );
