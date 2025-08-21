@@ -1,6 +1,5 @@
 import { JavaRenderer } from '../JavaRenderer';
 import {
-  ConstrainedArrayModel,
   ConstrainedDictionaryModel,
   ConstrainedObjectModel,
   ConstrainedObjectPropertyModel,
@@ -13,6 +12,7 @@ import { ClassPresetType } from '../JavaPreset';
 import { unionIncludesBuiltInTypes } from '../JavaConstrainer';
 import { isEnum } from '../../csharp/Constants';
 import { JavaImportUtils } from '../JavaImportUtils';
+import { JavaDefaultRendererUtil } from '../JavaDefaultRendererUtil';
 
 /**
  * Renderer for Java's `class` type
@@ -256,32 +256,6 @@ const isEnumOrEnumInExtended = (
   });
 };
 
-function renderFieldWithDefault(property: ConstrainedObjectPropertyModel) {
-  if (property.property.options?.format === 'date') {
-    return `private ${property.property.type} ${property.propertyName} = LocalDate.parse("${property.property.originalInput.default}");`;
-  }
-  if (property.property.options?.format === 'time') {
-    return `private ${property.property.type} ${property.propertyName} = OffsetTime.parse("${property.property.originalInput.default}");`;
-  }
-  if (property.property.options?.format === 'date-time') {
-    if (property.property.type === 'OffsetDateTime') {
-      return `private ${property.property.type} ${property.propertyName} = OffsetDateTime.parse("${property.property.originalInput.default}");`;
-    } else if (property.property.type === 'Instant') {
-      return `private ${property.property.type} ${property.propertyName} = Instant.parse("${property.property.originalInput.default}");`;
-    }
-  }
-  if (property.property.type === 'UUID') {
-    return `private ${property.property.type} ${property.propertyName} = UUID.fromString("${property.property.originalInput.default}");`;
-  }
-  if (property.property.type === 'String') {
-    return `private ${property.property.type} ${property.propertyName} = "${property.property.originalInput.default}";`;
-  }
-  if (property.property.type === 'BigDecimal') {
-    return `private ${property.property.type} ${property.propertyName} = BigDecimal.valueOf(${property.property.originalInput.default});`;
-  }
-  return `private ${property.property.type} ${property.propertyName} = ${property.property.originalInput.default};`;
-}
-
 export const JAVA_DEFAULT_CLASS_PRESET: ClassPresetType<JavaOptions> = {
   self({ renderer }) {
     return renderer.defaultSelf();
@@ -296,7 +270,7 @@ export const JAVA_DEFAULT_CLASS_PRESET: ClassPresetType<JavaOptions> = {
     }
 
     if (property.property.originalInput?.default) {
-      return renderFieldWithDefault(property);
+      return JavaDefaultRendererUtil.renderFieldWithDefault(property);
     }
 
     if (
