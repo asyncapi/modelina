@@ -890,6 +890,99 @@ describe('JavaGenerator', () => {
     });
   });
 
+  describe('when default is used, render field with default', () => {
+    test('should create field with default', async () => {
+      const asyncapiDoc = {
+        asyncapi: '2.5.0',
+        info: {
+          title: 'CloudEvent example',
+          version: '1.0.0'
+        },
+        channels: {
+          owner: {
+            publish: {
+              message: {
+                $ref: '#/components/messages/Owner'
+              }
+            }
+          }
+        },
+        components: {
+          messages: {
+            Owner: {
+              payload: {
+                $ref: '#/components/schemas/Owner'
+              }
+            }
+          },
+          schemas: {
+            Owner: {
+              type: 'object',
+              properties: {
+                id: {
+                  type: 'string',
+                  format: 'uuid',
+                  default: 'e3395ed6-89e2-458a-b9e0-d2e2c2bab6e6'
+                },
+                name: {
+                  type: 'string'
+                },
+                age: {
+                  type: 'integer',
+                  format: 'int32',
+                  default: 18
+                },
+                daysSince: {
+                  type: 'integer',
+                  format: 'int64',
+                  default: 544999999
+                },
+                daysBefore: {
+                  type: 'number',
+                  default: 100.5
+                },
+                creationTime: {
+                  type: 'string',
+                  format: 'date-time',
+                  default: '2023-01-01T00:00:00Z'
+                },
+                gender: {
+                  type: 'string',
+                  default: 'male'
+                },
+                birthdate: {
+                  type: 'string',
+                  format: 'date',
+                  default: '2000-01-01'
+                }
+              }
+            }
+          }
+        }
+      };
+
+      generator = new JavaGenerator({
+        presets: [
+          JAVA_COMMON_PRESET,
+          JAVA_JACKSON_PRESET,
+          JAVA_DESCRIPTION_PRESET,
+          JAVA_CONSTRAINTS_PRESET
+        ],
+        collectionType: 'List',
+        useModelNameAsConstForDiscriminatorProperty: true,
+        processorOptions: {
+          jsonSchema: {
+            allowInheritance: true,
+            disableCache: false
+          }
+        }
+      });
+
+      const models = await generator.generate(asyncapiDoc);
+      expect(models.map((model) => model.result)).toMatchSnapshot();
+    });
+  });
+
   describe('throw error when allowInheritance enabled with caching disabled', () => {
     test('should throw error cause caching is disabled', async () => {
       const asyncapiDoc = {

@@ -293,6 +293,25 @@ export const JAVA_DEFAULT_CLASS_PRESET: ClassPresetType<JavaOptions> = {
       return `private final ${property.property.type} ${property.propertyName} = ${property.property.options.const.value};`;
     }
 
+    if (property.property.originalInput?.default) {
+      if (property.property.options?.format === 'date') {
+        return `private ${property.property.type} ${property.propertyName} = LocalDate.parse("${property.property.originalInput.default}");`;
+      }
+      if (property.property.options?.format === 'date-time') {
+        return `private ${property.property.type} ${property.propertyName} = Instant.parse("${property.property.originalInput.default}");`;
+      }
+      if (property.property.options?.format === 'uuid') {
+        return `private ${property.property.type} ${property.propertyName} = UUID.fromString("${property.property.originalInput.default}");`;
+      }
+      if (property.property.type === 'String') {
+        return `private ${property.property.type} ${property.propertyName} = "${property.property.originalInput.default}";`;
+      }
+      if (property.property.type === 'Double') {
+        return `private ${property.property.type} ${property.propertyName} = BigDecimal.valueOf(${property.property.originalInput.default});`;
+      }
+      return `private ${property.property.type} ${property.propertyName} = ${property.property.originalInput.default};`;
+    }
+
     if (
       options.useModelNameAsConstForDiscriminatorProperty &&
       property.unconstrainedPropertyName ===
