@@ -473,6 +473,75 @@ describe('JavaGenerator', () => {
     });
   });
 
+  describe('render optionals correctly when enabled', () => {
+    test('should render optional if no default', async () => {
+      const asyncapiDoc = {
+        asyncapi: '2.5.0',
+        info: {
+          title: 'CloudEvent example',
+          version: '1.0.0'
+        },
+        channels: {
+          animal: {
+            publish: {
+              message: {
+                $ref: '#/components/messages/Pet'
+              }
+            }
+          }
+        },
+        components: {
+          messages: {
+            Pet: {
+              payload: {
+                $ref: '#/components/schemas/Pet'
+              }
+            }
+          },
+          schemas: {
+            Pet: {
+              title: 'Pet',
+              type: 'object',
+              discriminator: '@petType',
+              properties: {
+                '@petType': {
+                  type: 'string'
+                },
+                color: {
+                  type: 'string'
+                },
+                gender: {
+                  type: 'string',
+                  default: 'male'
+                }
+              },
+              required: ['@petType']
+            }
+          }
+        }
+      };
+
+      generator = new JavaGenerator({
+        presets: [
+          JAVA_COMMON_PRESET,
+          JAVA_JACKSON_PRESET,
+          JAVA_DESCRIPTION_PRESET,
+          JAVA_CONSTRAINTS_PRESET
+        ],
+        collectionType: 'List',
+        processorOptions: {
+          jsonSchema: {
+            allowInheritance: true
+          }
+        },
+        useOptionalForNullableProperties: true
+      });
+
+      const models = await generator.generate(asyncapiDoc);
+      expect(models.map((model) => model.result)).toMatchSnapshot();
+    });
+  });
+
   describe('allowInheritance with discriminator containing a special character', () => {
     test('should create interface for Animal, Pet and Fish', async () => {
       const asyncapiDoc = {

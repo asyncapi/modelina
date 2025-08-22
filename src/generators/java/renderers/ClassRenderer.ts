@@ -290,7 +290,9 @@ export const JAVA_DEFAULT_CLASS_PRESET: ClassPresetType<JavaOptions> = {
     )}`;
 
     const useOptional =
-      options.useOptionalForNullableProperties && !property.required;
+      options.useOptionalForNullableProperties &&
+      !property.required &&
+      !property.property.originalInput?.default;
 
     const returnType = useOptional
       ? `Optional<${property.property.type}>`

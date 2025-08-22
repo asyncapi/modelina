@@ -1653,6 +1653,80 @@ public interface Vehicle {
 ]
 `;
 
+exports[`JavaGenerator render optionals correctly when enabled should render optional if no default 1`] = `
+Array [
+  "public class Pet {
+  @NotNull
+  @JsonProperty(\\"@petType\\")
+  private String atPetType;
+  @JsonProperty(\\"color\\")
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private String color;
+  @JsonProperty(\\"gender\\")
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private String gender = \\"male\\";
+  @JsonAnySetter
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private Map<String, Object> additionalProperties;
+
+  public String getAtPetType() { return this.atPetType; }
+  public void setAtPetType(String atPetType) { this.atPetType = atPetType; }
+
+  public Optional<String> getColor() { return ofNullable(this.color); }
+  public void setColor(String color) { this.color = color; }
+
+  public String getGender() { return this.gender; }
+  public void setGender(String gender) { this.gender = gender; }
+
+  @JsonAnyGetter
+  public Optional<Map<String, Object>> getAdditionalProperties() { return ofNullable(this.additionalProperties); }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Pet self = (Pet) o;
+      return 
+        Objects.equals(this.atPetType, self.atPetType) &&
+        Objects.equals(this.color, self.color) &&
+        Objects.equals(this.gender, self.gender) &&
+        Objects.equals(this.additionalProperties, self.additionalProperties);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash((Object)atPetType, (Object)color, (Object)gender, (Object)additionalProperties);
+  }
+
+  @Override
+  public String toString() {
+    return \\"class Pet {\\\\n\\" +   
+      \\"    atPetType: \\" + toIndentedString(atPetType) + \\"\\\\n\\" +
+      \\"    color: \\" + toIndentedString(color) + \\"\\\\n\\" +
+      \\"    gender: \\" + toIndentedString(gender) + \\"\\\\n\\" +
+      \\"    additionalProperties: \\" + toIndentedString(additionalProperties) + \\"\\\\n\\" +
+    \\"}\\";
+  }
+
+  /**
+   * Convert the given object to string with each line indented by 4 spaces
+   * (except the first line).
+   */
+  private String toIndentedString(Object o) {
+    if (o == null) {
+      return \\"null\\";
+    }
+    return o.toString().replace(\\"\\\\n\\", \\"\\\\n    \\");
+  }
+}",
+]
+`;
+
 exports[`JavaGenerator should not render optional imports when only required field 1`] = `
 "public class OtherClass {
   private String color;
