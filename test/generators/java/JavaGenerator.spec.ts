@@ -279,9 +279,9 @@ describe('JavaGenerator', () => {
     };
     const expectedDependencies = [
       'import java.time.LocalDate;',
-      'import java.time.OffsetTime;',
       'import java.time.OffsetDateTime;',
-      'java.time.Duration'
+      'import java.time.OffsetTime;',
+      'import java.time.Duration;'
     ];
 
     generator = new JavaGenerator();
@@ -289,7 +289,7 @@ describe('JavaGenerator', () => {
     const models = await generator.generate(doc);
     expect(models).toHaveLength(1);
     expect(models[0].result).toMatchSnapshot();
-    expect(models[0].dependencies).not.toContain(expectedDependencies);
+    expect(models[0].dependencies).toContain(expectedDependencies);
   });
 
   test('should render models and their dependencies', async () => {

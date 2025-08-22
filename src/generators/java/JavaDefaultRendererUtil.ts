@@ -4,10 +4,10 @@ export class JavaDefaultRendererUtil {
   static renderFieldWithDefault(
     property: ConstrainedObjectPropertyModel
   ): string {
-    if (property.property.options?.format === 'date') {
+    if (property.property.type === 'LocalDate') {
       return `private ${property.property.type} ${property.propertyName} = LocalDate.parse("${property.property.originalInput.default}");`;
     }
-    if (property.property.options?.format === 'time') {
+    if (property.property.type === 'OffsetTime') {
       return `private ${property.property.type} ${property.propertyName} = OffsetTime.parse("${property.property.originalInput.default}");`;
     }
     if (property.property.options?.format === 'date-time') {

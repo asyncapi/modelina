@@ -3,7 +3,7 @@ const spy = jest.spyOn(global.console, 'log').mockImplementation(() => {
 });
 import { generate } from './index';
 
-describe('Should be able to render optionals for non-required fields', () => {
+describe('Should use custom type mappings when overridden', () => {
   afterAll(() => {
     jest.restoreAllMocks();
   });

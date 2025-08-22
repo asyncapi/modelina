@@ -3,12 +3,13 @@ import {
   ConstrainedObjectPropertyModel
 } from '../../models';
 import { JavaOptions } from './JavaGenerator';
+import { JavaDependencyManager } from './JavaDependencyManager';
 
 export class JavaImportUtils {
   public static addCollectionDependencies(
     options: JavaOptions,
     properties: Record<string, ConstrainedObjectPropertyModel>,
-    dependencyManager: any
+    dependencyManager: JavaDependencyManager
   ): void {
     let needsList = false;
     let needsSet = false;
@@ -36,7 +37,7 @@ export class JavaImportUtils {
 
   public static addDependenciesForStringTypes(
     properties: Record<string, ConstrainedObjectPropertyModel>,
-    dependencyManager: any
+    dependencyManager: JavaDependencyManager
   ): void {
     const containsDate = Object.values(properties).some(
       (prop) => prop.property.options?.format === 'date'
@@ -60,7 +61,7 @@ export class JavaImportUtils {
       dependencyManager.addDependency('import java.time.OffsetTime;');
     }
     const containsDuration = Object.values(properties).some(
-      (prop) => prop.property.options?.format === 'Duration'
+      (prop) => prop.property.options?.format === 'duration'
     );
     if (containsDuration) {
       dependencyManager.addDependency('import java.time.Duration;');
