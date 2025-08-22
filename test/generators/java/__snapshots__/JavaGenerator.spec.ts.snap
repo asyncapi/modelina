@@ -2295,7 +2295,7 @@ Array [
   private Long daysSince = 544999999;
   @JsonProperty(\\"daysBefore\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
-  private BigDecimal daysBefore = BigDecimal.valueOf(100.5);
+  private BigDecimal daysBefore = new BigDecimal(100.5);
   @JsonProperty(\\"creationTime\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Instant creationTime = Instant.parse(\\"2023-01-01T00:00:00Z\\");

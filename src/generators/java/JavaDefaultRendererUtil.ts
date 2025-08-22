@@ -24,7 +24,7 @@ export class JavaDefaultRendererUtil {
       return `private ${property.property.type} ${property.propertyName} = "${property.property.originalInput.default}";`;
     }
     if (property.property.type === 'BigDecimal') {
-      return `private ${property.property.type} ${property.propertyName} = BigDecimal.valueOf(${property.property.originalInput.default});`;
+      return `private ${property.property.type} ${property.propertyName} = new BigDecimal(${property.property.originalInput.default});`;
     }
     return `private ${property.property.type} ${property.propertyName} = ${property.property.originalInput.default};`;
   }

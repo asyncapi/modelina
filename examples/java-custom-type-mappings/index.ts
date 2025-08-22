@@ -11,10 +11,6 @@ const generator = new JavaGenerator({
         dependencyManager.addDependency('import java.time.Instant;');
         return 'Instant';
       }
-      if (constrainedModel?.options.format === 'uuid') {
-        dependencyManager.addDependency('import java.util.UUID;');
-        return 'UUID';
-      }
       return 'String';
     }
   }
@@ -24,31 +20,13 @@ const jsonSchemaDraft7 = {
   type: 'object',
   additionalProperties: false,
   properties: {
-    id: {
-      type: 'string',
-      format: 'uuid',
-      default: '123e4567-e89b-12d3-a456-426614174000'
-    },
     gender: {
       type: 'string',
       default: 'male'
     },
-    age: {
-      type: 'integer',
-      default: 18
-    },
     height: {
       type: 'number',
       default: 1.75
-    },
-    isEmployed: {
-      type: 'boolean',
-      default: true
-    },
-    birthdate: {
-      type: 'string',
-      format: 'date',
-      default: '2000-01-01'
     },
     creationTime: {
       type: 'string',
