@@ -1,0 +1,36 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Should be able to render optionals for non-required fields and should log expected output to console 1`] = `
+Array [
+  "public class Root {
+  private UUID id = UUID.fromString(\\"123e4567-e89b-12d3-a456-426614174000\\");
+  private String gender = \\"male\\";
+  private Integer age = 18;
+  private BigDecimal height = BigDecimal.valueOf(1.75);
+  private Boolean isEmployed = true;
+  private String birthdate = LocalDate.parse(\\"2000-01-01\\");
+  private Instant creationTime = Instant.parse(\\"2023-10-01T12:00:00Z\\");
+
+  public UUID getId() { return this.id; }
+  public void setId(UUID id) { this.id = id; }
+
+  public String getGender() { return this.gender; }
+  public void setGender(String gender) { this.gender = gender; }
+
+  public Integer getAge() { return this.age; }
+  public void setAge(Integer age) { this.age = age; }
+
+  public BigDecimal getHeight() { return this.height; }
+  public void setHeight(BigDecimal height) { this.height = height; }
+
+  public Boolean getIsEmployed() { return this.isEmployed; }
+  public void setIsEmployed(Boolean isEmployed) { this.isEmployed = isEmployed; }
+
+  public String getBirthdate() { return this.birthdate; }
+  public void setBirthdate(String birthdate) { this.birthdate = birthdate; }
+
+  public Instant getCreationTime() { return this.creationTime; }
+  public void setCreationTime(Instant creationTime) { this.creationTime = creationTime; }
+}",
+]
+`;
