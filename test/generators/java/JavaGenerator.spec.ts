@@ -249,7 +249,7 @@ describe('JavaGenerator', () => {
     const models = await generator.generate(doc);
     expect(models).toHaveLength(1);
     expect(models[0].result).toMatchSnapshot();
-    expect(models[0].dependencies).not.toContain(expectedDependencies);
+    expect(models[0].dependencies).not.toEqual(expectedDependencies);
   });
 
   test('should render import for date, date-time, time and duration when used', async () => {
@@ -289,7 +289,7 @@ describe('JavaGenerator', () => {
     const models = await generator.generate(doc);
     expect(models).toHaveLength(1);
     expect(models[0].result).toMatchSnapshot();
-    expect(models[0].dependencies).toContain(expectedDependencies);
+    expect(models[0].dependencies).toEqual(expectedDependencies);
   });
 
   test('should render models and their dependencies', async () => {
