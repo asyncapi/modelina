@@ -205,6 +205,37 @@ ${renderer.indent(deserializeProperties, 4)}
 }`;
 }
 
+function renderDynamicValueConverter({ content }: { content: string }): string {
+  const index = content.indexOf('switch (value)');
+  let newContent = content.slice(0, index);
+  newContent = `${newContent}if (value is JsonElement jsonElement)
+    {
+      if (jsonElement.ValueKind == JsonValueKind.String)
+      {
+        value = jsonElement.GetString();
+      }
+      else if (jsonElement.ValueKind == JsonValueKind.Number)
+      {
+        value = jsonElement.GetInt32();
+      }
+      else if (jsonElement.ValueKind == JsonValueKind.False || jsonElement.ValueKind == JsonValueKind.True)
+      {
+        value = jsonElement.GetBoolean();
+      }
+      else if (jsonElement.ValueKind == JsonValueKind.Object)
+      {
+        value = jsonElement.ToString();
+      }
+      else
+      {
+        return null;
+      }
+    }\n\n    `;
+  newContent += content.slice(index);
+
+  return newContent;
+}
+
 /**
  * Preset which adds `Serialize` and `Deserialize` functions to the class.
  *
@@ -251,6 +282,12 @@ ${renderer.indent(serialize)}
 
 }
 `;
+    }
+  },
+  enum: {
+    self({ renderer, content }) {
+      renderer.dependencyManager.addDependency('using System.Text.Json;');
+      return renderDynamicValueConverter({ content });
     }
   }
 };

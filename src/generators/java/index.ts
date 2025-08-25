@@ -4,6 +4,8 @@ export { JAVA_DEFAULT_PRESET } from './JavaPreset';
 export type { JavaPreset } from './JavaPreset';
 export * from './presets';
 
+export { defaultConstantConstraints as javaDefaultConstantConstraints } from './constrainer/ConstantConstrainer';
+
 export {
   defaultEnumKeyConstraints as javaDefaultEnumKeyConstraints,
   DefaultEnumKeyConstraints as JavaDefaultEnumKeyConstraints,

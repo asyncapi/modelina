@@ -40,7 +40,9 @@ export const DefaultEnumKeyConstraints: ModelEnumKeyConstraints = {
   NO_EMPTY_VALUE,
   NAMING_FORMATTER: FormatHelpers.toConstantCase,
   NO_RESERVED_KEYWORDS: (value: string) => {
-    return NO_RESERVED_KEYWORDS(value, isReservedJavaKeyword);
+    return NO_RESERVED_KEYWORDS(value, (word: string) =>
+      isReservedJavaKeyword(word, false)
+    );
   }
 };
 
