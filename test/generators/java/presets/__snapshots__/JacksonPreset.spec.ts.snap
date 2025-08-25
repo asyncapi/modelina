@@ -225,19 +225,19 @@ public interface Vehicle {
 ]
 `;
 
-exports[`JAVA_JACKSON_PRESET union handle oneOf with default with AsyncAPI custom discriminator with Jackson 1`] = `
+exports[`JAVA_JACKSON_PRESET union handle oneOf with default with AsyncAPI 3.0 with custom discriminator with Jackson 1`] = `
 Array [
-  "@JsonTypeInfo(use=JsonTypeInfo.Id.NAME, include=JsonTypeInfo.As.EXISTING_PROPERTY, defaultImpl=Fish.class, property=\\"type\\", visible=true)
+  "@JsonTypeInfo(use=JsonTypeInfo.Id.NAME, include=JsonTypeInfo.As.EXISTING_PROPERTY, defaultImpl=Bird.class, property=\\"type\\", visible=true)
 @JsonSubTypes({
-  @JsonSubTypes.Type(value = Fish.class, name = \\"Fish\\"),
-  @JsonSubTypes.Type(value = Bird.class, name = \\"Bird\\"),
-  @JsonSubTypes.Type(value = FlyingFish.class, name = \\"FlyingFish\\")
+  @JsonSubTypes.Type(value = Fish.class, name = \\"Fishie\\"),
+  @JsonSubTypes.Type(value = Bird.class, name = \\"Birdie\\"),
+  @JsonSubTypes.Type(value = Dog.class, name = \\"Doggie\\")
 })
 /**
- * Pet represents a union of types: Fish, Bird, FlyingFish
+ * Pet represents a union of types: Fish, Bird, Dog
  */
 public interface Pet {
-  String getType();
+  PetType getType();
 }",
   "public class Owner {
   @JsonProperty(\\"name\\")
@@ -246,63 +246,85 @@ public interface Pet {
   @JsonProperty(\\"pets\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Pet[] pets;
-  @JsonAnySetter
-  @JsonInclude(JsonInclude.Include.NON_NULL)
-  private Map<String, Object> additionalProperties;
 
   public String getName() { return this.name; }
   public void setName(String name) { this.name = name; }
 
   public Pet[] getPets() { return this.pets; }
   public void setPets(Pet[] pets) { this.pets = pets; }
-
-  @JsonAnyGetter
-  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
-  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
 }",
   "public class Fish implements Pet {
   @JsonProperty(\\"type\\")
-  private String type;
+  private final PetType type = PetType.FISHIE;
   @JsonAnySetter
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
-  public String getType() { return this.type; }
+  public PetType getType() { return this.type; }
 
   @JsonAnyGetter
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
   public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+}",
+  "public enum PetType {
+  FISHIE((String)\\"Fishie\\"), BIRDIE((String)\\"Birdie\\"), DOGGIE((String)\\"Doggie\\");
+
+  private final String value;
+
+  PetType(String value) {
+    this.value = value;
+  }
+
+  @JsonValue
+  public String getValue() {
+    return value;
+  }
+
+  @JsonCreator
+  public static PetType fromValue(String value) {
+    for (PetType e : PetType.values()) {
+      if (e.value.equals(value)) {
+        return e;
+      }
+    }
+    throw new IllegalArgumentException(\\"Unexpected value '\\" + value + \\"'\\");
+  }
+
+  @Override
+  public String toString() {
+    return String.valueOf(value);
+  }
 }",
   "public class Bird implements Pet {
   @JsonProperty(\\"type\\")
-  private String type;
+  private final PetType type = PetType.BIRDIE;
   @JsonProperty(\\"breed\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
-  private Object breed;
+  private String breed;
   @JsonAnySetter
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
-  public String getType() { return this.type; }
+  public PetType getType() { return this.type; }
 
-  public Object getBreed() { return this.breed; }
-  public void setBreed(Object breed) { this.breed = breed; }
+  public String getBreed() { return this.breed; }
+  public void setBreed(String breed) { this.breed = breed; }
 
   @JsonAnyGetter
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
   public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
 }",
-  "public class FlyingFish implements Pet {
+  "public class Dog implements Pet {
   @JsonProperty(\\"type\\")
-  private String type;
+  private final PetType type = PetType.DOGGIE;
   @JsonProperty(\\"breed\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
-  private final String breed = \\"FlyingNemo\\";
+  private final String breed = \\"Labradoodle\\";
   @JsonAnySetter
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
-  public String getType() { return this.type; }
+  public PetType getType() { return this.type; }
 
   public String getBreed() { return this.breed; }
 
@@ -313,7 +335,7 @@ public interface Pet {
 ]
 `;
 
-exports[`JAVA_JACKSON_PRESET union handle oneOf with default with AsyncAPI discriminator with Jackson 1`] = `
+exports[`JAVA_JACKSON_PRESET union handle oneOf with default with AsyncAPI with discriminator with Jackson 1`] = `
 Array [
   "@JsonTypeInfo(use=JsonTypeInfo.Id.NAME, include=JsonTypeInfo.As.EXISTING_PROPERTY, defaultImpl=Fish.class, property=\\"petType\\", visible=true)
 @JsonSubTypes({
@@ -402,453 +424,6 @@ public interface Pet {
 `;
 
 exports[`JAVA_JACKSON_PRESET union handle oneOf without discriminator with Jackson deduction 1`] = `
-Array [
-  "@JsonTypeInfo(use=JsonTypeInfo.Id.DEDUCTION)
-@JsonSubTypes({
-  @JsonSubTypes.Type(value = Car.class, name = \\"Car\\"),
-  @JsonSubTypes.Type(value = Truck.class, name = \\"Truck\\")
-})
-/**
- * Vehicle represents a union of types: Car, Truck
- */
-public interface Vehicle {
-  
-}",
-  "public class Car implements Vehicle {
-  @JsonProperty(\\"passengers\\")
-  @JsonInclude(JsonInclude.Include.NON_NULL)
-  private String passengers;
-  @JsonAnySetter
-  @JsonInclude(JsonInclude.Include.NON_NULL)
-  private Map<String, Object> additionalProperties;
-
-  public String getPassengers() { return this.passengers; }
-  public void setPassengers(String passengers) { this.passengers = passengers; }
-
-  @JsonAnyGetter
-  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
-  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
-}",
-  "public class Truck implements Vehicle {
-  @JsonProperty(\\"cargo\\")
-  @JsonInclude(JsonInclude.Include.NON_NULL)
-  private String cargo;
-  @JsonAnySetter
-  @JsonInclude(JsonInclude.Include.NON_NULL)
-  private Map<String, Object> additionalProperties;
-
-  public String getCargo() { return this.cargo; }
-  public void setCargo(String cargo) { this.cargo = cargo; }
-
-  @JsonAnyGetter
-  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
-  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
-}",
-]
-`;
-
-exports[`JAVA_JACKSON_PRESET union with default and custom discriminator handle oneOf with OpenAPI v3 discriminator with Jackson 1`] = `
-Array [
-  "@JsonTypeInfo(use=JsonTypeInfo.Id.NAME, include=JsonTypeInfo.As.EXISTING_PROPERTY, property=\\"vehicleType\\", visible=true)
-@JsonSubTypes({
-  @JsonSubTypes.Type(value = Car.class, name = \\"Car\\"),
-  @JsonSubTypes.Type(value = Truck.class, name = \\"Truck\\")
-})
-/**
- * Vehicle represents a union of types: Car, Truck
- */
-public interface Vehicle {
-  String getVehicleType();
-}",
-  "public class Car implements Vehicle {
-  @JsonProperty(\\"vehicleType\\")
-  @JsonInclude(JsonInclude.Include.NON_NULL)
-  private String vehicleType;
-  @JsonAnySetter
-  @JsonInclude(JsonInclude.Include.NON_NULL)
-  private Map<String, Object> additionalProperties;
-
-  public String getVehicleType() { return this.vehicleType; }
-
-  @JsonAnyGetter
-  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
-  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
-}",
-  "public class Truck implements Vehicle {
-  @JsonProperty(\\"vehicleType\\")
-  @JsonInclude(JsonInclude.Include.NON_NULL)
-  private String vehicleType;
-  @JsonAnySetter
-  @JsonInclude(JsonInclude.Include.NON_NULL)
-  private Map<String, Object> additionalProperties;
-
-  public String getVehicleType() { return this.vehicleType; }
-
-  @JsonAnyGetter
-  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
-  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
-}",
-]
-`;
-
-exports[`JAVA_JACKSON_PRESET union with default and custom discriminator handle oneOf with Swagger v2 discriminator with Jackson 1`] = `
-Array [
-  "@JsonTypeInfo(use=JsonTypeInfo.Id.NAME, include=JsonTypeInfo.As.EXISTING_PROPERTY, property=\\"vehicleType\\", visible=true)
-@JsonSubTypes({
-  @JsonSubTypes.Type(value = Car.class, name = \\"Car\\"),
-  @JsonSubTypes.Type(value = Truck.class, name = \\"Truck\\")
-})
-/**
- * Vehicle represents a union of types: Car, Truck
- */
-public interface Vehicle {
-  String getVehicleType();
-}",
-  "public class Car implements Vehicle {
-  @JsonProperty(\\"vehicleType\\")
-  @JsonInclude(JsonInclude.Include.NON_NULL)
-  private String vehicleType;
-  @JsonAnySetter
-  @JsonInclude(JsonInclude.Include.NON_NULL)
-  private Map<String, Object> additionalProperties;
-
-  public String getVehicleType() { return this.vehicleType; }
-
-  @JsonAnyGetter
-  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
-  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
-}",
-  "public class Truck implements Vehicle {
-  @JsonProperty(\\"vehicleType\\")
-  @JsonInclude(JsonInclude.Include.NON_NULL)
-  private String vehicleType;
-  @JsonAnySetter
-  @JsonInclude(JsonInclude.Include.NON_NULL)
-  private Map<String, Object> additionalProperties;
-
-  public String getVehicleType() { return this.vehicleType; }
-
-  @JsonAnyGetter
-  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
-  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
-}",
-]
-`;
-
-exports[`JAVA_JACKSON_PRESET union with default and custom discriminator handle oneOf with default with AsyncAPI custom discriminator with Jackson 1`] = `
-Array [
-  "@JsonTypeInfo(use=JsonTypeInfo.Id.NAME, include=JsonTypeInfo.As.EXISTING_PROPERTY, defaultImpl=Fish.class, property=\\"type\\", visible=true)
-@JsonSubTypes({
-  @JsonSubTypes.Type(value = Fish.class, name = \\"Fish\\"),
-  @JsonSubTypes.Type(value = Bird.class, name = \\"Bird\\"),
-  @JsonSubTypes.Type(value = FlyingFish.class, name = \\"FlyingFish\\")
-})
-/**
- * Pet represents a union of types: Fish, Bird, FlyingFish
- */
-public interface Pet {
-  String getType();
-}",
-  "public class Owner {
-  @JsonProperty(\\"name\\")
-  @JsonInclude(JsonInclude.Include.NON_NULL)
-  private String name;
-  @JsonProperty(\\"pets\\")
-  @JsonInclude(JsonInclude.Include.NON_NULL)
-  private Pet[] pets;
-  @JsonAnySetter
-  @JsonInclude(JsonInclude.Include.NON_NULL)
-  private Map<String, Object> additionalProperties;
-
-  public String getName() { return this.name; }
-  public void setName(String name) { this.name = name; }
-
-  public Pet[] getPets() { return this.pets; }
-  public void setPets(Pet[] pets) { this.pets = pets; }
-
-  @JsonAnyGetter
-  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
-  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
-}",
-  "public class Fish implements Pet {
-  @JsonProperty(\\"type\\")
-  @JsonInclude(JsonInclude.Include.NON_NULL)
-  private String type;
-  @JsonAnySetter
-  @JsonInclude(JsonInclude.Include.NON_NULL)
-  private Map<String, Object> additionalProperties;
-
-  public String getType() { return this.type; }
-
-  @JsonAnyGetter
-  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
-  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
-}",
-  "public class Bird implements Pet {
-  @JsonProperty(\\"type\\")
-  @JsonInclude(JsonInclude.Include.NON_NULL)
-  private String type;
-  @JsonProperty(\\"breed\\")
-  @JsonInclude(JsonInclude.Include.NON_NULL)
-  private Object breed;
-  @JsonAnySetter
-  @JsonInclude(JsonInclude.Include.NON_NULL)
-  private Map<String, Object> additionalProperties;
-
-  public String getType() { return this.type; }
-
-  public Object getBreed() { return this.breed; }
-  public void setBreed(Object breed) { this.breed = breed; }
-
-  @JsonAnyGetter
-  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
-  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
-}",
-  "public class FlyingFish implements Pet {
-  @JsonProperty(\\"type\\")
-  @JsonInclude(JsonInclude.Include.NON_NULL)
-  private String type;
-  @JsonProperty(\\"breed\\")
-  @JsonInclude(JsonInclude.Include.NON_NULL)
-  private final String breed = \\"FlyingNemo\\";
-  @JsonAnySetter
-  @JsonInclude(JsonInclude.Include.NON_NULL)
-  private Map<String, Object> additionalProperties;
-
-  public String getType() { return this.type; }
-
-  public String getBreed() { return this.breed; }
-
-  @JsonAnyGetter
-  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
-  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
-}",
-]
-`;
-
-exports[`JAVA_JACKSON_PRESET union with default and custom discriminator handle oneOf without discriminator with Jackson deduction 1`] = `
-Array [
-  "@JsonTypeInfo(use=JsonTypeInfo.Id.DEDUCTION)
-@JsonSubTypes({
-  @JsonSubTypes.Type(value = Car.class, name = \\"Car\\"),
-  @JsonSubTypes.Type(value = Truck.class, name = \\"Truck\\")
-})
-/**
- * Vehicle represents a union of types: Car, Truck
- */
-public interface Vehicle {
-  
-}",
-  "public class Car implements Vehicle {
-  @JsonProperty(\\"passengers\\")
-  @JsonInclude(JsonInclude.Include.NON_NULL)
-  private String passengers;
-  @JsonAnySetter
-  @JsonInclude(JsonInclude.Include.NON_NULL)
-  private Map<String, Object> additionalProperties;
-
-  public String getPassengers() { return this.passengers; }
-  public void setPassengers(String passengers) { this.passengers = passengers; }
-
-  @JsonAnyGetter
-  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
-  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
-}",
-  "public class Truck implements Vehicle {
-  @JsonProperty(\\"cargo\\")
-  @JsonInclude(JsonInclude.Include.NON_NULL)
-  private String cargo;
-  @JsonAnySetter
-  @JsonInclude(JsonInclude.Include.NON_NULL)
-  private Map<String, Object> additionalProperties;
-
-  public String getCargo() { return this.cargo; }
-  public void setCargo(String cargo) { this.cargo = cargo; }
-
-  @JsonAnyGetter
-  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
-  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
-}",
-]
-`;
-
-exports[`JAVA_JACKSON_PRESET union with default handle oneOf with OpenAPI v3 discriminator with Jackson 1`] = `
-Array [
-  "@JsonTypeInfo(use=JsonTypeInfo.Id.NAME, include=JsonTypeInfo.As.EXISTING_PROPERTY, property=\\"vehicleType\\", visible=true)
-@JsonSubTypes({
-  @JsonSubTypes.Type(value = Car.class, name = \\"Car\\"),
-  @JsonSubTypes.Type(value = Truck.class, name = \\"Truck\\")
-})
-/**
- * Vehicle represents a union of types: Car, Truck
- */
-public interface Vehicle {
-  String getVehicleType();
-}",
-  "public class Car implements Vehicle {
-  @JsonProperty(\\"vehicleType\\")
-  @JsonInclude(JsonInclude.Include.NON_NULL)
-  private String vehicleType;
-  @JsonAnySetter
-  @JsonInclude(JsonInclude.Include.NON_NULL)
-  private Map<String, Object> additionalProperties;
-
-  public String getVehicleType() { return this.vehicleType; }
-
-  @JsonAnyGetter
-  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
-  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
-}",
-  "public class Truck implements Vehicle {
-  @JsonProperty(\\"vehicleType\\")
-  @JsonInclude(JsonInclude.Include.NON_NULL)
-  private String vehicleType;
-  @JsonAnySetter
-  @JsonInclude(JsonInclude.Include.NON_NULL)
-  private Map<String, Object> additionalProperties;
-
-  public String getVehicleType() { return this.vehicleType; }
-
-  @JsonAnyGetter
-  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
-  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
-}",
-]
-`;
-
-exports[`JAVA_JACKSON_PRESET union with default handle oneOf with Swagger v2 discriminator with Jackson 1`] = `
-Array [
-  "@JsonTypeInfo(use=JsonTypeInfo.Id.NAME, include=JsonTypeInfo.As.EXISTING_PROPERTY, property=\\"vehicleType\\", visible=true)
-@JsonSubTypes({
-  @JsonSubTypes.Type(value = Car.class, name = \\"Car\\"),
-  @JsonSubTypes.Type(value = Truck.class, name = \\"Truck\\")
-})
-/**
- * Vehicle represents a union of types: Car, Truck
- */
-public interface Vehicle {
-  String getVehicleType();
-}",
-  "public class Car implements Vehicle {
-  @JsonProperty(\\"vehicleType\\")
-  @JsonInclude(JsonInclude.Include.NON_NULL)
-  private String vehicleType;
-  @JsonAnySetter
-  @JsonInclude(JsonInclude.Include.NON_NULL)
-  private Map<String, Object> additionalProperties;
-
-  public String getVehicleType() { return this.vehicleType; }
-
-  @JsonAnyGetter
-  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
-  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
-}",
-  "public class Truck implements Vehicle {
-  @JsonProperty(\\"vehicleType\\")
-  @JsonInclude(JsonInclude.Include.NON_NULL)
-  private String vehicleType;
-  @JsonAnySetter
-  @JsonInclude(JsonInclude.Include.NON_NULL)
-  private Map<String, Object> additionalProperties;
-
-  public String getVehicleType() { return this.vehicleType; }
-
-  @JsonAnyGetter
-  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
-  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
-}",
-]
-`;
-
-exports[`JAVA_JACKSON_PRESET union with default handle oneOf with default with AsyncAPI discriminator with Jackson 1`] = `
-Array [
-  "@JsonTypeInfo(use=JsonTypeInfo.Id.NAME, include=JsonTypeInfo.As.EXISTING_PROPERTY, defaultImpl=Fish.class, property=\\"petType\\", visible=true)
-@JsonSubTypes({
-  @JsonSubTypes.Type(value = Fish.class, name = \\"Fish\\"),
-  @JsonSubTypes.Type(value = Bird.class, name = \\"Bird\\"),
-  @JsonSubTypes.Type(value = FlyingFish.class, name = \\"FlyingFish\\")
-})
-/**
- * Pet represents a union of types: Fish, Bird, FlyingFish
- */
-public interface Pet {
-  String getPetType();
-}",
-  "public class Owner {
-  @JsonProperty(\\"name\\")
-  @JsonInclude(JsonInclude.Include.NON_NULL)
-  private String name;
-  @JsonProperty(\\"pets\\")
-  @JsonInclude(JsonInclude.Include.NON_NULL)
-  private Pet[] pets;
-  @JsonAnySetter
-  @JsonInclude(JsonInclude.Include.NON_NULL)
-  private Map<String, Object> additionalProperties;
-
-  public String getName() { return this.name; }
-  public void setName(String name) { this.name = name; }
-
-  public Pet[] getPets() { return this.pets; }
-  public void setPets(Pet[] pets) { this.pets = pets; }
-
-  @JsonAnyGetter
-  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
-  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
-}",
-  "public class Fish implements Pet {
-  @JsonProperty(\\"petType\\")
-  private String petType;
-  @JsonAnySetter
-  @JsonInclude(JsonInclude.Include.NON_NULL)
-  private Map<String, Object> additionalProperties;
-
-  public String getPetType() { return this.petType; }
-
-  @JsonAnyGetter
-  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
-  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
-}",
-  "public class Bird implements Pet {
-  @JsonProperty(\\"petType\\")
-  private String petType;
-  @JsonProperty(\\"breed\\")
-  @JsonInclude(JsonInclude.Include.NON_NULL)
-  private Object breed;
-  @JsonAnySetter
-  @JsonInclude(JsonInclude.Include.NON_NULL)
-  private Map<String, Object> additionalProperties;
-
-  public String getPetType() { return this.petType; }
-
-  public Object getBreed() { return this.breed; }
-  public void setBreed(Object breed) { this.breed = breed; }
-
-  @JsonAnyGetter
-  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
-  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
-}",
-  "public class FlyingFish implements Pet {
-  @JsonProperty(\\"petType\\")
-  private String petType;
-  @JsonProperty(\\"breed\\")
-  @JsonInclude(JsonInclude.Include.NON_NULL)
-  private final String breed = \\"FlyingNemo\\";
-  @JsonAnySetter
-  @JsonInclude(JsonInclude.Include.NON_NULL)
-  private Map<String, Object> additionalProperties;
-
-  public String getPetType() { return this.petType; }
-
-  public String getBreed() { return this.breed; }
-
-  @JsonAnyGetter
-  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
-  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
-}",
-]
-`;
-
-exports[`JAVA_JACKSON_PRESET union with default handle oneOf without discriminator with Jackson deduction 1`] = `
 Array [
   "@JsonTypeInfo(use=JsonTypeInfo.Id.DEDUCTION)
 @JsonSubTypes({
