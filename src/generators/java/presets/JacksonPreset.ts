@@ -90,6 +90,17 @@ export const JAVA_JACKSON_PRESET: JavaPreset = {
     }
   },
   enum: {
+    // Fallback for unknown enum values has to be configured on the ObjectMapper
+    // objectMapper.configure(
+    //  DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_USING_DEFAULT_VALUE, true
+    // );
+    item({ content, model, item }) {
+      const defaultEnumValue = model.originalInput?.default;
+      if (item.originalInput === defaultEnumValue) {
+        return `@JsonEnumDefaultValue ${content}`;
+      }
+      return content;
+    },
     self({ renderer, content }) {
       renderer.dependencyManager.addDependency(JACKSON_ANNOTATION_DEPENDENCY);
       return content;

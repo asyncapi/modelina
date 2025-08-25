@@ -44,6 +44,23 @@ describe('JAVA_JACKSON_PRESET', () => {
     expect(models[0].dependencies).toEqual(expectedDependencies);
   });
 
+  test('should render Jackson annotations with default for enum', async () => {
+    const doc = {
+      $id: 'Status',
+      type: 'string',
+      description: 'Description for enum',
+      enum: ['on', 'off'],
+      default: 'off'
+    };
+
+    const expectedDependencies = ['import com.fasterxml.jackson.annotation.*;'];
+
+    const models = await generator.generate(doc);
+    expect(models).toHaveLength(1);
+    expect(models[0].result).toMatchSnapshot();
+    expect(models[0].dependencies).toEqual(expectedDependencies);
+  });
+
   test('should not render anything when isExtended is true', async () => {
     const extend = {
       $id: 'extend',

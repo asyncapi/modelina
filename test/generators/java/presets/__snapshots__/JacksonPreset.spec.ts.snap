@@ -81,6 +81,38 @@ exports[`JAVA_JACKSON_PRESET should render Jackson annotations for enum 1`] = `
 }"
 `;
 
+exports[`JAVA_JACKSON_PRESET should render Jackson annotations with default for enum 1`] = `
+"public enum Status {
+  ON((String)\\"on\\"), @JsonEnumDefaultValue OFF((String)\\"off\\");
+
+  private final String value;
+
+  Status(String value) {
+    this.value = value;
+  }
+
+  @JsonValue
+  public String getValue() {
+    return value;
+  }
+
+  @JsonCreator
+  public static Status fromValue(String value) {
+    for (Status e : Status.values()) {
+      if (e.value.equals(value)) {
+        return e;
+      }
+    }
+    throw new IllegalArgumentException(\\"Unexpected value '\\" + value + \\"'\\");
+  }
+
+  @Override
+  public String toString() {
+    return String.valueOf(value);
+  }
+}"
+`;
+
 exports[`JAVA_JACKSON_PRESET union handle oneOf with AsyncAPI discriminator with Jackson 1`] = `
 Array [
   "@JsonTypeInfo(use=JsonTypeInfo.Id.NAME, include=JsonTypeInfo.As.EXISTING_PROPERTY, property=\\"vehicle_type\\", visible=true)
