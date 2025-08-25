@@ -1,10 +1,52 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`PYTHON_PYDANTIC_PRESET should always set alias 1`] = `
+Array [
+  "class AliasTest(BaseModel): 
+  test_alias: str = Field(alias='''testAlias''')
+  additional_properties: Optional[dict[str, Any]] = Field(default=None, exclude=True)
+
+  @model_serializer(mode='wrap')
+  def custom_serializer(self, handler):
+    serialized_self = handler(self)
+    additional_properties = getattr(self, \\"additional_properties\\")
+    if additional_properties is not None:
+      for key, value in additional_properties.items():
+        # Never overwrite existing values, to avoid clashes
+        if not hasattr(serialized_self, key):
+          serialized_self[key] = value
+
+    return serialized_self
+
+  @model_validator(mode='before')
+  @classmethod
+  def unwrap_additional_properties(cls, data):
+    if not isinstance(data, dict):
+      data = data.model_dump()
+    json_properties = list(data.keys())
+    known_object_properties = ['test_alias', 'additional_properties']
+    unknown_object_properties = [element for element in json_properties if element not in known_object_properties]
+    # Ignore attempts that validate regular models, only when unknown input is used we add unwrap extensions
+    if len(unknown_object_properties) == 0: 
+      return data
+  
+    known_json_properties = ['testAlias', 'additionalProperties']
+    additional_properties = data.get('additional_properties', {})
+    for obj_key in unknown_object_properties:
+      if not known_json_properties.__contains__(obj_key):
+        additional_properties[obj_key] = data.pop(obj_key, None)
+    data['additional_properties'] = additional_properties
+    return data
+
+",
+]
+`;
+
 exports[`PYTHON_PYDANTIC_PRESET should render default value for discriminator when using polymorphism 1`] = `
 Array [
   "",
   "class Car(BaseModel): 
-  vehicle_type: VehicleType = Field(default=VehicleType.CAR, frozen=True)
+  vehicle_type: VehicleType = Field(default=VehicleType.CAR, frozen=True, alias='''vehicleType''')
   length: Optional[float] = Field(default=None)
   additional_properties: Optional[dict[str, Any]] = Field(default=None, exclude=True)
 
@@ -34,7 +76,7 @@ Array [
   
     known_json_properties = ['vehicleType', 'length', 'additionalProperties']
     additional_properties = data.get('additional_properties', {})
-    for obj_key in list(data.keys()):
+    for obj_key in unknown_object_properties:
       if not known_json_properties.__contains__(obj_key):
         additional_properties[obj_key] = data.pop(obj_key, None)
     data['additional_properties'] = additional_properties
@@ -45,7 +87,7 @@ Array [
   CAR = \\"Car\\"
   TRUCK = \\"Truck\\"",
   "class Truck(BaseModel): 
-  vehicle_type: VehicleType = Field(default=VehicleType.TRUCK, frozen=True)
+  vehicle_type: VehicleType = Field(default=VehicleType.TRUCK, frozen=True, alias='''vehicleType''')
   length: Optional[float] = Field(default=None)
   additional_properties: Optional[dict[str, Any]] = Field(default=None, exclude=True)
 
@@ -75,7 +117,7 @@ Array [
   
     known_json_properties = ['vehicleType', 'length', 'additionalProperties']
     additional_properties = data.get('additional_properties', {})
-    for obj_key in list(data.keys()):
+    for obj_key in unknown_object_properties:
       if not known_json_properties.__contains__(obj_key):
         additional_properties[obj_key] = data.pop(obj_key, None)
     data['additional_properties'] = additional_properties
@@ -88,7 +130,7 @@ Array [
 exports[`PYTHON_PYDANTIC_PRESET should render nullable union 1`] = `
 Array [
   "class NullableUnionTest(BaseModel): 
-  nullable_union_test: Optional[Union[Union1]] = Field(default=None)
+  nullable_union_test: Optional[Union[Union1]] = Field(default=None, alias='''nullableUnionTest''')
   additional_properties: Optional[dict[str, Any]] = Field(default=None, exclude=True)
 
   @model_serializer(mode='wrap')
@@ -117,7 +159,7 @@ Array [
   
     known_json_properties = ['nullableUnionTest', 'additionalProperties']
     additional_properties = data.get('additional_properties', {})
-    for obj_key in list(data.keys()):
+    for obj_key in unknown_object_properties:
       if not known_json_properties.__contains__(obj_key):
         additional_properties[obj_key] = data.pop(obj_key, None)
     data['additional_properties'] = additional_properties
@@ -125,7 +167,7 @@ Array [
 
 ",
   "class Union1(BaseModel): 
-  test_prop1: Optional[str] = Field(default=None)
+  test_prop1: Optional[str] = Field(default=None, alias='''testProp1''')
   additional_properties: Optional[dict[str, Any]] = Field(default=None, exclude=True)
 
   @model_serializer(mode='wrap')
@@ -154,7 +196,7 @@ Array [
   
     known_json_properties = ['testProp1', 'additionalProperties']
     additional_properties = data.get('additional_properties', {})
-    for obj_key in list(data.keys()):
+    for obj_key in unknown_object_properties:
       if not known_json_properties.__contains__(obj_key):
         additional_properties[obj_key] = data.pop(obj_key, None)
     data['additional_properties'] = additional_properties
@@ -198,7 +240,7 @@ exports[`PYTHON_PYDANTIC_PRESET should render pydantic for class 1`] = `
   
     known_json_properties = ['prop', 'additionalProperties']
     additional_properties = data.get('additional_properties', {})
-    for obj_key in list(data.keys()):
+    for obj_key in unknown_object_properties:
       if not known_json_properties.__contains__(obj_key):
         additional_properties[obj_key] = data.pop(obj_key, None)
     data['additional_properties'] = additional_properties
@@ -210,7 +252,7 @@ exports[`PYTHON_PYDANTIC_PRESET should render pydantic for class 1`] = `
 exports[`PYTHON_PYDANTIC_PRESET should render union to support Python < 3.10 1`] = `
 Array [
   "class UnionTest(BaseModel): 
-  union_test: Optional[Union[Union1, Union2]] = Field(default=None)
+  union_test: Optional[Union[Union1, Union2]] = Field(default=None, alias='''unionTest''')
   additional_properties: Optional[dict[str, Any]] = Field(default=None, exclude=True)
 
   @model_serializer(mode='wrap')
@@ -239,7 +281,7 @@ Array [
   
     known_json_properties = ['unionTest', 'additionalProperties']
     additional_properties = data.get('additional_properties', {})
-    for obj_key in list(data.keys()):
+    for obj_key in unknown_object_properties:
       if not known_json_properties.__contains__(obj_key):
         additional_properties[obj_key] = data.pop(obj_key, None)
     data['additional_properties'] = additional_properties
@@ -247,7 +289,7 @@ Array [
 
 ",
   "class Union1(BaseModel): 
-  test_prop1: Optional[str] = Field(default=None)
+  test_prop1: Optional[str] = Field(default=None, alias='''testProp1''')
   additional_properties: Optional[dict[str, Any]] = Field(default=None, exclude=True)
 
   @model_serializer(mode='wrap')
@@ -276,7 +318,7 @@ Array [
   
     known_json_properties = ['testProp1', 'additionalProperties']
     additional_properties = data.get('additional_properties', {})
-    for obj_key in list(data.keys()):
+    for obj_key in unknown_object_properties:
       if not known_json_properties.__contains__(obj_key):
         additional_properties[obj_key] = data.pop(obj_key, None)
     data['additional_properties'] = additional_properties
@@ -284,7 +326,7 @@ Array [
 
 ",
   "class Union2(BaseModel): 
-  test_prop2: Optional[str] = Field(default=None)
+  test_prop2: Optional[str] = Field(default=None, alias='''testProp2''')
   additional_properties: Optional[dict[str, Any]] = Field(default=None, exclude=True)
 
   @model_serializer(mode='wrap')
@@ -313,7 +355,7 @@ Array [
   
     known_json_properties = ['testProp2', 'additionalProperties']
     additional_properties = data.get('additional_properties', {})
-    for obj_key in list(data.keys()):
+    for obj_key in unknown_object_properties:
       if not known_json_properties.__contains__(obj_key):
         additional_properties[obj_key] = data.pop(obj_key, None)
     data['additional_properties'] = additional_properties
