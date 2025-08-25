@@ -1,7 +1,8 @@
 import {
   ConstrainedDictionaryModel,
   ConstrainedObjectModel,
-  ConstrainedReferenceModel
+  ConstrainedReferenceModel,
+  ConstrainedUnionModel
 } from '../../../models';
 import { JavaPreset } from '../JavaPreset';
 
@@ -111,14 +112,34 @@ ${content}`;
 
       if (model.options.discriminator) {
         const { discriminator } = model.options;
-        blocks.push(
-          renderer.renderAnnotation('JsonTypeInfo', {
-            use: 'JsonTypeInfo.Id.NAME',
-            include: 'JsonTypeInfo.As.EXISTING_PROPERTY',
-            property: `"${discriminator.discriminator}"`,
-            visible: 'true'
-          })
-        );
+        const defaultDiscriminator =
+          model.originalInput?.properties?.[discriminator.discriminator]
+            ?.default;
+
+        if (defaultDiscriminator) {
+          blocks.push(
+            renderer.renderAnnotation('JsonTypeInfo', {
+              use: 'JsonTypeInfo.Id.NAME',
+              include: 'JsonTypeInfo.As.EXISTING_PROPERTY',
+              defaultImpl: findClassNameOfSubtype(
+                model,
+                discriminator.discriminator,
+                defaultDiscriminator
+              ),
+              property: `"${discriminator.discriminator}"`,
+              visible: 'true'
+            })
+          );
+        } else {
+          blocks.push(
+            renderer.renderAnnotation('JsonTypeInfo', {
+              use: 'JsonTypeInfo.Id.NAME',
+              include: 'JsonTypeInfo.As.EXISTING_PROPERTY',
+              property: `"${discriminator.discriminator}"`,
+              visible: 'true'
+            })
+          );
+        }
 
         const types = model.union
           .map((union) => {
@@ -169,3 +190,27 @@ ${content}`;
     }
   }
 };
+
+function findClassNameOfSubtype(
+  model: ConstrainedUnionModel,
+  discriminatorPropertyName: string,
+  discriminatorValue: string
+): string {
+  for (const union of model.union) {
+    if (
+      union instanceof ConstrainedReferenceModel &&
+      union.ref instanceof ConstrainedObjectModel
+    ) {
+      const discriminatorProp = Object.values(union.ref.properties).find(
+        (model) => model.unconstrainedPropertyName === discriminatorPropertyName
+      );
+      if (
+        discriminatorProp?.property.options.const?.originalInput ===
+        discriminatorValue
+      ) {
+        return `${union.name}.class`;
+      }
+    }
+  }
+  return `${discriminatorValue}.class`;
+}

@@ -118,6 +118,241 @@ describe('JAVA_JACKSON_PRESET', () => {
       expect(models.map((model) => model.result)).toMatchSnapshot();
     });
 
+    test('handle oneOf with default with AsyncAPI with discriminator with Jackson', async () => {
+      const asyncapiDoc = {
+        asyncapi: '2.6.0',
+        info: {
+          title: 'CloudEvent example',
+          version: '1.0.0'
+        },
+        channels: {
+          owner: {
+            publish: {
+              message: {
+                $ref: '#/components/messages/Owner'
+              }
+            }
+          }
+        },
+        components: {
+          messages: {
+            Owner: {
+              payload: {
+                $ref: '#/components/schemas/Owner'
+              }
+            }
+          },
+          schemas: {
+            Owner: {
+              type: 'object',
+              properties: {
+                name: {
+                  type: 'string'
+                },
+                pets: {
+                  type: 'array',
+                  items: {
+                    $ref: '#/components/schemas/Pet'
+                  }
+                }
+              }
+            },
+            Pet: {
+              title: 'Pet',
+              type: 'object',
+              discriminator: 'petType',
+              properties: {
+                petType: {
+                  type: 'string',
+                  default: 'Fish'
+                }
+              },
+              required: ['petType'],
+              oneOf: [
+                {
+                  $ref: '#/components/schemas/Fish'
+                },
+                {
+                  $ref: '#/components/schemas/Bird'
+                },
+                {
+                  $ref: '#/components/schemas/FlyingFish'
+                }
+              ]
+            },
+            Bird: {
+              title: 'Bird',
+              properties: {
+                breed: {
+                  type: String
+                }
+              },
+              allOf: [
+                {
+                  $ref: '#/components/schemas/Pet'
+                }
+              ]
+            },
+            Fish: {
+              title: 'Fish',
+              allOf: [
+                {
+                  $ref: '#/components/schemas/Pet'
+                }
+              ]
+            },
+            FlyingFish: {
+              title: 'FlyingFish',
+              type: 'object',
+              allOf: [
+                {
+                  $ref: '#/components/schemas/Fish'
+                }
+              ],
+              properties: {
+                breed: {
+                  const: 'FlyingNemo'
+                }
+              }
+            }
+          }
+        }
+      };
+
+      const models = await generator.generate(asyncapiDoc);
+      expect(models.map((model) => model.result)).toMatchSnapshot();
+    });
+
+    test('handle oneOf with default with AsyncAPI 3.0 with custom discriminator with Jackson', async () => {
+      const asyncapiDoc = {
+        asyncapi: '3.0.0',
+        info: {
+          title: 'CloudEvent example',
+          version: '1.0.0'
+        },
+        channels: {
+          owner: {
+            address: 'owner',
+            messages: {
+              Owner: {
+                $ref: '#/components/messages/Owner'
+              }
+            }
+          }
+        },
+        operations: {
+          ownerAvailable: {
+            action: 'receive',
+            channel: {
+              $ref: '#/channels/owner'
+            }
+          }
+        },
+        components: {
+          messages: {
+            Owner: {
+              payload: {
+                schema: {
+                  $ref: '#/components/schemas/Owner'
+                }
+              }
+            }
+          },
+          schemas: {
+            Owner: {
+              type: 'object',
+              properties: {
+                name: {
+                  type: 'string'
+                },
+                pets: {
+                  type: 'array',
+                  items: {
+                    $ref: '#/components/schemas/Pet'
+                  }
+                }
+              }
+            },
+            Pet: {
+              title: 'Pet',
+              type: 'object',
+              discriminator: 'type',
+              properties: {
+                type: {
+                  type: 'string',
+                  title: 'PetType',
+                  default: 'Birdie'
+                }
+              },
+              required: ['type'],
+              oneOf: [
+                {
+                  $ref: '#/components/schemas/Fish'
+                },
+                {
+                  $ref: '#/components/schemas/Bird'
+                },
+                {
+                  $ref: '#/components/schemas/Dog'
+                }
+              ]
+            },
+            Bird: {
+              title: 'Bird',
+              type: 'object',
+              allOf: [
+                {
+                  $ref: '#/components/schemas/Pet'
+                }
+              ],
+              properties: {
+                type: {
+                  const: 'Birdie'
+                },
+                breed: {
+                  type: 'string'
+                }
+              }
+            },
+            Fish: {
+              title: 'Fish',
+              type: 'object',
+              allOf: [
+                {
+                  $ref: '#/components/schemas/Pet'
+                }
+              ],
+              properties: {
+                type: {
+                  const: 'Fishie'
+                }
+              }
+            },
+            Dog: {
+              title: 'Dog',
+              type: 'object',
+              allOf: [
+                {
+                  $ref: '#/components/schemas/Pet'
+                }
+              ],
+              properties: {
+                type: {
+                  const: 'Doggie'
+                },
+                breed: {
+                  const: 'Labradoodle'
+                }
+              }
+            }
+          }
+        }
+      };
+
+      const models = await generator.generate(asyncapiDoc);
+      expect(models.map((model) => model.result)).toMatchSnapshot();
+    });
+
     test('handle oneOf with Swagger v2 discriminator with Jackson', async () => {
       const openapiDoc = {
         swagger: '2.0',
