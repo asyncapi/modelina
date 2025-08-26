@@ -857,7 +857,7 @@ Array [
   private Action action;
   @JsonProperty(\\"event_time\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
-  private OffsetDateTime eventTime;
+  private java.time.OffsetDateTime eventTime;
   @JsonAnySetter
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
@@ -865,8 +865,8 @@ Array [
   public Action getAction() { return this.action; }
   public void setAction(Action action) { this.action = action; }
 
-  public OffsetDateTime getEventTime() { return this.eventTime; }
-  public void setEventTime(OffsetDateTime eventTime) { this.eventTime = eventTime; }
+  public java.time.OffsetDateTime getEventTime() { return this.eventTime; }
+  public void setEventTime(java.time.OffsetDateTime eventTime) { this.eventTime = eventTime; }
 
   @JsonAnyGetter
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
@@ -976,7 +976,7 @@ public interface Pet {
   private String dataschema;
   @JsonProperty(\\"time\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
-  private OffsetDateTime time;
+  private java.time.OffsetDateTime time;
   @JsonAnySetter
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
@@ -994,8 +994,8 @@ public interface Pet {
   public String getDataschema() { return this.dataschema; }
   public void setDataschema(String dataschema) { this.dataschema = dataschema; }
 
-  public OffsetDateTime getTime() { return this.time; }
-  public void setTime(OffsetDateTime time) { this.time = time; }
+  public java.time.OffsetDateTime getTime() { return this.time; }
+  public void setTime(java.time.OffsetDateTime time) { this.time = time; }
 
   @JsonAnyGetter
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
@@ -1097,7 +1097,7 @@ public interface Pet {
   private String dataschema;
   @JsonProperty(\\"time\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
-  private OffsetDateTime time;
+  private java.time.OffsetDateTime time;
   @JsonAnySetter
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
@@ -1115,8 +1115,8 @@ public interface Pet {
   public String getDataschema() { return this.dataschema; }
   public void setDataschema(String dataschema) { this.dataschema = dataschema; }
 
-  public OffsetDateTime getTime() { return this.time; }
-  public void setTime(OffsetDateTime time) { this.time = time; }
+  public java.time.OffsetDateTime getTime() { return this.time; }
+  public void setTime(java.time.OffsetDateTime time) { this.time = time; }
 
   @JsonAnyGetter
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
@@ -1951,18 +1951,18 @@ exports[`JavaGenerator should render enums with translated special characters 1`
 }"
 `;
 
-exports[`JavaGenerator should render import for date, date-time, time and duration when used 1`] = `
+exports[`JavaGenerator should render import for date, time and duration when used 1`] = `
 "public class OtherClass {
   private LocalDate birthdate;
-  private OffsetDateTime creationDate;
+  private java.time.OffsetDateTime creationDate;
   private OffsetTime creationTime;
   private Duration duration;
 
   public LocalDate getBirthdate() { return this.birthdate; }
   public void setBirthdate(LocalDate birthdate) { this.birthdate = birthdate; }
 
-  public OffsetDateTime getCreationDate() { return this.creationDate; }
-  public void setCreationDate(OffsetDateTime creationDate) { this.creationDate = creationDate; }
+  public java.time.OffsetDateTime getCreationDate() { return this.creationDate; }
+  public void setCreationDate(java.time.OffsetDateTime creationDate) { this.creationDate = creationDate; }
 
   public OffsetTime getCreationTime() { return this.creationTime; }
   public void setCreationTime(OffsetTime creationTime) { this.creationTime = creationTime; }
@@ -2250,7 +2250,7 @@ Array [
   private Double daysBefore = 100.5;
   @JsonProperty(\\"creationTime\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
-  private OffsetDateTime creationTime = OffsetDateTime.parse(\\"2023-01-01T00:00:00Z\\");
+  private java.time.OffsetDateTime creationTime = java.time.OffsetDateTime.parse(\\"2023-01-01T00:00:00Z\\");
   @JsonProperty(\\"gender\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private String gender = \\"male\\";
@@ -2279,8 +2279,8 @@ Array [
   public Double getDaysBefore() { return this.daysBefore; }
   public void setDaysBefore(Double daysBefore) { this.daysBefore = daysBefore; }
 
-  public OffsetDateTime getCreationTime() { return this.creationTime; }
-  public void setCreationTime(OffsetDateTime creationTime) { this.creationTime = creationTime; }
+  public java.time.OffsetDateTime getCreationTime() { return this.creationTime; }
+  public void setCreationTime(java.time.OffsetDateTime creationTime) { this.creationTime = creationTime; }
 
   public String getGender() { return this.gender; }
   public void setGender(String gender) { this.gender = gender; }

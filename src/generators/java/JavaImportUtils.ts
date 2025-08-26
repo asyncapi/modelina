@@ -45,15 +45,6 @@ export class JavaImportUtils {
     if (containsDate) {
       dependencyManager.addDependency('import java.time.LocalDate;');
     }
-    const containsDateTime = Object.values(properties).some(
-      (prop) =>
-        (prop.property.options?.format === 'date-time' ||
-          prop.property.options?.format === 'dateTime') &&
-        prop.property.type === 'OffsetDateTime'
-    );
-    if (containsDateTime) {
-      dependencyManager.addDependency('import java.time.OffsetDateTime;');
-    }
     const containsTime = Object.values(properties).some(
       (prop) => prop.property.options?.format === 'time'
     );

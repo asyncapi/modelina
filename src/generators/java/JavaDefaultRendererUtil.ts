@@ -11,8 +11,8 @@ export class JavaDefaultRendererUtil {
       return `private ${property.property.type} ${property.propertyName} = OffsetTime.parse("${property.property.originalInput.default}");`;
     }
     if (property.property.options?.format === 'date-time') {
-      if (property.property.type === 'OffsetDateTime') {
-        return `private ${property.property.type} ${property.propertyName} = OffsetDateTime.parse("${property.property.originalInput.default}");`;
+      if (property.property.type === 'java.time.OffsetDateTime') {
+        return `private ${property.property.type} ${property.propertyName} = java.time.OffsetDateTime.parse("${property.property.originalInput.default}");`;
       } else if (property.property.type === 'Instant') {
         return `private ${property.property.type} ${property.propertyName} = Instant.parse("${property.property.originalInput.default}");`;
       }

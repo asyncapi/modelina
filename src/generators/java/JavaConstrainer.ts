@@ -176,7 +176,7 @@ export const JavaDefaultTypeMapping: JavaTypeMapping = {
         return 'OffsetTime';
       case 'dateTime':
       case 'date-time':
-        return 'OffsetDateTime';
+        return 'java.time.OffsetDateTime';
       case 'duration':
         return 'Duration';
       case 'binary':

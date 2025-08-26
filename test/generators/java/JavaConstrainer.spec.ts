@@ -320,7 +320,7 @@ describe('JavaConstrainer', () => {
         constrainedModel: model,
         ...defaultOptions
       });
-      expect(type).toEqual('OffsetDateTime');
+      expect(type).toEqual('java.time.OffsetDateTime');
     });
     test('should render OffsetDateTime when format has date-time format', () => {
       const model = new ConstrainedStringModel(
@@ -333,7 +333,7 @@ describe('JavaConstrainer', () => {
         constrainedModel: model,
         ...defaultOptions
       });
-      expect(type).toEqual('OffsetDateTime');
+      expect(type).toEqual('java.time.OffsetDateTime');
     });
     test('should render byte when format has binary format', () => {
       const model = new ConstrainedStringModel(

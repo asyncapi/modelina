@@ -252,7 +252,7 @@ describe('JavaGenerator', () => {
     expect(models[0].dependencies).not.toEqual(expectedDependencies);
   });
 
-  test('should render import for date, date-time, time and duration when used', async () => {
+  test('should render import for date, time and duration when used', async () => {
     const doc = {
       $id: 'OtherClass',
       type: 'object',
@@ -279,7 +279,6 @@ describe('JavaGenerator', () => {
     };
     const expectedDependencies = [
       'import java.time.LocalDate;',
-      'import java.time.OffsetDateTime;',
       'import java.time.OffsetTime;',
       'import java.time.Duration;'
     ];

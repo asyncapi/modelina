@@ -9,7 +9,7 @@ Array [
   private Double height = 1.75;
   private Boolean isEmployed = true;
   private LocalDate birthdate = LocalDate.parse(\\"2000-01-01\\");
-  private OffsetDateTime creationTime = OffsetDateTime.parse(\\"2023-10-01T12:00:00Z\\");
+  private java.time.OffsetDateTime creationTime = java.time.OffsetDateTime.parse(\\"2023-10-01T12:00:00Z\\");
 
   public UUID getId() { return this.id; }
   public void setId(UUID id) { this.id = id; }
@@ -29,8 +29,8 @@ Array [
   public LocalDate getBirthdate() { return this.birthdate; }
   public void setBirthdate(LocalDate birthdate) { this.birthdate = birthdate; }
 
-  public OffsetDateTime getCreationTime() { return this.creationTime; }
-  public void setCreationTime(OffsetDateTime creationTime) { this.creationTime = creationTime; }
+  public java.time.OffsetDateTime getCreationTime() { return this.creationTime; }
+  public void setCreationTime(java.time.OffsetDateTime creationTime) { this.creationTime = creationTime; }
 }",
 ]
 `;
