@@ -269,7 +269,9 @@ export const JAVA_DEFAULT_CLASS_PRESET: ClassPresetType<JavaOptions> = {
       return `private final ${property.property.type} ${property.propertyName} = ${property.property.options.const.value};`;
     }
 
-    if (property.property.originalInput?.default) {
+    const isDiscriminatorProperty =
+      property.propertyName === model.options.discriminator?.discriminator;
+    if (!isDiscriminatorProperty && property.property.originalInput?.default) {
       return JavaDefaultRendererUtil.renderFieldWithDefault(property);
     }
 
