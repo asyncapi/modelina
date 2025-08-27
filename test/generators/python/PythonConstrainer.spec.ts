@@ -196,7 +196,7 @@ describe('PythonConstrainer', () => {
         constrainedModel: model,
         ...defaultOptions
       });
-      expect(type).toEqual('str');
+      expect(type).toEqual('Union[str]');
     });
     test('should render multiple types', () => {
       const unionModel1 = new ConstrainedStringModel(
@@ -219,7 +219,7 @@ describe('PythonConstrainer', () => {
         constrainedModel: model,
         ...defaultOptions
       });
-      expect(type).toEqual('str | str2');
+      expect(type).toEqual('Union[str, str2]');
     });
     test('should render unique types', () => {
       const unionModel1 = new ConstrainedStringModel(
@@ -242,7 +242,7 @@ describe('PythonConstrainer', () => {
         constrainedModel: model,
         ...defaultOptions
       });
-      expect(type).toEqual('str');
+      expect(type).toEqual('Union[str]');
     });
   });
 

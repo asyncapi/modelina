@@ -1,7 +1,6 @@
 import {
   ConstrainedDictionaryModel,
-  ConstrainedObjectPropertyModel,
-  ConstrainedUnionModel
+  ConstrainedObjectPropertyModel
 } from '../../../models';
 import { PythonOptions } from '../PythonGenerator';
 import { ClassPresetType, PythonPreset } from '../PythonPreset';
@@ -9,7 +8,7 @@ import { ClassPresetType, PythonPreset } from '../PythonPreset';
 const PYTHON_PYDANTIC_CLASS_PRESET: ClassPresetType<PythonOptions> = {
   async self({ renderer, model }) {
     renderer.dependencyManager.addDependency(
-      'from typing import Optional, Any, Union'
+      'from typing import Optional, Any'
     );
     renderer.dependencyManager.addDependency(
       'from pydantic import BaseModel, Field'
@@ -26,17 +25,18 @@ const PYTHON_PYDANTIC_CLASS_PRESET: ClassPresetType<PythonOptions> = {
     let type = property.property.type;
     const propertyName = property.propertyName;
 
-    if (property.property instanceof ConstrainedUnionModel) {
-      const unionTypes = property.property.union.map(
-        (unionModel) => unionModel.type
-      );
-      type = `Union[${unionTypes.join(', ')}]`;
-    }
-
     const isOptional =
       !property.required || property.property.options.isNullable === true;
     if (isOptional) {
       type = `Optional[${type}]`;
+    }
+    if (
+      property.property.options.const &&
+      model.options.discriminator?.discriminator ===
+        property.unconstrainedPropertyName
+    ) {
+      renderer.dependencyManager.addDependency('from typing import Literal');
+      type = `Literal['${property.property.options.const.originalInput}']`;
     }
     type = renderer.renderPropertyType({
       modelType: model.type,
@@ -54,7 +54,14 @@ const PYTHON_PYDANTIC_CLASS_PRESET: ClassPresetType<PythonOptions> = {
       decoratorArgs.push('default=None');
     }
     if (property.property.options.const) {
-      decoratorArgs.push(`default=${property.property.options.const.value}`);
+      let value = property.property.options.const.value;
+      if (
+        model.options.discriminator?.discriminator ===
+        property.unconstrainedPropertyName
+      ) {
+        value = property.property.options.const.originalInput;
+      }
+      decoratorArgs.push(`default='${value}'`);
       decoratorArgs.push('frozen=True');
     }
     if (
