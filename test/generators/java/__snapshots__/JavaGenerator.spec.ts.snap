@@ -1653,6 +1653,80 @@ public interface Vehicle {
 ]
 `;
 
+exports[`JavaGenerator render optionals correctly when enabled should render optional if no default 1`] = `
+Array [
+  "public class Pet {
+  @NotNull
+  @JsonProperty(\\"@petType\\")
+  private String atPetType;
+  @JsonProperty(\\"color\\")
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private String color;
+  @JsonProperty(\\"gender\\")
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private String gender = \\"male\\";
+  @JsonAnySetter
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private Map<String, Object> additionalProperties;
+
+  public String getAtPetType() { return this.atPetType; }
+  public void setAtPetType(String atPetType) { this.atPetType = atPetType; }
+
+  public Optional<String> getColor() { return ofNullable(this.color); }
+  public void setColor(String color) { this.color = color; }
+
+  public String getGender() { return this.gender; }
+  public void setGender(String gender) { this.gender = gender; }
+
+  @JsonAnyGetter
+  public Optional<Map<String, Object>> getAdditionalProperties() { return ofNullable(this.additionalProperties); }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Pet self = (Pet) o;
+      return 
+        Objects.equals(this.atPetType, self.atPetType) &&
+        Objects.equals(this.color, self.color) &&
+        Objects.equals(this.gender, self.gender) &&
+        Objects.equals(this.additionalProperties, self.additionalProperties);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash((Object)atPetType, (Object)color, (Object)gender, (Object)additionalProperties);
+  }
+
+  @Override
+  public String toString() {
+    return \\"class Pet {\\\\n\\" +   
+      \\"    atPetType: \\" + toIndentedString(atPetType) + \\"\\\\n\\" +
+      \\"    color: \\" + toIndentedString(color) + \\"\\\\n\\" +
+      \\"    gender: \\" + toIndentedString(gender) + \\"\\\\n\\" +
+      \\"    additionalProperties: \\" + toIndentedString(additionalProperties) + \\"\\\\n\\" +
+    \\"}\\";
+  }
+
+  /**
+   * Convert the given object to string with each line indented by 4 spaces
+   * (except the first line).
+   */
+  private String toIndentedString(Object o) {
+    if (o == null) {
+      return \\"null\\";
+    }
+    return o.toString().replace(\\"\\\\n\\", \\"\\\\n    \\");
+  }
+}",
+]
+`;
+
 exports[`JavaGenerator should not render optional imports when only required field 1`] = `
 "public class OtherClass {
   private String color;
@@ -1874,6 +1948,27 @@ exports[`JavaGenerator should render enums with translated special characters 1`
   public String toString() {
     return String.valueOf(value);
   }
+}"
+`;
+
+exports[`JavaGenerator should render import for date, time and duration when used 1`] = `
+"public class OtherClass {
+  private LocalDate birthdate;
+  private java.time.OffsetDateTime creationDate;
+  private OffsetTime creationTime;
+  private Duration duration;
+
+  public LocalDate getBirthdate() { return this.birthdate; }
+  public void setBirthdate(LocalDate birthdate) { this.birthdate = birthdate; }
+
+  public java.time.OffsetDateTime getCreationDate() { return this.creationDate; }
+  public void setCreationDate(java.time.OffsetDateTime creationDate) { this.creationDate = creationDate; }
+
+  public OffsetTime getCreationTime() { return this.creationTime; }
+  public void setCreationTime(OffsetTime creationTime) { this.creationTime = creationTime; }
+
+  public Duration getDuration() { return this.duration; }
+  public void setDuration(Duration duration) { this.duration = duration; }
 }"
 `;
 
@@ -2117,6 +2212,250 @@ public interface Pet {
     return \\"class Bird {\\\\n\\" +   
       \\"    petType: \\" + toIndentedString(petType) + \\"\\\\n\\" +
       \\"    breed: \\" + toIndentedString(breed) + \\"\\\\n\\" +
+      \\"    additionalProperties: \\" + toIndentedString(additionalProperties) + \\"\\\\n\\" +
+    \\"}\\";
+  }
+
+  /**
+   * Convert the given object to string with each line indented by 4 spaces
+   * (except the first line).
+   */
+  private String toIndentedString(Object o) {
+    if (o == null) {
+      return \\"null\\";
+    }
+    return o.toString().replace(\\"\\\\n\\", \\"\\\\n    \\");
+  }
+}",
+]
+`;
+
+exports[`JavaGenerator when default is used, render field with default should create field with default 1`] = `
+Array [
+  "public class Owner {
+  @JsonProperty(\\"id\\")
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private UUID id = UUID.fromString(\\"e3395ed6-89e2-458a-b9e0-d2e2c2bab6e6\\");
+  @JsonProperty(\\"name\\")
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private String name;
+  @JsonProperty(\\"age\\")
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private Integer age = 18;
+  @JsonProperty(\\"daysSince\\")
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private Long daysSince = 544999999;
+  @JsonProperty(\\"daysBefore\\")
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private Double daysBefore = 100.5;
+  @JsonProperty(\\"creationTime\\")
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private java.time.OffsetDateTime creationTime = java.time.OffsetDateTime.parse(\\"2023-01-01T00:00:00Z\\");
+  @JsonProperty(\\"gender\\")
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private String gender = \\"male\\";
+  @JsonProperty(\\"birthdate\\")
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private LocalDate birthdate = LocalDate.parse(\\"2000-01-01\\");
+  @JsonProperty(\\"isEmployed\\")
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private Boolean isEmployed = true;
+  @JsonAnySetter
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private Map<String, Object> additionalProperties;
+
+  public UUID getId() { return this.id; }
+  public void setId(UUID id) { this.id = id; }
+
+  public String getName() { return this.name; }
+  public void setName(String name) { this.name = name; }
+
+  public Integer getAge() { return this.age; }
+  public void setAge(Integer age) { this.age = age; }
+
+  public Long getDaysSince() { return this.daysSince; }
+  public void setDaysSince(Long daysSince) { this.daysSince = daysSince; }
+
+  public Double getDaysBefore() { return this.daysBefore; }
+  public void setDaysBefore(Double daysBefore) { this.daysBefore = daysBefore; }
+
+  public java.time.OffsetDateTime getCreationTime() { return this.creationTime; }
+  public void setCreationTime(java.time.OffsetDateTime creationTime) { this.creationTime = creationTime; }
+
+  public String getGender() { return this.gender; }
+  public void setGender(String gender) { this.gender = gender; }
+
+  public LocalDate getBirthdate() { return this.birthdate; }
+  public void setBirthdate(LocalDate birthdate) { this.birthdate = birthdate; }
+
+  public Boolean getIsEmployed() { return this.isEmployed; }
+  public void setIsEmployed(Boolean isEmployed) { this.isEmployed = isEmployed; }
+
+  @JsonAnyGetter
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Owner self = (Owner) o;
+      return 
+        Objects.equals(this.id, self.id) &&
+        Objects.equals(this.name, self.name) &&
+        Objects.equals(this.age, self.age) &&
+        Objects.equals(this.daysSince, self.daysSince) &&
+        Objects.equals(this.daysBefore, self.daysBefore) &&
+        Objects.equals(this.creationTime, self.creationTime) &&
+        Objects.equals(this.gender, self.gender) &&
+        Objects.equals(this.birthdate, self.birthdate) &&
+        Objects.equals(this.isEmployed, self.isEmployed) &&
+        Objects.equals(this.additionalProperties, self.additionalProperties);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash((Object)id, (Object)name, (Object)age, (Object)daysSince, (Object)daysBefore, (Object)creationTime, (Object)gender, (Object)birthdate, (Object)isEmployed, (Object)additionalProperties);
+  }
+
+  @Override
+  public String toString() {
+    return \\"class Owner {\\\\n\\" +   
+      \\"    id: \\" + toIndentedString(id) + \\"\\\\n\\" +
+      \\"    name: \\" + toIndentedString(name) + \\"\\\\n\\" +
+      \\"    age: \\" + toIndentedString(age) + \\"\\\\n\\" +
+      \\"    daysSince: \\" + toIndentedString(daysSince) + \\"\\\\n\\" +
+      \\"    daysBefore: \\" + toIndentedString(daysBefore) + \\"\\\\n\\" +
+      \\"    creationTime: \\" + toIndentedString(creationTime) + \\"\\\\n\\" +
+      \\"    gender: \\" + toIndentedString(gender) + \\"\\\\n\\" +
+      \\"    birthdate: \\" + toIndentedString(birthdate) + \\"\\\\n\\" +
+      \\"    isEmployed: \\" + toIndentedString(isEmployed) + \\"\\\\n\\" +
+      \\"    additionalProperties: \\" + toIndentedString(additionalProperties) + \\"\\\\n\\" +
+    \\"}\\";
+  }
+
+  /**
+   * Convert the given object to string with each line indented by 4 spaces
+   * (except the first line).
+   */
+  private String toIndentedString(Object o) {
+    if (o == null) {
+      return \\"null\\";
+    }
+    return o.toString().replace(\\"\\\\n\\", \\"\\\\n    \\");
+  }
+}",
+]
+`;
+
+exports[`JavaGenerator when default with custom type mappings is used, render field with default should create field with default and custom type mappings 1`] = `
+Array [
+  "public class Owner {
+  @JsonProperty(\\"id\\")
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private UUID id = UUID.fromString(\\"e3395ed6-89e2-458a-b9e0-d2e2c2bab6e6\\");
+  @JsonProperty(\\"name\\")
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private String name;
+  @JsonProperty(\\"age\\")
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private Integer age = 18;
+  @JsonProperty(\\"daysSince\\")
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private Long daysSince = 544999999;
+  @JsonProperty(\\"daysBefore\\")
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private BigDecimal daysBefore = new BigDecimal(100.5);
+  @JsonProperty(\\"creationTime\\")
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private Instant creationTime = Instant.parse(\\"2023-01-01T00:00:00Z\\");
+  @JsonProperty(\\"gender\\")
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private String gender = \\"male\\";
+  @JsonProperty(\\"birthdate\\")
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private LocalDate birthdate = LocalDate.parse(\\"2000-01-01\\");
+  @JsonProperty(\\"isEmployed\\")
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private Boolean isEmployed = true;
+  @JsonAnySetter
+  @JsonInclude(JsonInclude.Include.NON_NULL)
+  private Map<String, Object> additionalProperties;
+
+  public UUID getId() { return this.id; }
+  public void setId(UUID id) { this.id = id; }
+
+  public String getName() { return this.name; }
+  public void setName(String name) { this.name = name; }
+
+  public Integer getAge() { return this.age; }
+  public void setAge(Integer age) { this.age = age; }
+
+  public Long getDaysSince() { return this.daysSince; }
+  public void setDaysSince(Long daysSince) { this.daysSince = daysSince; }
+
+  public BigDecimal getDaysBefore() { return this.daysBefore; }
+  public void setDaysBefore(BigDecimal daysBefore) { this.daysBefore = daysBefore; }
+
+  public Instant getCreationTime() { return this.creationTime; }
+  public void setCreationTime(Instant creationTime) { this.creationTime = creationTime; }
+
+  public String getGender() { return this.gender; }
+  public void setGender(String gender) { this.gender = gender; }
+
+  public LocalDate getBirthdate() { return this.birthdate; }
+  public void setBirthdate(LocalDate birthdate) { this.birthdate = birthdate; }
+
+  public Boolean getIsEmployed() { return this.isEmployed; }
+  public void setIsEmployed(Boolean isEmployed) { this.isEmployed = isEmployed; }
+
+  @JsonAnyGetter
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Owner self = (Owner) o;
+      return 
+        Objects.equals(this.id, self.id) &&
+        Objects.equals(this.name, self.name) &&
+        Objects.equals(this.age, self.age) &&
+        Objects.equals(this.daysSince, self.daysSince) &&
+        Objects.equals(this.daysBefore, self.daysBefore) &&
+        Objects.equals(this.creationTime, self.creationTime) &&
+        Objects.equals(this.gender, self.gender) &&
+        Objects.equals(this.birthdate, self.birthdate) &&
+        Objects.equals(this.isEmployed, self.isEmployed) &&
+        Objects.equals(this.additionalProperties, self.additionalProperties);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash((Object)id, (Object)name, (Object)age, (Object)daysSince, (Object)daysBefore, (Object)creationTime, (Object)gender, (Object)birthdate, (Object)isEmployed, (Object)additionalProperties);
+  }
+
+  @Override
+  public String toString() {
+    return \\"class Owner {\\\\n\\" +   
+      \\"    id: \\" + toIndentedString(id) + \\"\\\\n\\" +
+      \\"    name: \\" + toIndentedString(name) + \\"\\\\n\\" +
+      \\"    age: \\" + toIndentedString(age) + \\"\\\\n\\" +
+      \\"    daysSince: \\" + toIndentedString(daysSince) + \\"\\\\n\\" +
+      \\"    daysBefore: \\" + toIndentedString(daysBefore) + \\"\\\\n\\" +
+      \\"    creationTime: \\" + toIndentedString(creationTime) + \\"\\\\n\\" +
+      \\"    gender: \\" + toIndentedString(gender) + \\"\\\\n\\" +
+      \\"    birthdate: \\" + toIndentedString(birthdate) + \\"\\\\n\\" +
+      \\"    isEmployed: \\" + toIndentedString(isEmployed) + \\"\\\\n\\" +
       \\"    additionalProperties: \\" + toIndentedString(additionalProperties) + \\"\\\\n\\" +
     \\"}\\";
   }

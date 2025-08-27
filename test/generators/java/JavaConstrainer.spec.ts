@@ -294,7 +294,7 @@ describe('JavaConstrainer', () => {
         constrainedModel: model,
         ...defaultOptions
       });
-      expect(type).toEqual('java.time.LocalDate');
+      expect(type).toEqual('LocalDate');
     });
     test('should render OffsetTime when format has time format', () => {
       const model = new ConstrainedStringModel(
@@ -307,7 +307,7 @@ describe('JavaConstrainer', () => {
         constrainedModel: model,
         ...defaultOptions
       });
-      expect(type).toEqual('java.time.OffsetTime');
+      expect(type).toEqual('OffsetTime');
     });
     test('should render OffsetDateTime when format has dateTime format', () => {
       const model = new ConstrainedStringModel(
@@ -359,7 +359,7 @@ describe('JavaConstrainer', () => {
         constrainedModel: model,
         ...defaultOptions
       });
-      expect(type).toEqual('java.time.Duration');
+      expect(type).toEqual('Duration');
     });
   });
   describe('Boolean', () => {

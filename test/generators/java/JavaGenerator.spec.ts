@@ -249,7 +249,46 @@ describe('JavaGenerator', () => {
     const models = await generator.generate(doc);
     expect(models).toHaveLength(1);
     expect(models[0].result).toMatchSnapshot();
-    expect(models[0].dependencies).not.toContain(expectedDependencies);
+    expect(models[0].dependencies).not.toEqual(expectedDependencies);
+  });
+
+  test('should render import for date, time and duration when used', async () => {
+    const doc = {
+      $id: 'OtherClass',
+      type: 'object',
+      additionalProperties: false,
+      properties: {
+        birthdate: {
+          type: 'string',
+          format: 'date'
+        },
+        creationDate: {
+          type: 'string',
+          format: 'date-time'
+        },
+        creationTime: {
+          type: 'string',
+          format: 'time'
+        },
+        duration: {
+          type: 'string',
+          format: 'duration'
+        }
+      },
+      required: ['birthdate', 'creationDate', 'creationTime', 'duration']
+    };
+    const expectedDependencies = [
+      'import java.time.LocalDate;',
+      'import java.time.OffsetTime;',
+      'import java.time.Duration;'
+    ];
+
+    generator = new JavaGenerator();
+
+    const models = await generator.generate(doc);
+    expect(models).toHaveLength(1);
+    expect(models[0].result).toMatchSnapshot();
+    expect(models[0].dependencies).toEqual(expectedDependencies);
   });
 
   test('should render models and their dependencies', async () => {
@@ -426,6 +465,75 @@ describe('JavaGenerator', () => {
             allowInheritance: true
           }
         }
+      });
+
+      const models = await generator.generate(asyncapiDoc);
+      expect(models.map((model) => model.result)).toMatchSnapshot();
+    });
+  });
+
+  describe('render optionals correctly when enabled', () => {
+    test('should render optional if no default', async () => {
+      const asyncapiDoc = {
+        asyncapi: '2.5.0',
+        info: {
+          title: 'CloudEvent example',
+          version: '1.0.0'
+        },
+        channels: {
+          animal: {
+            publish: {
+              message: {
+                $ref: '#/components/messages/Pet'
+              }
+            }
+          }
+        },
+        components: {
+          messages: {
+            Pet: {
+              payload: {
+                $ref: '#/components/schemas/Pet'
+              }
+            }
+          },
+          schemas: {
+            Pet: {
+              title: 'Pet',
+              type: 'object',
+              discriminator: '@petType',
+              properties: {
+                '@petType': {
+                  type: 'string'
+                },
+                color: {
+                  type: 'string'
+                },
+                gender: {
+                  type: 'string',
+                  default: 'male'
+                }
+              },
+              required: ['@petType']
+            }
+          }
+        }
+      };
+
+      generator = new JavaGenerator({
+        presets: [
+          JAVA_COMMON_PRESET,
+          JAVA_JACKSON_PRESET,
+          JAVA_DESCRIPTION_PRESET,
+          JAVA_CONSTRAINTS_PRESET
+        ],
+        collectionType: 'List',
+        processorOptions: {
+          jsonSchema: {
+            allowInheritance: true
+          }
+        },
+        useOptionalForNullableProperties: true
       });
 
       const models = await generator.generate(asyncapiDoc);
@@ -881,6 +989,221 @@ describe('JavaGenerator', () => {
           jsonSchema: {
             allowInheritance: true,
             disableCache: false
+          }
+        }
+      });
+
+      const models = await generator.generate(asyncapiDoc);
+      expect(models.map((model) => model.result)).toMatchSnapshot();
+    });
+  });
+
+  describe('when default is used, render field with default', () => {
+    test('should create field with default', async () => {
+      const asyncapiDoc = {
+        asyncapi: '2.5.0',
+        info: {
+          title: 'CloudEvent example',
+          version: '1.0.0'
+        },
+        channels: {
+          owner: {
+            publish: {
+              message: {
+                $ref: '#/components/messages/Owner'
+              }
+            }
+          }
+        },
+        components: {
+          messages: {
+            Owner: {
+              payload: {
+                $ref: '#/components/schemas/Owner'
+              }
+            }
+          },
+          schemas: {
+            Owner: {
+              type: 'object',
+              properties: {
+                id: {
+                  type: 'string',
+                  format: 'uuid',
+                  default: 'e3395ed6-89e2-458a-b9e0-d2e2c2bab6e6'
+                },
+                name: {
+                  type: 'string'
+                },
+                age: {
+                  type: 'integer',
+                  format: 'int32',
+                  default: 18
+                },
+                daysSince: {
+                  type: 'integer',
+                  format: 'int64',
+                  default: 544999999
+                },
+                daysBefore: {
+                  type: 'number',
+                  default: 100.5
+                },
+                creationTime: {
+                  type: 'string',
+                  format: 'date-time',
+                  default: '2023-01-01T00:00:00Z'
+                },
+                gender: {
+                  type: 'string',
+                  default: 'male'
+                },
+                birthdate: {
+                  type: 'string',
+                  format: 'date',
+                  default: '2000-01-01'
+                },
+                isEmployed: {
+                  type: 'boolean',
+                  default: true
+                }
+              }
+            }
+          }
+        }
+      };
+
+      generator = new JavaGenerator({
+        presets: [
+          JAVA_COMMON_PRESET,
+          JAVA_JACKSON_PRESET,
+          JAVA_DESCRIPTION_PRESET,
+          JAVA_CONSTRAINTS_PRESET
+        ],
+        collectionType: 'List',
+        useModelNameAsConstForDiscriminatorProperty: true,
+        processorOptions: {
+          jsonSchema: {
+            allowInheritance: true,
+            disableCache: false
+          }
+        }
+      });
+
+      const models = await generator.generate(asyncapiDoc);
+      expect(models.map((model) => model.result)).toMatchSnapshot();
+    });
+  });
+
+  describe('when default with custom type mappings is used, render field with default', () => {
+    test('should create field with default and custom type mappings', async () => {
+      const asyncapiDoc = {
+        asyncapi: '2.5.0',
+        info: {
+          title: 'CloudEvent example',
+          version: '1.0.0'
+        },
+        channels: {
+          owner: {
+            publish: {
+              message: {
+                $ref: '#/components/messages/Owner'
+              }
+            }
+          }
+        },
+        components: {
+          messages: {
+            Owner: {
+              payload: {
+                $ref: '#/components/schemas/Owner'
+              }
+            }
+          },
+          schemas: {
+            Owner: {
+              type: 'object',
+              properties: {
+                id: {
+                  type: 'string',
+                  format: 'uuid',
+                  default: 'e3395ed6-89e2-458a-b9e0-d2e2c2bab6e6'
+                },
+                name: {
+                  type: 'string'
+                },
+                age: {
+                  type: 'integer',
+                  format: 'int32',
+                  default: 18
+                },
+                daysSince: {
+                  type: 'integer',
+                  format: 'int64',
+                  default: 544999999
+                },
+                daysBefore: {
+                  type: 'number',
+                  default: 100.5
+                },
+                creationTime: {
+                  type: 'string',
+                  format: 'date-time',
+                  default: '2023-01-01T00:00:00Z'
+                },
+                gender: {
+                  type: 'string',
+                  default: 'male'
+                },
+                birthdate: {
+                  type: 'string',
+                  format: 'date',
+                  default: '2000-01-01'
+                },
+                isEmployed: {
+                  type: 'boolean',
+                  default: true
+                }
+              }
+            }
+          }
+        }
+      };
+
+      generator = new JavaGenerator({
+        presets: [
+          JAVA_COMMON_PRESET,
+          JAVA_JACKSON_PRESET,
+          JAVA_DESCRIPTION_PRESET,
+          JAVA_CONSTRAINTS_PRESET
+        ],
+        collectionType: 'List',
+        useModelNameAsConstForDiscriminatorProperty: true,
+        processorOptions: {
+          jsonSchema: {
+            allowInheritance: true,
+            disableCache: false
+          }
+        },
+        typeMapping: {
+          Float: ({ dependencyManager }) => {
+            dependencyManager.addDependency('import java.math.BigDecimal;');
+            return 'BigDecimal';
+          },
+          String: ({ constrainedModel, dependencyManager }) => {
+            if (constrainedModel?.options.format === 'date-time') {
+              dependencyManager.addDependency('import java.time.Instant;');
+              return 'Instant';
+            }
+            if (constrainedModel?.options.format === 'date') {
+              dependencyManager.addDependency('import java.time.LocalDate;');
+              return 'LocalDate';
+            }
+            if (constrainedModel?.options.format === 'uuid') {
+              dependencyManager.addDependency('import java.util.UUID;');
+              return 'UUID';
+            }
+            return 'String';
           }
         }
       });
