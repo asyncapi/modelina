@@ -9,6 +9,7 @@ import {
 import { JavaOptions } from '../JavaGenerator';
 import { unionIncludesBuiltInTypes } from '../JavaConstrainer';
 import { RecordPresetType } from '../JavaPreset';
+import { JavaImportUtils } from '../JavaImportUtils';
 
 /**
  * Renderer for Java's `record` type
@@ -31,6 +32,16 @@ export class RecordRenderer extends JavaRenderer<ConstrainedObjectModel> {
     if (this.model.containsPropertyType(ConstrainedDictionaryModel)) {
       this.dependencyManager.addDependency('import java.util.Map;');
     }
+
+    JavaImportUtils.addCollectionDependencies(
+      this.options,
+      this.model.properties,
+      this.dependencyManager
+    );
+    JavaImportUtils.addDependenciesForStringTypes(
+      this.model.properties,
+      this.dependencyManager
+    );
 
     const parentUnions = this.getParentUnions();
     const parents = [...(parentUnions ?? [])];

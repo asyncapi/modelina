@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Should use custom type mappings when overridden and should log expected output to console 1`] = `
+Array [
+  "public class Root {
+  private String gender = \\"male\\";
+  private BigDecimal height = new BigDecimal(1.75);
+  private Instant creationTime = Instant.parse(\\"2023-10-01T12:00:00Z\\");
+
+  public String getGender() { return this.gender; }
+  public void setGender(String gender) { this.gender = gender; }
+
+  public BigDecimal getHeight() { return this.height; }
+  public void setHeight(BigDecimal height) { this.height = height; }
+
+  public Instant getCreationTime() { return this.creationTime; }
+  public void setCreationTime(Instant creationTime) { this.creationTime = creationTime; }
+}",
+]
+`;

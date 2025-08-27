@@ -120,6 +120,8 @@ These are all specific examples only relevant to the Java generator:
 - [java-generate-javadoc](./java-generate-javadoc) - A basic example of how to generate Java models including JavaDocs.
 - [integrate-into-maven](./integrate-with-maven/) - A basic example that shows how you can integrate Modelina into the Java Maven build process.
 - [java-generate-records](./java-generate-records/) - A basic example that shows how to change Java model type from class to record.
+- [java-generate-defaults](./java-generate-defaults) - A basic example that shows how to generate models that include default values for properties.
+- [java-custom-type-mappings](./java-custom-type-mappings) - A basic example showing how to use type mappings to switch data types.
 
 ### C#
 These are all specific examples only relevant to the C# generator:
