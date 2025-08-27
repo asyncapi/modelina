@@ -23,8 +23,8 @@ export function buildPythonGenerator(flags: any): BuilderReturnType {
   if (packageName === undefined) {
     throw new Error('In order to generate models to Python, we need to know which package they are under. Add `--packageName=PACKAGENAME` to set the desired package name.');
   }
-  
-  const presets = [];  
+
+  const presets = [];
   if (pyDantic) {
     presets.push(PYTHON_PYDANTIC_PRESET);
   }
