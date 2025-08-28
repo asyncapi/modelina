@@ -1727,6 +1727,37 @@ Array [
 ]
 `;
 
+exports[`JavaGenerator renders discriminator containing a special character when discriminator has a default 1`] = `
+Array [
+  "/**
+ * Pet represents a union of types: Fish, Bird
+ */
+public interface Pet {
+  
+}",
+  "public class Fish implements Pet {
+  private String atType = \\"Fish\\";
+  private Map<String, Object> additionalProperties;
+
+  public String getAtType() { return this.atType; }
+  public void setAtType(String atType) { this.atType = atType; }
+
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+}",
+  "public class Bird implements Pet {
+  private String atType = \\"Fish\\";
+  private Map<String, Object> additionalProperties;
+
+  public String getAtType() { return this.atType; }
+  public void setAtType(String atType) { this.atType = atType; }
+
+  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
+  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
+}",
+]
+`;
+
 exports[`JavaGenerator should not render optional imports when only required field 1`] = `
 "public class OtherClass {
   private String color;
