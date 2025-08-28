@@ -1742,7 +1742,7 @@ public interface Pet {
   public void setPets(Pet[] pets) { this.pets = pets; }
 }",
   "public class Fish implements Pet {
-  private String atType = \\"Fish\\";
+  private final String atType = \\"Fish\\";
   private Map<String, Object> additionalProperties;
 
   public String getAtType() { return this.atType; }
@@ -1751,7 +1751,7 @@ public interface Pet {
   public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
 }",
   "public class Bird implements Pet {
-  private String atType = \\"Fish\\";
+  private final String atType = \\"Bird\\";
   private Map<String, Object> additionalProperties;
 
   public String getAtType() { return this.atType; }
