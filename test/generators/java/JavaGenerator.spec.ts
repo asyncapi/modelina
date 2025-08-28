@@ -938,7 +938,7 @@ describe('JavaGenerator', () => {
                     $ref: '#/components/schemas/Pet'
                   }
                 }
-              },
+              }
             },
             Pet: {
               title: 'Pet',
