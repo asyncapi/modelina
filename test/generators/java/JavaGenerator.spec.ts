@@ -896,38 +896,50 @@ describe('JavaGenerator', () => {
       const asyncapiDoc = {
         asyncapi: '3.0.0',
         info: {
-          title: 'Pet example',
+          title: 'Pet Owner example',
           version: '1.0.0'
         },
         channels: {
-          pet: {
-            address: 'pet',
+          owner: {
+            address: 'owner',
             messages: {
               Pet: {
-                $ref: '#/components/messages/Pet'
+                $ref: '#/components/messages/Owner'
               }
             }
           }
         },
         operations: {
-          petAvailable: {
+          ownerAvailable: {
             action: 'receive',
             channel: {
-              $ref: '#/channels/pet'
+              $ref: '#/channels/owner'
             }
           }
         },
         components: {
           messages: {
-            Pet: {
+            Owner: {
               payload: {
                 schema: {
-                  $ref: '#/components/schemas/Pet'
+                  $ref: '#/components/schemas/Owner'
                 }
               }
             }
           },
           schemas: {
+            Owner: {
+              title: 'Owner',
+              type: 'object',
+              properties: {
+                pets: {
+                  type: 'array',
+                  items: {
+                    $ref: '#/components/schemas/Pet'
+                  }
+                }
+              },
+            },
             Pet: {
               title: 'Pet',
               type: 'object',

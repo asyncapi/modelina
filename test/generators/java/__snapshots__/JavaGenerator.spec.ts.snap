@@ -1733,14 +1733,19 @@ Array [
  * Pet represents a union of types: Fish, Bird
  */
 public interface Pet {
-  
+  String getAtType();
+}",
+  "public class Owner {
+  private Pet[] pets;
+
+  public Pet[] getPets() { return this.pets; }
+  public void setPets(Pet[] pets) { this.pets = pets; }
 }",
   "public class Fish implements Pet {
   private String atType = \\"Fish\\";
   private Map<String, Object> additionalProperties;
 
   public String getAtType() { return this.atType; }
-  public void setAtType(String atType) { this.atType = atType; }
 
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
   public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
@@ -1750,7 +1755,6 @@ public interface Pet {
   private Map<String, Object> additionalProperties;
 
   public String getAtType() { return this.atType; }
-  public void setAtType(String atType) { this.atType = atType; }
 
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
   public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
