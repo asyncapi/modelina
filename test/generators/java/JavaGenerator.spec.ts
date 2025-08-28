@@ -932,7 +932,7 @@ describe('JavaGenerator', () => {
               title: 'Pet',
               type: 'object',
               properties: {
-                "@type": {
+                '@type': {
                   type: 'string',
                   default: 'Fish'
                 }
