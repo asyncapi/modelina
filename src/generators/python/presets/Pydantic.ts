@@ -110,7 +110,7 @@ def custom_serializer(self, handler):
   if ${dictionaryModel?.propertyName} is not None:
     for key, value in ${dictionaryModel?.propertyName}.items():
       # Never overwrite existing values, to avoid clashes
-      if not hasattr(serialized_self, key):
+      if not key in serialized_self:
         serialized_self[key] = value
 
   return serialized_self
