@@ -13,7 +13,7 @@ Array [
     if additional_properties is not None:
       for key, value in additional_properties.items():
         # Never overwrite existing values, to avoid clashes
-        if not hasattr(serialized_self, key):
+        if not key in serialized_self:
           serialized_self[key] = value
 
     return serialized_self
@@ -57,7 +57,7 @@ Array [
     if additional_properties is not None:
       for key, value in additional_properties.items():
         # Never overwrite existing values, to avoid clashes
-        if not hasattr(serialized_self, key):
+        if not key in serialized_self:
           serialized_self[key] = value
 
     return serialized_self
@@ -95,7 +95,7 @@ Array [
     if additional_properties is not None:
       for key, value in additional_properties.items():
         # Never overwrite existing values, to avoid clashes
-        if not hasattr(serialized_self, key):
+        if not key in serialized_self:
           serialized_self[key] = value
 
     return serialized_self
@@ -136,7 +136,7 @@ Array [
     if additional_properties is not None:
       for key, value in additional_properties.items():
         # Never overwrite existing values, to avoid clashes
-        if not hasattr(serialized_self, key):
+        if not key in serialized_self:
           serialized_self[key] = value
 
     return serialized_self
@@ -178,7 +178,7 @@ Array [
     if additional_properties is not None:
       for key, value in additional_properties.items():
         # Never overwrite existing values, to avoid clashes
-        if not hasattr(serialized_self, key):
+        if not key in serialized_self:
           serialized_self[key] = value
 
     return serialized_self
@@ -215,7 +215,7 @@ Array [
     if additional_properties is not None:
       for key, value in additional_properties.items():
         # Never overwrite existing values, to avoid clashes
-        if not hasattr(serialized_self, key):
+        if not key in serialized_self:
           serialized_self[key] = value
 
     return serialized_self
@@ -259,7 +259,7 @@ exports[`PYTHON_PYDANTIC_PRESET should render pydantic for class 1`] = `
     if additional_properties is not None:
       for key, value in additional_properties.items():
         # Never overwrite existing values, to avoid clashes
-        if not hasattr(serialized_self, key):
+        if not key in serialized_self:
           serialized_self[key] = value
 
     return serialized_self
@@ -300,7 +300,7 @@ Array [
     if additional_properties is not None:
       for key, value in additional_properties.items():
         # Never overwrite existing values, to avoid clashes
-        if not hasattr(serialized_self, key):
+        if not key in serialized_self:
           serialized_self[key] = value
 
     return serialized_self
@@ -337,7 +337,7 @@ Array [
     if additional_properties is not None:
       for key, value in additional_properties.items():
         # Never overwrite existing values, to avoid clashes
-        if not hasattr(serialized_self, key):
+        if not key in serialized_self:
           serialized_self[key] = value
 
     return serialized_self
@@ -374,7 +374,7 @@ Array [
     if additional_properties is not None:
       for key, value in additional_properties.items():
         # Never overwrite existing values, to avoid clashes
-        if not hasattr(serialized_self, key):
+        if not key in serialized_self:
           serialized_self[key] = value
 
     return serialized_self
