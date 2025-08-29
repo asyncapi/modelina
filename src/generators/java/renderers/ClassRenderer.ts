@@ -270,15 +270,15 @@ export const JAVA_DEFAULT_CLASS_PRESET: ClassPresetType<JavaOptions> = {
     }
 
     const isDiscriminatorProperty =
-      property.propertyName === model.options.discriminator?.discriminator;
+      property.unconstrainedPropertyName ===
+      model.options.discriminator?.discriminator;
     if (!isDiscriminatorProperty && property.property.originalInput?.default) {
       return JavaDefaultRendererUtil.renderFieldWithDefault(property);
     }
 
     if (
       options.useModelNameAsConstForDiscriminatorProperty &&
-      property.unconstrainedPropertyName ===
-        model.options.discriminator?.discriminator &&
+      isDiscriminatorProperty &&
       property.property.type === 'String'
     ) {
       return `private final ${property.property.type} ${property.propertyName} = "${model.name}";`;

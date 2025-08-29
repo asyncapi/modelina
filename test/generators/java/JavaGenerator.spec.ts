@@ -889,6 +889,106 @@ describe('JavaGenerator', () => {
     });
   });
 
+  describe('renders discriminator containing a special character', () => {
+    test('when discriminator has a default', async () => {
+      // note: the default discriminator value is not used in the output. See JacksonPreset.spec.ts for that.
+
+      const asyncapiDoc = {
+        asyncapi: '3.0.0',
+        info: {
+          title: 'Pet Owner example',
+          version: '1.0.0'
+        },
+        channels: {
+          owner: {
+            address: 'owner',
+            messages: {
+              Pet: {
+                $ref: '#/components/messages/Owner'
+              }
+            }
+          }
+        },
+        operations: {
+          ownerAvailable: {
+            action: 'receive',
+            channel: {
+              $ref: '#/channels/owner'
+            }
+          }
+        },
+        components: {
+          messages: {
+            Owner: {
+              payload: {
+                schema: {
+                  $ref: '#/components/schemas/Owner'
+                }
+              }
+            }
+          },
+          schemas: {
+            Owner: {
+              title: 'Owner',
+              type: 'object',
+              properties: {
+                pets: {
+                  type: 'array',
+                  items: {
+                    $ref: '#/components/schemas/Pet'
+                  }
+                }
+              }
+            },
+            Pet: {
+              title: 'Pet',
+              type: 'object',
+              properties: {
+                '@type': {
+                  type: 'string',
+                  default: 'Fish'
+                }
+              },
+              required: ['@type'],
+              discriminator: '@type',
+              oneOf: [
+                {
+                  $ref: '#/components/schemas/Fish'
+                },
+                {
+                  $ref: '#/components/schemas/Bird'
+                }
+              ]
+            },
+            Bird: {
+              title: 'Bird',
+              type: 'object',
+              allOf: [
+                {
+                  $ref: '#/components/schemas/Pet'
+                }
+              ]
+            },
+            Fish: {
+              title: 'Fish',
+              type: 'object',
+              allOf: [
+                {
+                  $ref: '#/components/schemas/Pet'
+                }
+              ]
+            }
+          }
+        }
+      };
+      const generator = new JavaGenerator({
+        useModelNameAsConstForDiscriminatorProperty: true
+      });
+      const models = await generator.generate(asyncapiDoc);
+      expect(models.map((model) => model.result)).toMatchSnapshot();
+    });
+  });
+
   describe('when collection type is list and unique items is true it should render a set', () => {
     test('should create a set for unique arrays', async () => {
       const asyncapiDoc = {
