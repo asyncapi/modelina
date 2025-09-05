@@ -30,13 +30,18 @@ export class JavaDefaultRendererUtil {
     if (property.property.type === 'BigDecimal') {
       return `private ${property.property.type} ${property.propertyName} = new BigDecimal(${property.property.originalInput.default});`;
     }
-    if (property.property instanceof ConstrainedReferenceModel && property.property.ref instanceof ConstrainedEnumModel) {
-      const defaultEnumValue = property.property.ref.values.find(valueModel => valueModel.originalInput === property.property.originalInput.default);
+    if (
+      property.property instanceof ConstrainedReferenceModel &&
+      property.property.ref instanceof ConstrainedEnumModel
+    ) {
+      const defaultEnumValue = property.property.ref.values.find(
+        (valueModel) =>
+          valueModel.originalInput === property.property.originalInput.default
+      );
       if (defaultEnumValue === undefined) {
         return `private ${property.property.type} ${property.propertyName};`;
-      } else {
-        return `private ${property.property.type} ${property.propertyName} = ${property.property.type}.${defaultEnumValue.key};`;
       }
+      return `private ${property.property.type} ${property.propertyName} = ${property.property.type}.${defaultEnumValue.key};`;
     }
     return `private ${property.property.type} ${property.propertyName} = ${property.property.originalInput.default};`;
   }
