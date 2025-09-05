@@ -2303,6 +2303,44 @@ Array [
 ]
 `;
 
+exports[`JavaGenerator when default is used, render field with default should create enum field without default if invalid 1`] = `
+Array [
+  "public class Owner {
+  private LegalForm legalForm;
+
+  public LegalForm getLegalForm() { return this.legalForm; }
+  public void setLegalForm(LegalForm legalForm) { this.legalForm = legalForm; }
+}",
+  "public enum LegalForm {
+  PERSON((String)\\"PERSON\\"), CORPORATION((String)\\"CORPORATION\\");
+
+  private final String value;
+
+  LegalForm(String value) {
+    this.value = value;
+  }
+
+  public String getValue() {
+    return value;
+  }
+
+  public static LegalForm fromValue(String value) {
+    for (LegalForm e : LegalForm.values()) {
+      if (e.value.equals(value)) {
+        return e;
+      }
+    }
+    throw new IllegalArgumentException(\\"Unexpected value '\\" + value + \\"'\\");
+  }
+
+  @Override
+  public String toString() {
+    return String.valueOf(value);
+  }
+}",
+]
+`;
+
 exports[`JavaGenerator when default is used, render field with default should create field with default 1`] = `
 Array [
   "public class Owner {
