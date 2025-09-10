@@ -1193,6 +1193,116 @@ describe('JavaGenerator', () => {
       const models = await generator.generate(asyncapiDoc);
       expect(models.map((model) => model.result)).toMatchSnapshot();
     });
+
+    test('should create enum field with default', async () => {
+      const asyncapiDoc = {
+        asyncapi: '3.0.0',
+        info: {
+          title: 'Owner example',
+          version: '1.0.0'
+        },
+        channels: {
+          owner: {
+            address: 'owner',
+            messages: {
+              Pet: {
+                $ref: '#/components/messages/Owner'
+              }
+            }
+          }
+        },
+        operations: {
+          ownerAvailable: {
+            action: 'receive',
+            channel: {
+              $ref: '#/channels/owner'
+            }
+          }
+        },
+        components: {
+          messages: {
+            Owner: {
+              payload: {
+                schema: {
+                  $ref: '#/components/schemas/Owner'
+                }
+              }
+            }
+          },
+          schemas: {
+            Owner: {
+              type: 'object',
+              properties: {
+                legalForm: {
+                  type: 'string',
+                  title: 'LegalForm',
+                  enum: ['UNKNOWN', 'PERSON', 'CORPORATION'],
+                  default: 'UNKNOWN'
+                }
+              }
+            }
+          }
+        }
+      };
+
+      const models = await generator.generate(asyncapiDoc);
+      expect(models.map((model) => model.result)).toMatchSnapshot();
+    });
+
+    test('should create enum field without default if invalid', async () => {
+      const asyncapiDoc = {
+        asyncapi: '3.0.0',
+        info: {
+          title: 'Owner example',
+          version: '1.0.0'
+        },
+        channels: {
+          owner: {
+            address: 'owner',
+            messages: {
+              Pet: {
+                $ref: '#/components/messages/Owner'
+              }
+            }
+          }
+        },
+        operations: {
+          ownerAvailable: {
+            action: 'receive',
+            channel: {
+              $ref: '#/channels/owner'
+            }
+          }
+        },
+        components: {
+          messages: {
+            Owner: {
+              payload: {
+                schema: {
+                  $ref: '#/components/schemas/Owner'
+                }
+              }
+            }
+          },
+          schemas: {
+            Owner: {
+              type: 'object',
+              properties: {
+                legalForm: {
+                  type: 'string',
+                  title: 'LegalForm',
+                  enum: ['PERSON', 'CORPORATION'],
+                  default: 'NON_ENUM_VALUE'
+                }
+              }
+            }
+          }
+        }
+      };
+
+      const models = await generator.generate(asyncapiDoc);
+      expect(models.map((model) => model.result)).toMatchSnapshot();
+    });
   });
 
   describe('when default with custom type mappings is used, render field with default', () => {
