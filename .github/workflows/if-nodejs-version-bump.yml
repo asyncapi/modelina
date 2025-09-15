@@ -46,18 +46,23 @@ jobs:
         # There is no need to substract "v" from the tag as version script handles it
         # When adding "bump:version" script in package.json, make sure no tags are added by default (--no-git-tag-version) as they are already added by release workflow
         # When adding "bump:version" script in package.json, make sure --allow-same-version is set in case someone forgot and updated package.json manually and we want to avoide this action to fail and raise confusion
-        run: VERSION=${{github.event.release.tag_name}} npm run bump:version
+        env:
+          VERSION: ${{github.event.release.tag_name}}
+        run: npm run bump:version
       - if: steps.packagejson.outputs.exists == 'true'
         name: Create Pull Request with updated asset files including package.json
         uses: peter-evans/create-pull-request@38e0b6e68b4c852a5500a94740f0e535e0d7ba54 # use 4.2.4 https://github.com/peter-evans/create-pull-request/releases/tag/v4.2.4
+        env:
+          RELEASE_TAG: ${{github.event.release.tag_name}}
+          RELEASE_URL: ${{github.event.release.html_url}}
         with:
           token: ${{ secrets.GH_TOKEN }}
-          commit-message: 'chore(release): ${{github.event.release.tag_name}}'
+          commit-message: 'chore(release): ${{ env.RELEASE_TAG }}'
           committer: asyncapi-bot <info@asyncapi.io>
           author: asyncapi-bot <info@asyncapi.io>
-          title: 'chore(release): ${{github.event.release.tag_name}}'
-          body: 'Version bump in package.json for release [${{github.event.release.tag_name}}](${{github.event.release.html_url}})'
-          branch: version-bump/${{github.event.release.tag_name}}
+          title: 'chore(release): ${{ env.RELEASE_TAG }}'
+          body: 'Version bump in package.json for release [${{ env.RELEASE_TAG }}](${{ env.RELEASE_URL }})'
+          branch: version-bump/${{ env.RELEASE_TAG }}
       - if: failure() # Only, on failure, send a message on the 94_bot-failing-ci slack channel
         name: Report workflow run status to Slack
         uses: 8398a7/action-slack@28ba43ae48961b90635b50953d216767a6bea486 #using https://github.com/8398a7/action-slack/releases/tag/v3.16.2
