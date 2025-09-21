@@ -1,6 +1,7 @@
 import {
   AnyModel,
   ArrayModel,
+  DictionaryModel,
   AvroSchema,
   BooleanModel,
   EnumModel,
@@ -108,6 +109,10 @@ export function AvroToMetaModel(
   );
   if (unionModel !== undefined) {
     return unionModel;
+  }
+  const dictionaryModel = toDictionaryModel(avroSchemaModel, modelName, alreadySeenModels);
+  if (dictionaryModel !== undefined) {
+    return dictionaryModel;
   }
 
   Logger.warn('Failed to convert to MetaModel, defaulting to AnyModel.');
@@ -356,6 +361,48 @@ export function toArrayModel(
       const valueModel = AvroToMetaModel(AvroModel, alreadySeenModels);
       metaModel.valueModel = valueModel;
     }
+    return metaModel;
+  }
+  return undefined;
+}
+
+
+export function toDictionaryModel(
+  avroSchemaModel: AvroSchema,
+  name: string,
+  alreadySeenModels: Map<AvroSchema, MetaModel>
+): DictionaryModel | undefined {
+  if (
+    (typeof avroSchemaModel.type === 'string' ||
+      Array.isArray(avroSchemaModel.type)) &&
+    avroSchemaModel.type?.includes('map')
+  ) {
+
+    var keyModel = new StringModel(
+      '',
+      undefined,
+      getMetaModelOptions(avroSchemaModel)
+    )
+
+    var valueModel = new AnyModel(
+      '',
+      undefined,
+      getMetaModelOptions(avroSchemaModel)
+    );
+    if (avroSchemaModel.values !== undefined) {
+      const AvroModel = new AvroSchema();
+      AvroModel.name = `${name}_${avroSchemaModel.values}`;
+      AvroModel.type = avroSchemaModel.values;
+      valueModel = AvroToMetaModel(AvroModel, alreadySeenModels);
+    }
+
+    var metaModel = new DictionaryModel(
+      name,
+      avroSchemaModel.originalInput,
+      getMetaModelOptions(avroSchemaModel),
+      keyModel,
+      valueModel
+    )
     return metaModel;
   }
   return undefined;
