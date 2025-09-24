@@ -110,7 +110,11 @@ export function AvroToMetaModel(
   if (unionModel !== undefined) {
     return unionModel;
   }
-  const dictionaryModel = toDictionaryModel(avroSchemaModel, modelName, alreadySeenModels);
+  const dictionaryModel = toDictionaryModel(
+    avroSchemaModel, 
+    modelName, 
+    alreadySeenModels
+  );
   if (dictionaryModel !== undefined) {
     return dictionaryModel;
   }
@@ -365,8 +369,6 @@ export function toArrayModel(
   }
   return undefined;
 }
-
-
 export function toDictionaryModel(
   avroSchemaModel: AvroSchema,
   name: string,
@@ -377,14 +379,12 @@ export function toDictionaryModel(
       Array.isArray(avroSchemaModel.type)) &&
     avroSchemaModel.type?.includes('map')
   ) {
-
-    var keyModel = new StringModel(
+    let keyModel = new StringModel(
       '',
       undefined,
       getMetaModelOptions(avroSchemaModel)
-    )
-
-    var valueModel = new AnyModel(
+    );
+    let valueModel = new AnyModel(
       '',
       undefined,
       getMetaModelOptions(avroSchemaModel)
@@ -396,13 +396,13 @@ export function toDictionaryModel(
       valueModel = AvroToMetaModel(AvroModel, alreadySeenModels);
     }
 
-    var metaModel = new DictionaryModel(
+    const metaModel = new DictionaryModel(
       name,
       avroSchemaModel.originalInput,
       getMetaModelOptions(avroSchemaModel),
       keyModel,
       valueModel
-    )
+    );
     return metaModel;
   }
   return undefined;
