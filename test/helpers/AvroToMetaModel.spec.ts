@@ -5,6 +5,7 @@ import {
   BooleanModel,
   EnumModel,
   FloatModel,
+  DictionaryModel,
   IntegerModel,
   ObjectModel,
   StringModel
@@ -207,5 +208,15 @@ describe('AvroToMetaModel', () => {
 
     expect(model).not.toBeUndefined();
     expect(model instanceof IntegerModel).toBeTruthy();
+  });
+  test('should convert to dictionary model', () => {
+    const av = new AvroSchema();
+    av.name = 'test';
+    av.type = { type: 'map', values: 'integer' };
+
+    const model = AvroToMetaModel(av);
+
+    expect(model).not.toBeUndefined();
+    expect(model instanceof DictionaryModel).toBeTruthy();
   });
 });
