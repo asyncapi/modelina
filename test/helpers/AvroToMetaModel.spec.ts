@@ -179,6 +179,26 @@ describe('AvroToMetaModel', () => {
     expect(model).not.toBeUndefined();
     expect(model instanceof ArrayModel).toBeTruthy();
   });
+  test('should handle AvroSchema value of type fixed', () => {
+    const av = new AvroSchema();
+    av.name = 'test';
+    av.type = { name: 'test1', type: 'fixed' };
+
+    const model = AvroToMetaModel(av);
+
+    expect(model).not.toBeUndefined();
+    expect(model instanceof StringModel).toBeTruthy();
+  });
+  test('should handle AvroSchema value of type bytes', () => {
+    const av = new AvroSchema();
+    av.name = 'test';
+    av.type = { name: 'test1', type: 'bytes' };
+
+    const model = AvroToMetaModel(av);
+
+    expect(model).not.toBeUndefined();
+    expect(model instanceof StringModel).toBeTruthy();
+  });
   test('should handle AvroSchema value of type', () => {
     const av = new AvroSchema();
     av.name = 'test';

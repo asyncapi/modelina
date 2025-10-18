@@ -185,9 +185,15 @@ export function toStringModel(
   name: string
 ): StringModel | undefined {
   if (
-    (typeof avroSchemaModel.type === 'string' ||
+    ((typeof avroSchemaModel.type === 'string' ||
       Array.isArray(avroSchemaModel.type)) &&
-    avroSchemaModel.type.includes('string')
+      avroSchemaModel.type.includes('string')) ||
+    ((typeof avroSchemaModel.type === 'string' ||
+      Array.isArray(avroSchemaModel.type)) &&
+      avroSchemaModel.type.includes('fixed')) ||
+    ((typeof avroSchemaModel.type === 'string' ||
+      Array.isArray(avroSchemaModel.type)) &&
+      avroSchemaModel.type.includes('bytes'))
   ) {
     return new StringModel(
       name,
