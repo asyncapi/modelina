@@ -115,16 +115,19 @@ describe('XsdInputProcessor', () => {
 
     test('should process XSD Schema with xs:any elements', async () => {
       const processor = new XsdInputProcessor();
-      const anyDoc = fs.readFileSync(path.join(__dirname, './XsdInputProcessor/any.xsd'), 'utf8');
+      const anyDoc = fs.readFileSync(
+        path.join(__dirname, './XsdInputProcessor/any.xsd'),
+        'utf8'
+      );
       const result = await processor.process(anyDoc);
       expect(result).toBeDefined();
       expect(result.models).toBeDefined();
       expect(Object.keys(result.models).length).toBeGreaterThan(0);
-      
+
       // Check that xs:any is converted to appropriate properties
       const flexibleType = result.models['FlexibleType'];
       expect(flexibleType).toBeDefined();
-      
+
       expect(result).toMatchSnapshot();
     });
   });
@@ -146,7 +149,7 @@ describe('XsdInputProcessor', () => {
     </xs:complexType>
   </xs:element>
 </xs:schema>`;
-      
+
       const result = await processor.process(xsdWithPrimitives);
       expect(result).toBeDefined();
       expect(result.models).toBeDefined();
@@ -154,4 +157,3 @@ describe('XsdInputProcessor', () => {
     });
   });
 });
-

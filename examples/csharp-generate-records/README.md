@@ -1,6 +1,5 @@
-# TODO: Your example title
-
-TODO: Your example description
+# C# generate records
+Simple example showing how to generate C# records
 
 ## How to run this example
 

@@ -53,9 +53,6 @@ Do NOT enable users to write their own option callbacks. This includes but not l
 
 To be on the safeside, only enable the user to chose between the internal options and presets, as you can see the [playground does](https://www.asyncapi.com/tools/modelina).
 
-## Integrate Modelina in an AsyncAPI generator template
-TODO
-
 ## Integrate Modelina into Maven
 
 There are at least two ways you can integrate Modelina into your build process for Maven projects, either with the AsyncAPI CLI or with a custom build script. Which one to choose all depends on your scenario, look below:
