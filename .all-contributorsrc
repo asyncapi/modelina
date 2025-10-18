@@ -1181,6 +1181,16 @@
         "code",
         "test"
       ]
+    },
+    {
+      "login": "Exar04",
+      "name": "Dhadve Yash",
+      "avatar_url": "https://avatars.githubusercontent.com/u/109629956?v=4",
+      "profile": "https://github.com/Exar04",
+      "contributions": [
+        "code",
+        "test"
+      ]
     }
   ],
   "contributorsPerLine": 7,
