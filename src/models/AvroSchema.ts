@@ -22,4 +22,5 @@ export class AvroSchema {
   exclusiveMinimum?: unknown;
   exclusiveMaximum?: unknown;
   logicalType?: unknown;
+  values?: string;
 }
