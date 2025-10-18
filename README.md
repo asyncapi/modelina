@@ -205,6 +205,10 @@ The following table provides a short summary of available features for supported
     <td>We support the following OpenAPI versions: <em><a href="./docs/usage.md#generate-models-from-swagger-20-documents">Swagger 2.0</a>, <a href="./docs/usage.md#generate-models-from-openapi-documents">OpenAPI 3.0 and 3.1</a></em>, which generates models for all the defined request and response payloads.</td>
   </tr>
   <tr>
+    <td><a href="./examples/xsd-to-typescript">XSD (XML Schema Definition)</a></td>
+    <td>We support XML Schema Definition (XSD) with common elements including simple types, complex types, sequences, choices, attributes, and enumerations.</td>
+  </tr>
+  <tr>
     <td><a href="./docs/usage.md#generate-model-from-typescript-type-files">TypeScript</a></td>
     <td>We currently support TypeScript types as file input for model generation</td>
   </tr>

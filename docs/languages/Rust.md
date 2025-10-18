@@ -39,19 +39,3 @@ To generate a `new` method, use the preset `RUST_COMMON_PRESET` and provide the 
 ## Implement `Default` for enums
 
 To generate `Default` implementation for enums that provide a default value, use the preset `RUST_COMMON_PRESET` and provide the option `implementDefault: true`.
-
-## Implement `From<String>` (serde_json)
-
-TODO
-
-## Implement `Into<String>` (serde_json)
-
-TODO
-
-## Implement `From<FramedByteStream>` (tokio_serde)
-
-TODO
-
-## Implement `From<FramedByteStream>` (tokio_serde)
-
-TOOD

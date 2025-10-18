@@ -1,4 +1,4 @@
-# TODO: Generate Java model from a TypeScript Types file using processor options
+# Generate Java model from a TypeScript Types file using processor options
 
 This is a basic example of generating Java models using a Typescript type file as input and processor options. This can be extended to generating Go, C# and other supported language models.
 

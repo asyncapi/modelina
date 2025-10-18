@@ -1,0 +1,95 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Should be able to render models from XSD to TypeScript and should log expected output to console 1`] = `
+"
+class BookType {
+  private _title: string;
+  private _author: string;
+  private _isbn: string;
+  private _publishYear: number;
+  private _category: string;
+  private _price: number;
+  private _id: string;
+
+  constructor(input: {
+    title: string,
+    author: string,
+    isbn: string,
+    publishYear: number,
+    category: string,
+    price: number,
+    id: string,
+  }) {
+    this._title = input.title;
+    this._author = input.author;
+    this._isbn = input.isbn;
+    this._publishYear = input.publishYear;
+    this._category = input.category;
+    this._price = input.price;
+    this._id = input.id;
+  }
+
+  get title(): string { return this._title; }
+  set title(title: string) { this._title = title; }
+
+  get author(): string { return this._author; }
+  set author(author: string) { this._author = author; }
+
+  get isbn(): string { return this._isbn; }
+  set isbn(isbn: string) { this._isbn = isbn; }
+
+  get publishYear(): number { return this._publishYear; }
+  set publishYear(publishYear: number) { this._publishYear = publishYear; }
+
+  get category(): string { return this._category; }
+  set category(category: string) { this._category = category; }
+
+  get price(): number { return this._price; }
+  set price(price: number) { this._price = price; }
+
+  get id(): string { return this._id; }
+  set id(id: string) { this._id = id; }
+}
+export default BookType;
+
+
+class LibraryType {
+  private _reservedName: string;
+  private _reservedLocation: string;
+  private _book: string[];
+
+  constructor(input: {
+    reservedName: string,
+    reservedLocation: string,
+    book: string[],
+  }) {
+    this._reservedName = input.reservedName;
+    this._reservedLocation = input.reservedLocation;
+    this._book = input.book;
+  }
+
+  get reservedName(): string { return this._reservedName; }
+  set reservedName(reservedName: string) { this._reservedName = reservedName; }
+
+  get reservedLocation(): string { return this._reservedLocation; }
+  set reservedLocation(reservedLocation: string) { this._reservedLocation = reservedLocation; }
+
+  get book(): string[] { return this._book; }
+  set book(book: string[]) { this._book = book; }
+}
+export default LibraryType;
+
+
+enum CategoryType {
+  FICTION = \\"Fiction\\",
+  NON_MINUS_FICTION = \\"Non-Fiction\\",
+  SCIENCE = \\"Science\\",
+  BIOGRAPHY = \\"Biography\\",
+}
+export default CategoryType;
+
+
+type Library = string;
+export default Library;
+"
+`;

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="http://example.com/status"
+           xmlns:tns="http://example.com/status"
+           elementFormDefault="qualified">
+  
+  <!-- Simple type with enumeration -->
+  <xs:simpleType name="StatusType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="active"/>
+      <xs:enumeration value="inactive"/>
+      <xs:enumeration value="pending"/>
+      <xs:enumeration value="deleted"/>
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <!-- Root element using the enum type -->
+  <xs:element name="Status" type="tns:StatusType"/>
+  
+</xs:schema>
+

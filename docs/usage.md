@@ -24,6 +24,7 @@ For more specific integration options, please check out the [integration documen
     + [Limitations and Compatibility](#limitations-and-compatibility-2)
       - [Polymorphism](#polymorphism-2)
 - [Generate models from TypeScript type files](#generate-models-from-typescript-type-files)
+- [Generate models from XSD documents](#generate-models-from-xsd-documents)
 - [Generate models from Meta models](#generate-models-from-meta-models)
 - [Generate Go models](#generate-go-models)
 - [Generate C# models](#generate-c%23-models)
@@ -165,6 +166,16 @@ Currently, we support generating models from a TypeScript type file.
 - [Generate Java model from a TypeScript file](../examples/java-from-typescript-type/)
 
 The TypeScript input processor expects that the typescript file and base directory where it's present, is passed as input, in order to process the types accurately. The input processor converts the TypeScript types into JSON Schema, which are then passed on to the [JSON Schema processor](#generate-models-from-json-schema-documents). 
+
+## Generate models from XSD documents
+
+XSD (XML Schema Definition) is fully supported as an input format. This enables Modelina to work with XML-based schemas commonly used in enterprise and legacy systems.
+
+- [Generate TypeScript models from XSD](../examples/xsd-to-typescript/)
+
+The XSD input processor automatically detects XSD schemas by looking for schema indicators (`xs:schema` or `xsd:schema`).
+
+For a detailed explanation of how XSD is interpreted, see the [XSD input processing documentation](./inputs/XSD.md).
 
 ## Generate models from Meta models
 Sometimes, the supported inputs such as AsyncAPI and JSON Schema wont be enough for your use-case and you want to create your own data models while still utilizing the full sweep of features from the generators.

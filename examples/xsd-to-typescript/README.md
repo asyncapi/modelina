@@ -1,5 +1,6 @@
-# C# generate records
-Simple example showing how to generate C# records
+# Generate TypeScript models from XSD
+
+This example shows you how to generate TypeScript models from an XSD (XML Schema Definition) file.
 
 ## How to run this example
 
