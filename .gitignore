@@ -12,3 +12,6 @@ java_runtime_node
 .netlify
 .metals
 .scala-build
+
+.cursorrules
+.cursor

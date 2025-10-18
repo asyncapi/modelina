@@ -13,3 +13,4 @@ export * from './MetaModel';
 export * from './ConstrainedMetaModel';
 export * from './InputMetaModel';
 export * from './AvroSchema';
+export * from './XsdSchema';

@@ -9,3 +9,4 @@ export * from './PresetHelpers';
 export * from './DependencyHelpers';
 export * from './FilterHelpers';
 export * from './AvroToMetaModel';
+export * from './XsdToMetaModel';

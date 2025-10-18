@@ -53,6 +53,7 @@ These examples show a specific input and how they can be used:
 - [openapi-from-object](./openapi-from-object) - A basic example where an OpenAPI v3.0 JS object is used to generate models.
 - [openapi-include-components](./openapi-include-components) - A basic example where an OpenAPI document without paths is used to generate models by iterating the components.
 - [openapi-v3_1-from-object](./openapi-v3_1-from-object) - A basic example where an OpenAPI v3.1 JS object is used to generate models.
+- [xsd-to-typescript](./xsd-to-typescript) - A basic example showing how to generate TypeScript models from XSD (XML Schema Definition).
 - [meta-model](./meta-model) - A basic example how to provide a meta model for the generator
 
 ## General examples
