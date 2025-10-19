@@ -1,0 +1,165 @@
+{
+  "asyncapi": "3.0.0",
+  "info": {
+    "title": "Event Bus",
+    "version": "1.0.0"
+  },
+  "servers": {
+    "pulsar": {
+      "host": "localhost:6650",
+      "protocol": "pulsar"
+    }
+  },
+  "channels": {
+    "workers": {
+      "address": "workers",
+      "messages": {
+        "WorkersCreatedPublicEvent": {
+          "$ref": "#/components/messages/WorkersCreatedPublicEvent"
+        },
+        "WorkersChangedPublicEvent": {
+          "$ref": "#/components/messages/WorkersChangedPublicEvent"
+        }
+      }
+    }
+  },
+  "operations": {
+    "onWorkersAction": {
+      "action": "receive",
+      "channel": {
+        "$ref": "#/channels/workers"
+      },
+      "messages": [
+        {
+          "$ref": "#/channels/workers/messages/WorkersCreatedPublicEvent"
+        },
+        {
+          "$ref": "#/channels/workers/messages/WorkersChangedPublicEvent"
+        }
+      ]
+    }
+  },
+  "components": {
+    "schemas": {
+      "WorkersCreatedEvent": {
+        "title": "WorkersCreatedEvent",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "workers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Worker"
+            }
+          }
+        }
+      },
+      "WorkersChangedEvent": {
+        "title": "WorkersChangedEvent",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "isChanged": {
+            "type": "boolean"
+          },
+          "workers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Worker"
+            }
+          }
+        }
+      },
+      "Worker": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "discriminator": "type",
+        "required": [
+          "type",
+          "name"
+        ],
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/Employer"
+          },
+          {
+            "$ref": "#/components/schemas/Employee"
+          }
+        ]
+      },
+      "Employer": {
+        "title": "Employer",
+        "type": "object",
+        "properties": {
+          "hasFullAccess": {
+            "type": "boolean"
+          }
+        },
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Worker"
+          }
+        ],
+        "required": [
+          "hasFullAccess"
+        ]
+      },
+      "Employee": {
+        "title": "Employee",
+        "type": "object",
+        "properties": {
+          "employedSince": {
+            "type": "string",
+            "format": "date"
+          }
+        },
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Worker"
+          }
+        ],
+        "required": [
+          "employedSince"
+        ]
+      }
+    },
+    "messages": {
+      "WorkersCreatedPublicEvent": {
+        "title": "WorkersCreatedPublicEvent",
+        "name": "WorkersCreatedPublicEvent",
+        "contentType": "application/json",
+        "payload": {
+          "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
+          "schema": {
+            "$ref": "#/components/schemas/WorkersCreatedEvent"
+          }
+        }
+      },
+      "WorkersChangedPublicEvent": {
+        "title": "WorkersChangedPublicEvent",
+        "name": "WorkersChangedPublicEvent",
+        "contentType": "application/json",
+        "payload": {
+          "schemaFormat": "application/vnd.aai.asyncapi+json;version=3.0.0",
+          "schema": {
+            "$ref": "#/components/schemas/WorkersChangedEvent"
+          }
+        }
+      }
+    }
+  }
+}
+
