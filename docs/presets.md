@@ -37,6 +37,7 @@ Modelina uses something called **presets** to extend the rendered model. You can
       - [**Package**](#package)
       - [**Union**](#union)
       - [**Tuple**](#tuple)
+      - [**NewType**](#newtype)
     + [Dart](#dart)
       - [**Class**](#class-4)
       - [**Enum**](#enum-5)
@@ -495,6 +496,17 @@ This preset is a generator for the meta model `ConstrainedTupleModel` and [can b
 |---|---|---|
 | `field` |  | `field` object as a [`ConstrainedTupleValueModel`](./internal-model.md#the-constrained-meta-model) instance, `fieldIndex`. |
 | `structMacro` |  | `field` object as a [`ConstrainedTupleValueModel`](./internal-model.md#the-constrained-meta-model) instance, `fieldIndex`. |
+
+#### **NewType**
+
+This preset is a generator for the meta model `ConstrainedMetaModel` and [can be accessed through the `model` argument](#presets-shape).
+This preset is called each time the [New Type pattern](https://doc.rust-lang.org/rust-by-example/generics/new_types.html) is used to wrap
+non-object models (i.e., boolean, integers, floats, strings or arrays).
+
+| Method | Description | Additional arguments |
+|---|---|---|
+| `field` | A method to extend rendered the only field: the wrapped model. |  |
+| `structMacro` |  |  |
 
 ### Dart
 #### **Class**
