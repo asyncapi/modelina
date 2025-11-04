@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Should be able to use ignoreAdditionalItems option and should log expected output to console 1`] = `
+Array [
+  "class Root {
+  private _tags?: string[];
+  private _coordinates?: [number, number];
+  private _additionalProperties?: Map<string, any>;
+
+  constructor(input: {
+    tags?: string[],
+    coordinates?: [number, number],
+    additionalProperties?: Map<string, any>,
+  }) {
+    this._tags = input.tags;
+    this._coordinates = input.coordinates;
+    this._additionalProperties = input.additionalProperties;
+  }
+
+  get tags(): string[] | undefined { return this._tags; }
+  set tags(tags: string[] | undefined) { this._tags = tags; }
+
+  get coordinates(): [number, number] | undefined { return this._coordinates; }
+  set coordinates(coordinates: [number, number] | undefined) { this._coordinates = coordinates; }
+
+  get additionalProperties(): Map<string, any> | undefined { return this._additionalProperties; }
+  set additionalProperties(additionalProperties: Map<string, any> | undefined) { this._additionalProperties = additionalProperties; }
+}",
+]
+`;
