@@ -1,5 +1,4 @@
 import { ParseOptions } from '@asyncapi/parser';
-import { InterpreterOptions } from '../interpreter/Interpreter';
 import {
   JsonSchemaProcessorOptions,
   OpenAPIInputProcessorOptions,
@@ -11,8 +10,4 @@ export interface ProcessorOptions {
   openapi?: OpenAPIInputProcessorOptions;
   typescript?: TypeScriptInputProcessorOptions;
   jsonSchema?: JsonSchemaProcessorOptions;
-  /**
-   * @deprecated Use the `jsonSchema` options instead of `interpreter`
-   */
-  interpreter?: InterpreterOptions;
 }

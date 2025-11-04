@@ -1,6 +1,6 @@
-# Passing interpreter options
+# Passing JSON Schema processor options
 
-This example shows how to pass interpreter options.
+This example shows how to pass JSON Schema processor options through `processorOptions.jsonSchema`.
 
 ## How to run this example
 

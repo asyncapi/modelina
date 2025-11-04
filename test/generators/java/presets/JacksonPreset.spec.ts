@@ -78,7 +78,7 @@ describe('JAVA_JACKSON_PRESET', () => {
     const generator = new JavaGenerator({
       presets: [JAVA_JACKSON_PRESET],
       processorOptions: {
-        interpreter: {
+        jsonSchema: {
           allowInheritance: true
         }
       }

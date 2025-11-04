@@ -2,7 +2,7 @@ import { TypeScriptGenerator } from '../../src';
 
 const generator = new TypeScriptGenerator({
   processorOptions: {
-    interpreter: {
+    jsonSchema: {
       ignoreAdditionalProperties: true
     }
   }

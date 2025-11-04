@@ -104,7 +104,7 @@ describe('JAVA_DESCRIPTION_PRESET', () => {
     const generator = new JavaGenerator({
       presets: [JAVA_DESCRIPTION_PRESET],
       processorOptions: {
-        interpreter: {
+        jsonSchema: {
           allowInheritance: true
         }
       }
