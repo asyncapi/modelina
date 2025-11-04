@@ -51,13 +51,6 @@ export const JAVA_JACKSON_PRESET: JavaPreset = {
         return renderer.renderBlock(blocks);
       }
 
-      blocks.push(
-        renderer.renderAnnotation(
-          'JsonProperty',
-          `"${property.unconstrainedPropertyName}"`
-        )
-      );
-
       if (!property.required) {
         blocks.push(
           renderer.renderAnnotation(
@@ -85,6 +78,13 @@ export const JAVA_JACKSON_PRESET: JavaPreset = {
       const blocks: string[] = [];
       if (hasUnwrappedOptions) {
         blocks.push(renderer.renderAnnotation('JsonAnyGetter'));
+      } else {
+        blocks.push(
+          renderer.renderAnnotation(
+            'JsonProperty',
+            `"${property.unconstrainedPropertyName}"`
+          )
+        );
       }
       blocks.push(content);
       return renderer.renderBlock(blocks);
