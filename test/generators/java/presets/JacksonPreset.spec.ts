@@ -26,7 +26,7 @@ describe('JAVA_JACKSON_PRESET', () => {
     expect(models[0].result).toMatchSnapshot();
     expect(models[0].dependencies).toEqual(expectedDependencies);
   });
-  
+
   test('should place @JsonProperty annotation on the getter', async () => {
     const doc = {
       $id: 'AnnotateGetterWithJsonProperty',
