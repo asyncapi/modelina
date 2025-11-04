@@ -24,10 +24,7 @@ const jsonSchemaDraft7 = {
     },
     coordinates: {
       type: 'array',
-      items: [
-        { type: 'number' },
-        { type: 'number' }
-      ]
+      items: [{ type: 'number' }, { type: 'number' }]
       // Without ignoreAdditionalItems, this would allow any additional items beyond the first two
     }
   }
@@ -43,4 +40,3 @@ export async function generate(): Promise<void> {
 if (require.main === module) {
   generate();
 }
-

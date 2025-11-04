@@ -13,4 +13,3 @@ describe('Should be able to use allowInheritance option', () => {
     expect(spy.mock.calls).toMatchSnapshot();
   });
 });
-

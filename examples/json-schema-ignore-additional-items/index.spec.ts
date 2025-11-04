@@ -13,4 +13,3 @@ describe('Should be able to use ignoreAdditionalItems option', () => {
     expect(spy.mock.calls[0]).toMatchSnapshot();
   });
 });
-
