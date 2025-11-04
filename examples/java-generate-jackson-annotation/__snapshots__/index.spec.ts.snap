@@ -3,19 +3,19 @@
 exports[`Should be able to generate data models for jackson annotation and should log expected output to console 1`] = `
 Array [
   "public class Root {
-  @JsonProperty(\\"min_number_prop\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Double minNumberProp;
-  @JsonProperty(\\"max_number_prop\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Double maxNumberProp;
   @JsonAnySetter
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
+  @JsonProperty(\\"min_number_prop\\")
   public Double getMinNumberProp() { return this.minNumberProp; }
   public void setMinNumberProp(Double minNumberProp) { this.minNumberProp = minNumberProp; }
 
+  @JsonProperty(\\"max_number_prop\\")
   public Double getMaxNumberProp() { return this.maxNumberProp; }
   public void setMaxNumberProp(Double maxNumberProp) { this.maxNumberProp = maxNumberProp; }
 
