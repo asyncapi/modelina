@@ -47,8 +47,11 @@ These examples show a specific input and how they can be used:
 - [json-schema-draft7-from-object](./json-schema-draft7-from-object) - A basic example where a JSON Schema draft 7 JS object is used to generate models.
 - [json-schema-draft6-from-object](./json-schema-draft6-from-object) - A basic example where a JSON Schema draft 6 JS object is used to generate models.
 - [json-schema-draft4-from-object](./json-schema-draft4-from-object) - A basic example where a JSON Schema draft 4 JS object is used to generate models.
-- [json-schema-single-enum-as-const](./json-schema-single-enum-as-const) - An advanced example that shows how to change how `enum` are interpreted when containing a single value.
-- [json-schema-additional-properties-representation](./json-schema-additional-properties-representation) - An advanced example that shows how to change the property name for additional properties
+- [json-schema-single-enum-as-const](./json-schema-single-enum-as-const) - An advanced example that shows how to use the `interpretSingleEnumAsConst` option to interpret single-value enums as constants
+- [json-schema-additional-properties-representation](./json-schema-additional-properties-representation) - An advanced example that shows how to use the `propertyNameForAdditionalProperties` option to change the property name for additional properties
+- [json-schema-allow-inheritance](./json-schema-allow-inheritance) - An advanced example that shows how to use the `allowInheritance` option to enable inheritance support in generated models
+- [json-schema-ignore-additional-properties](./json-schema-ignore-additional-properties) - An advanced example that shows how to use the `ignoreAdditionalProperties` option to ignore default additionalProperties behavior
+- [json-schema-ignore-additional-items](./json-schema-ignore-additional-items) - An advanced example that shows how to use the `ignoreAdditionalItems` option to ignore default additionalItems behavior
 - [swagger2.0-from-object](./swagger2.0-from-object) - A basic example where a Swagger 2.0 JS object is used to generate models.
 - [openapi-from-object](./openapi-from-object) - A basic example where an OpenAPI v3.0 JS object is used to generate models.
 - [openapi-include-components](./openapi-include-components) - A basic example where an OpenAPI document without paths is used to generate models by iterating the components.
