@@ -51,3 +51,72 @@ const models = await generator.generateCompleteModels(schema, {
 ```
 
 The generated Python code behavior remains unchanged - all imports will continue to use the explicit style.
+
+## AsyncAPI
+
+### Multiple messages in operations now generate individual models
+
+When processing AsyncAPI v3 documents with multiple messages in a single operation, Modelina now correctly generates individual models for each message payload in addition to the `oneOf` wrapper model.
+
+**Example AsyncAPI Document:**
+```yaml
+asyncapi: 3.0.0
+info:
+  title: User Service
+  version: 1.0.0
+channels:
+  userEvents:
+    address: user/events
+    messages:
+      UserCreated:
+        $ref: '#/components/messages/UserCreated'
+      UserUpdated:
+        $ref: '#/components/messages/UserUpdated'
+operations:
+  onUserEvents:
+    action: receive
+    channel:
+      $ref: '#/channels/userEvents'
+    messages:
+      - $ref: '#/channels/userEvents/messages/UserCreated'
+      - $ref: '#/channels/userEvents/messages/UserUpdated'
+components:
+  messages:
+    UserCreated:
+      payload:
+        type: object
+        properties:
+          id:
+            type: string
+          name:
+            type: string
+    UserUpdated:
+      payload:
+        type: object
+        properties:
+          id:
+            type: string
+          name:
+            type: string
+          updatedAt:
+            type: string
+```
+
+**Before (v5):**
+```typescript
+const generator = new JavaGenerator();
+const models = await generator.generate(inputModel);
+// Problem: No UserCreated or UserUpdated classes were generated
+```
+
+**After (v6):**
+```typescript
+const generator = new JavaGenerator();
+const models = await generator.generate(inputModel);
+// ✓ Now generates:
+//   - UserCreatedPayload.java
+//   - UserUpdatedPayload.java
+//   - userEvents interface (discriminated union)
+```
+
+No code changes are required. This is an enhancement that fixes incomplete model generation. If you have custom post-processing logic that filters generated models, you may need to adjust it to handle the additional models.
