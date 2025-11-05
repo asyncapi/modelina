@@ -461,7 +461,7 @@ describe('JavaGenerator', () => {
         ],
         collectionType: 'List',
         processorOptions: {
-          interpreter: {
+          jsonSchema: {
             allowInheritance: true
           }
         }
