@@ -142,6 +142,8 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
                   continue;
                 }
 
+                // Add each individual message payload as a separate model
+                addToInputModel(payload);
                 oneOf.push(payload.json());
               }
 

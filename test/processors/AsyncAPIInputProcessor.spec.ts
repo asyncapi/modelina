@@ -25,6 +25,13 @@ const operationWithReply = fs.readFileSync(
   path.resolve(__dirname, './AsyncAPIInputProcessor/operation_with_reply.json'),
   'utf8'
 );
+const multipleMessagesInOperation = fs.readFileSync(
+  path.resolve(
+    __dirname,
+    './AsyncAPIInputProcessor/multiple_messages_in_operation.json'
+  ),
+  'utf8'
+);
 const ymlFileURI = `file://${path.resolve(
   __dirname,
   './AsyncAPIInputProcessor/testasyncapi.yml'
@@ -213,6 +220,22 @@ describe('AsyncAPIInputProcessor', () => {
       expect(
         removeEmptyPropertiesFromObjects(commonInputModel)
       ).toMatchSnapshot();
+    });
+
+    test('should be able to process operation with multiple messages (AsyncAPI v3)', async () => {
+      const processor = new AsyncAPIInputProcessor();
+      const commonInputModel = await processor.process(
+        multipleMessagesInOperation
+      );
+      expect(commonInputModel instanceof InputMetaModel).toBeTruthy();
+      expect(Object.keys(commonInputModel.models).length).toBeGreaterThan(0);
+      // Check that message payload models are generated
+      expect(commonInputModel.models['WorkersCreatedEvent']).toBeDefined();
+      expect(commonInputModel.models['WorkersChangedEvent']).toBeDefined();
+      // Check that the oneOf wrapper is generated
+      expect(commonInputModel.models['workers']).toBeDefined();
+      // Snapshot the model names
+      expect(Object.keys(commonInputModel.models).sort()).toMatchSnapshot();
     });
   });
 

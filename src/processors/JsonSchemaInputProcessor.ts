@@ -545,10 +545,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
     options?: ProcessorOptions
   ): CommonModel {
     const interpreter = new Interpreter();
-    const model = interpreter.interpret(
-      schema,
-      options?.jsonSchema ?? options?.interpreter
-    );
+    const model = interpreter.interpret(schema, options?.jsonSchema);
     if (model === undefined) {
       throw new Error('Could not interpret schema to internal model');
     }

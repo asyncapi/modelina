@@ -1,0 +1,64 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Should be able to use allowInheritance option and should log expected output to console 1`] = `
+Array [
+  Array [
+    "class Root {
+  private _email?: string;
+  private _reservedName?: string;
+  private _age?: number;
+  private _additionalProperties?: Map<string, any>;
+
+  constructor(input: {
+    email?: string,
+    reservedName?: string,
+    age?: number,
+    additionalProperties?: Map<string, any>,
+  }) {
+    this._email = input.email;
+    this._reservedName = input.reservedName;
+    this._age = input.age;
+    this._additionalProperties = input.additionalProperties;
+  }
+
+  get email(): string | undefined { return this._email; }
+  set email(email: string | undefined) { this._email = email; }
+
+  get reservedName(): string | undefined { return this._reservedName; }
+  set reservedName(reservedName: string | undefined) { this._reservedName = reservedName; }
+
+  get age(): number | undefined { return this._age; }
+  set age(age: number | undefined) { this._age = age; }
+
+  get additionalProperties(): Map<string, any> | undefined { return this._additionalProperties; }
+  set additionalProperties(additionalProperties: Map<string, any> | undefined) { this._additionalProperties = additionalProperties; }
+}",
+  ],
+  Array [
+    "class AllOf_0 {
+  private _reservedName?: string;
+  private _age?: number;
+  private _additionalProperties?: Map<string, any>;
+
+  constructor(input: {
+    reservedName?: string,
+    age?: number,
+    additionalProperties?: Map<string, any>,
+  }) {
+    this._reservedName = input.reservedName;
+    this._age = input.age;
+    this._additionalProperties = input.additionalProperties;
+  }
+
+  get reservedName(): string | undefined { return this._reservedName; }
+  set reservedName(reservedName: string | undefined) { this._reservedName = reservedName; }
+
+  get age(): number | undefined { return this._age; }
+  set age(age: number | undefined) { this._age = age; }
+
+  get additionalProperties(): Map<string, any> | undefined { return this._additionalProperties; }
+  set additionalProperties(additionalProperties: Map<string, any> | undefined) { this._additionalProperties = additionalProperties; }
+}",
+  ],
+]
+`;
