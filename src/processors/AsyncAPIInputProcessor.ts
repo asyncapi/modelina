@@ -162,7 +162,9 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
               if (payload) {
                 // Use message id with 'Payload' suffix as the inferred name for the payload schema
                 // This avoids potential collisions with component schemas that might have the same name
-                const messageName = message.id ? `${message.id()}Payload` : undefined;
+                const messageName = message.id()
+                  ? `${message.id()}Payload`
+                  : undefined;
                 addToInputModel(payload, messageName);
               }
             }
@@ -188,7 +190,9 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
         if (payload) {
           // Use message id with 'Payload' suffix as the inferred name for the payload schema
           // This avoids potential collisions with component schemas that might have the same name
-          const messageName = message.id ? `${message.id()}Payload` : undefined;
+          const messageName = message.id()
+            ? `${message.id()}Payload`
+            : undefined;
           addToInputModel(payload, messageName);
         }
       }
@@ -226,10 +230,7 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
     ) {
       // If an inferred name is provided and this is an anonymous schema, use the inferred name
       // Only use inferred name if it's not also an anonymous message
-      if (
-        inferredName &&
-        !inferredName.includes('<anonymous-message')
-      ) {
+      if (inferredName && !inferredName.includes('<anonymous-message')) {
         schemaUid = inferredName;
       } else {
         schemaUid = schemaUid
