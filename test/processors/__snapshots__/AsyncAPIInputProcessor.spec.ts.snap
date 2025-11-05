@@ -2,8 +2,8 @@
 
 exports[`AsyncAPIInputProcessor process() should be able to process YAML file 1`] = `
 Object {
-  "anonymous_schema_1": ObjectModel {
-    "name": "anonymous_schema_1",
+  "UserSignedUpPayload": ObjectModel {
+    "name": "UserSignedUpPayload",
     "options": Object {
       "isNullable": false,
     },
@@ -24,7 +24,7 @@ Object {
         },
       },
       "type": "object",
-      "x-modelgen-inferred-name": "anonymous_schema_1",
+      "x-modelgen-inferred-name": "UserSignedUpPayload",
       "x-parser-schema-id": "<anonymous-schema-1>",
     },
     "properties": Object {
@@ -101,8 +101,8 @@ Object {
 
 exports[`AsyncAPIInputProcessor process() should be able to process file 1`] = `
 Object {
-  "anonymous_schema_1": ObjectModel {
-    "name": "anonymous_schema_1",
+  "UserSignedUpPayload": ObjectModel {
+    "name": "UserSignedUpPayload",
     "options": Object {
       "isNullable": false,
     },
@@ -123,7 +123,7 @@ Object {
         },
       },
       "type": "object",
-      "x-modelgen-inferred-name": "anonymous_schema_1",
+      "x-modelgen-inferred-name": "UserSignedUpPayload",
       "x-parser-schema-id": "<anonymous-schema-1>",
     },
     "properties": Object {
@@ -4576,8 +4576,8 @@ InputMetaModel {
 exports[`AsyncAPIInputProcessor process() should be able to process pure object for v3 1`] = `
 InputMetaModel {
   "models": Object {
-    "anonymous_schema_1": ObjectModel {
-      "name": "anonymous_schema_1",
+    "userSignUpMessagePayload": ObjectModel {
+      "name": "userSignUpMessagePayload",
       "options": Object {
         "isNullable": false,
       },
@@ -4591,7 +4591,7 @@ InputMetaModel {
           },
         },
         "type": "object",
-        "x-modelgen-inferred-name": "anonymous_schema_1",
+        "x-modelgen-inferred-name": "userSignUpMessagePayload",
         "x-parser-schema-id": "<anonymous-schema-1>",
       },
       "properties": Object {
