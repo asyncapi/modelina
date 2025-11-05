@@ -51,3 +51,22 @@ const models = await generator.generateCompleteModels(schema, {
 ```
 
 The generated Python code behavior remains unchanged - all imports will continue to use the explicit style.
+
+# Miscellaneous
+
+## Upgrading dependencies
+
+The following dependencies have been upgraded in v6:
+
+Production Dependencies:
+- `@apidevtools/json-schema-ref-parser`: `^11.1.0` → `^14.2.0`
+- `@apidevtools/swagger-parser`: `^10.1.0` → `^12.1.0`
+- `alterschema`: `^1.1.2` → `^1.1.3`
+- `fast-xml-parser`: `^5.3.0` → `^5.3.1`
+- `typescript-json-schema`: `^0.58.1` → `^0.65.1`
+
+Development Dependencies:
+
+- `@swc/core`: `^1.10.9` → `^1.15.0`
+
+These dependency upgrades may include breaking changes from the respective packages. Please refer to their individual changelogs if you're using any of these packages directly in your code.
