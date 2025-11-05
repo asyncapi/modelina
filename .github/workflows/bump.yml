@@ -24,12 +24,17 @@ jobs:
       - name: Check if Node.js project and has package.json
         id: packagejson
         run: test -e ./package.json && echo "exists=true" >> $GITHUB_OUTPUT || echo "exists=false" >> $GITHUB_OUTPUT
+      - name: Setup corepack with pnpm and yarn
+        if: steps.packagejson.outputs.exists == 'true'
+        run: corepack enable
       - if: steps.packagejson.outputs.exists == 'true'
         name: Bumping latest version of this package in other repositories
-        uses: derberg/npm-dependency-manager-for-your-github-org@1eafd3bf3974f21d395c1abac855cb04b295d570 # using v6.-.- https://github.com/derberg/npm-dependency-manager-for-your-github-org/releases/tag/v6
+        uses: derberg/npm-dependency-manager-for-your-github-org@f95b99236e8382a210042d8cfb84f42584e29c24 # using v6.2.0.-.- https://github.com/derberg/npm-dependency-manager-for-your-github-org/releases/tag/v6.2.0
         with:
           github_token: ${{ secrets.GH_TOKEN }}
           committer_username: asyncapi-bot
           committer_email: info@asyncapi.io
           repos_to_ignore: spec,bindings,saunter,server-api
           custom_id: "dependency update from asyncapi bot"
+          search: "true"
+          ignore_paths: .github/workflows
