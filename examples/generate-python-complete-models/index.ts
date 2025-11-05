@@ -23,17 +23,7 @@ export const jsonSchemaDraft7 = {
 export async function generate(): Promise<void> {
   const generator = new PythonGenerator();
 
-  let models = await generator.generateCompleteModels(jsonSchemaDraft7, {
-    importsStyle: 'implicit',
-    packageName: 'modelina'
-  });
-
-  for (const model of models) {
-    console.log(model.result);
-  }
-
-  models = await generator.generateCompleteModels(jsonSchemaDraft7, {
-    importsStyle: 'explicit',
+  const models = await generator.generateCompleteModels(jsonSchemaDraft7, {
     packageName: 'modelina'
   });
 

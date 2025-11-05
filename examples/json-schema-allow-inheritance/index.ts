@@ -2,8 +2,8 @@ import { TypeScriptGenerator } from '../../src';
 
 const generator = new TypeScriptGenerator({
   processorOptions: {
-    interpreter: {
-      ignoreAdditionalProperties: true
+    jsonSchema: {
+      allowInheritance: true
     }
   }
 });
@@ -11,6 +11,19 @@ const generator = new TypeScriptGenerator({
 const jsonSchemaDraft7 = {
   $schema: 'http://json-schema.org/draft-07/schema#',
   type: 'object',
+  allOf: [
+    {
+      type: 'object',
+      properties: {
+        name: {
+          type: 'string'
+        },
+        age: {
+          type: 'number'
+        }
+      }
+    }
+  ],
   properties: {
     email: {
       type: 'string',
@@ -25,6 +38,7 @@ export async function generate(): Promise<void> {
     console.log(model.result);
   }
 }
+
 if (require.main === module) {
   generate();
 }

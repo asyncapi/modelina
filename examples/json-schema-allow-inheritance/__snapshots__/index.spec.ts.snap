@@ -1,59 +1,64 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Should be able to render models using file URI as input with file generator and should log expected output to console 1`] = `
+exports[`Should be able to use allowInheritance option and should log expected output to console 1`] = `
 Array [
-  "class UserSignedUpPayload {
-  private _displayName?: string;
+  Array [
+    "class Root {
   private _email?: string;
+  private _reservedName?: string;
+  private _age?: number;
   private _additionalProperties?: Map<string, any>;
 
   constructor(input: {
-    displayName?: string,
     email?: string,
+    reservedName?: string,
+    age?: number,
     additionalProperties?: Map<string, any>,
   }) {
-    this._displayName = input.displayName;
     this._email = input.email;
+    this._reservedName = input.reservedName;
+    this._age = input.age;
     this._additionalProperties = input.additionalProperties;
   }
-
-  get displayName(): string | undefined { return this._displayName; }
-  set displayName(displayName: string | undefined) { this._displayName = displayName; }
 
   get email(): string | undefined { return this._email; }
   set email(email: string | undefined) { this._email = email; }
 
+  get reservedName(): string | undefined { return this._reservedName; }
+  set reservedName(reservedName: string | undefined) { this._reservedName = reservedName; }
+
+  get age(): number | undefined { return this._age; }
+  set age(age: number | undefined) { this._age = age; }
+
   get additionalProperties(): Map<string, any> | undefined { return this._additionalProperties; }
   set additionalProperties(additionalProperties: Map<string, any> | undefined) { this._additionalProperties = additionalProperties; }
 }",
-]
-`;
-
-exports[`Should be able to render models using file URI as input with regular generator and should log expected output to console 1`] = `
-Array [
-  "class UserSignedUpPayload {
-  private _displayName?: string;
-  private _email?: string;
+  ],
+  Array [
+    "class AllOf_0 {
+  private _reservedName?: string;
+  private _age?: number;
   private _additionalProperties?: Map<string, any>;
 
   constructor(input: {
-    displayName?: string,
-    email?: string,
+    reservedName?: string,
+    age?: number,
     additionalProperties?: Map<string, any>,
   }) {
-    this._displayName = input.displayName;
-    this._email = input.email;
+    this._reservedName = input.reservedName;
+    this._age = input.age;
     this._additionalProperties = input.additionalProperties;
   }
 
-  get displayName(): string | undefined { return this._displayName; }
-  set displayName(displayName: string | undefined) { this._displayName = displayName; }
+  get reservedName(): string | undefined { return this._reservedName; }
+  set reservedName(reservedName: string | undefined) { this._reservedName = reservedName; }
 
-  get email(): string | undefined { return this._email; }
-  set email(email: string | undefined) { this._email = email; }
+  get age(): number | undefined { return this._age; }
+  set age(age: number | undefined) { this._age = age; }
 
   get additionalProperties(): Map<string, any> | undefined { return this._additionalProperties; }
   set additionalProperties(additionalProperties: Map<string, any> | undefined) { this._additionalProperties = additionalProperties; }
 }",
+  ],
 ]
 `;
