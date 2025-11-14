@@ -167,6 +167,46 @@ pub enum CustomEnum {
 "
 `;
 
+exports[`RustGenerator NewType Idiom should render array model 1`] = `
+"// ArrayModel represents a ArrayModel model.
+#[derive(Clone, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
+pub struct ArrayModel(pub Vec<String>);
+
+"
+`;
+
+exports[`RustGenerator NewType Idiom should render boolean model 1`] = `
+"// BooleanModel represents a BooleanModel model.
+#[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
+pub struct BooleanModel(pub bool);
+
+"
+`;
+
+exports[`RustGenerator NewType Idiom should render float model 1`] = `
+"// FloatModel represents a FloatModel model.
+#[derive(Clone, Copy, Debug, Deserialize, PartialEq, PartialOrd, Serialize)]
+pub struct FloatModel(pub f64);
+
+"
+`;
+
+exports[`RustGenerator NewType Idiom should render integer model 1`] = `
+"// IntegerModel represents a IntegerModel model.
+#[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
+pub struct IntegerModel(pub i32);
+
+"
+`;
+
+exports[`RustGenerator NewType Idiom should render string model 1`] = `
+"// StringModel represents a StringModel model.
+#[derive(Clone, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
+pub struct StringModel(pub String);
+
+"
+`;
+
 exports[`RustGenerator Packaging Should render supporting files 1`] = `
 "[package]
 name = \\"asyncapi-rs-models\\"
