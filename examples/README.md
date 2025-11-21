@@ -76,6 +76,7 @@ These are all the basic generator examples that shows a bare minimal example of 
 - [generate-csharp-models](./generate-csharp-models) - A basic example to generate C# data models
 - [generate-python-models](./generate-python-models) - A basic example showing how to generate Python models.
 - [rust-generate-crate](./rust-generate-crate) - A basic example showing how to generate a Rust package.
+- [rust-generate-newtype-idiom](./rust-generate-newtype-idiom) - A basic example of how Modelina generates a new type for each non-object types: integers, floats, booleans, strings and arrays.
 - [generate-java-models](./generate-java-models) - A basic example to generate Java data models.
 - [generate-go-models](./generate-go-models) - A basic example to generate Go data models
 - [generate-javascript-models](./generate-javascript-models) - A basic example to generate JavaScript data models
