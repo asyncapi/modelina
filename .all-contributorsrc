@@ -1191,6 +1191,16 @@
         "code",
         "test"
       ]
+    },
+    {
+      "login": "jadinm",
+      "name": "Mathieu Jadin",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4190063?v=4",
+      "profile": "https://github.com/jadinm",
+      "contributions": [
+        "code",
+        "test"
+      ]
     }
   ],
   "contributorsPerLine": 7,
