@@ -95,7 +95,7 @@ Array [
   private _id: string;
   private _source: string;
   private _specversion: string;
-  private _reservedType: DogType.DOG = DogType.DOG;
+  private _reservedType: CloudEventType.DOG = CloudEventType.DOG;
   private _dataschema?: string;
   private _time?: string;
   private _additionalProperties?: Map<string, any>;
@@ -125,7 +125,7 @@ Array [
   get specversion(): string { return this._specversion; }
   set specversion(specversion: string) { this._specversion = specversion; }
 
-  get reservedType(): DogType.DOG { return this._reservedType; }
+  get reservedType(): CloudEventType.DOG { return this._reservedType; }
 
   get dataschema(): string | undefined { return this._dataschema; }
   set dataschema(dataschema: string | undefined) { this._dataschema = dataschema; }
@@ -136,14 +136,15 @@ Array [
   get additionalProperties(): Map<string, any> | undefined { return this._additionalProperties; }
   set additionalProperties(additionalProperties: Map<string, any> | undefined) { this._additionalProperties = additionalProperties; }
 }",
-  "enum DogType {
+  "enum CloudEventType {
   DOG = \\"Dog\\",
+  CAT = \\"Cat\\",
 }",
   "class Cat {
   private _id: string;
   private _source: string;
   private _specversion: string;
-  private _reservedType: CatType.CAT = CatType.CAT;
+  private _reservedType: CloudEventType.CAT = CloudEventType.CAT;
   private _dataschema?: string;
   private _time?: string;
   private _additionalProperties?: Map<string, any>;
@@ -173,7 +174,7 @@ Array [
   get specversion(): string { return this._specversion; }
   set specversion(specversion: string) { this._specversion = specversion; }
 
-  get reservedType(): CatType.CAT { return this._reservedType; }
+  get reservedType(): CloudEventType.CAT { return this._reservedType; }
 
   get dataschema(): string | undefined { return this._dataschema; }
   set dataschema(dataschema: string | undefined) { this._dataschema = dataschema; }
@@ -183,9 +184,6 @@ Array [
 
   get additionalProperties(): Map<string, any> | undefined { return this._additionalProperties; }
   set additionalProperties(additionalProperties: Map<string, any> | undefined) { this._additionalProperties = additionalProperties; }
-}",
-  "enum CatType {
-  CAT = \\"Cat\\",
 }",
 ]
 `;

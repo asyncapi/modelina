@@ -110,7 +110,7 @@ describe('JAVA_DESCRIPTION_PRESET', () => {
       }
     });
     const models = await generator.generate(asyncapiDoc);
-    expect(models).toHaveLength(3);
+    expect(models).toHaveLength(5);
     expect(models.map((model) => model.result)).toMatchSnapshot();
   });
 });

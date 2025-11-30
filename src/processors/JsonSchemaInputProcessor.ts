@@ -301,11 +301,11 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
 
     if (isRoot) {
       namesStack[String(name)] = 0;
-      (schema as any)[this.MODELGEN_INFFERED_NAME] = name;
+      (schema as any)[this.MODELINA_INFERRED_NAME] = name;
       name = '';
     } else if (
       name &&
-      !(schema as any)[this.MODELGEN_INFFERED_NAME] &&
+      !(schema as any)[this.MODELINA_INFERRED_NAME] &&
       schema.$ref === undefined
     ) {
       let occurrence = namesStack[String(name)];
@@ -315,7 +315,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
         occurrence++;
       }
       const inferredName = occurrence ? `${name}_${occurrence}` : name;
-      (schema as any)[this.MODELGEN_INFFERED_NAME] = inferredName;
+      (schema as any)[this.MODELINA_INFERRED_NAME] = inferredName;
     }
 
     if (schema.allOf !== undefined) {
