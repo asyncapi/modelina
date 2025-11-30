@@ -54,6 +54,84 @@ The generated Python code behavior remains unchanged - all imports will continue
 
 ## AsyncAPI
 
+### Improved schema naming strategy
+
+Modelina v6 introduces a significantly improved naming strategy for AsyncAPI schemas, providing more meaningful and context-aware names for generated models to minimize the amount of `Anonymous Schema`. If you have explicitly defined names for all models, this should not affect you.
+
+#### Channel-based naming for inline message payloads
+
+Inline message payloads (without explicit message names) now derive their names from the channel path instead of receiving generic anonymous names.
+
+**Before (v5):**
+```yaml
+asyncapi: 2.0.0
+channels:
+  /user/signedup:
+    subscribe:
+      message:
+        payload:
+          type: object
+          properties:
+            email:
+              type: string
+```
+Generated model: `AnonymousSchema_1` or `<anonymous-message-1>Payload`
+
+**After (v6):**
+Generated model: `UserSignedupPayload` (derived from channel path `/user/signedup`)
+
+#### Hierarchical naming for nested schemas
+
+Nested schemas in properties, `allOf`, `oneOf`, `anyOf`, `dependencies`, and `definitions` now receive hierarchical names based on their parent schema and property path.
+
+**Before (v5):**
+```yaml
+components:
+  schemas:
+    MainSchema:
+      type: object
+      properties:
+        config:
+          type: object
+          properties:
+            setting:
+              type: string
+```
+Generated models: `MainSchema`, `AnonymousSchema_2`, `AnonymousSchema_3`
+
+**After (v6):**
+Generated models: `MainSchema`, `MainSchemaConfig`, `MainSchemaConfigSetting`
+
+#### Improved handling of composition keywords
+
+Schemas using `allOf`, `oneOf`, and `anyOf` now generate more descriptive names:
+
+**Before (v5):**
+```yaml
+components:
+  schemas:
+    Pet:
+      oneOf:
+        - type: object
+          properties:
+            bark: { type: boolean }
+        - type: object
+          properties:
+            meow: { type: boolean }
+```
+Generated models: `Pet`, `AnonymousSchema_1`, `AnonymousSchema_2`
+
+**After (v6):**
+Generated models: `Pet`, `PetOneOfOption0`, `PetOneOfOption1`
+
+#### Enhanced naming for special schema types
+
+- **Array items**: `ParentSchemaItem` instead of `AnonymousSchema_N`
+- **Pattern properties**: `ParentSchemaPatternProperty` instead of `AnonymousSchema_N`
+- **Additional properties**: `ParentSchemaAdditionalProperty` instead of `AnonymousSchema_N`
+- **Dependencies**: `ParentSchemaDependencyName` instead of `AnonymousSchema_N`
+- **Definitions**: `ParentSchemaDefinitionName` instead of `AnonymousSchema_N`
+
 ### Multiple messages in operations now generate individual models
 
 When processing AsyncAPI v3 documents with multiple messages in a single operation, Modelina now correctly generates individual models for each message payload in addition to the `oneOf` wrapper model.

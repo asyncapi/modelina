@@ -1,5 +1,6 @@
-import { TS_COMMON_PRESET, TS_JSONBINPACK_PRESET, TypeScriptFileGenerator } from '../../';
-import path from 'path';
+import { InputProcessor, TS_COMMON_PRESET, TS_JSONBINPACK_PRESET, TypeScriptFileGenerator } from '../../';
+import path from 'node:path';
+import { pathToFileURL } from 'node:url';
 import input from './generic-input-all.json';
 import simpleInput from './generic-input-simple.json';
 
@@ -76,6 +77,7 @@ async function generateJsonBinPack() {
     { exportType: 'named' }
   );
 }
+
 
 Promise.all(
   [

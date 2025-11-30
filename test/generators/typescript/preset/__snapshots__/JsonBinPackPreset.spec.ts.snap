@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`JsonBinPack preset should work fine with AsyncAPI inputs 1`] = `
-"class AnonymousSchema_1 {
+"class UserSignedupPayload {
   private _email?: string;
   private _additionalProperties?: Map<string, any>;
 
@@ -35,9 +35,9 @@ exports[`JsonBinPack preset should work fine with AsyncAPI inputs 1`] = `
     return \`\${json.charAt(json.length-1) === ',' ? json.slice(0, json.length-1) : json}}\`;
   }
 
-  public static unmarshal(json: string | object): AnonymousSchema_1 {
+  public static unmarshal(json: string | object): UserSignedupPayload {
     const obj = typeof json === \\"object\\" ? json : JSON.parse(json);
-    const instance = new AnonymousSchema_1({} as any);
+    const instance = new UserSignedupPayload({} as any);
 
     if (obj[\\"email\\"] !== undefined) {
       instance.email = obj[\\"email\\"];
@@ -52,14 +52,14 @@ exports[`JsonBinPack preset should work fine with AsyncAPI inputs 1`] = `
   }
   public async jsonbinSerialize(): Promise<Buffer>{
     const jsonData = JSON.parse(this.marshal());
-    const jsonbinpackEncodedSchema = await jsonbinpack.compileSchema({\\"$schema\\":\\"https://json-schema.org/draft/2020-12/schema\\",\\"type\\":\\"object\\",\\"properties\\":{\\"email\\":{\\"format\\":\\"email\\",\\"type\\":\\"string\\",\\"x-parser-schema-id\\":\\"<anonymous-schema-2>\\",\\"x-modelgen-inferred-name\\":\\"anonymous_schema_2\\"}},\\"x-parser-schema-id\\":\\"<anonymous-schema-1>\\",\\"x-modelgen-inferred-name\\":\\"anonymous_schema_1\\"});
+    const jsonbinpackEncodedSchema = await jsonbinpack.compileSchema({\\"$schema\\":\\"https://json-schema.org/draft/2020-12/schema\\",\\"type\\":\\"object\\",\\"properties\\":{\\"email\\":{\\"format\\":\\"email\\",\\"type\\":\\"string\\",\\"x-parser-schema-id\\":\\"<anonymous-schema-2>\\",\\"x-modelgen-inferred-name\\":\\"UserSignedupPayloadEmail\\"}},\\"x-parser-schema-id\\":\\"<anonymous-schema-1>\\",\\"x-modelgen-inferred-name\\":\\"UserSignedupPayload\\"});
     return jsonbinpack.serialize(jsonbinpackEncodedSchema, jsonData);
   }
 
-  public static async jsonbinDeserialize(buffer: Buffer): Promise<AnonymousSchema_1> {
-    const jsonbinpackEncodedSchema = await jsonbinpack.compileSchema({\\"$schema\\":\\"https://json-schema.org/draft/2020-12/schema\\",\\"type\\":\\"object\\",\\"properties\\":{\\"email\\":{\\"format\\":\\"email\\",\\"type\\":\\"string\\",\\"x-parser-schema-id\\":\\"<anonymous-schema-2>\\",\\"x-modelgen-inferred-name\\":\\"anonymous_schema_2\\"}},\\"x-parser-schema-id\\":\\"<anonymous-schema-1>\\",\\"x-modelgen-inferred-name\\":\\"anonymous_schema_1\\"});
+  public static async jsonbinDeserialize(buffer: Buffer): Promise<UserSignedupPayload> {
+    const jsonbinpackEncodedSchema = await jsonbinpack.compileSchema({\\"$schema\\":\\"https://json-schema.org/draft/2020-12/schema\\",\\"type\\":\\"object\\",\\"properties\\":{\\"email\\":{\\"format\\":\\"email\\",\\"type\\":\\"string\\",\\"x-parser-schema-id\\":\\"<anonymous-schema-2>\\",\\"x-modelgen-inferred-name\\":\\"UserSignedupPayloadEmail\\"}},\\"x-parser-schema-id\\":\\"<anonymous-schema-1>\\",\\"x-modelgen-inferred-name\\":\\"UserSignedupPayload\\"});
     const json = jsonbinpack.deserialize(jsonbinpackEncodedSchema, buffer);
-    return AnonymousSchema_1.unmarshal(json);
+    return UserSignedupPayload.unmarshal(json);
   }
 }"
 `;

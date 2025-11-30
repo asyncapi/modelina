@@ -1279,18 +1279,18 @@ Array [
  * Pet represents a union of types: Dog, Cat
  */
 public interface Pet {
-  
+  CloudEventType getType();
 }",
   "public class Dog implements Pet {
   @Valid
   @NotNull
-  private final DogType type = DogType.DOG;
+  private final CloudEventType type = CloudEventType.DOG;
   @JsonAnySetter
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
   @JsonProperty(\\"type\\")
-  public DogType getType() { return this.type; }
+  public CloudEventType getType() { return this.type; }
 
   @JsonAnyGetter
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
@@ -1334,12 +1334,12 @@ public interface Pet {
     return o.toString().replace(\\"\\\\n\\", \\"\\\\n    \\");
   }
 }",
-  "public enum DogType {
-  DOG((String)\\"Dog\\");
+  "public enum CloudEventType {
+  DOG((String)\\"Dog\\"), CAT((String)\\"Cat\\");
 
   private final String value;
 
-  DogType(String value) {
+  CloudEventType(String value) {
     this.value = value;
   }
 
@@ -1349,8 +1349,8 @@ public interface Pet {
   }
 
   @JsonCreator
-  public static DogType fromValue(String value) {
-    for (DogType e : DogType.values()) {
+  public static CloudEventType fromValue(String value) {
+    for (CloudEventType e : CloudEventType.values()) {
       if (e.value.equals(value)) {
         return e;
       }
@@ -1366,13 +1366,13 @@ public interface Pet {
   "public class Cat implements Pet {
   @Valid
   @NotNull
-  private final CatType type = CatType.CAT;
+  private final CloudEventType type = CloudEventType.CAT;
   @JsonAnySetter
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
   @JsonProperty(\\"type\\")
-  public CatType getType() { return this.type; }
+  public CloudEventType getType() { return this.type; }
 
   @JsonAnyGetter
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
@@ -1414,35 +1414,6 @@ public interface Pet {
       return \\"null\\";
     }
     return o.toString().replace(\\"\\\\n\\", \\"\\\\n    \\");
-  }
-}",
-  "public enum CatType {
-  CAT((String)\\"Cat\\");
-
-  private final String value;
-
-  CatType(String value) {
-    this.value = value;
-  }
-
-  @JsonValue
-  public String getValue() {
-    return value;
-  }
-
-  @JsonCreator
-  public static CatType fromValue(String value) {
-    for (CatType e : CatType.values()) {
-      if (e.value.equals(value)) {
-        return e;
-      }
-    }
-    throw new IllegalArgumentException(\\"Unexpected value '\\" + value + \\"'\\");
-  }
-
-  @Override
-  public String toString() {
-    return String.valueOf(value);
   }
 }",
 ]
