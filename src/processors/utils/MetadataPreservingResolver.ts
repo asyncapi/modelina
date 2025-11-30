@@ -69,13 +69,13 @@ export function createMetadataPreservingResolver(): Resolver {
 
           // If no title is present, suggest the filename as title
           // This provides a fallback naming strategy
-          if (!parsed.title) {
-            parsed.title = filename;
-            Logger.debug(`Injected title for ${filename}: title="${filename}"`);
-          } else {
+          if (parsed.title) {
             Logger.debug(
               `Preserving existing title for ${filename}: title="${parsed.title}"`
             );
+          } else {
+            parsed.title = filename;
+            Logger.debug(`Injected title for ${filename}: title="${filename}"`);
           }
         }
 

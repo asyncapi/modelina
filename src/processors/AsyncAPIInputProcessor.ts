@@ -436,7 +436,7 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
     // Simple hash function (djb2)
     let hash = 5381;
     for (let i = 0; i < sortedJson.length; i++) {
-      hash = (hash << 5) + hash + sortedJson.charCodeAt(i);
+      hash = (hash << 5) + hash + (sortedJson.codePointAt(i) ?? Number.NaN);
     }
     return hash.toString(36);
   }
@@ -479,7 +479,7 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
       !schemaId.includes(AsyncAPIInputProcessor.ANONYMOUS_PREFIX) &&
       !schemaId.includes('/') &&
       schemaId.length > 0 &&
-      schemaId[0] === schemaId[0].toUpperCase()
+      schemaId.startsWith(schemaId[0].toUpperCase())
     ) {
       // Looks like a component schema name (starts with uppercase, no slashes, not anonymous)
       Logger.debug(`Using schema ID as component name: ${schemaId}`);
@@ -580,10 +580,7 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
     }
 
     // Priority 7: Fallback to sanitized anonymous ID
-    if (
-      schemaId &&
-      schemaId.includes(AsyncAPIInputProcessor.ANONYMOUS_PREFIX)
-    ) {
+    if (schemaId?.includes(AsyncAPIInputProcessor.ANONYMOUS_PREFIX)) {
       const sanitized = schemaId
         .replace('<', '')
         .replace(/-/g, '_')
@@ -698,8 +695,7 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
     if (schema.not()) {
       convertedSchema.not = this.convertToInternalSchema(
         schema.not()!,
-        alreadyIteratedSchemas,
-        undefined
+        alreadyIteratedSchemas
       );
     }
     if (
@@ -708,43 +704,37 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
     ) {
       convertedSchema.additionalItems = this.convertToInternalSchema(
         schema.additionalItems(),
-        alreadyIteratedSchemas,
-        undefined
+        alreadyIteratedSchemas
       );
     }
     if (schema.contains()) {
       convertedSchema.contains = this.convertToInternalSchema(
         schema.contains()!,
-        alreadyIteratedSchemas,
-        undefined
+        alreadyIteratedSchemas
       );
     }
     if (schema.propertyNames()) {
       convertedSchema.propertyNames = this.convertToInternalSchema(
         schema.propertyNames()!,
-        alreadyIteratedSchemas,
-        undefined
+        alreadyIteratedSchemas
       );
     }
     if (schema.if()) {
       convertedSchema.if = this.convertToInternalSchema(
         schema.if()!,
-        alreadyIteratedSchemas,
-        undefined
+        alreadyIteratedSchemas
       );
     }
     if (schema.then()) {
       convertedSchema.then = this.convertToInternalSchema(
         schema.then()!,
-        alreadyIteratedSchemas,
-        undefined
+        alreadyIteratedSchemas
       );
     }
     if (schema.else()) {
       convertedSchema.else = this.convertToInternalSchema(
         schema.else()!,
-        alreadyIteratedSchemas,
-        undefined
+        alreadyIteratedSchemas
       );
     }
     if (
