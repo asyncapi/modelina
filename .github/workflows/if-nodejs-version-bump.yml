@@ -26,7 +26,8 @@ jobs:
         run: test -e ./package.json && echo "exists=true" >> $GITHUB_OUTPUT || echo "exists=false" >> $GITHUB_OUTPUT
       - if: steps.packagejson.outputs.exists == 'true'
         name: Check package-lock version
-        uses: asyncapi/.github/.github/actions/get-node-version-from-package-lock@master
+        # This workflow is from our own org repo and safe to reference by 'master'.
+        uses: asyncapi/.github/.github/actions/get-node-version-from-package-lock@master # //NOSONAR
         id: lockversion
       - if: steps.packagejson.outputs.exists == 'true'
         name: Setup Node.js
