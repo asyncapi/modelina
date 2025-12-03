@@ -3,7 +3,7 @@ const spy = jest.spyOn(global.console, 'log').mockImplementation(() => {
 });
 import { generate } from './index';
 
-describe('Should be able to render models with overridden additionalProperties', () => {
+describe('Should be able to use ignoreAdditionalItems option', () => {
   afterAll(() => {
     jest.restoreAllMocks();
   });

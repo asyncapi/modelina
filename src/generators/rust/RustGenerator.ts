@@ -20,7 +20,8 @@ import {
   ConstrainedFloatModel,
   ConstrainedIntegerModel,
   ConstrainedReferenceModel,
-  ConstrainedStringModel
+  ConstrainedStringModel,
+  ConstrainedArrayModel
 } from '../../models';
 import {
   ConstantConstraint,
@@ -48,6 +49,7 @@ import { UnionRenderer } from './renderers/UnionRenderer';
 import { PackageRenderer } from './renderers/PackageRenderer';
 import { DeepPartial, mergePartialAndDefault } from '../../utils/Partials';
 import { RustDependencyManager } from './RustDependencyManager';
+import { NewTypeRenderer } from './renderers/NewTypeRenderer';
 
 export interface RustOptions extends CommonGeneratorOptions<RustPreset> {
   typeMapping: TypeMapping<RustOptions, RustDependencyManager>;
@@ -243,6 +245,18 @@ export class RustGenerator extends AbstractGenerator<
         args.inputModel,
         optionsToUse
       );
+    } else if (
+      args.constrainedModel instanceof ConstrainedBooleanModel ||
+      args.constrainedModel instanceof ConstrainedIntegerModel ||
+      args.constrainedModel instanceof ConstrainedFloatModel ||
+      args.constrainedModel instanceof ConstrainedStringModel ||
+      args.constrainedModel instanceof ConstrainedArrayModel
+    ) {
+      return this.renderNewType(
+        args.constrainedModel,
+        args.inputModel,
+        optionsToUse
+      );
     }
     Logger.warn(
       `Rust generator, cannot generate this type of model, ${args.constrainedModel.name}`
@@ -349,6 +363,33 @@ export class RustGenerator extends AbstractGenerator<
     const dependencyManagerToUse = this.getDependencyManager(optionsToUse);
     const presets = this.getPresets('tuple');
     const renderer = new TupleRenderer(
+      optionsToUse,
+      this,
+      presets,
+      model,
+      inputModel,
+      dependencyManagerToUse
+    );
+    const result = await renderer.runSelfPreset();
+    return RenderOutput.toRenderOutput({
+      result,
+      renderedName: model.name,
+      dependencies: dependencyManagerToUse.dependencies
+    });
+  }
+
+  async renderNewType(
+    model: ConstrainedMetaModel,
+    inputModel: InputMetaModel,
+    options?: DeepPartial<RustOptions>
+  ): Promise<RenderOutput> {
+    const optionsToUse = RustGenerator.getRustOptions({
+      ...this.options,
+      ...options
+    });
+    const dependencyManagerToUse = this.getDependencyManager(optionsToUse);
+    const presets = this.getPresets('newType');
+    const renderer = new NewTypeRenderer(
       optionsToUse,
       this,
       presets,

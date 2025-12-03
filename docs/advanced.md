@@ -15,7 +15,6 @@ This document contains many of the advanced use-cases that you may stumble upon 
 - [Change the generated indentation type and size](#change-the-generated-indentation-type-and-size)
 - [Change the type mapping](#change-the-type-mapping)
 - [Changing the constrain rules](#changing-the-constrain-rules)
-- [Customizing the interpreter options](#customizing-the-interpreter-options)
 
 <!-- tocstop -->
 
@@ -104,15 +103,3 @@ There can be multiple reasons why you want to change the default constrain rules
 Check out this [example out for a live demonstration](../examples/overwrite-default-constraint/) for how to overwrite the default constraints.
 
 Check out this [example out for a live demonstration](../examples/overwrite-naming-formatting/) for how to overwrite the naming formatting for models.
-
-## Customizing the interpreter options
-
-According to JSON schema draft 7, if `additionalProperties` or `additionalItems` are omitted, their default value is `true`. The `Interpreter` honors this behavior, however this creates more loose models that might not be the intention for the developer. 
-
-We suggest not using this option if it can be avoided, as it limits your generated models to include any additional properties, and would simply be ignored. Instead adapt your schemas to be more strict by setting these keywords to `false`. This option should really only be used when you have no control over your input and the output is unintended.
-
-To set the interpreter up to ignore the default behavior, you can further restrict your models with the following options:
-- `ignoreAdditionalProperties` - if set, it ensures that `additionalProperties` by default is ignored.
-- `ignoreAdditionalItems` - if set, it ensures that `additionalItems` by default is ignored.
-
-Check out this [example out for a live demonstration](../examples/passing-interpreter-options/) for how to customize the behavior of `additionalProperties`.

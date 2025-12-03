@@ -794,11 +794,11 @@ ${content}`;
 
       const dog = models.find((model) => model.modelName === 'Dog');
       expect(dog).not.toBeUndefined();
-      expect(dog?.result).toContain('DogType');
+      expect(dog?.result).toContain('CloudEventType.DOG');
 
       const cat = models.find((model) => model.modelName === 'Cat');
       expect(cat).not.toBeUndefined();
-      expect(cat?.result).toContain('CatType');
+      expect(cat?.result).toContain('CloudEventType.CAT');
     });
   });
 
