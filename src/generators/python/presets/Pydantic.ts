@@ -30,13 +30,16 @@ const PYTHON_PYDANTIC_CLASS_PRESET: ClassPresetType<PythonOptions> = {
     if (isOptional) {
       type = `Optional[${type}]`;
     }
-    if (
-      property.property.options.const &&
-      model.options.discriminator?.discriminator ===
-        property.unconstrainedPropertyName
-    ) {
+    if (property.property.options.const) {
       renderer.dependencyManager.addDependency('from typing import Literal');
-      type = `Literal['${property.property.options.const.originalInput}']`;
+      const constValue = property.property.options.const.originalInput;
+      if (typeof constValue === 'string') {
+        type = `Literal['${constValue}']`;
+      } else if (typeof constValue === 'boolean') {
+        type = `Literal[${constValue ? 'True' : 'False'}]`;
+      } else {
+        type = `Literal[${constValue}]`;
+      }
     }
     type = renderer.renderPropertyType({
       modelType: model.type,
@@ -50,19 +53,18 @@ const PYTHON_PYDANTIC_CLASS_PRESET: ClassPresetType<PythonOptions> = {
         `description='''${property.property.originalInput['description']}'''`
       );
     }
-    if (isOptional) {
-      decoratorArgs.push('default=None');
-    }
     if (property.property.options.const) {
-      let value = property.property.options.const.value;
-      if (
-        model.options.discriminator?.discriminator ===
-        property.unconstrainedPropertyName
-      ) {
-        value = property.property.options.const.originalInput;
+      const constValue = property.property.options.const.originalInput;
+      if (typeof constValue === 'string') {
+        decoratorArgs.push(`default='${constValue}'`);
+      } else if (typeof constValue === 'boolean') {
+        decoratorArgs.push(`default=${constValue ? 'True' : 'False'}`);
+      } else {
+        decoratorArgs.push(`default=${constValue}`);
       }
-      decoratorArgs.push(`default='${value}'`);
       decoratorArgs.push('frozen=True');
+    } else if (isOptional) {
+      decoratorArgs.push('default=None');
     }
     if (
       property.property instanceof ConstrainedDictionaryModel &&

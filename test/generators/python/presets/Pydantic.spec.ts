@@ -204,4 +204,25 @@ describe('PYTHON_PYDANTIC_PRESET', () => {
     const models = await generator.generate(doc);
     expect(models.map((model) => model.result)).toMatchSnapshot();
   });
+
+  test('should render Literal type for const properties', async () => {
+    const doc = {
+      title: 'ConstTest',
+      type: 'object',
+      properties: {
+        country: {
+          const: 'United States of America'
+        },
+        version: {
+          const: 42
+        },
+        isActive: {
+          const: true
+        }
+      }
+    };
+
+    const models = await generator.generate(doc);
+    expect(models.map((model) => model.result)).toMatchSnapshot();
+  });
 });
