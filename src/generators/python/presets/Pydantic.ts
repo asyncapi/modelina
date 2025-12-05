@@ -33,7 +33,9 @@ function buildFieldArgs(
   }
 
   if (constOptions) {
-    decoratorArgs.push(`default=${formatPythonConstValue(constOptions.originalInput)}`);
+    decoratorArgs.push(
+      `default=${formatPythonConstValue(constOptions.originalInput)}`
+    );
     decoratorArgs.push('frozen=True');
   } else if (isOptional) {
     decoratorArgs.push('default=None');
@@ -47,7 +49,10 @@ function buildFieldArgs(
     decoratorArgs.push('exclude=True');
   }
 
-  if (property.propertyName !== property.unconstrainedPropertyName && !isUnwrappedDict) {
+  if (
+    property.propertyName !== property.unconstrainedPropertyName &&
+    !isUnwrappedDict
+  ) {
     decoratorArgs.push(`alias='''${property.unconstrainedPropertyName}'''`);
   }
 
