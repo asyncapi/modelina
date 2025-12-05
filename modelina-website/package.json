@@ -12,7 +12,7 @@
     "build:resources": "npm run build:examples && npm run build:docs && npm run copy:docs:img",
     "build:examples": "node scripts/build-examples.js",
     "build:docs": "node scripts/build-docs.js",
-    "copy:docs:img": "cp -r ../docs/img public/img/docs"
+    "copy:docs:img": "node scripts/copy-docs-img.js"
   },
   "dependencies": {
     "@monaco-editor/react": "^4.6.0",
