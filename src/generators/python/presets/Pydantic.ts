@@ -5,6 +5,55 @@ import {
 import { PythonOptions } from '../PythonGenerator';
 import { ClassPresetType, PythonPreset } from '../PythonPreset';
 
+function formatPythonConstValue(constValue: unknown): string {
+  if (typeof constValue === 'string') {
+    return `'${constValue}'`;
+  }
+  if (typeof constValue === 'boolean') {
+    return constValue ? 'True' : 'False';
+  }
+  return String(constValue);
+}
+
+function formatLiteralType(constValue: unknown): string {
+  return `Literal[${formatPythonConstValue(constValue)}]`;
+}
+
+function buildFieldArgs(
+  property: ConstrainedObjectPropertyModel,
+  isOptional: boolean,
+  constOptions?: { originalInput: unknown }
+): string[] {
+  const decoratorArgs: string[] = [];
+
+  if (property.property.originalInput['description']) {
+    decoratorArgs.push(
+      `description='''${property.property.originalInput['description']}'''`
+    );
+  }
+
+  if (constOptions) {
+    decoratorArgs.push(`default=${formatPythonConstValue(constOptions.originalInput)}`);
+    decoratorArgs.push('frozen=True');
+  } else if (isOptional) {
+    decoratorArgs.push('default=None');
+  }
+
+  const isUnwrappedDict =
+    property.property instanceof ConstrainedDictionaryModel &&
+    property.property.serializationType === 'unwrap';
+
+  if (isUnwrappedDict) {
+    decoratorArgs.push('exclude=True');
+  }
+
+  if (property.propertyName !== property.unconstrainedPropertyName && !isUnwrappedDict) {
+    decoratorArgs.push(`alias='''${property.unconstrainedPropertyName}'''`);
+  }
+
+  return decoratorArgs;
+}
+
 const PYTHON_PYDANTIC_CLASS_PRESET: ClassPresetType<PythonOptions> = {
   async self({ renderer, model }) {
     renderer.dependencyManager.addDependency(
@@ -22,63 +71,25 @@ const PYTHON_PYDANTIC_CLASS_PRESET: ClassPresetType<PythonOptions> = {
     );
   },
   property({ property, model, renderer }) {
-    let type = property.property.type;
     const propertyName = property.propertyName;
-
+    const constOptions = property.property.options.const;
     const isOptional =
       !property.required || property.property.options.isNullable === true;
+
+    let type = property.property.type;
     if (isOptional) {
       type = `Optional[${type}]`;
     }
-    if (property.property.options.const) {
+    if (constOptions) {
       renderer.dependencyManager.addDependency('from typing import Literal');
-      const constValue = property.property.options.const.originalInput;
-      if (typeof constValue === 'string') {
-        type = `Literal['${constValue}']`;
-      } else if (typeof constValue === 'boolean') {
-        type = `Literal[${constValue ? 'True' : 'False'}]`;
-      } else {
-        type = `Literal[${constValue}]`;
-      }
+      type = formatLiteralType(constOptions.originalInput);
     }
     type = renderer.renderPropertyType({
       modelType: model.type,
       propertyType: type
     });
 
-    const decoratorArgs: string[] = [];
-
-    if (property.property.originalInput['description']) {
-      decoratorArgs.push(
-        `description='''${property.property.originalInput['description']}'''`
-      );
-    }
-    if (property.property.options.const) {
-      const constValue = property.property.options.const.originalInput;
-      if (typeof constValue === 'string') {
-        decoratorArgs.push(`default='${constValue}'`);
-      } else if (typeof constValue === 'boolean') {
-        decoratorArgs.push(`default=${constValue ? 'True' : 'False'}`);
-      } else {
-        decoratorArgs.push(`default=${constValue}`);
-      }
-      decoratorArgs.push('frozen=True');
-    } else if (isOptional) {
-      decoratorArgs.push('default=None');
-    }
-    if (
-      property.property instanceof ConstrainedDictionaryModel &&
-      property.property.serializationType === 'unwrap'
-    ) {
-      decoratorArgs.push('exclude=True');
-    }
-    if (
-      property.propertyName !== property.unconstrainedPropertyName &&
-      (!(property.property instanceof ConstrainedDictionaryModel) ||
-        property.property.serializationType !== 'unwrap')
-    ) {
-      decoratorArgs.push(`alias='''${property.unconstrainedPropertyName}'''`);
-    }
+    const decoratorArgs = buildFieldArgs(property, isOptional, constOptions);
 
     return `${propertyName}: ${type} = Field(${decoratorArgs.join(', ')})`;
   },
