@@ -31,6 +31,10 @@ export const TypeScriptDefaultTypeMapping: TypeScriptTypeMapping = {
     return applyNullable(constrainedModel, 'number');
   },
   String({ constrainedModel }): string {
+    const format = constrainedModel?.options?.format;
+    if(format ==="date-time" || format ==="date"|| format ==='time'){
+      return applyNullable(constrainedModel, 'Date');
+    }
     return applyNullable(constrainedModel, 'string');
   },
   Boolean({ constrainedModel }): string {
