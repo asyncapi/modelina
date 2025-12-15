@@ -53,9 +53,11 @@ jobs:
         run: test -e ./package.json && echo "exists=true" >> $GITHUB_OUTPUT || echo "exists=false" >> $GITHUB_OUTPUT
         shell: bash
       - if: steps.packagejson.outputs.exists == 'true'
-        name: Check package-lock version
+        name: Determine what node version to use
         # This workflow is from our own org repo and safe to reference by 'master'.
         uses: asyncapi/.github/.github/actions/get-node-version-from-package-lock@master # //NOSONAR
+        with:
+          node-version: ${{ vars.NODE_VERSION }}
         id: lockversion
       - if: steps.packagejson.outputs.exists == 'true'
         name: Setup Node.js
@@ -100,15 +102,17 @@ jobs:
         run: test -e ./package.json && echo "exists=true" >> $GITHUB_OUTPUT || echo "exists=false" >> $GITHUB_OUTPUT
         shell: bash
       - if: steps.packagejson.outputs.exists == 'true'
-        name: Check package-lock version
+        name: Determine what node version to use
         # This workflow is from our own org repo and safe to reference by 'master'.
         uses: asyncapi/.github/.github/actions/get-node-version-from-package-lock@master # //NOSONAR
+        with:
+          node-version: ${{ vars.NODE_VERSION }}
         id: lockversion
       - if: steps.packagejson.outputs.exists == 'true'
         name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "22.14.0"
+          node-version: "${{ steps.lockversion.outputs.version }}"
           registry-url: "https://registry.npmjs.org"
       - if: steps.packagejson.outputs.exists == 'true'
         name: Install dependencies
