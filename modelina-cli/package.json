@@ -1,7 +1,7 @@
 {
   "name": "@asyncapi/modelina-cli",
   "description": "CLI to work with Modelina",
-  "version": "5.10.1",
+  "version": "6.0.0-next.5",
   "bin": {
     "modelina": "./bin/run_bin"
   },

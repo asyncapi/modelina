@@ -1,0 +1,7 @@
+type: object
+properties:
+  theme:
+    type: string
+    enum: [light, dark]
+  notifications:
+    type: boolean

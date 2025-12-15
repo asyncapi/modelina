@@ -2,7 +2,7 @@
 
 exports[`Should be able to process an AsyncAPI object with OpenAPI schema type and should log expected output to console 1`] = `
 Array [
-  "class AnonymousSchema_1 {
+  "class ExamplePayload {
   private _title?: string | null;
   private _author?: string;
   private _additionalProperties?: Map<string, any>;
