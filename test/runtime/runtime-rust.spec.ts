@@ -8,5 +8,5 @@ test('Rust runtime testing', async () => {
     __dirname,
     './runtime-rust'
   )} && cargo test`;
-  await execCommand(compileCommand);
+  await execCommand(compileCommand, true);
 });
