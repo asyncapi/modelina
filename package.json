@@ -37,7 +37,6 @@
   "dependencies": {
     "@apidevtools/json-schema-ref-parser": "^11.1.0",
     "@apidevtools/swagger-parser": "^10.1.0",
-    "@asyncapi/modelina": "^5.10.1",
     "@asyncapi/multi-parser": "^2.2.0",
     "@asyncapi/parser": "^3.4.0",
     "alterschema": "^1.1.2",
