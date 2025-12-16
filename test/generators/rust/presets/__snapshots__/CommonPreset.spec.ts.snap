@@ -34,7 +34,7 @@ pub enum OptionalMembers {
 
 exports[`RUST_COMMON_PRESET Enum should render \`enum\` of union type with Default implementation of integer type 3`] = `
 "// Address represents a Address model.
-#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct Address {
     #[serde(rename=\\"members\\")]
     pub members: Box<crate::Members>,
@@ -90,7 +90,7 @@ pub enum OptionalMembers {
 
 exports[`RUST_COMMON_PRESET Enum should render \`enum\` of union type with Default implementation of string type 3`] = `
 "// Address represents a Address model.
-#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct Address {
     #[serde(rename=\\"members\\")]
     pub members: Box<crate::Members>,
