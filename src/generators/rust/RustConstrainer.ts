@@ -490,6 +490,3 @@ export const RustDefaultConstraints = {
   propertyKey: defaultPropertyKeyConstraints(),
   constant: defaultConstantConstraints()
 };
-
-
-
