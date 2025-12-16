@@ -1201,6 +1201,16 @@
         "code",
         "test"
       ]
+    },
+    {
+      "login": "AarishMansur",
+      "name": "Aarish mansur",
+      "avatar_url": "https://avatars.githubusercontent.com/u/170957949?v=4",
+      "profile": "https://github.com/AarishMansur",
+      "contributions": [
+        "code",
+        "test"
+      ]
     }
   ],
   "contributorsPerLine": 7,
