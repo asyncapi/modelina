@@ -52,6 +52,33 @@ const models = await generator.generateCompleteModels(schema, {
 
 The generated Python code behavior remains unchanged - all imports will continue to use the explicit style.
 
+## Typescript 
+### Date formats now generate `Date` instead of `string`
+
+In Modelina v5, OpenAPI schema fields with type `string` and formats such as
+`date-time`, `date`, or `time` were generated as `string` in TypeScript models.
+
+Starting from v6, these formats are now mapped to the native `Date` type.
+
+This is a **breaking change** and may require updates in consumer code.
+
+#### What changed
+
+**Before (v5):**
+```ts
+sentAt?: string; 
+```
+
+**After(v6):**
+```ts
+sentAt?: Date; 
+```
+#### Migration notes
+
+- Update TypeScript type annotations that previously expected `string`
+- Ensure any custom serialization or parsing logic handles `Date` objects
+- Update mocks, tests, and fixtures that rely on string values for date fields
+
 ## AsyncAPI
 
 ### Improved schema naming strategy
