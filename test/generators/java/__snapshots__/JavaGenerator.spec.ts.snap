@@ -14,24 +14,24 @@ public interface Animal {
   String getPetType();
 }",
   "public class Boxer implements Animal, Dog {
-  @JsonProperty(\\"breed\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private final String breed = \\"Boxer\\";
   @NotNull
-  @JsonProperty(\\"petType\\")
   private String petType;
-  @JsonProperty(\\"color\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private String color;
   @JsonAnySetter
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
+  @JsonProperty(\\"breed\\")
   public String getBreed() { return this.breed; }
 
+  @JsonProperty(\\"petType\\")
   @Override
   public String getPetType() { return this.petType; }
 
+  @JsonProperty(\\"color\\")
   @Override
   public String getColor() { return this.color; }
   @Override
@@ -93,18 +93,18 @@ public interface Animal {
 }",
   "public class Cat implements Animal, Pet {
   @NotNull
-  @JsonProperty(\\"petType\\")
   private String petType;
-  @JsonProperty(\\"color\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private String color;
   @JsonAnySetter
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
+  @JsonProperty(\\"petType\\")
   @Override
   public String getPetType() { return this.petType; }
 
+  @JsonProperty(\\"color\\")
   @Override
   public String getColor() { return this.color; }
   @Override
@@ -172,20 +172,20 @@ public interface Pet {
   String getPetType();
 }",
   "public class Owner {
-  @JsonProperty(\\"name\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private String name;
   @Valid
-  @JsonProperty(\\"pets\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private List<Pet> pets;
   @JsonAnySetter
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
+  @JsonProperty(\\"name\\")
   public String getName() { return this.name; }
   public void setName(String name) { this.name = name; }
 
+  @JsonProperty(\\"pets\\")
   public List<Pet> getPets() { return this.pets; }
   public void setPets(List<Pet> pets) { this.pets = pets; }
 
@@ -235,12 +235,12 @@ public interface Pet {
 }",
   "public class Fish implements Pet {
   @NotNull
-  @JsonProperty(\\"petType\\")
   private String petType;
   @JsonAnySetter
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
+  @JsonProperty(\\"petType\\")
   public String getPetType() { return this.petType; }
 
   @JsonAnyGetter
@@ -287,17 +287,17 @@ public interface Pet {
 }",
   "public class Bird implements Pet {
   @NotNull
-  @JsonProperty(\\"petType\\")
   private String petType;
-  @JsonProperty(\\"breed\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Object breed;
   @JsonAnySetter
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
+  @JsonProperty(\\"petType\\")
   public String getPetType() { return this.petType; }
 
+  @JsonProperty(\\"breed\\")
   public Object getBreed() { return this.breed; }
   public void setBreed(Object breed) { this.breed = breed; }
 
@@ -347,17 +347,17 @@ public interface Pet {
 }",
   "public class FlyingFish implements Pet, Fish {
   @NotNull
-  @JsonProperty(\\"petType\\")
   private String petType;
-  @JsonProperty(\\"breed\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private final String breed = \\"FlyingNemo\\";
   @JsonAnySetter
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
+  @JsonProperty(\\"petType\\")
   public String getPetType() { return this.petType; }
 
+  @JsonProperty(\\"breed\\")
   public String getBreed() { return this.breed; }
 
   @JsonAnyGetter
@@ -422,20 +422,20 @@ public interface Pet {
   String getPetType();
 }",
   "public class Owner {
-  @JsonProperty(\\"name\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private String name;
   @Valid
-  @JsonProperty(\\"pets\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private List<Pet> pets;
   @JsonAnySetter
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
+  @JsonProperty(\\"name\\")
   public String getName() { return this.name; }
   public void setName(String name) { this.name = name; }
 
+  @JsonProperty(\\"pets\\")
   public List<Pet> getPets() { return this.pets; }
   public void setPets(List<Pet> pets) { this.pets = pets; }
 
@@ -485,12 +485,12 @@ public interface Pet {
 }",
   "public class Fish implements Pet {
   @NotNull
-  @JsonProperty(\\"petType\\")
   private final String petType = \\"Fish\\";
   @JsonAnySetter
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
+  @JsonProperty(\\"petType\\")
   public String getPetType() { return this.petType; }
 
   @JsonAnyGetter
@@ -537,17 +537,17 @@ public interface Pet {
 }",
   "public class Bird implements Pet {
   @NotNull
-  @JsonProperty(\\"petType\\")
   private final String petType = \\"Bird\\";
-  @JsonProperty(\\"breed\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private String breed;
   @JsonAnySetter
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
+  @JsonProperty(\\"petType\\")
   public String getPetType() { return this.petType; }
 
+  @JsonProperty(\\"breed\\")
   public String getBreed() { return this.breed; }
   public void setBreed(String breed) { this.breed = breed; }
 
@@ -597,17 +597,17 @@ public interface Pet {
 }",
   "public class FlyingFish implements Pet, Fish {
   @NotNull
-  @JsonProperty(\\"petType\\")
   private final String petType = \\"FlyingFish\\";
-  @JsonProperty(\\"breed\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private final String breed = \\"FlyingNemo\\";
   @JsonAnySetter
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
+  @JsonProperty(\\"petType\\")
   public String getPetType() { return this.petType; }
 
+  @JsonProperty(\\"breed\\")
   public String getBreed() { return this.breed; }
 
   @JsonAnyGetter
@@ -671,18 +671,18 @@ public interface Animal {
   String getAtPetType();
 }",
   "public class FlyingFish implements Animal, Fish {
-  @JsonProperty(\\"breed\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private final String breed = \\"FlyingNemo\\";
   @NotNull
-  @JsonProperty(\\"@petType\\")
   private String atPetType;
   @JsonAnySetter
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
+  @JsonProperty(\\"breed\\")
   public String getBreed() { return this.breed; }
 
+  @JsonProperty(\\"@petType\\")
   @Override
   public String getAtPetType() { return this.atPetType; }
 
@@ -738,12 +738,12 @@ public interface Animal {
 }",
   "public class Bird implements Animal, Pet {
   @NotNull
-  @JsonProperty(\\"@petType\\")
   private String atPetType;
   @JsonAnySetter
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
+  @JsonProperty(\\"@petType\\")
   @Override
   public String getAtPetType() { return this.atPetType; }
 
@@ -853,18 +853,18 @@ Array [
   "public class Event {
   @Valid
   @NotNull
-  @JsonProperty(\\"action\\")
   private Action action;
-  @JsonProperty(\\"event_time\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private java.time.OffsetDateTime eventTime;
   @JsonAnySetter
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
+  @JsonProperty(\\"action\\")
   public Action getAction() { return this.action; }
   public void setAction(Action action) { this.action = action; }
 
+  @JsonProperty(\\"event_time\\")
   public java.time.OffsetDateTime getEventTime() { return this.eventTime; }
   public void setEventTime(java.time.OffsetDateTime eventTime) { this.eventTime = eventTime; }
 
@@ -959,41 +959,41 @@ public interface Pet {
 }",
   "public class Dog implements Pet {
   @NotNull
-  @JsonProperty(\\"id\\")
   private String id;
   @NotNull
-  @JsonProperty(\\"source\\")
   private String source;
   @NotNull
-  @JsonProperty(\\"specversion\\")
   private final String specversion = \\"1.0\\";
   @Valid
   @NotNull
-  @JsonProperty(\\"type\\")
   private final CloudEventType type = CloudEventType.DOG;
-  @JsonProperty(\\"dataschema\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private String dataschema;
-  @JsonProperty(\\"time\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private java.time.OffsetDateTime time;
   @JsonAnySetter
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
+  @JsonProperty(\\"id\\")
   public String getId() { return this.id; }
   public void setId(String id) { this.id = id; }
 
+  @JsonProperty(\\"source\\")
   public String getSource() { return this.source; }
   public void setSource(String source) { this.source = source; }
 
+  @JsonProperty(\\"specversion\\")
   public String getSpecversion() { return this.specversion; }
 
+  @JsonProperty(\\"type\\")
   public CloudEventType getType() { return this.type; }
 
+  @JsonProperty(\\"dataschema\\")
   public String getDataschema() { return this.dataschema; }
   public void setDataschema(String dataschema) { this.dataschema = dataschema; }
 
+  @JsonProperty(\\"time\\")
   public java.time.OffsetDateTime getTime() { return this.time; }
   public void setTime(java.time.OffsetDateTime time) { this.time = time; }
 
@@ -1080,41 +1080,41 @@ public interface Pet {
 }",
   "public class Cat implements Pet {
   @NotNull
-  @JsonProperty(\\"id\\")
   private String id;
   @NotNull
-  @JsonProperty(\\"source\\")
   private String source;
   @NotNull
-  @JsonProperty(\\"specversion\\")
   private final String specversion = \\"1.0\\";
   @Valid
   @NotNull
-  @JsonProperty(\\"type\\")
   private final CloudEventType type = CloudEventType.CAT;
-  @JsonProperty(\\"dataschema\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private String dataschema;
-  @JsonProperty(\\"time\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private java.time.OffsetDateTime time;
   @JsonAnySetter
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
+  @JsonProperty(\\"id\\")
   public String getId() { return this.id; }
   public void setId(String id) { this.id = id; }
 
+  @JsonProperty(\\"source\\")
   public String getSource() { return this.source; }
   public void setSource(String source) { this.source = source; }
 
+  @JsonProperty(\\"specversion\\")
   public String getSpecversion() { return this.specversion; }
 
+  @JsonProperty(\\"type\\")
   public CloudEventType getType() { return this.type; }
 
+  @JsonProperty(\\"dataschema\\")
   public String getDataschema() { return this.dataschema; }
   public void setDataschema(String dataschema) { this.dataschema = dataschema; }
 
+  @JsonProperty(\\"time\\")
   public java.time.OffsetDateTime getTime() { return this.time; }
   public void setTime(java.time.OffsetDateTime time) { this.time = time; }
 
@@ -1177,19 +1177,19 @@ exports[`JavaGenerator oneOf/discriminator with jackson preset handle one const 
 Array [
   "public class Dog {
   @NotNull
-  @JsonProperty(\\"id\\")
   private String id;
   @Valid
   @NotNull
-  @JsonProperty(\\"type\\")
   private final CloudEventType type = CloudEventType.DOG;
   @JsonAnySetter
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
+  @JsonProperty(\\"id\\")
   public String getId() { return this.id; }
   public void setId(String id) { this.id = id; }
 
+  @JsonProperty(\\"type\\")
   public CloudEventType getType() { return this.type; }
 
   @JsonAnyGetter
@@ -1279,18 +1279,18 @@ Array [
  * Pet represents a union of types: Dog, Cat
  */
 public interface Pet {
-  
+  CloudEventType getType();
 }",
   "public class Dog implements Pet {
   @Valid
   @NotNull
-  @JsonProperty(\\"type\\")
-  private final DogType type = DogType.DOG;
+  private final CloudEventType type = CloudEventType.DOG;
   @JsonAnySetter
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
-  public DogType getType() { return this.type; }
+  @JsonProperty(\\"type\\")
+  public CloudEventType getType() { return this.type; }
 
   @JsonAnyGetter
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
@@ -1334,12 +1334,12 @@ public interface Pet {
     return o.toString().replace(\\"\\\\n\\", \\"\\\\n    \\");
   }
 }",
-  "public enum DogType {
-  DOG((String)\\"Dog\\");
+  "public enum CloudEventType {
+  DOG((String)\\"Dog\\"), CAT((String)\\"Cat\\");
 
   private final String value;
 
-  DogType(String value) {
+  CloudEventType(String value) {
     this.value = value;
   }
 
@@ -1349,8 +1349,8 @@ public interface Pet {
   }
 
   @JsonCreator
-  public static DogType fromValue(String value) {
-    for (DogType e : DogType.values()) {
+  public static CloudEventType fromValue(String value) {
+    for (CloudEventType e : CloudEventType.values()) {
       if (e.value.equals(value)) {
         return e;
       }
@@ -1366,13 +1366,13 @@ public interface Pet {
   "public class Cat implements Pet {
   @Valid
   @NotNull
-  @JsonProperty(\\"type\\")
-  private final CatType type = CatType.CAT;
+  private final CloudEventType type = CloudEventType.CAT;
   @JsonAnySetter
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
-  public CatType getType() { return this.type; }
+  @JsonProperty(\\"type\\")
+  public CloudEventType getType() { return this.type; }
 
   @JsonAnyGetter
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
@@ -1416,35 +1416,6 @@ public interface Pet {
     return o.toString().replace(\\"\\\\n\\", \\"\\\\n    \\");
   }
 }",
-  "public enum CatType {
-  CAT((String)\\"Cat\\");
-
-  private final String value;
-
-  CatType(String value) {
-    this.value = value;
-  }
-
-  @JsonValue
-  public String getValue() {
-    return value;
-  }
-
-  @JsonCreator
-  public static CatType fromValue(String value) {
-    for (CatType e : CatType.values()) {
-      if (e.value.equals(value)) {
-        return e;
-      }
-    }
-    throw new IllegalArgumentException(\\"Unexpected value '\\" + value + \\"'\\");
-  }
-
-  @Override
-  public String toString() {
-    return String.valueOf(value);
-  }
-}",
 ]
 `;
 
@@ -1463,13 +1434,13 @@ public interface Vehicle {
 }",
   "public class Cargo {
   @Valid
-  @JsonProperty(\\"vehicle\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Vehicle vehicle;
   @JsonAnySetter
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
+  @JsonProperty(\\"vehicle\\")
   public Vehicle getVehicle() { return this.vehicle; }
   public void setVehicle(Vehicle vehicle) { this.vehicle = vehicle; }
 
@@ -1518,12 +1489,12 @@ public interface Vehicle {
   "public class Car implements Vehicle {
   @Valid
   @NotNull
-  @JsonProperty(\\"vehicleType\\")
   private final VehicleType vehicleType = VehicleType.CAR;
   @JsonAnySetter
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
+  @JsonProperty(\\"vehicleType\\")
   public VehicleType getVehicleType() { return this.vehicleType; }
 
   @JsonAnyGetter
@@ -1600,12 +1571,12 @@ public interface Vehicle {
   "public class Truck implements Vehicle {
   @Valid
   @NotNull
-  @JsonProperty(\\"vehicleType\\")
   private final VehicleType vehicleType = VehicleType.TRUCK;
   @JsonAnySetter
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
+  @JsonProperty(\\"vehicleType\\")
   public VehicleType getVehicleType() { return this.vehicleType; }
 
   @JsonAnyGetter
@@ -1657,24 +1628,24 @@ exports[`JavaGenerator render optionals correctly when enabled should render opt
 Array [
   "public class Pet {
   @NotNull
-  @JsonProperty(\\"@petType\\")
   private String atPetType;
-  @JsonProperty(\\"color\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private String color;
-  @JsonProperty(\\"gender\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private String gender = \\"male\\";
   @JsonAnySetter
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
+  @JsonProperty(\\"@petType\\")
   public String getAtPetType() { return this.atPetType; }
   public void setAtPetType(String atPetType) { this.atPetType = atPetType; }
 
+  @JsonProperty(\\"color\\")
   public Optional<String> getColor() { return ofNullable(this.color); }
   public void setColor(String color) { this.color = color; }
 
+  @JsonProperty(\\"gender\\")
   public String getGender() { return this.gender; }
   public void setGender(String gender) { this.gender = gender; }
 
@@ -2123,34 +2094,34 @@ public interface Pet {
   String getPetType();
 }",
   "public class Owner {
-  @JsonProperty(\\"name\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private String name;
   @Valid
-  @JsonProperty(\\"pets\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private List<Pet> pets;
   @Valid
-  @JsonProperty(\\"possibleDuplicatePets\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private List<Pet> possibleDuplicatePets;
   @Valid
-  @JsonProperty(\\"uniquePets\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Set<Pet> uniquePets;
   @JsonAnySetter
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
+  @JsonProperty(\\"name\\")
   public String getName() { return this.name; }
   public void setName(String name) { this.name = name; }
 
+  @JsonProperty(\\"pets\\")
   public List<Pet> getPets() { return this.pets; }
   public void setPets(List<Pet> pets) { this.pets = pets; }
 
+  @JsonProperty(\\"possibleDuplicatePets\\")
   public List<Pet> getPossibleDuplicatePets() { return this.possibleDuplicatePets; }
   public void setPossibleDuplicatePets(List<Pet> possibleDuplicatePets) { this.possibleDuplicatePets = possibleDuplicatePets; }
 
+  @JsonProperty(\\"uniquePets\\")
   public Set<Pet> getUniquePets() { return this.uniquePets; }
   public void setUniquePets(Set<Pet> uniquePets) { this.uniquePets = uniquePets; }
 
@@ -2204,17 +2175,17 @@ public interface Pet {
 }",
   "public class Bird implements Pet {
   @NotNull
-  @JsonProperty(\\"petType\\")
   private final String petType = \\"Bird\\";
-  @JsonProperty(\\"breed\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Object breed;
   @JsonAnySetter
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
+  @JsonProperty(\\"petType\\")
   public String getPetType() { return this.petType; }
 
+  @JsonProperty(\\"breed\\")
   public Object getBreed() { return this.breed; }
   public void setBreed(Object breed) { this.breed = breed; }
 
@@ -2344,61 +2315,61 @@ Array [
 exports[`JavaGenerator when default is used, render field with default should create field with default 1`] = `
 Array [
   "public class Owner {
-  @JsonProperty(\\"id\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private UUID id = UUID.fromString(\\"e3395ed6-89e2-458a-b9e0-d2e2c2bab6e6\\");
-  @JsonProperty(\\"name\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private String name;
-  @JsonProperty(\\"age\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Integer age = 18;
-  @JsonProperty(\\"daysSince\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Long daysSince = 544999999;
-  @JsonProperty(\\"daysBefore\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Double daysBefore = 100.5;
-  @JsonProperty(\\"creationTime\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private java.time.OffsetDateTime creationTime = java.time.OffsetDateTime.parse(\\"2023-01-01T00:00:00Z\\");
-  @JsonProperty(\\"gender\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private String gender = \\"male\\";
-  @JsonProperty(\\"birthdate\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private LocalDate birthdate = LocalDate.parse(\\"2000-01-01\\");
-  @JsonProperty(\\"isEmployed\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Boolean isEmployed = true;
   @JsonAnySetter
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
+  @JsonProperty(\\"id\\")
   public UUID getId() { return this.id; }
   public void setId(UUID id) { this.id = id; }
 
+  @JsonProperty(\\"name\\")
   public String getName() { return this.name; }
   public void setName(String name) { this.name = name; }
 
+  @JsonProperty(\\"age\\")
   public Integer getAge() { return this.age; }
   public void setAge(Integer age) { this.age = age; }
 
+  @JsonProperty(\\"daysSince\\")
   public Long getDaysSince() { return this.daysSince; }
   public void setDaysSince(Long daysSince) { this.daysSince = daysSince; }
 
+  @JsonProperty(\\"daysBefore\\")
   public Double getDaysBefore() { return this.daysBefore; }
   public void setDaysBefore(Double daysBefore) { this.daysBefore = daysBefore; }
 
+  @JsonProperty(\\"creationTime\\")
   public java.time.OffsetDateTime getCreationTime() { return this.creationTime; }
   public void setCreationTime(java.time.OffsetDateTime creationTime) { this.creationTime = creationTime; }
 
+  @JsonProperty(\\"gender\\")
   public String getGender() { return this.gender; }
   public void setGender(String gender) { this.gender = gender; }
 
+  @JsonProperty(\\"birthdate\\")
   public LocalDate getBirthdate() { return this.birthdate; }
   public void setBirthdate(LocalDate birthdate) { this.birthdate = birthdate; }
 
+  @JsonProperty(\\"isEmployed\\")
   public Boolean getIsEmployed() { return this.isEmployed; }
   public void setIsEmployed(Boolean isEmployed) { this.isEmployed = isEmployed; }
 
@@ -2466,61 +2437,61 @@ Array [
 exports[`JavaGenerator when default with custom type mappings is used, render field with default should create field with default and custom type mappings 1`] = `
 Array [
   "public class Owner {
-  @JsonProperty(\\"id\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private UUID id = UUID.fromString(\\"e3395ed6-89e2-458a-b9e0-d2e2c2bab6e6\\");
-  @JsonProperty(\\"name\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private String name;
-  @JsonProperty(\\"age\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Integer age = 18;
-  @JsonProperty(\\"daysSince\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Long daysSince = 544999999;
-  @JsonProperty(\\"daysBefore\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private BigDecimal daysBefore = new BigDecimal(100.5);
-  @JsonProperty(\\"creationTime\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Instant creationTime = Instant.parse(\\"2023-01-01T00:00:00Z\\");
-  @JsonProperty(\\"gender\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private String gender = \\"male\\";
-  @JsonProperty(\\"birthdate\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private LocalDate birthdate = LocalDate.parse(\\"2000-01-01\\");
-  @JsonProperty(\\"isEmployed\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Boolean isEmployed = true;
   @JsonAnySetter
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
+  @JsonProperty(\\"id\\")
   public UUID getId() { return this.id; }
   public void setId(UUID id) { this.id = id; }
 
+  @JsonProperty(\\"name\\")
   public String getName() { return this.name; }
   public void setName(String name) { this.name = name; }
 
+  @JsonProperty(\\"age\\")
   public Integer getAge() { return this.age; }
   public void setAge(Integer age) { this.age = age; }
 
+  @JsonProperty(\\"daysSince\\")
   public Long getDaysSince() { return this.daysSince; }
   public void setDaysSince(Long daysSince) { this.daysSince = daysSince; }
 
+  @JsonProperty(\\"daysBefore\\")
   public BigDecimal getDaysBefore() { return this.daysBefore; }
   public void setDaysBefore(BigDecimal daysBefore) { this.daysBefore = daysBefore; }
 
+  @JsonProperty(\\"creationTime\\")
   public Instant getCreationTime() { return this.creationTime; }
   public void setCreationTime(Instant creationTime) { this.creationTime = creationTime; }
 
+  @JsonProperty(\\"gender\\")
   public String getGender() { return this.gender; }
   public void setGender(String gender) { this.gender = gender; }
 
+  @JsonProperty(\\"birthdate\\")
   public LocalDate getBirthdate() { return this.birthdate; }
   public void setBirthdate(LocalDate birthdate) { this.birthdate = birthdate; }
 
+  @JsonProperty(\\"isEmployed\\")
   public Boolean getIsEmployed() { return this.isEmployed; }
   public void setIsEmployed(Boolean isEmployed) { this.isEmployed = isEmployed; }
 

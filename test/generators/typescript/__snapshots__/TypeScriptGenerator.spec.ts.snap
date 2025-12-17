@@ -2,7 +2,7 @@
 
 exports[`TypeScriptGenerator AsyncAPI with polymorphism should render 6 models (1 oneOf, 3 classes and 2 enums) 1`] = `
 Array [
-  "type AnonymousSchema_1 = Cat | Dog | StickInsect;",
+  "type PetMessagePayload = Cat | Dog | StickInsect;",
   "class Cat {
   private _petType: PetType.CAT = PetType.CAT;
   private _reservedName: string;
@@ -95,9 +95,9 @@ Array [
   private _id: string;
   private _source: string;
   private _specversion: string;
-  private _reservedType: DogType.DOG = DogType.DOG;
+  private _reservedType: CloudEventType.DOG = CloudEventType.DOG;
   private _dataschema?: string;
-  private _time?: string;
+  private _time?: Date;
   private _additionalProperties?: Map<string, any>;
 
   constructor(input: {
@@ -105,7 +105,7 @@ Array [
     source: string,
     specversion: string,
     dataschema?: string,
-    time?: string,
+    time?: Date,
     additionalProperties?: Map<string, any>,
   }) {
     this._id = input.id;
@@ -125,27 +125,28 @@ Array [
   get specversion(): string { return this._specversion; }
   set specversion(specversion: string) { this._specversion = specversion; }
 
-  get reservedType(): DogType.DOG { return this._reservedType; }
+  get reservedType(): CloudEventType.DOG { return this._reservedType; }
 
   get dataschema(): string | undefined { return this._dataschema; }
   set dataschema(dataschema: string | undefined) { this._dataschema = dataschema; }
 
-  get time(): string | undefined { return this._time; }
-  set time(time: string | undefined) { this._time = time; }
+  get time(): Date | undefined { return this._time; }
+  set time(time: Date | undefined) { this._time = time; }
 
   get additionalProperties(): Map<string, any> | undefined { return this._additionalProperties; }
   set additionalProperties(additionalProperties: Map<string, any> | undefined) { this._additionalProperties = additionalProperties; }
 }",
-  "enum DogType {
+  "enum CloudEventType {
   DOG = \\"Dog\\",
+  CAT = \\"Cat\\",
 }",
   "class Cat {
   private _id: string;
   private _source: string;
   private _specversion: string;
-  private _reservedType: CatType.CAT = CatType.CAT;
+  private _reservedType: CloudEventType.CAT = CloudEventType.CAT;
   private _dataschema?: string;
-  private _time?: string;
+  private _time?: Date;
   private _additionalProperties?: Map<string, any>;
 
   constructor(input: {
@@ -153,7 +154,7 @@ Array [
     source: string,
     specversion: string,
     dataschema?: string,
-    time?: string,
+    time?: Date,
     additionalProperties?: Map<string, any>,
   }) {
     this._id = input.id;
@@ -173,19 +174,16 @@ Array [
   get specversion(): string { return this._specversion; }
   set specversion(specversion: string) { this._specversion = specversion; }
 
-  get reservedType(): CatType.CAT { return this._reservedType; }
+  get reservedType(): CloudEventType.CAT { return this._reservedType; }
 
   get dataschema(): string | undefined { return this._dataschema; }
   set dataschema(dataschema: string | undefined) { this._dataschema = dataschema; }
 
-  get time(): string | undefined { return this._time; }
-  set time(time: string | undefined) { this._time = time; }
+  get time(): Date | undefined { return this._time; }
+  set time(time: Date | undefined) { this._time = time; }
 
   get additionalProperties(): Map<string, any> | undefined { return this._additionalProperties; }
   set additionalProperties(additionalProperties: Map<string, any> | undefined) { this._additionalProperties = additionalProperties; }
-}",
-  "enum CatType {
-  CAT = \\"Cat\\",
 }",
 ]
 `;
@@ -379,13 +377,13 @@ Array [
   "class ReservedEvent {
   private _id: string;
   private _action?: Action;
-  private _eventTime?: string;
+  private _eventTime?: Date;
   private _additionalProperties?: Map<string, any>;
 
   constructor(input: {
     id: string,
     action?: Action,
-    eventTime?: string,
+    eventTime?: Date,
     additionalProperties?: Map<string, any>,
   }) {
     this._id = input.id;
@@ -400,8 +398,8 @@ Array [
   get action(): Action | undefined { return this._action; }
   set action(action: Action | undefined) { this._action = action; }
 
-  get eventTime(): string | undefined { return this._eventTime; }
-  set eventTime(eventTime: string | undefined) { this._eventTime = eventTime; }
+  get eventTime(): Date | undefined { return this._eventTime; }
+  set eventTime(eventTime: Date | undefined) { this._eventTime = eventTime; }
 
   get additionalProperties(): Map<string, any> | undefined { return this._additionalProperties; }
   set additionalProperties(additionalProperties: Map<string, any> | undefined) { this._additionalProperties = additionalProperties; }

@@ -128,56 +128,39 @@ Array [
   IsPetType()
 }",
   "type Dog struct {
-  ReservedType *DogType
+  ReservedType *CloudEventType
   AdditionalProperties map[string]interface{}
 }
 
 func (r Dog) IsPetType() {}
 ",
-  "type DogType uint
+  "type CloudEventType uint
 
 const (
-  DogTypeDog DogType = iota
+  CloudEventTypeDog CloudEventType = iota
+  CloudEventTypeCat
 )
 
 // Value returns the value of the enum.
-func (op DogType) Value() any {
-	if op >= DogType(len(DogTypeValues)) {
+func (op CloudEventType) Value() any {
+	if op >= CloudEventType(len(CloudEventTypeValues)) {
 		return nil
 	}
-	return DogTypeValues[op]
+	return CloudEventTypeValues[op]
 }
 
-var DogTypeValues = []any{\\"Dog\\"}
-var ValuesToDogType = map[any]DogType{
-  DogTypeValues[DogTypeDog]: DogTypeDog,
+var CloudEventTypeValues = []any{\\"Dog\\",\\"Cat\\"}
+var ValuesToCloudEventType = map[any]CloudEventType{
+  CloudEventTypeValues[CloudEventTypeDog]: CloudEventTypeDog,
+  CloudEventTypeValues[CloudEventTypeCat]: CloudEventTypeCat,
 }
 ",
   "type Cat struct {
-  ReservedType *CatType
+  ReservedType *CloudEventType
   AdditionalProperties map[string]interface{}
 }
 
 func (r Cat) IsPetType() {}
-",
-  "type CatType uint
-
-const (
-  CatTypeCat CatType = iota
-)
-
-// Value returns the value of the enum.
-func (op CatType) Value() any {
-	if op >= CatType(len(CatTypeValues)) {
-		return nil
-	}
-	return CatTypeValues[op]
-}
-
-var CatTypeValues = []any{\\"Cat\\"}
-var ValuesToCatType = map[any]CatType{
-  CatTypeValues[CatTypeCat]: CatTypeCat,
-}
 ",
 ]
 `;

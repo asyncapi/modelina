@@ -189,7 +189,7 @@ describe('JAVA_COMMON_PRESET', () => {
           }
         ],
         processorOptions: {
-          interpreter: {
+          jsonSchema: {
             allowInheritance: true
           }
         }
