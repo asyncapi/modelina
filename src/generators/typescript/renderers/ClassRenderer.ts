@@ -16,8 +16,26 @@ export class ClassRenderer extends TypeScriptObjectRenderer {
       await this.renderAccessors(),
       await this.runAdditionalContentPreset()
     ];
+    // Generate exported constants for properties with const values
+    const constExports = Object.values(this.model.properties)
+      .map(prop => {
+        const constValue = prop.property.options.const?.value;
+        if (constValue !== undefined) {
+          // Convert camelCase to UPPER_SNAKE_CASE (e.g., eventType -> EVENT_TYPE)
+          const constName = prop.propertyName
+            .replace(/([a-z])([A-Z])/g, '$1_$2')
+            .toUpperCase();
+          return `export const ${constName} = ${constValue};`;
+        }
+        return null;
+      })
+      .filter((val): val is string => val !== null);
 
-    return `class ${this.model.name} {
+    const constExportsBlock = constExports.length > 0 
+      ? constExports.join('\n') + '\n\n' 
+      : '';
+
+    return `${constExportsBlock}class ${this.model.name} {
 ${this.indent(this.renderBlock(content, 2))}
 }`;
   }
@@ -76,13 +94,11 @@ ${renderer.indent(renderer.renderBlock(assignments))}
     return `private _${renderer.renderProperty(property)}`;
   },
   getter({ property }): string {
-    return `get ${property.propertyName}(): ${
-      property.property.options.const?.value
-        ? property.property.options.const.value
-        : property.property.type
-    }${property.required === false ? ' | undefined' : ''} { return this._${
-      property.propertyName
-    }; }`;
+    return `get ${property.propertyName}(): ${property.property.options.const?.value
+      ? property.property.options.const.value
+      : property.property.type
+      }${property.required === false ? ' | undefined' : ''} { return this._${property.propertyName
+      }; }`;
   },
   setter({ property }): string {
     // if const value exists we should not render a setter
@@ -90,10 +106,8 @@ ${renderer.indent(renderer.renderBlock(assignments))}
       return '';
     }
 
-    return `set ${property.propertyName}(${property.propertyName}: ${
-      property.property.type
-    }${property.required === false ? ' | undefined' : ''}) { this._${
-      property.propertyName
-    } = ${property.propertyName}; }`;
+    return `set ${property.propertyName}(${property.propertyName}: ${property.property.type
+      }${property.required === false ? ' | undefined' : ''}) { this._${property.propertyName
+      } = ${property.propertyName}; }`;
   }
 };
