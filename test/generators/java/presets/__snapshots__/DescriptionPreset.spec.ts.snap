@@ -2,7 +2,7 @@
 
 exports[`JAVA_DESCRIPTION_PRESET should not render anything when allowInheritance is true and model is discriminator or dictionary 1`] = `
 Array [
-  "public class ExtendDoc implements Extend {
+  "public class ExtendDoc implements ExtendDocAllOfOption0, ExtendDocAllOfOption1 {
   private final DiscriminatorTest type = DiscriminatorTest.EXTEND_DOC;
   private String test3;
   private String test2;
@@ -20,7 +20,9 @@ Array [
    * test
    * Examples: test
    */
+  @Override
   public String getTest2() { return this.test2; }
+  @Override
   public void setTest2(String test2) { this.test2 = test2; }
 
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
@@ -53,9 +55,44 @@ Array [
     return String.valueOf(value);
   }
 }",
-  "public interface Extend {
+  "public interface ExtendDocAllOfOption0 {
   String getTest3();
   void setTest3(String test3);
+}",
+  "public interface ExtendDocAllOfOption1 {
+  /**
+   * test
+   * Examples: test
+   */
+  String getTest2();
+  void setTest2(String test2);
+}",
+  "public enum ExtendDocAllOfOption1Type {
+  EXTEND_DOC((String)\\"ExtendDoc\\");
+
+  private final String value;
+
+  ExtendDocAllOfOption1Type(String value) {
+    this.value = value;
+  }
+
+  public String getValue() {
+    return value;
+  }
+
+  public static ExtendDocAllOfOption1Type fromValue(String value) {
+    for (ExtendDocAllOfOption1Type e : ExtendDocAllOfOption1Type.values()) {
+      if (e.value.equals(value)) {
+        return e;
+      }
+    }
+    throw new IllegalArgumentException(\\"Unexpected value '\\" + value + \\"'\\");
+  }
+
+  @Override
+  public String toString() {
+    return String.valueOf(value);
+  }
 }",
 ]
 `;

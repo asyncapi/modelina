@@ -2,7 +2,7 @@
 
 exports[`Should be able to process a pure AsyncAPI object and should log expected output to console 1`] = `
 Array [
-  "class AnonymousSchema_1 {
+  "class TestPayload {
   private _email?: string;
 
   constructor(input: {

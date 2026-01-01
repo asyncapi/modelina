@@ -98,7 +98,7 @@ describe('JAVA_CONSTRAINTS_PRESET', () => {
     const generator = new JavaGenerator({
       presets: [JAVA_CONSTRAINTS_PRESET],
       processorOptions: {
-        interpreter: {
+        jsonSchema: {
           allowInheritance: true
         }
       }

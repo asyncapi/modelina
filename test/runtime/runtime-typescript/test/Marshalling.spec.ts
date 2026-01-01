@@ -9,7 +9,8 @@ describe('Marshalling', () => {
         test: 'test'
       });
       const testObject = new TestObject({
-        stringType: 'test',
+        createdAt: new Date('2023-01-01T10:00:00Z'),
+        stringType: 'test', 
         numberType: 1,
         booleanType: true,
         arrayType: [1, 'test'],
@@ -18,12 +19,13 @@ describe('Marshalling', () => {
         additionalProperties: new Map(Object.entries({"test": "test"})),
         enumType: EnumType.CURLYLEFT_QUOTATION_TEST_QUOTATION_COLON_2_CURLYRIGHT,
         tupleType: ['test', 1],
-        unionType: 'test'
+        unionType: 'test',
       });
       test('be able to serialize model', () => {
         const serialized = testObject.marshal();
-        expect(serialized).toEqual("{\"string_type\": \"test\",\"number_type\": 1,\"boolean_type\": true,\"union_type\": \"test\",\"array_type\": [1,\"test\"],\"tuple_type\": [\"test\",1],\"object_type\": {\"test\": \"test\"},\"dictionary_type\": {},\"enum_type\": \"{\\\"test\\\":2}\",\"test\": \"test\"}");
-      });
+      expect(serialized).toEqual(
+  "{\"string_type\": \"test\",\"createdAt\": \"2023-01-01T10:00:00.000Z\",\"number_type\": 1,\"boolean_type\": true,\"union_type\": \"test\",\"array_type\": [1,\"test\"],\"tuple_type\": [\"test\",1],\"object_type\": {\"test\": \"test\"},\"dictionary_type\": {},\"enum_type\": \"{\\\"test\\\":2}\",\"test\": \"test\"}"
+);});
       test('be able to serialize model and turning it back to a model with the same values', () => {
         const serialized = testObject.marshal();
         const newAddress = TestObject.unmarshal(serialized);
