@@ -57,9 +57,9 @@ function Resizable({ leftComponent, rightComponent }: ResizableComponentProps) {
           left: containerWidth === null ? DefaultWidth * .3 : containerWidth * .3,
           right: containerWidth === null ? DefaultWidth * .7 : containerWidth * .7
         }}
-        onDrag={(_, info) => {
+        onDrag={() => {
           if (containerWidth !== null) {
-            const visibleView = info.point.x / containerWidth;
+            const visibleView = dragableX.get() / containerWidth;
 
             dispatch({
               type: 'resizable-size',
