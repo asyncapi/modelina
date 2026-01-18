@@ -29,7 +29,7 @@ function Resizable({ leftComponent, rightComponent }: ResizableComponentProps) {
     if (containerWidth !== null) {
       dragableX.set(Math.round(containerWidth * state.editorSize));
     }
-  }, [containerWidth, state.editorSize, dragableX]);
+  }, [containerWidth, dragableX]);
 
   if (state.device === 'mobile') {
     return <section className='grid size-full'>
