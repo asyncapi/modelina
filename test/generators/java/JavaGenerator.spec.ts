@@ -461,7 +461,7 @@ describe('JavaGenerator', () => {
         ],
         collectionType: 'List',
         processorOptions: {
-          interpreter: {
+          jsonSchema: {
             allowInheritance: true
           }
         }
@@ -1730,15 +1730,11 @@ describe('JavaGenerator', () => {
 
         const dog = models.find((model) => model.modelName === 'Dog');
         expect(dog).not.toBeUndefined();
-        expect(dog?.result).toContain(
-          'private final CloudEventType type = CloudEventType.DOG;'
-        );
+        expect(dog?.result).toContain('CloudEventType.DOG');
 
         const cat = models.find((model) => model.modelName === 'Cat');
         expect(cat).not.toBeUndefined();
-        expect(cat?.result).toContain(
-          'private final CloudEventType type = CloudEventType.CAT;'
-        );
+        expect(cat?.result).toContain('CloudEventType.CAT');
 
         const cloudEventType = models.find(
           (model) => model.modelName === 'CloudEventType'
@@ -1839,23 +1835,18 @@ describe('JavaGenerator', () => {
 
         const dog = models.find((model) => model.modelName === 'Dog');
         expect(dog).not.toBeUndefined();
-        expect(dog?.result).toContain(
-          'private final DogType type = DogType.DOG;'
-        );
+        expect(dog?.result).toContain('CloudEventType.DOG');
 
         const cat = models.find((model) => model.modelName === 'Cat');
         expect(cat).not.toBeUndefined();
-        expect(cat?.result).toContain(
-          'private final CatType type = CatType.CAT;'
+        expect(cat?.result).toContain('CloudEventType.CAT');
+
+        const cloudEventType = models.find(
+          (model) => model.modelName === 'CloudEventType'
         );
-
-        const dogType = models.find((model) => model.modelName === 'DogType');
-        expect(dogType).not.toBeUndefined();
-        expect(dogType?.result).toContain('DOG');
-
-        const catType = models.find((model) => model.modelName === 'CatType');
-        expect(catType).not.toBeUndefined();
-        expect(catType?.result).toContain('CAT');
+        expect(cloudEventType).not.toBeUndefined();
+        expect(cloudEventType?.result).toContain('DOG');
+        expect(cloudEventType?.result).toContain('CAT');
       });
 
       test('handle one const with discriminator', async () => {

@@ -2,7 +2,7 @@
 
 exports[`Should be able to render models using file URI as input with file generator and should log expected output to console 1`] = `
 Array [
-  "class AnonymousSchema_1 {
+  "class UserSignedUpPayload {
   private _displayName?: string;
   private _email?: string;
   private _additionalProperties?: Map<string, any>;
@@ -31,7 +31,7 @@ Array [
 
 exports[`Should be able to render models using file URI as input with regular generator and should log expected output to console 1`] = `
 Array [
-  "class AnonymousSchema_1 {
+  "class UserSignedUpPayload {
   private _displayName?: string;
   private _email?: string;
   private _additionalProperties?: Map<string, any>;

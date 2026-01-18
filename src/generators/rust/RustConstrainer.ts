@@ -21,7 +21,16 @@ import {
 } from '../../models';
 import { defaultConstantConstraints } from './constrainer/ConstantConstrainer';
 
-export function deriveHash(model: ConstrainedMetaModel): boolean {
+export function deriveHash(
+  model: ConstrainedMetaModel,
+  visited: Set<ConstrainedMetaModel> = new Set()
+): boolean {
+  // Prevent infinite recursion for circular references
+  if (visited.has(model)) {
+    return true;
+  }
+  visited.add(model);
+
   // float primitives and std::collection::HashMap do not implement Hash trait
   if (
     model instanceof ConstrainedDictionaryModel ||
@@ -29,6 +38,9 @@ export function deriveHash(model: ConstrainedMetaModel): boolean {
     model instanceof ConstrainedAnyModel
   ) {
     return false;
+  } else if (model instanceof ConstrainedReferenceModel) {
+    // Follow the reference to check the actual referenced model
+    return deriveHash(model.ref, visited);
   } else if (
     // all contents implement Hash trait
     model instanceof ConstrainedUnionModel ||
@@ -37,12 +49,21 @@ export function deriveHash(model: ConstrainedMetaModel): boolean {
     model instanceof ConstrainedArrayModel ||
     model instanceof ConstrainedObjectModel
   ) {
-    return allHashable(model);
+    return allHashable(model, visited);
   }
   return true;
 }
 
-export function deriveCopy(model: ConstrainedMetaModel): boolean {
+export function deriveCopy(
+  model: ConstrainedMetaModel,
+  visited: Set<ConstrainedMetaModel> = new Set()
+): boolean {
+  // Prevent infinite recursion for circular references
+  if (visited.has(model)) {
+    return true;
+  }
+  visited.add(model);
+
   if (
     // serde_json::Value, HashMap, Box, and String do not implement copy
     model instanceof ConstrainedAnyModel ||
@@ -59,14 +80,28 @@ export function deriveCopy(model: ConstrainedMetaModel): boolean {
     model instanceof ConstrainedTupleModel ||
     model instanceof ConstrainedUnionModel
   ) {
-    return allCopyable(model);
+    return allCopyable(model, visited);
   }
   return true;
 }
 
-export function derivePartialEq(model: ConstrainedMetaModel): boolean {
+export function derivePartialEq(
+  model: ConstrainedMetaModel,
+  visited: Set<ConstrainedMetaModel> = new Set()
+): boolean {
+  // Prevent infinite recursion for circular references
+  if (visited.has(model)) {
+    return true;
+  }
+  visited.add(model);
+
   if (model instanceof ConstrainedAnyModel) {
     return false;
+  }
+
+  if (model instanceof ConstrainedReferenceModel) {
+    // Follow the reference to check the actual referenced model
+    return derivePartialEq(model.ref, visited);
   }
 
   if (
@@ -78,13 +113,22 @@ export function derivePartialEq(model: ConstrainedMetaModel): boolean {
     model instanceof ConstrainedUnionModel ||
     model instanceof ConstrainedDictionaryModel
   ) {
-    return allPartialEq(model);
+    return allPartialEq(model, visited);
   }
   return true;
 }
 
-export function deriveEq(model: ConstrainedMetaModel): boolean {
-  if (!derivePartialEq(model)) {
+export function deriveEq(
+  model: ConstrainedMetaModel,
+  visited: Set<ConstrainedMetaModel> = new Set()
+): boolean {
+  // Prevent infinite recursion for circular references
+  if (visited.has(model)) {
+    return true;
+  }
+  visited.add(model);
+
+  if (!derivePartialEq(model, new Set(visited))) {
     return false;
   }
 
@@ -93,6 +137,9 @@ export function deriveEq(model: ConstrainedMetaModel): boolean {
     model instanceof ConstrainedAnyModel
   ) {
     return false;
+  } else if (model instanceof ConstrainedReferenceModel) {
+    // Follow the reference to check the actual referenced model
+    return deriveEq(model.ref, visited);
   } else if (
     // all contents implement Eq trait
     model instanceof ConstrainedArrayModel ||
@@ -102,17 +149,29 @@ export function deriveEq(model: ConstrainedMetaModel): boolean {
     model instanceof ConstrainedUnionModel ||
     model instanceof ConstrainedDictionaryModel
   ) {
-    return allEq(model);
+    return allEq(model, visited);
   }
   return true;
 }
 
-export function derivePartialOrd(model: ConstrainedMetaModel): boolean {
+export function derivePartialOrd(
+  model: ConstrainedMetaModel,
+  visited: Set<ConstrainedMetaModel> = new Set()
+): boolean {
+  // Prevent infinite recursion for circular references
+  if (visited.has(model)) {
+    return true;
+  }
+  visited.add(model);
+
   if (
     model instanceof ConstrainedAnyModel ||
     model instanceof ConstrainedDictionaryModel
   ) {
     return false;
+  } else if (model instanceof ConstrainedReferenceModel) {
+    // Follow the reference to check the actual referenced model
+    return derivePartialOrd(model.ref, visited);
   } else if (
     // all contents implement PartialOrd trait
     model instanceof ConstrainedArrayModel ||
@@ -121,13 +180,22 @@ export function derivePartialOrd(model: ConstrainedMetaModel): boolean {
     model instanceof ConstrainedTupleModel ||
     model instanceof ConstrainedUnionModel
   ) {
-    return allPartialOrd(model);
+    return allPartialOrd(model, visited);
   }
   return true;
 }
 
-export function deriveOrd(model: ConstrainedMetaModel): boolean {
-  if (!derivePartialOrd(model)) {
+export function deriveOrd(
+  model: ConstrainedMetaModel,
+  visited: Set<ConstrainedMetaModel> = new Set()
+): boolean {
+  // Prevent infinite recursion for circular references
+  if (visited.has(model)) {
+    return true;
+  }
+  visited.add(model);
+
+  if (!derivePartialOrd(model, new Set(visited))) {
     return false;
   }
 
@@ -137,6 +205,9 @@ export function deriveOrd(model: ConstrainedMetaModel): boolean {
     model instanceof ConstrainedDictionaryModel
   ) {
     return false;
+  } else if (model instanceof ConstrainedReferenceModel) {
+    // Follow the reference to check the actual referenced model
+    return deriveOrd(model.ref, visited);
   } else if (
     // all contents implement Ord trait
     model instanceof ConstrainedArrayModel ||
@@ -145,124 +216,166 @@ export function deriveOrd(model: ConstrainedMetaModel): boolean {
     model instanceof ConstrainedTupleModel ||
     model instanceof ConstrainedUnionModel
   ) {
-    return allOrd(model);
+    return allOrd(model, visited);
   }
   return true;
 }
 
-export function allPartialEq(model: ConstrainedMetaModel): boolean {
+export function allPartialEq(
+  model: ConstrainedMetaModel,
+  visited: Set<ConstrainedMetaModel> = new Set()
+): boolean {
   if (model instanceof ConstrainedUnionModel) {
-    return model.union.map(derivePartialEq).every((v) => v === true);
+    return model.union
+      .map((m) => derivePartialEq(m, new Set(visited)))
+      .every((v) => v === true);
   } else if (model instanceof ConstrainedTupleModel) {
     return model.tuple
-      .map((v) => derivePartialEq(v.value))
+      .map((v) => derivePartialEq(v.value, new Set(visited)))
       .every((v) => v === true);
   } else if (model instanceof ConstrainedObjectModel) {
     return Object.values(model.properties)
-      .map((p) => derivePartialEq(p.property))
+      .map((p) => derivePartialEq(p.property, new Set(visited)))
       .every((v) => v === true);
   } else if (model instanceof ConstrainedArrayModel) {
-    return derivePartialEq(model.valueModel);
+    return derivePartialEq(model.valueModel, new Set(visited));
   } else if (model instanceof ConstrainedEnumModel) {
     return model.values
-      .map((v) => derivePartialEq(v.value))
+      .map((v) => derivePartialEq(v.value, new Set(visited)))
       .every((v) => v === true);
   } else if (model instanceof ConstrainedDictionaryModel) {
-    return derivePartialEq(model.value);
+    return derivePartialEq(model.value, new Set(visited));
   }
   return false;
 }
 
-export function allEq(model: ConstrainedMetaModel): boolean {
+export function allEq(
+  model: ConstrainedMetaModel,
+  visited: Set<ConstrainedMetaModel> = new Set()
+): boolean {
   if (model instanceof ConstrainedUnionModel) {
-    return model.union.map(deriveEq).every((v) => v === true);
-  } else if (model instanceof ConstrainedTupleModel) {
-    return model.tuple.map((v) => deriveEq(v.value)).every((v) => v === true);
-  } else if (model instanceof ConstrainedObjectModel) {
-    return Object.values(model.properties)
-      .map((p) => deriveEq(p.property))
+    return model.union
+      .map((m) => deriveEq(m, new Set(visited)))
       .every((v) => v === true);
-  } else if (model instanceof ConstrainedArrayModel) {
-    return deriveEq(model.valueModel);
-  } else if (model instanceof ConstrainedEnumModel) {
-    return model.values.map((v) => deriveEq(v.value)).every((v) => v === true);
-  } else if (model instanceof ConstrainedDictionaryModel) {
-    return deriveEq(model.value);
-  }
-  return false;
-}
-
-export function allPartialOrd(model: ConstrainedMetaModel): boolean {
-  if (model instanceof ConstrainedUnionModel) {
-    return model.union.map(derivePartialOrd).every((v) => v === true);
   } else if (model instanceof ConstrainedTupleModel) {
     return model.tuple
-      .map((v) => derivePartialOrd(v.value))
+      .map((v) => deriveEq(v.value, new Set(visited)))
       .every((v) => v === true);
   } else if (model instanceof ConstrainedObjectModel) {
     return Object.values(model.properties)
-      .map((p) => derivePartialOrd(p.property))
+      .map((p) => deriveEq(p.property, new Set(visited)))
       .every((v) => v === true);
   } else if (model instanceof ConstrainedArrayModel) {
-    return derivePartialOrd(model.valueModel);
+    return deriveEq(model.valueModel, new Set(visited));
   } else if (model instanceof ConstrainedEnumModel) {
     return model.values
-      .map((v) => derivePartialOrd(v.value))
+      .map((v) => deriveEq(v.value, new Set(visited)))
+      .every((v) => v === true);
+  } else if (model instanceof ConstrainedDictionaryModel) {
+    return deriveEq(model.value, new Set(visited));
+  }
+  return false;
+}
+
+export function allPartialOrd(
+  model: ConstrainedMetaModel,
+  visited: Set<ConstrainedMetaModel> = new Set()
+): boolean {
+  if (model instanceof ConstrainedUnionModel) {
+    return model.union
+      .map((m) => derivePartialOrd(m, new Set(visited)))
+      .every((v) => v === true);
+  } else if (model instanceof ConstrainedTupleModel) {
+    return model.tuple
+      .map((v) => derivePartialOrd(v.value, new Set(visited)))
+      .every((v) => v === true);
+  } else if (model instanceof ConstrainedObjectModel) {
+    return Object.values(model.properties)
+      .map((p) => derivePartialOrd(p.property, new Set(visited)))
+      .every((v) => v === true);
+  } else if (model instanceof ConstrainedArrayModel) {
+    return derivePartialOrd(model.valueModel, new Set(visited));
+  } else if (model instanceof ConstrainedEnumModel) {
+    return model.values
+      .map((v) => derivePartialOrd(v.value, new Set(visited)))
       .every((v) => v === true);
   }
   return false;
 }
 
-export function allOrd(model: ConstrainedMetaModel): boolean {
+export function allOrd(
+  model: ConstrainedMetaModel,
+  visited: Set<ConstrainedMetaModel> = new Set()
+): boolean {
   if (model instanceof ConstrainedUnionModel) {
-    return model.union.map(deriveOrd).every((v) => v === true);
+    return model.union
+      .map((m) => deriveOrd(m, new Set(visited)))
+      .every((v) => v === true);
   } else if (model instanceof ConstrainedTupleModel) {
-    return model.tuple.map((v) => deriveOrd(v.value)).every((v) => v === true);
+    return model.tuple
+      .map((v) => deriveOrd(v.value, new Set(visited)))
+      .every((v) => v === true);
   } else if (model instanceof ConstrainedObjectModel) {
     return Object.values(model.properties)
-      .map((p) => deriveOrd(p.property))
+      .map((p) => deriveOrd(p.property, new Set(visited)))
       .every((v) => v === true);
   } else if (model instanceof ConstrainedArrayModel) {
-    return deriveOrd(model.valueModel);
-  } else if (model instanceof ConstrainedEnumModel) {
-    return model.values.map((v) => deriveOrd(v.value)).every((v) => v === true);
-  }
-  return false;
-}
-
-export function allHashable(model: ConstrainedMetaModel): boolean {
-  if (model instanceof ConstrainedUnionModel) {
-    return model.union.map(deriveHash).every((v) => v === true);
-  } else if (model instanceof ConstrainedTupleModel) {
-    return model.tuple.map((v) => deriveHash(v.value)).every((v) => v === true);
-  } else if (model instanceof ConstrainedObjectModel) {
-    return Object.values(model.properties)
-      .map((p) => deriveHash(p.property))
-      .every((v) => v === true);
-  } else if (model instanceof ConstrainedArrayModel) {
-    return deriveHash(model.valueModel);
+    return deriveOrd(model.valueModel, new Set(visited));
   } else if (model instanceof ConstrainedEnumModel) {
     return model.values
-      .map((v) => deriveHash(v.value))
+      .map((v) => deriveOrd(v.value, new Set(visited)))
       .every((v) => v === true);
   }
   return false;
 }
 
-export function allCopyable(model: ConstrainedMetaModel): boolean {
+export function allHashable(
+  model: ConstrainedMetaModel,
+  visited: Set<ConstrainedMetaModel> = new Set()
+): boolean {
   if (model instanceof ConstrainedUnionModel) {
-    return model.union.map(deriveCopy).every((v) => v === true);
+    return model.union
+      .map((m) => deriveHash(m, new Set(visited)))
+      .every((v) => v === true);
   } else if (model instanceof ConstrainedTupleModel) {
-    return model.tuple.map((v) => deriveCopy(v.value)).every((v) => v === true);
+    return model.tuple
+      .map((v) => deriveHash(v.value, new Set(visited)))
+      .every((v) => v === true);
   } else if (model instanceof ConstrainedObjectModel) {
     return Object.values(model.properties)
-      .map((p) => deriveCopy(p.property))
+      .map((p) => deriveHash(p.property, new Set(visited)))
       .every((v) => v === true);
   } else if (model instanceof ConstrainedArrayModel) {
-    return deriveCopy(model.valueModel);
+    return deriveHash(model.valueModel, new Set(visited));
   } else if (model instanceof ConstrainedEnumModel) {
     return model.values
-      .map((v) => deriveCopy(v.value))
+      .map((v) => deriveHash(v.value, new Set(visited)))
+      .every((v) => v === true);
+  }
+  return false;
+}
+
+export function allCopyable(
+  model: ConstrainedMetaModel,
+  visited: Set<ConstrainedMetaModel> = new Set()
+): boolean {
+  if (model instanceof ConstrainedUnionModel) {
+    return model.union
+      .map((m) => deriveCopy(m, new Set(visited)))
+      .every((v) => v === true);
+  } else if (model instanceof ConstrainedTupleModel) {
+    return model.tuple
+      .map((v) => deriveCopy(v.value, new Set(visited)))
+      .every((v) => v === true);
+  } else if (model instanceof ConstrainedObjectModel) {
+    return Object.values(model.properties)
+      .map((p) => deriveCopy(p.property, new Set(visited)))
+      .every((v) => v === true);
+  } else if (model instanceof ConstrainedArrayModel) {
+    return deriveCopy(model.valueModel, new Set(visited));
+  } else if (model instanceof ConstrainedEnumModel) {
+    return model.values
+      .map((v) => deriveCopy(v.value, new Set(visited)))
       .every((v) => v === true);
   }
   return false;

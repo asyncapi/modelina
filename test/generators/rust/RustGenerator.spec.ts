@@ -102,6 +102,56 @@ describe('RustGenerator', () => {
       expect(models[0].result).toMatchSnapshot();
     });
   });
+  describe('NewType Idiom', () => {
+    test('should render boolean model', async () => {
+      const doc = {
+        title: 'BooleanModel',
+        type: 'boolean'
+      };
+      const models = await generator.generate(doc);
+      expect(models).toHaveLength(1);
+      expect(models[0].result).toMatchSnapshot();
+    });
+    test('should render integer model', async () => {
+      const doc = {
+        title: 'IntegerModel',
+        type: 'integer'
+      };
+      const models = await generator.generate(doc);
+      expect(models).toHaveLength(1);
+      expect(models[0].result).toMatchSnapshot();
+    });
+    test('should render float model', async () => {
+      const doc = {
+        title: 'FloatModel',
+        type: 'number'
+      };
+      const models = await generator.generate(doc);
+      expect(models).toHaveLength(1);
+      expect(models[0].result).toMatchSnapshot();
+    });
+    test('should render string model', async () => {
+      const doc = {
+        title: 'StringModel',
+        type: 'string'
+      };
+      const models = await generator.generate(doc);
+      expect(models).toHaveLength(1);
+      expect(models[0].result).toMatchSnapshot();
+    });
+    test('should render array model', async () => {
+      const doc = {
+        title: 'ArrayModel',
+        type: 'array',
+        items: {
+          type: 'string'
+        }
+      };
+      const models = await generator.generate(doc);
+      expect(models).toHaveLength(1);
+      expect(models[0].result).toMatchSnapshot();
+    });
+  });
   describe('Struct & Complete Models', () => {
     const doc = {
       $id: '_address',

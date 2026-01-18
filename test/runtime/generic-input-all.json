@@ -6,6 +6,10 @@
     "string_type": {
       "type": "string"
     },
+    "createdAt": {
+  "type": "string",
+  "format": "date-time"
+},
     "number_type": {
       "type": "number"
     },
