@@ -1,5 +1,5 @@
 import { Constraints } from '../../helpers';
-import { ConstrainedEnumValueModel } from '../../models';
+import { ConstrainedEnumValueModel,ConstrainedEnumModel } from '../../models';
 import {
   defaultEnumKeyConstraints,
   defaultEnumValueConstraints
