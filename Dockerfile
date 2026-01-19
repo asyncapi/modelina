@@ -41,4 +41,4 @@ RUN apt-get update -yq \
     && apt-get install -yq php php-cli php-common php-xml php-mbstring php-curl
 
 # Setup library
-RUN apt-get install -yq chromium-browser || true
+RUN apt-get install -yq chromium-browser
