@@ -78,7 +78,7 @@ export const ScalaDefaultTypeMapping: ScalaTypeMapping = {
     return constrainedModel.name;
   },
   Reference({ constrainedModel }): string {
-    if (constrainedModel.ref.constructor.name === 'ConstrainedEnumModel') {
+    if (constrainedModel.ref instanceof ConstrainedEnumModel) {
       return `${constrainedModel.name}.Value`;
     }
     return constrainedModel.name;
