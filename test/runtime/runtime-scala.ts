@@ -1,4 +1,4 @@
-import { SCALA_DEFAULT_PRESET, ScalaFileGenerator } from '../..';
+import { SCALA_DEFAULT_PRESET, ScalaFileGenerator } from '../../src';
 import path from 'path';
 import input from './generic-input.json';
 

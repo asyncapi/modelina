@@ -1,4 +1,4 @@
-import { KOTLIN_DEFAULT_PRESET, KotlinFileGenerator } from '../../';
+import { KOTLIN_DEFAULT_PRESET, KotlinFileGenerator } from '../../src';
 import path from 'path';
 import input from './generic-input.json';
 
