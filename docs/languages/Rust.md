@@ -7,11 +7,7 @@
 - [Language Features](#language-features)
 - [Generator Features](#generator-features)
 - [Implement `new`](#implement-new)
-- [Implement `default`](#implement-default)
-- [Implement `From<String> (serde_json)`](#implement-from_json_string)
-- [Implement `Into<String> (serde_json)`](#implement-to_json_stringn)
-- [Implement `From<FramedByteStream> (tokio_serde)`](#implement-from-framed-byte-stream)
-- [Implement `Into<FramedByteStream> (tokio_serde)`](#implement-into-framed-byte-stream)
+- [Implement `Default` for enums](#implement-default-for-enums)
 <!-- tocstop -->
 
 ## Language Features
