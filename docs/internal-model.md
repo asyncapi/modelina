@@ -12,7 +12,7 @@ These are the meta models and their meaning:
 - **UnionModel** represent that the model can be either/or other **MetaModel**s.
 - **ObjectModel** is a structure, that can be generated to class/interface/struct, etc, depending on the output language
 - **DictionaryModel** is a map/dictionary of key/value **MetaModel**s.
-- **ReferencedModel** is primarily used for when models should be split up ([see the splitting of meta models](#the-splitting-of-data-models)) and referenced, or it could be an external reference to an external entity.
+- **ReferencedModel** is primarily used for when models should be split up and referenced, or it could be an external reference to an external entity.
 - **BooleanModel** represent boolean values.
 - **IntegerModel** represent natural numbers.
 - **FloatModel** represent floating-point numbers. 
