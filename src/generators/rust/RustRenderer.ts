@@ -5,7 +5,6 @@ import { FormatHelpers } from '../../helpers/FormatHelpers';
 import {
   deriveCopy,
   deriveHash,
-  derivePartialEq,
   deriveEq,
   derivePartialOrd,
   deriveOrd
@@ -37,15 +36,19 @@ export abstract class RustRenderer<
   }
 
   renderMacro(model: ConstrainedMetaModel): string {
-    const derive: string[] = ['Serialize', 'Deserialize', 'Clone', 'Debug'];
+    const derive: string[] = [
+      'Serialize',
+      'Deserialize',
+      'Clone',
+      'Debug',
+      'PartialEq'
+    ];
+
     if (deriveHash(model)) {
       derive.push('Hash');
     }
     if (deriveCopy(model)) {
       derive.push('Copy');
-    }
-    if (derivePartialEq(model)) {
-      derive.push('PartialEq');
     }
     if (deriveEq(model)) {
       derive.push('Eq');
@@ -56,6 +59,7 @@ export abstract class RustRenderer<
     if (deriveOrd(model)) {
       derive.push('Ord');
     }
+
     derive.sort();
     return `#[derive(${derive.join(', ')})]`;
   }

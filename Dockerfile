@@ -17,8 +17,6 @@ ENV PATH="${PATH}:/usr/local/go/bin"
 
 # Install dotnet SDK
 RUN apt install apt-transport-https dirmngr gnupg ca-certificates -yq  \
-    && apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF \
-    && echo "deb https://download.mono-project.com/repo/ubuntu stable-jammy main"| tee /etc/apt/sources.list.d/mono-official-stable.list \
     && apt update -yq  \
     && apt install mono-devel -yq
 
