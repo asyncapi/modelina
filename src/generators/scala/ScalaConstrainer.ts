@@ -1,5 +1,5 @@
 import { Constraints } from '../../helpers';
-import { ConstrainedEnumValueModel } from '../../models';
+import { ConstrainedEnumValueModel, ConstrainedEnumModel } from '../../models';
 import {
   defaultEnumKeyConstraints,
   defaultEnumValueConstraints
@@ -78,6 +78,9 @@ export const ScalaDefaultTypeMapping: ScalaTypeMapping = {
     return constrainedModel.name;
   },
   Reference({ constrainedModel }): string {
+    if (constrainedModel.ref instanceof ConstrainedEnumModel) {
+      return `${constrainedModel.name}.Value`;
+    }
     return constrainedModel.name;
   },
   Any(): string {
