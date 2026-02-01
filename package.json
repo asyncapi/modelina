@@ -38,7 +38,7 @@
     "@apidevtools/json-schema-ref-parser": "^11.1.0",
     "@apidevtools/swagger-parser": "^10.1.0",
     "@asyncapi/multi-parser": "^2.2.0",
-    "@asyncapi/parser": "^3.4.0",
+    "@asyncapi/parser": "^3.6.0",
     "alterschema": "^1.1.2",
     "change-case": "^4.1.2",
     "fast-xml-parser": "^5.3.0",
