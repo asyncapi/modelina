@@ -23,21 +23,13 @@ function Resizable({ leftComponent, rightComponent }: ResizableComponentProps) {
   const DefaultWidth = 640;
 
   const dragableX = useMotionValue(DefaultWidth);
-  const width = useTransform(dragableX, (value) => {
-    if (containerWidth !== null) {
-      const visibleView = value / containerWidth;
-
-      dispatch({ type: 'resizable-size', total: parseFloat(visibleView.toFixed(2)) });
-    }
-
-    return `${value + 0.5 * 4}px`;
-  });
+  const width = useTransform(dragableX, (value) => `${value + 0.5 * 4}px`);
 
   useEffect(() => {
     if (containerWidth !== null) {
       dragableX.set(Math.round(containerWidth * state.editorSize));
     }
-  }, [containerWidth]);
+  }, [containerWidth, dragableX]);
 
   if (state.device === 'mobile') {
     return <section className='grid size-full'>
@@ -65,10 +57,21 @@ function Resizable({ leftComponent, rightComponent }: ResizableComponentProps) {
           left: containerWidth === null ? DefaultWidth * .3 : containerWidth * .3,
           right: containerWidth === null ? DefaultWidth * .7 : containerWidth * .7
         }}
+        onDrag={() => {
+          if (containerWidth !== null) {
+            const visibleView = dragableX.get() / containerWidth;
+
+            dispatch({
+              type: 'resizable-size',
+              total: parseFloat(visibleView.toFixed(2)),
+            });
+          }
+        }}
+
       />
-       <motion.article className='h-full overflow-y-hidden'>
+      <motion.article className='h-full overflow-y-hidden'>
         {rightComponent}
-       </motion.article>
+      </motion.article>
     </section>
   );
 }
