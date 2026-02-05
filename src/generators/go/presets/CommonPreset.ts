@@ -72,7 +72,7 @@ export const GO_COMMON_PRESET: GoPreset<GoCommonPresetOptions> = {
   },
   union: {
     field: ({ content }) => {
-      return `${content} \`json:"-,omitempty\``;
+      return `${content} \`json:"-,omitempty"\``;
     }
   }
 };
