@@ -23,7 +23,7 @@ Here is some of the noticeable differences with Modelina that is nice to know be
 1. Modelina does not care much about the input, and support a range of them with no real limitation. I.e. supporting AsyncAPI, OpenAPI, ..., etc, see [supported inputs for more information](../README.md#features).
 2. Modelina does not care about output language, i.e. it's not only Java that is supported, see the full list of [supported outputs here](../README.md#features).
 3. Modelina does not hardcode specific features such as serialization libraries i.e. Jackson, Gson, ..., or validation annotations. Instead we use [presets](./presets.md) to control what is being generated to never be limited by hardcoding. Read more about which [serialization libraries we support for Java here](./languages/Java.md#generate-serializer-and-deserializer-functionality).
-4. Modelina does not care which types you want generated (primitive types, long integers, etc), this can be [controlled by the constrainer](./constraints/README.md). Read more about how to [change the type mapping](./constraints/README.md#type-mapping).
+4. Modelina does not care which types you want generated (primitive types, long integers, etc), this can be [controlled by the constrainer](https://github.com/asyncapi/modelina/blob/master/docs/constraints/README.md). Read more about how to [change the type mapping](./constraints/README.md#type-mapping).
 5. Modelina is part of Linux Foundation and is therefore a neutral ground for collaboration.
 
 

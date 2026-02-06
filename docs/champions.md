@@ -64,7 +64,7 @@ To ensure a certain level of quality all champions must make sure the following 
 2. The PR must add or adapt the documentation where applicable. No feature should exist without documentation.
 3. If it's a new feature, a new example MUST be added. No feature should exist without examples.
 4. The PR should include tests where possible. No feature should exist without tests.
-5. Make sure that [Versioning and maintenance](#Versioning-and-maintenance) is uphold.
+5. Make sure that [Versioning and maintenance](#versioning-and-maintenance) is uphold.
 
 ### Merging a PR
 
@@ -80,7 +80,7 @@ Therefore we enforce **Lazy consensus** when it comes to features and changes to
 
 Merging without having another champion review your code, require a special set of requirements to be met before allowed to do so. They are as follows:
 
-- Must do a self review following [Reviewing a PR](#Reviewing-a-PR).
+- Must do a self review following [Reviewing a PR](#reviewing-a-pr).
 - Must give other champions adequite time to check your code, at least 5 days (120 hours after review was requested). Exceptions: this do not apply for PR that changes documentation, the website, examples, CI, or tests.
 
 If a champion is on holiday/vacation/sick during this time and leaves comments after they are back: please treat post-merge PR comments and feedback as you would if left within the time period and follow-up with another PR to address their requests (if agreed).

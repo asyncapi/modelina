@@ -1,5 +1,5 @@
 # Constraints
-Because we cannot control what is provided as input, we must constrain the internal model to be valid for the output ([read more about the process here](../internal-model.md)). What is considered valid entirely depends on the output so each have their own set of rules.
+Because we cannot control what is provided as input, we must constrain the internal model to be valid for the output ([read more about the process here](https://github.com/asyncapi/modelina/blob/master/docs/internal-model.md)). What is considered valid entirely depends on the output so each have their own set of rules.
 
 As an example lets consider TypeScript as an output. Consider the model name, which are a simple string, but a string which can contain ANY characters and formats. Some of the constraints we have found for the naming of a model are:
 
