@@ -550,13 +550,13 @@ describe('RustRenderer', () => {
       );
 
       expect(renderer.renderMacro(arrayModel)).toEqual(
-        '#[derive(Clone, Debug, Deserialize, Serialize)]'
+        '#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]'
       );
       expect(renderer.renderMacro(enumModel)).toEqual(
-        '#[derive(Clone, Debug, Deserialize, Serialize)]'
+        '#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]'
       );
       expect(renderer.renderMacro(objectModel)).toEqual(
-        '#[derive(Clone, Debug, Deserialize, Serialize)]'
+        '#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]'
       );
     });
   });

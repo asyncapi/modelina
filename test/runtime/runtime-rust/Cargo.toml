@@ -21,10 +21,4 @@ json = ["dep:serde_json"]
 [lib]
 path = "src/lib.rs"
 
-[[bin]]
-name = "asyncapi-rs-example"
-path = "src/lib.rs"
 
-[[test]]
-name = "asyncapi-rs-test"
-path = "test/addressTest.rs"

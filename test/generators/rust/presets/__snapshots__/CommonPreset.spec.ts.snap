@@ -194,7 +194,7 @@ impl Default for CustomEnum {
 
 exports[`RUST_COMMON_PRESET Enum should render reserved union for dict array 1`] = `
 "// Class represents a Class model.
-#[derive(Clone, Debug, Deserialize, Serialize)]
+#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct Class {
     #[serde(rename=\\"students\\")]
     pub students: Vec<crate::Student>,
@@ -215,7 +215,7 @@ impl Class {
 
 exports[`RUST_COMMON_PRESET Enum should render reserved union for dict array 2`] = `
 "// Student represents a Student model.
-#[derive(Clone, Debug, Deserialize, Serialize)]
+#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
 pub struct Student {
     #[serde(rename=\\"name\\")]
     pub name: String,

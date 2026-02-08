@@ -1,5 +1,6 @@
 import type { NextRouter } from 'next/router';
 import { withRouter } from 'next/router';
+import Link from 'next/link';
 import Script from 'next/script';
 import React, { useState } from 'react';
 import { ReactMarkdown } from 'react-markdown/lib/react-markdown';
@@ -38,11 +39,10 @@ const Docs: React.FC<ModelinaDocsProps> = ({ source, slug }) => {
           <li
             key={value.slug}
             className={`cursor-pointer hover:bg-sky-500/[.3] ${isSelected && 'bg-sky-500/[.3]'} p-2`}
-            onClick={() => {
-              setShowMenu(false);
-            }}
           >
-            <a href={`/docs/${value.slug.toLowerCase()}`}>{value.title}</a>
+            <li className="p-2">
+              <Link href={`/docs/${value.slug.toLowerCase()}`} className="block w-full">{value.title}</Link>
+            </li>
           </li>
         );
       } else {
@@ -60,7 +60,9 @@ const Docs: React.FC<ModelinaDocsProps> = ({ source, slug }) => {
             <ul key={`${value.slug}-ul`} className='ml-3 mt-1 border-l border-gray-200 pl-4'>
               {isRoot && (
                 <li key={'apidocs'} className={'cursor-pointer p-2'}>
-                  <a href={'/apidocs'}>API Docs</a>
+                  <li className="p-2">
+                    <Link href={'/apidocs'} className="block w-full">API Docs</Link>
+                  </li>
                 </li>
               )}
               {value.subPaths.map((subPath: any) => renderMenuTree(subPath, false))}
@@ -74,11 +76,10 @@ const Docs: React.FC<ModelinaDocsProps> = ({ source, slug }) => {
       <li
         key={value.slug}
         className={`cursor-pointer hover:bg-sky-500/[.3] ${isSelected && 'bg-sky-500/[.3]'} p-2`}
-        onClick={() => {
-          setShowMenu(false);
-        }}
       >
-        <a href={`/docs/${value.slug}`}>{value.title}</a>
+        <li className="p-2">
+          <Link href={`/docs/${value.slug}`} className="block w-full">{value.title}</Link>
+        </li>
       </li>
     );
   };
