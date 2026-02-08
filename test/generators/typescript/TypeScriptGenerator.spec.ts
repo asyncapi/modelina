@@ -987,5 +987,69 @@ ${content}`;
       });
       expect(models.map((model) => model.result)).toMatchSnapshot();
     });
+
+    test('should generate exported constants for const properties', async () => {
+      const models = await generator.generate({
+        $schema: 'http://json-schema.org/draft-07/schema#',
+        type: 'object',
+        title: 'EventMessage',
+        additionalProperties: false,
+        properties: {
+          eventType: {
+            type: 'string',
+            const: 'EXAMPLE_EVENT'
+          },
+          eventStatus: {
+            type: 'string',
+            const: 'ACTIVE'
+          },
+          name: {
+            type: 'string'
+          }
+        }
+      });
+      expect(models).toHaveLength(1);
+      const result = models[0].result;
+
+      // Should contain exported constants with UPPER_SNAKE_CASE names
+      expect(result).toContain("export const EVENT_TYPE = 'EXAMPLE_EVENT';");
+      expect(result).toContain("export const EVENT_STATUS = 'ACTIVE';");
+
+      // Constants should appear before the class definition
+      const constIndex = result.indexOf('export const');
+      const classIndex = result.indexOf('class EventMessage');
+      expect(constIndex).toBeLessThan(classIndex);
+
+      // Non-const property should not generate an exported constant
+      expect(result).not.toContain('export const NAME');
+      expect(result).not.toContain('export const RESERVED_NAME');
+
+      expect(result).toMatchSnapshot();
+    });
+
+    test('should not generate exported constants when no const properties exist', async () => {
+      const models = await generator.generate({
+        $schema: 'http://json-schema.org/draft-07/schema#',
+        type: 'object',
+        title: 'SimpleMessage',
+        additionalProperties: false,
+        properties: {
+          name: {
+            type: 'string'
+          },
+          age: {
+            type: 'number'
+          }
+        }
+      });
+      expect(models).toHaveLength(1);
+      const result = models[0].result;
+
+      // Should not contain any exported constants
+      expect(result).not.toContain('export const');
+
+      // Should still render the class normally
+      expect(result).toContain('class SimpleMessage');
+    });
   });
 });

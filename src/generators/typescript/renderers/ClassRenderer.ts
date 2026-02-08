@@ -17,9 +17,41 @@ export class ClassRenderer extends TypeScriptObjectRenderer {
       await this.runAdditionalContentPreset()
     ];
 
-    return `class ${this.model.name} {
+    const constExportsBlock = this.renderConstExports();
+
+    return `${constExportsBlock}class ${this.model.name} {
 ${this.indent(this.renderBlock(content, 2))}
 }`;
+  }
+
+  /**
+   * Generates exported constants for properties with const values.
+   * Converts camelCase property names to UPPER_SNAKE_CASE.
+   * e.g., eventType with const "EXAMPLE_EVENT" -> export const EVENT_TYPE = 'EXAMPLE_EVENT';
+   */
+  renderConstExports(): string {
+    const constExports = Object.values(this.model.properties)
+      .map((prop) => {
+        const constValue = prop.property.options.const?.value;
+        if (constValue === undefined) {
+          return null;
+        }
+        const constName = prop.propertyName
+          .replaceAll(/([a-z])([A-Z])/g, '$1_$2')
+          .toUpperCase();
+        // Use JSON.stringify for non-string values to avoid [object Object] issues
+        const safeValue = typeof constValue === 'string' 
+          ? constValue 
+          : JSON.stringify(constValue);
+        return `export const ${constName} = ${safeValue};`;
+      })
+      .filter((val): val is string => val !== null);
+
+    if (constExports.length === 0) {
+      return '';
+    }
+
+    return constExports.join('\n') + '\n\n';
   }
 
   runCtorPreset(): Promise<string> {
@@ -63,7 +95,7 @@ export const TS_DEFAULT_CLASS_PRESET: ClassPresetType<TypeScriptOptions> = {
         continue;
       }
       assignments.push(`this._${propertyName} = input.${propertyName};`);
-      ctorProperties.push(renderer.renderProperty(property).replace(';', ','));
+      ctorProperties.push(renderer.renderProperty(property).replaceAll(';', ','));
     }
 
     return `constructor(input: {
@@ -76,13 +108,18 @@ ${renderer.indent(renderer.renderBlock(assignments))}
     return `private _${renderer.renderProperty(property)}`;
   },
   getter({ property }): string {
-    return `get ${property.propertyName}(): ${
-      property.property.options.const?.value
-        ? property.property.options.const.value
-        : property.property.type
-    }${property.required === false ? ' | undefined' : ''} { return this._${
-      property.propertyName
-    }; }`;
+    const constVal = property.property.options.const?.value;
+    // Use JSON.stringify for non-string values to avoid [object Object] issues
+    let returnType: string;
+    if (constVal === undefined) {
+      returnType = property.property.type;
+    } else if (typeof constVal === 'string') {
+      returnType = constVal;
+    } else {
+      returnType = JSON.stringify(constVal);
+    }
+    const optionalSuffix = property.required === false ? ' | undefined' : '';
+    return `get ${property.propertyName}(): ${returnType}${optionalSuffix} { return this._${property.propertyName}; }`;
   },
   setter({ property }): string {
     // if const value exists we should not render a setter
@@ -90,10 +127,8 @@ ${renderer.indent(renderer.renderBlock(assignments))}
       return '';
     }
 
-    return `set ${property.propertyName}(${property.propertyName}: ${
-      property.property.type
-    }${property.required === false ? ' | undefined' : ''}) { this._${
-      property.propertyName
-    } = ${property.propertyName}; }`;
+    return `set ${property.propertyName}(${property.propertyName}: ${property.property.type
+      }${property.required === false ? ' | undefined' : ''}) { this._${property.propertyName
+      } = ${property.propertyName}; }`;
   }
 };
