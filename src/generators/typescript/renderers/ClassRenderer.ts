@@ -37,9 +37,10 @@ ${this.indent(this.renderBlock(content, 2))}
           return null;
         }
         const constName = prop.propertyName
-          .replace(/([a-z])([A-Z])/g, '$1_$2')
+          .replaceAll(/([a-z])([A-Z])/g, '$1_$2')
           .toUpperCase();
-        return `export const ${constName} = ${constValue};`;
+        const safeValue = typeof constValue === 'string' ? constValue : String(constValue);
+        return `export const ${constName} = ${safeValue};`;
       })
       .filter((val): val is string => val !== null);
 
@@ -91,7 +92,7 @@ export const TS_DEFAULT_CLASS_PRESET: ClassPresetType<TypeScriptOptions> = {
         continue;
       }
       assignments.push(`this._${propertyName} = input.${propertyName};`);
-      ctorProperties.push(renderer.renderProperty(property).replace(';', ','));
+      ctorProperties.push(renderer.renderProperty(property).replaceAll(';', ','));
     }
 
     return `constructor(input: {
@@ -104,11 +105,11 @@ ${renderer.indent(renderer.renderBlock(assignments))}
     return `private _${renderer.renderProperty(property)}`;
   },
   getter({ property }): string {
-    return `get ${property.propertyName}(): ${property.property.options.const?.value
-      ? property.property.options.const.value
-      : property.property.type
-      }${property.required === false ? ' | undefined' : ''} { return this._${property.propertyName
-      }; }`;
+    const constVal = property.property.options.const?.value;
+    const returnType = constVal !== undefined
+      ? (typeof constVal === 'string' ? constVal : String(constVal))
+      : property.property.type;
+    return `get ${property.propertyName}(): ${returnType}${property.required === false ? ' | undefined' : ''} { return this._${property.propertyName}; }`;
   },
   setter({ property }): string {
     // if const value exists we should not render a setter
