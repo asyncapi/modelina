@@ -2,6 +2,9 @@
 
 This document contain all the breaking changes and migrations guidelines for adapting your code to the new version.
 
+## Upgraded Node to v20
+We upgraded required node version from 18 to 20 to stay up to date with relevant environment.
+
 ## Removed deprecated `interpreter` option from `ProcessorOptions`
 
 The deprecated `interpreter` option has been removed from `ProcessorOptions`. You should now use the `jsonSchema` option instead.
