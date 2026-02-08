@@ -39,15 +39,10 @@ ${this.indent(this.renderBlock(content, 2))}
         const constName = prop.propertyName
           .replaceAll(/([a-z])([A-Z])/g, '$1_$2')
           .toUpperCase();
-        // Handle different types: strings stay as-is, objects use JSON.stringify, primitives use String()
-        let safeValue: string;
-        if (typeof constValue === 'string') {
-          safeValue = constValue;
-        } else if (typeof constValue === 'object' && constValue !== null) {
-          safeValue = JSON.stringify(constValue);
-        } else {
-          safeValue = String(constValue);
-        }
+        // Use JSON.stringify for non-string values to avoid [object Object] issues
+        const safeValue = typeof constValue === 'string' 
+          ? constValue 
+          : JSON.stringify(constValue);
         return `export const ${constName} = ${safeValue};`;
       })
       .filter((val): val is string => val !== null);
@@ -114,15 +109,14 @@ ${renderer.indent(renderer.renderBlock(assignments))}
   },
   getter({ property }): string {
     const constVal = property.property.options.const?.value;
+    // Use JSON.stringify for non-string values to avoid [object Object] issues
     let returnType: string;
     if (constVal === undefined) {
       returnType = property.property.type;
     } else if (typeof constVal === 'string') {
       returnType = constVal;
-    } else if (typeof constVal === 'object' && constVal !== null) {
-      returnType = JSON.stringify(constVal);
     } else {
-      returnType = String(constVal);
+      returnType = JSON.stringify(constVal);
     }
     const optionalSuffix = property.required === false ? ' | undefined' : '';
     return `get ${property.propertyName}(): ${returnType}${optionalSuffix} { return this._${property.propertyName}; }`;
