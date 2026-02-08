@@ -16,28 +16,38 @@ export class ClassRenderer extends TypeScriptObjectRenderer {
       await this.renderAccessors(),
       await this.runAdditionalContentPreset()
     ];
-    // Generate exported constants for properties with const values
-    const constExports = Object.values(this.model.properties)
-      .map(prop => {
-        const constValue = prop.property.options.const?.value;
-        if (constValue !== undefined) {
-          // Convert camelCase to UPPER_SNAKE_CASE (e.g., eventType -> EVENT_TYPE)
-          const constName = prop.propertyName
-            .replace(/([a-z])([A-Z])/g, '$1_$2')
-            .toUpperCase();
-          return `export const ${constName} = ${constValue};`;
-        }
-        return null;
-      })
-      .filter((val): val is string => val !== null);
 
-    const constExportsBlock = constExports.length > 0 
-      ? constExports.join('\n') + '\n\n' 
-      : '';
+    const constExportsBlock = this.renderConstExports();
 
     return `${constExportsBlock}class ${this.model.name} {
 ${this.indent(this.renderBlock(content, 2))}
 }`;
+  }
+
+  /**
+   * Generates exported constants for properties with const values.
+   * Converts camelCase property names to UPPER_SNAKE_CASE.
+   * e.g., eventType with const "EXAMPLE_EVENT" -> export const EVENT_TYPE = 'EXAMPLE_EVENT';
+   */
+  renderConstExports(): string {
+    const constExports = Object.values(this.model.properties)
+      .map((prop) => {
+        const constValue = prop.property.options.const?.value;
+        if (constValue === undefined) {
+          return null;
+        }
+        const constName = prop.propertyName
+          .replace(/([a-z])([A-Z])/g, '$1_$2')
+          .toUpperCase();
+        return `export const ${constName} = ${constValue};`;
+      })
+      .filter((val): val is string => val !== null);
+
+    if (constExports.length === 0) {
+      return '';
+    }
+
+    return constExports.join('\n') + '\n\n';
   }
 
   runCtorPreset(): Promise<string> {
