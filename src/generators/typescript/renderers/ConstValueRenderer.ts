@@ -37,7 +37,7 @@ export class ConstValueRenderer extends TypeScriptRenderer<ConstrainedObjectMode
    * Converts a property name from camelCase to UPPER_SNAKE_CASE
    */
   toConstName(propertyName: string): string {
-    return propertyName.replace(/([a-z])([A-Z])/g, '$1_$2').toUpperCase();
+    return propertyName.replaceAll(/([a-z])([A-Z])/g, '$1_$2').toUpperCase();
   }
 
   async renderItems(): Promise<string> {
