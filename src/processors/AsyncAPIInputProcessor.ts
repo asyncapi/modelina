@@ -195,12 +195,12 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
   // eslint-disable-next-line sonarjs/cognitive-complexity
   static convertToInternalSchema(
     schema: AsyncAPISchemaInterface | boolean,
-    alreadyIteratedSchemas: Map<string, AsyncapiV2Schema> = new Map()
+    alreadyIteratedSchemas: Map<string, AsyncapiV2Schema> = new Map(),
+    visitedSchemas: WeakSet<object> = new WeakSet()
   ): AsyncapiV2Schema | boolean {
     if (typeof schema === 'boolean') {
       return schema;
     }
-
     let schemaUid = schema.id();
     //Because the constraint functionality of generators cannot handle -, <, >, we remove them from the id if it's an anonymous schema.
     if (
@@ -225,27 +225,40 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
       convertedSchema.allOf = schema
         .allOf()!
         .map((item: any) =>
-          this.convertToInternalSchema(item, alreadyIteratedSchemas)
+          this.convertToInternalSchema(
+            item,
+            alreadyIteratedSchemas,
+            visitedSchemas
+          )
         );
     }
     if (schema.oneOf()) {
       convertedSchema.oneOf = schema
         .oneOf()!
         .map((item: any) =>
-          this.convertToInternalSchema(item, alreadyIteratedSchemas)
+          this.convertToInternalSchema(
+            item,
+            alreadyIteratedSchemas,
+            visitedSchemas
+          )
         );
     }
     if (schema.anyOf()) {
       convertedSchema.anyOf = schema
         .anyOf()!
         .map((item: any) =>
-          this.convertToInternalSchema(item, alreadyIteratedSchemas)
+          this.convertToInternalSchema(
+            item,
+            alreadyIteratedSchemas,
+            visitedSchemas
+          )
         );
     }
     if (schema.not()) {
       convertedSchema.not = this.convertToInternalSchema(
         schema.not()!,
-        alreadyIteratedSchemas
+        alreadyIteratedSchemas,
+        visitedSchemas
       );
     }
     if (
@@ -254,37 +267,43 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
     ) {
       convertedSchema.additionalItems = this.convertToInternalSchema(
         schema.additionalItems(),
-        alreadyIteratedSchemas
+        alreadyIteratedSchemas,
+        visitedSchemas
       );
     }
     if (schema.contains()) {
       convertedSchema.contains = this.convertToInternalSchema(
         schema.contains()!,
-        alreadyIteratedSchemas
+        alreadyIteratedSchemas,
+        visitedSchemas
       );
     }
     if (schema.propertyNames()) {
       convertedSchema.propertyNames = this.convertToInternalSchema(
         schema.propertyNames()!,
-        alreadyIteratedSchemas
+        alreadyIteratedSchemas,
+        visitedSchemas
       );
     }
     if (schema.if()) {
       convertedSchema.if = this.convertToInternalSchema(
         schema.if()!,
-        alreadyIteratedSchemas
+        alreadyIteratedSchemas,
+        visitedSchemas
       );
     }
     if (schema.then()) {
       convertedSchema.then = this.convertToInternalSchema(
         schema.then()!,
-        alreadyIteratedSchemas
+        alreadyIteratedSchemas,
+        visitedSchemas
       );
     }
     if (schema.else()) {
       convertedSchema.else = this.convertToInternalSchema(
         schema.else()!,
-        alreadyIteratedSchemas
+        alreadyIteratedSchemas,
+        visitedSchemas
       );
     }
     if (
@@ -293,7 +312,8 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
     ) {
       convertedSchema.additionalProperties = this.convertToInternalSchema(
         schema.additionalProperties(),
-        alreadyIteratedSchemas
+        alreadyIteratedSchemas,
+        visitedSchemas
       );
     }
     if (schema.items()) {
@@ -301,13 +321,19 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
         convertedSchema.items = (
           schema.items() as AsyncAPISchemaInterface[]
         ).map(
-          (item) => this.convertToInternalSchema(item),
+          (item) =>
+            this.convertToInternalSchema(
+              item,
+              alreadyIteratedSchemas,
+              visitedSchemas
+            ),
           alreadyIteratedSchemas
         );
       } else {
         convertedSchema.items = this.convertToInternalSchema(
           schema.items() as AsyncAPISchemaInterface,
-          alreadyIteratedSchemas
+          alreadyIteratedSchemas,
+          visitedSchemas
         );
       }
     }
@@ -320,7 +346,8 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
       )) {
         properties[String(propertyName)] = this.convertToInternalSchema(
           propertySchema,
-          alreadyIteratedSchemas
+          alreadyIteratedSchemas,
+          visitedSchemas
         );
       }
       convertedSchema.properties = properties;
@@ -337,7 +364,8 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
         if (typeof dependency === 'object' && !Array.isArray(dependency)) {
           dependencies[String(dependencyName)] = this.convertToInternalSchema(
             dependency,
-            alreadyIteratedSchemas
+            alreadyIteratedSchemas,
+            visitedSchemas
           );
         } else {
           dependencies[String(dependencyName)] = dependency;
@@ -357,7 +385,11 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
         schemaPatternProperties
       )) {
         patternProperties[String(patternPropertyName)] =
-          this.convertToInternalSchema(patternProperty, alreadyIteratedSchemas);
+          this.convertToInternalSchema(
+            patternProperty,
+            alreadyIteratedSchemas,
+            visitedSchemas
+          );
       }
       convertedSchema.patternProperties = patternProperties;
     }
@@ -370,7 +402,8 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
       )) {
         definitions[String(definitionName)] = this.convertToInternalSchema(
           definition,
-          alreadyIteratedSchemas
+          alreadyIteratedSchemas,
+          visitedSchemas
         );
       }
       convertedSchema.definitions = definitions;
