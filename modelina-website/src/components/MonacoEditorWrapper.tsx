@@ -7,10 +7,10 @@ import { useEffect, useRef } from 'react';
 export default function MonacoEditorWrapper({
   language,
   theme = 'asyncapi-theme',
-  onChange = undefined,
+  onChange = () => {},
   value,
   options,
-  editorDidMount,
+  editorDidMount = () => {},
   ...props
 }: any) {
   const monacoInstance = useMonaco();
@@ -80,7 +80,3 @@ MonacoEditorWrapper.propTypes = {
   options: PropTypes.object
 };
 
-MonacoEditorWrapper.defaultProps = {
-  editorDidMount: () => {},
-  onChange: () => {}
-};
