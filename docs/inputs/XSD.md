@@ -82,5 +82,5 @@ XSD namespaces are handled in a simplified manner:
 
 See the [XSD to TypeScript example](../../examples/xsd-to-typescript/) for a complete working demonstration of XSD input processing.
 
-For general usage information, see the [usage documentation](https://github.com/asyncapi/modelina/blob/master/docs/usage.md#generate-models-from-xsd-documents).
+For general usage information, see the [usage documentation](../usage.md#generate-models-from-xsd-documents).
 

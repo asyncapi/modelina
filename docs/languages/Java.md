@@ -112,4 +112,4 @@ To do so, provide the option `useModelNameAsConstForDiscriminatorProperty: true`
 Check out this [example for a live demonstration](../../examples/java-create-const-for-discriminator-properties).
 
 ## Integrate Modelina into Maven
-We have created an example Maven project to show you how to generate AsyncAPI payload models from your AsyncAPI file and integrate it into the build process. [You can find the integration example here](https://github.com/asyncapi/modelina/blob/master/docs/integration.md#integrate-modelina-into-maven).
+We have created an example Maven project to show you how to generate AsyncAPI payload models from your AsyncAPI file and integrate it into the build process. [You can find the integration example here](../integration.md#integrate-with-maven).

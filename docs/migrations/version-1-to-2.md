@@ -103,7 +103,7 @@ The `country` property will not have a setter and will automatically be initiali
 
 ## Discriminator
 
-[Discriminator](https://www.asyncapi.com/blog/release-notes-3.0.0) is now supported.
+[Discriminator](https://www.asyncapi.com/docs/reference/specification/v2.6.0#schemaComposition) is now supported.
 
 ```yaml
 schemas:
@@ -338,7 +338,7 @@ generator.render({
 
 # Nullable models
 
-Each [meta model](https://github.com/asyncapi/modelina/blob/master/docs/internal-model.md#the-meta-model) up until now was not able to be marked as nullable, but now they can be through `isNullable`. Here are the different outputs and how they now apply nullable types.
+Each [meta model](../internal-model.md) up until now was not able to be marked as nullable, but now they can be through `isNullable`. Here are the different outputs and how they now apply nullable types.
 
 ## TypeScript
 
