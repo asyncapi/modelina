@@ -25,7 +25,7 @@ export class TypeScriptInputProcessor extends AbstractInputProcessor {
     return TJS.getProgramFromFiles(
       [resolve(file)],
       TypeScriptInputProcessor.settings.compilerOptions
-    );
+    ) as unknown as ts.Program;
   }
 
   private generateJSONSchema(
@@ -38,14 +38,15 @@ export class TypeScriptInputProcessor extends AbstractInputProcessor {
       ...options
     };
 
-    const program: ts.Program = this.generateProgram(file);
+    const program = this.generateProgram(file);
+    const tjsProgram = program as unknown as TJS.Program;
     if (typeRequired === '*') {
-      const generator = TJS.buildGenerator(program, mergedOptions);
+      const generator = TJS.buildGenerator(tjsProgram, mergedOptions);
       if (!generator) {
         throw new Error('Cound not generate all types automatically');
       }
 
-      const symbols = generator.getMainFileSymbols(program);
+      const symbols = generator.getMainFileSymbols(tjsProgram);
       return symbols.map((symbol) => {
         const schemaFromGenerator = generator.getSchemaForSymbol(symbol);
         schemaFromGenerator.$id = symbol;
@@ -53,7 +54,7 @@ export class TypeScriptInputProcessor extends AbstractInputProcessor {
       });
     }
 
-    const schema = TJS.generateSchema(program, typeRequired, mergedOptions);
+    const schema = TJS.generateSchema(tjsProgram, typeRequired, mergedOptions);
     if (!schema) {
       return null;
     }
