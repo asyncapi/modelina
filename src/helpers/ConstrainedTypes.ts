@@ -309,6 +309,6 @@ function addDiscriminatorTypeToUnionModel(
   if (propertyTypes.size === 1) {
     constrainedModel.options.discriminator.type = propertyTypes
       .keys()
-      .next().value;
+      .next().value as string | undefined;
   }
 }
