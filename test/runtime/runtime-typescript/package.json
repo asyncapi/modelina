@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "test": "cross-env CI=true jest"
+    "test": "jest"
   },
   "dependencies": {
     "jsonbinpack": "1.1.2",
