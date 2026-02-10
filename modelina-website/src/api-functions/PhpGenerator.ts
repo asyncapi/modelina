@@ -9,7 +9,7 @@ import {
 } from '@/../../';
 import type { DeepPartial } from '@/../../lib/types/utils';
 
-import type { ModelinaPhpOptions, ModelProps } from '../../../types';
+import type { ModelinaPhpOptions, ModelProps } from '@/types';
 import { applyGeneralOptions, convertModelsToProps } from './Helpers';
 
 /**

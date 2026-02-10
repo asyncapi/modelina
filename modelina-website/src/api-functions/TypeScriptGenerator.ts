@@ -11,7 +11,7 @@ import {
 } from '@/../../';
 import type { DeepPartial } from '@/../../lib/types/utils';
 
-import type { ModelinaTypeScriptOptions, ModelProps } from '../../../types';
+import type { ModelinaTypeScriptOptions, ModelProps } from '@/types';
 import { applyGeneralOptions, convertModelsToProps } from './Helpers';
 
 /**

@@ -42,7 +42,7 @@ export default function MonacoEditorWrapper({
 
   useEffect(() => {
     // do conditional chaining
-    monacoInstance?.languages.typescript.javascriptDefaults.setEagerModelSync(true);
+    (monacoInstance?.languages.typescript as any).javascriptDefaults?.setEagerModelSync(true);
     // or make sure that it exists by other ways
     if (monacoInstance) {
       monacoInstance.editor.defineTheme('asyncapi-theme', {

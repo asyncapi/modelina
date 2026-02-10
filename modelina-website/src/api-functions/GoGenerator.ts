@@ -7,7 +7,7 @@ import {
 } from '@/../../';
 import type { DeepPartial } from '@/../../lib/types/utils';
 
-import type { ModelinaGoOptions, ModelProps } from '../../../types';
+import type { ModelinaGoOptions, ModelProps } from '@/types';
 import { applyGeneralOptions, convertModelsToProps } from './Helpers';
 
 /**

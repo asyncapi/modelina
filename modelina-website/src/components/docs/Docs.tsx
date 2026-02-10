@@ -2,7 +2,7 @@ import type { NextRouter } from 'next/router';
 import { withRouter } from 'next/router';
 import Script from 'next/script';
 import React, { useState } from 'react';
-import { ReactMarkdown } from 'react-markdown/lib/react-markdown';
+import ReactMarkdown from 'react-markdown';
 import rehypeRaw from 'rehype-raw';
 import rehypeSlug from 'rehype-slug';
 import remarkGfm from 'remark-gfm';
@@ -160,14 +160,14 @@ const Docs: React.FC<ModelinaDocsProps> = ({ source, slug }) => {
               rehypePlugins={[rehypeSlug, rehypeRaw]}
               remarkPlugins={[remarkGfm]}
               components={{
-                code({ inline, className, children, ...props }) {
+                code({ className, children, ...props }) {
                   const match = /language-(\w+)/.exec(className || '');
 
                   if (className === 'language-mermaid') {
                     return <pre className='mermaid flex justify-center bg-white'>{children}</pre>;
                   }
 
-                  return !inline && match ? (
+                  return match ? (
                     <CodeBlock {...props} language={match[1]} PreTag='div'>
                       {String(children).replace(/\n$/, '')}
                     </CodeBlock>

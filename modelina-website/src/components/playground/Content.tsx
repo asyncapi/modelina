@@ -78,7 +78,7 @@ export const Content: FunctionComponent<ContentProps> = ({ setNewConfig, setNewQ
               })}>
                   <MonacoEditorWrapper
                     value={input}
-                    onChange={(_, change) => {
+                    onChange={(_: any, change: any) => {
                       setInput(change);
                       generateNewCode(change);
                     }}
