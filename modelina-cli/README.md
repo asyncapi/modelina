@@ -162,7 +162,7 @@ $ npm install -g @asyncapi/modelina-cli
 $ modelina COMMAND
 running command...
 $ modelina (--version)
-@asyncapi/modelina-cli/6.0.0-next.4 linux-x64 node-v18.20.8
+@asyncapi/modelina-cli/6.0.0-next.5 linux-x64 node-v22.22.0
 $ modelina --help [COMMAND]
 USAGE
   $ modelina COMMAND
@@ -206,7 +206,7 @@ USAGE
   $ modelina autocomplete [SHELL] [-r]
 
 ARGUMENTS
-  SHELL  (zsh|bash|powershell) Shell type
+  [SHELL]  (zsh|bash|powershell) Shell type
 
 FLAGS
   -r, --refresh-cache  Refresh cache (ignores displaying instructions)
@@ -226,7 +226,7 @@ EXAMPLES
   $ modelina autocomplete --refresh-cache
 ```
 
-_See code: [@oclif/plugin-autocomplete](https://github.com/oclif/plugin-autocomplete/blob/v3.1.1/modelina-cli/src/commands/autocomplete/index.ts)_
+_See code: [@oclif/plugin-autocomplete](https://github.com/oclif/plugin-autocomplete/blob/v3.2.40/modelina-cli/src/commands/autocomplete/index.ts)_
 
 ## `modelina config`
 
@@ -240,7 +240,7 @@ DESCRIPTION
   CLI config settings
 ```
 
-_See code: [src/commands/config/index.ts](https://github.com/asyncapi/modelina/blob/v6.0.0-next.4/modelina-cli/src/commands/config/index.ts)_
+_See code: [src/commands/config/index.ts](https://github.com/asyncapi/modelina/blob/v6.0.0-next.5/modelina-cli/src/commands/config/index.ts)_
 
 ## `modelina config context`
 
@@ -254,7 +254,7 @@ DESCRIPTION
   Manage short aliases for full paths to inputs
 ```
 
-_See code: [src/commands/config/context/index.ts](https://github.com/asyncapi/modelina/blob/v6.0.0-next.4/modelina-cli/src/commands/config/context/index.ts)_
+_See code: [src/commands/config/context/index.ts](https://github.com/asyncapi/modelina/blob/v6.0.0-next.5/modelina-cli/src/commands/config/context/index.ts)_
 
 ## `modelina config context add CONTEXT-NAME SPEC-FILE-PATH`
 
@@ -276,7 +276,7 @@ DESCRIPTION
   Add a context to the store
 ```
 
-_See code: [src/commands/config/context/add.ts](https://github.com/asyncapi/modelina/blob/v6.0.0-next.4/modelina-cli/src/commands/config/context/add.ts)_
+_See code: [src/commands/config/context/add.ts](https://github.com/asyncapi/modelina/blob/v6.0.0-next.5/modelina-cli/src/commands/config/context/add.ts)_
 
 ## `modelina config context current`
 
@@ -293,7 +293,7 @@ DESCRIPTION
   Shows the current context that is being used
 ```
 
-_See code: [src/commands/config/context/current.ts](https://github.com/asyncapi/modelina/blob/v6.0.0-next.4/modelina-cli/src/commands/config/context/current.ts)_
+_See code: [src/commands/config/context/current.ts](https://github.com/asyncapi/modelina/blob/v6.0.0-next.5/modelina-cli/src/commands/config/context/current.ts)_
 
 ## `modelina config context edit CONTEXT-NAME NEW-SPEC-FILE-PATH`
 
@@ -314,7 +314,7 @@ DESCRIPTION
   Edit a context in the store
 ```
 
-_See code: [src/commands/config/context/edit.ts](https://github.com/asyncapi/modelina/blob/v6.0.0-next.4/modelina-cli/src/commands/config/context/edit.ts)_
+_See code: [src/commands/config/context/edit.ts](https://github.com/asyncapi/modelina/blob/v6.0.0-next.5/modelina-cli/src/commands/config/context/edit.ts)_
 
 ## `modelina config context init [CONTEXT-FILE-PATH]`
 
@@ -325,10 +325,10 @@ USAGE
   $ modelina config context init [CONTEXT-FILE-PATH] [-h]
 
 ARGUMENTS
-  CONTEXT-FILE-PATH  Specify directory in which context file should be created:
-                     - current directory          : modelina config context init . (default)
-                     - root of current repository : modelina config context init ./
-                     - user's home directory      : modelina config context init ~
+  [CONTEXT-FILE-PATH]  Specify directory in which context file should be created:
+                       - current directory          : modelina config context init . (default)
+                       - root of current repository : modelina config context init ./
+                       - user's home directory      : modelina config context init ~
 
 FLAGS
   -h, --help  Show CLI help.
@@ -337,7 +337,7 @@ DESCRIPTION
   Initialize context
 ```
 
-_See code: [src/commands/config/context/init.ts](https://github.com/asyncapi/modelina/blob/v6.0.0-next.4/modelina-cli/src/commands/config/context/init.ts)_
+_See code: [src/commands/config/context/init.ts](https://github.com/asyncapi/modelina/blob/v6.0.0-next.5/modelina-cli/src/commands/config/context/init.ts)_
 
 ## `modelina config context list`
 
@@ -354,7 +354,7 @@ DESCRIPTION
   List all the stored contexts in the store
 ```
 
-_See code: [src/commands/config/context/list.ts](https://github.com/asyncapi/modelina/blob/v6.0.0-next.4/modelina-cli/src/commands/config/context/list.ts)_
+_See code: [src/commands/config/context/list.ts](https://github.com/asyncapi/modelina/blob/v6.0.0-next.5/modelina-cli/src/commands/config/context/list.ts)_
 
 ## `modelina config context remove CONTEXT-NAME`
 
@@ -374,7 +374,7 @@ DESCRIPTION
   Delete a context from the store
 ```
 
-_See code: [src/commands/config/context/remove.ts](https://github.com/asyncapi/modelina/blob/v6.0.0-next.4/modelina-cli/src/commands/config/context/remove.ts)_
+_See code: [src/commands/config/context/remove.ts](https://github.com/asyncapi/modelina/blob/v6.0.0-next.5/modelina-cli/src/commands/config/context/remove.ts)_
 
 ## `modelina config context use CONTEXT-NAME`
 
@@ -394,7 +394,7 @@ DESCRIPTION
   Set a context as current
 ```
 
-_See code: [src/commands/config/context/use.ts](https://github.com/asyncapi/modelina/blob/v6.0.0-next.4/modelina-cli/src/commands/config/context/use.ts)_
+_See code: [src/commands/config/context/use.ts](https://github.com/asyncapi/modelina/blob/v6.0.0-next.5/modelina-cli/src/commands/config/context/use.ts)_
 
 ## `modelina generate LANGUAGE FILE`
 
@@ -458,7 +458,7 @@ DESCRIPTION
   Generates typed models
 ```
 
-_See code: [src/commands/generate.ts](https://github.com/asyncapi/modelina/blob/v6.0.0-next.4/modelina-cli/src/commands/generate.ts)_
+_See code: [src/commands/generate.ts](https://github.com/asyncapi/modelina/blob/v6.0.0-next.5/modelina-cli/src/commands/generate.ts)_
 
 ## `modelina help [COMMAND]`
 
@@ -469,7 +469,7 @@ USAGE
   $ modelina help [COMMAND...] [-n]
 
 ARGUMENTS
-  COMMAND...  Command to show help for.
+  [COMMAND...]  Command to show help for.
 
 FLAGS
   -n, --nested-commands  Include all nested commands in the output.
@@ -478,7 +478,7 @@ DESCRIPTION
   Display help for modelina.
 ```
 
-_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v6.1.0/modelina-cli/src/commands/help.ts)_
+_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v6.2.37/modelina-cli/src/commands/help.ts)_
 
 ## `modelina plugins`
 
@@ -501,7 +501,7 @@ EXAMPLES
   $ modelina plugins
 ```
 
-_See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/v5.2.1/modelina-cli/src/commands/plugins/index.ts)_
+_See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/v5.4.56/modelina-cli/src/commands/plugins/index.ts)_
 
 ## `modelina plugins add PLUGIN`
 
@@ -526,7 +526,7 @@ GLOBAL FLAGS
 DESCRIPTION
   Installs a plugin into modelina.
 
-  Uses bundled npm executable to install plugins into /home/runner/.local/share/@asyncapi/modelina-cli
+  Uses npm to install plugins.
 
   Installation of a user-installed plugin will override a core plugin.
 
@@ -575,7 +575,7 @@ EXAMPLES
   $ modelina plugins inspect myplugin
 ```
 
-_See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/v5.2.1/modelina-cli/src/commands/plugins/inspect.ts)_
+_See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/v5.4.56/modelina-cli/src/commands/plugins/inspect.ts)_
 
 ## `modelina plugins install PLUGIN`
 
@@ -600,7 +600,7 @@ GLOBAL FLAGS
 DESCRIPTION
   Installs a plugin into modelina.
 
-  Uses bundled npm executable to install plugins into /home/runner/.local/share/@asyncapi/modelina-cli
+  Uses npm to install plugins.
 
   Installation of a user-installed plugin will override a core plugin.
 
@@ -624,7 +624,7 @@ EXAMPLES
     $ modelina plugins install someuser/someplugin
 ```
 
-_See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/v5.2.1/modelina-cli/src/commands/plugins/install.ts)_
+_See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/v5.4.56/modelina-cli/src/commands/plugins/install.ts)_
 
 ## `modelina plugins link PATH`
 
@@ -644,6 +644,7 @@ FLAGS
 
 DESCRIPTION
   Links a plugin into the CLI for development.
+
   Installation of a linked plugin will override a user-installed or core plugin.
 
   e.g. If you have a user-installed or core plugin that has a 'hello' command, installing a linked plugin with a 'hello'
@@ -654,7 +655,7 @@ EXAMPLES
   $ modelina plugins link myplugin
 ```
 
-_See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/v5.2.1/modelina-cli/src/commands/plugins/link.ts)_
+_See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/v5.4.56/modelina-cli/src/commands/plugins/link.ts)_
 
 ## `modelina plugins remove [PLUGIN]`
 
@@ -665,7 +666,7 @@ USAGE
   $ modelina plugins remove [PLUGIN...] [-h] [-v]
 
 ARGUMENTS
-  PLUGIN...  plugin to uninstall
+  [PLUGIN...]  plugin to uninstall
 
 FLAGS
   -h, --help     Show CLI help.
@@ -695,7 +696,7 @@ FLAGS
   --reinstall  Reinstall all plugins after uninstalling.
 ```
 
-_See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/v5.2.1/modelina-cli/src/commands/plugins/reset.ts)_
+_See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/v5.4.56/modelina-cli/src/commands/plugins/reset.ts)_
 
 ## `modelina plugins uninstall [PLUGIN]`
 
@@ -706,7 +707,7 @@ USAGE
   $ modelina plugins uninstall [PLUGIN...] [-h] [-v]
 
 ARGUMENTS
-  PLUGIN...  plugin to uninstall
+  [PLUGIN...]  plugin to uninstall
 
 FLAGS
   -h, --help     Show CLI help.
@@ -723,7 +724,7 @@ EXAMPLES
   $ modelina plugins uninstall myplugin
 ```
 
-_See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/v5.2.1/modelina-cli/src/commands/plugins/uninstall.ts)_
+_See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/v5.4.56/modelina-cli/src/commands/plugins/uninstall.ts)_
 
 ## `modelina plugins unlink [PLUGIN]`
 
@@ -734,7 +735,7 @@ USAGE
   $ modelina plugins unlink [PLUGIN...] [-h] [-v]
 
 ARGUMENTS
-  PLUGIN...  plugin to uninstall
+  [PLUGIN...]  plugin to uninstall
 
 FLAGS
   -h, --help     Show CLI help.
@@ -767,7 +768,7 @@ DESCRIPTION
   Update installed plugins.
 ```
 
-_See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/v5.2.1/modelina-cli/src/commands/plugins/update.ts)_
+_See code: [@oclif/plugin-plugins](https://github.com/oclif/plugin-plugins/blob/v5.4.56/modelina-cli/src/commands/plugins/update.ts)_
 
 ## `modelina version`
 
@@ -787,5 +788,5 @@ FLAG DESCRIPTIONS
     Additionally shows the architecture, node version, operating system, and versions of plugins that the CLI is using.
 ```
 
-_See code: [@oclif/plugin-version](https://github.com/oclif/plugin-version/blob/v2.2.1/modelina-cli/src/commands/version.ts)_
+_See code: [@oclif/plugin-version](https://github.com/oclif/plugin-version/blob/v2.2.36/modelina-cli/src/commands/version.ts)_
 <!-- commandsstop -->
