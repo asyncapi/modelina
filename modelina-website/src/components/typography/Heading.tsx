@@ -1,3 +1,5 @@
+import type React from 'react';
+
 export default function Heading({
   typeStyle = 'heading-lg',
   level = 'h2',
@@ -7,7 +9,7 @@ export default function Heading({
 }: any) {
   let classNames = '';
   /* eslint-disable-next-line no-undef */
-  const Tag = `${level}` as keyof JSX.IntrinsicElements;
+  const Tag = `${level}` as keyof React.JSX.IntrinsicElements;
 
   switch (typeStyle) {
     case 'heading-lg':

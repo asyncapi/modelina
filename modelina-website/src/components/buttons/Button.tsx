@@ -38,7 +38,6 @@ export default function Button({
   return (
     <Link
       href={href}
-      passHref
       target={target}
       rel='noopener noreferrer'
       className={buttonSize === 'small' ? smallButtonClasses : classNames}

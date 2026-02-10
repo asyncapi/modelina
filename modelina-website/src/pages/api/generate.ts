@@ -2,21 +2,21 @@ import type { HandlerEvent } from '@netlify/functions';
 import { decode } from 'js-base64';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-import { getCSharpModels } from '@/pages/api/functions/CSharpGenerator';
-import { getDartModels } from '@/pages/api/functions/DartGenerator';
-import { getGoModels } from '@/pages/api/functions/GoGenerator';
-import { getJavaModels } from '@/pages/api/functions/JavaGenerator';
-import { getJavaScriptModels } from '@/pages/api/functions/JavaScriptGenerator';
-import { getPythonModels } from '@/pages/api/functions/PythonGenerator';
-import { getRustModels } from '@/pages/api/functions/RustGenerator';
-import { getTypeScriptModels } from '@/pages/api/functions/TypeScriptGenerator';
+import { getCSharpModels } from '@/api-functions/CSharpGenerator';
+import { getCplusplusModels } from '@/api-functions/CplusplusGenerator';
+import { getDartModels } from '@/api-functions/DartGenerator';
+import { getGoModels } from '@/api-functions/GoGenerator';
+import { getJavaModels } from '@/api-functions/JavaGenerator';
+import { getJavaScriptModels } from '@/api-functions/JavaScriptGenerator';
+import { getKotlinModels } from '@/api-functions/KotlinGenerator';
+import { getPhpModels } from '@/api-functions/PhpGenerator';
+import { getPythonModels } from '@/api-functions/PythonGenerator';
+import { getRustModels } from '@/api-functions/RustGenerator';
+import { getScalaModels } from '@/api-functions/ScalaGenerator';
+import { getTypeScriptModels } from '@/api-functions/TypeScriptGenerator';
 
 import type { GenerateMessage, UpdateMessage } from '../../types';
 import { defaultAsyncapiDocument } from '../../types';
-import { getCplusplusModels } from './functions/CplusplusGenerator';
-import { getKotlinModels } from './functions/KotlinGenerator';
-import { getPhpModels } from './functions/PhpGenerator';
-import { getScalaModels } from './functions/ScalaGenerator';
 
 export async function generateNewCode(message: GenerateMessage): Promise<UpdateMessage | Error> {
   let input: any = defaultAsyncapiDocument;

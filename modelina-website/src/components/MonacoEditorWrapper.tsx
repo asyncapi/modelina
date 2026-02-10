@@ -7,10 +7,10 @@ import { useEffect, useRef } from 'react';
 export default function MonacoEditorWrapper({
   language,
   theme = 'asyncapi-theme',
-  onChange = undefined,
+  onChange = () => {},
   value,
   options,
-  editorDidMount,
+  editorDidMount = () => {},
   ...props
 }: any) {
   const monacoInstance = useMonaco();
@@ -42,7 +42,7 @@ export default function MonacoEditorWrapper({
 
   useEffect(() => {
     // do conditional chaining
-    monacoInstance?.languages.typescript.javascriptDefaults.setEagerModelSync(true);
+    (monacoInstance?.languages.typescript as any).javascriptDefaults?.setEagerModelSync(true);
     // or make sure that it exists by other ways
     if (monacoInstance) {
       monacoInstance.editor.defineTheme('asyncapi-theme', {
@@ -80,7 +80,3 @@ MonacoEditorWrapper.propTypes = {
   options: PropTypes.object
 };
 
-MonacoEditorWrapper.defaultProps = {
-  editorDidMount: () => {},
-  onChange: () => {}
-};

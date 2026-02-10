@@ -11,7 +11,7 @@ import {
 } from '@/../../';
 import type { DeepPartial } from '@/../../lib/types/utils';
 
-import type { ModelinaJavaOptions, ModelProps } from '../../../types';
+import type { ModelinaJavaOptions, ModelProps } from '@/types';
 import { applyGeneralOptions, convertModelsToProps } from './Helpers';
 
 /**

@@ -8,7 +8,7 @@
     "url": "https://github.com/asyncapi/modelina/issues"
   },
   "engines": {
-    "node": ">=20"
+    "node": ">=22"
   },
   "repository": {
     "type": "git",
@@ -52,7 +52,7 @@
     "@swc/jest": "^0.2.37",
     "@types/jest": "^27.0.2",
     "@types/js-yaml": "^4.0.5",
-    "@types/node": "^20.3.3",
+    "@types/node": "^22",
     "@typescript-eslint/eslint-plugin": "^6.7.5",
     "@typescript-eslint/parser": "^6.7.5",
     "ajv": "^8.6.3",
@@ -67,10 +67,9 @@
     "eslint-plugin-unused-imports": "^3.0.0",
     "jest": "^27.2.5",
     "markdown-toc": "^1.2.0",
-    "ts-jest": "^27.0.5",
     "ts-node": "^10.3.0",
-    "typedoc": "^0.25.13",
-    "typescript": "4.9.5"
+    "typedoc": "^0.28.16",
+    "typescript": "~5.6.0"
   },
   "scripts": {
     "build": "tsc",
@@ -87,12 +86,14 @@
     "test:library": "cross-env CI=true jest --coverage --testPathIgnorePatterns ./modelina-website --testPathIgnorePatterns ./test/runtime --testPathIgnorePatterns ./examples",
     "test:library:update": "npm run test:library -- -u",
     "test:examples": "npm run test:examples:regular && npm run test:examples:websites",
-    "test:examples:update": "npm run test:examples:regular -- -u && npm run test:examples:websites -- -u",
+    "test:examples:update": "npm run test:examples:regular -- -u && npm run test:examples:websites:update",
     "test:examples:regular": "cross-env CI=true jest ./examples --testPathIgnorePatterns ./examples/integrate-with-react --testPathIgnorePatterns ./examples/integrate-with-next",
     "test:examples:websites": "npm run test:examples:react && npm run test:examples:next",
-    "test:examples:websites:update": "npm run test:examples:react -- -u && npm run test:examples:next -- -u",
+    "test:examples:websites:update": "npm run test:examples:react:update && npm run test:examples:next:update",
     "test:examples:react": "cd ./examples/integrate-with-react && npm i && npm run test",
+    "test:examples:react:update": "cd ./examples/integrate-with-react && npm i && npm run test -- -u",
     "test:examples:next": "cd ./examples/integrate-with-next && npm i && npm run test",
+    "test:examples:next:update": "cd ./examples/integrate-with-next && npm i && npm run test -- -u",
     "test:runtime:java": "cross-env CI=true jest ./test/runtime/runtime-java.spec.ts",
     "test:runtime:python": "cross-env CI=true jest ./test/runtime/runtime-python.spec.ts",
     "generate:runtime:python": "cross-env CI=true ts-node ./test/runtime/runtime-python.ts",
