@@ -8,7 +8,7 @@
     "url": "https://github.com/asyncapi/modelina/issues"
   },
   "engines": {
-    "node": ">=20"
+    "node": ">=22"
   },
   "repository": {
     "type": "git",
@@ -52,7 +52,7 @@
     "@swc/jest": "^0.2.37",
     "@types/jest": "^27.0.2",
     "@types/js-yaml": "^4.0.5",
-    "@types/node": "^20.3.3",
+    "@types/node": "^22",
     "@typescript-eslint/eslint-plugin": "^6.7.5",
     "@typescript-eslint/parser": "^6.7.5",
     "ajv": "^8.6.3",

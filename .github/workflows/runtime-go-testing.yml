@@ -2,31 +2,36 @@ name: Runtime Testing Go Models
 on:
   push:
   pull_request:
-  types: [opened, reopened, synchronize, ready_for_review]
-  paths:
-    - 'src/generators/go/**'
-    - 'test/runtime/runtime-go/**'
-    - test/runtime/**go**
+    types: [opened, reopened, synchronize, ready_for_review]
+    paths:
+      - 'src/generators/go/**'
+      - 'test/runtime/runtime-go/**'
+      - 'test/runtime/**go**'
 
 jobs:
-  test: 
-  name: Runtime testing Go Models
-  if: "github.event.pull_request.draft == false &&!((github.actor == 'asyncapi-bot' && startsWith(github.event.pull_request.title, 'ci: update global workflows')) || (github.actor == 'asyncapi-bot' && startsWith(github.event.pull_request.title, 'chore(release):')) || (github.actor == 'allcontributors' && startsWith(github.event.pull_request.title, 'docs: add')))"
-  runs-on: ubuntu-latest
-  steps: 
-    - name: Checkout repository
-      uses: actions/checkout@v2
-    - name: Setup Node.js
-      uses: actions/setup-node@v1
-      with:
-        node-version: 14
-    - name: Build Library
-      run: npm install && npm run build:prod
-    - name: Setup Go
-      uses: actions/setup-go@v2
-      with:
-        go-version: 1.20
-    -name: Generate Go Models
-      run: npm run generate:runtime:go
-    -name: Run runtime Tests
-      run: npm run test:runtime:go
+  test:
+    name: Runtime testing Go Models
+    if: "github.event.pull_request.draft == false &&!((github.actor == 'asyncapi-bot' && startsWith(github.event.pull_request.title, 'ci: update global workflows')) || (github.actor == 'asyncapi-bot' && startsWith(github.event.pull_request.title, 'chore(release):')) || (github.actor == 'allcontributors' && startsWith(github.event.pull_request.title, 'docs: add')))"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Check package-lock version
+        uses: asyncapi/.github/.github/actions/get-node-version-from-package-lock@master
+        id: lockversion
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "${{ steps.lockversion.outputs.version }}"
+          cache: 'npm'
+          cache-dependency-path: '**/package-lock.json'
+      - name: Build Library
+        run: npm install && npm run build:prod
+      - name: Setup Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.22'
+      - name: Generate Go Models
+        run: npm run generate:runtime:go
+      - name: Run runtime Tests
+        run: npm run test:runtime:go
