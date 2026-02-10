@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "dev": "npm run build:resources && cross-env NODE_OPTIONS='--inspect' next dev",
-    "build": "npm run build:resources && next build --no-lint",
+    "build": "npm run build:resources && next build",
     "build:modelina": "cd .. && npm i && npm run build:prod && npm run docs:api",
     "export": "next build",
     "start": "next start",
@@ -17,7 +17,7 @@
   "dependencies": {
     "@monaco-editor/react": "^4.7.0",
     "@netlify/functions": "^1.4.0",
-    "@next/bundle-analyzer": "^15.5.12",
+    "@next/bundle-analyzer": "^16.1.6",
     "@tailwindcss/aspect-ratio": "^0.4.0",
     "@tailwindcss/forms": "^0.5.2",
     "@tailwindcss/line-clamp": "^0.4.0",
@@ -31,7 +31,7 @@
     "js-base64": "^3.7.4",
     "lodash": "^4.17.21",
     "lowlight": "^1.12.1",
-    "next": "^15.5.12",
+    "next": "^16.1.6",
     "postcss": "^8.4.31",
     "prettier": "^3.3.2",
     "react": "^19.2.4",
