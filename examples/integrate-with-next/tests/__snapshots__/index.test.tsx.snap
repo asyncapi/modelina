@@ -29,13 +29,13 @@ exports[`Jest Snapshot testing suite Matches DOM Snapshot 1`] = `
 class LightMeasured {
   private _id?: number;
   private _lumens?: number;
-  private _sentAt?: Date;
+  private _sentAt?: string;
   private _additionalProperties?: Map&lt;string, any&gt;;
 
   constructor(input: {
     id?: number,
     lumens?: number,
-    sentAt?: Date,
+    sentAt?: string,
     additionalProperties?: Map&lt;string, any&gt;,
   }) {
     this._id = input.id;
@@ -50,8 +50,8 @@ class LightMeasured {
   get lumens(): number | undefined { return this._lumens; }
   set lumens(lumens: number | undefined) { this._lumens = lumens; }
 
-  get sentAt(): Date | undefined { return this._sentAt; }
-  set sentAt(sentAt: Date | undefined) { this._sentAt = sentAt; }
+  get sentAt(): string | undefined { return this._sentAt; }
+  set sentAt(sentAt: string | undefined) { this._sentAt = sentAt; }
 
   get additionalProperties(): Map&lt;string, any&gt; | undefined { return this._additionalProperties; }
   set additionalProperties(additionalProperties: Map&lt;string, any&gt; | undefined) { this._additionalProperties = additionalProperties; }
@@ -77,12 +77,12 @@ export { LightMeasured };
             
 class TurnOn {
   private _id?: number;
-  private _sentAt?: Date;
+  private _sentAt?: string;
   private _additionalProperties?: Map&lt;string, any&gt;;
 
   constructor(input: {
     id?: number,
-    sentAt?: Date,
+    sentAt?: string,
     additionalProperties?: Map&lt;string, any&gt;,
   }) {
     this._id = input.id;
@@ -93,8 +93,8 @@ class TurnOn {
   get id(): number | undefined { return this._id; }
   set id(id: number | undefined) { this._id = id; }
 
-  get sentAt(): Date | undefined { return this._sentAt; }
-  set sentAt(sentAt: Date | undefined) { this._sentAt = sentAt; }
+  get sentAt(): string | undefined { return this._sentAt; }
+  set sentAt(sentAt: string | undefined) { this._sentAt = sentAt; }
 
   get additionalProperties(): Map&lt;string, any&gt; | undefined { return this._additionalProperties; }
   set additionalProperties(additionalProperties: Map&lt;string, any&gt; | undefined) { this._additionalProperties = additionalProperties; }
