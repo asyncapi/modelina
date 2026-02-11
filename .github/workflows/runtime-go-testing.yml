@@ -19,7 +19,7 @@ jobs:
     - name: Setup Node.js
       uses: actions/setup-node@v1
       with:
-        node-version: 14
+        node-version: 20
     - name: Build Library
       run: npm install && npm run build:prod
     - name: Setup Go

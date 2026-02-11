@@ -473,7 +473,7 @@ Thanks go out to these wonderful people ([emoji key](https://allcontributors.org
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/AarishMansur"><img src="https://avatars.githubusercontent.com/u/170957949?v=4?s=100" width="100px;" alt="Aarish mansur"/><br /><sub><b>Aarish mansur</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/commits?author=AarishMansur" title="Code">💻</a> <a href="https://github.com/asyncapi/modelina/commits?author=AarishMansur" title="Tests">⚠️</a></td>
     </tr>
     <tr>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/Varadraj75"><img src="https://avatars.githubusercontent.com/u/67114314?v=4?s=100" width="100px;" alt="Varad Raj Agrawal"/><br /><sub><b>Varad Raj Agrawal</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/commits?author=Varadraj75" title="Code">💻</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/Varadraj75"><img src="https://avatars.githubusercontent.com/u/67114314?v=4?s=100" width="100px;" alt="Varad Raj Agrawal"/><br /><sub><b>Varad Raj Agrawal</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/commits?author=Varadraj75" title="Code">💻</a> <a href="#infra-Varadraj75" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
     </tr>
   </tbody>
 </table>
