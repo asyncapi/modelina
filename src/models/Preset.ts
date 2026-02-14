@@ -71,6 +71,13 @@ export interface EnumPreset<R extends AbstractRenderer, O>
   item?: (args: PresetArgs<R, O, ConstrainedEnumModel> & EnumArgs) => string;
 }
 
+export interface ConstValuePreset<R extends AbstractRenderer, O>
+  extends CommonPreset<R, O, ConstrainedObjectModel> {
+  item?: (
+    args: PresetArgs<R, O, ConstrainedObjectModel> & PropertyArgs
+  ) => string;
+}
+
 export type Preset<
   C extends Record<string, CommonPreset<any, any, any>> = any
 > = Partial<C>;
