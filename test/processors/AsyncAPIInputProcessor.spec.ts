@@ -1639,4 +1639,144 @@ describe('AsyncAPIInputProcessor', () => {
       );
     });
   });
+
+  describe('x-modelgen-inferred-name extension', () => {
+    test('should respect user-provided x-modelgen-inferred-name for inline enum', async () => {
+      const doc = {
+        asyncapi: '2.0.0',
+        info: { title: 'Test', version: '1.0.0' },
+        channels: {
+          test: {
+            subscribe: {
+              message: {
+                payload: {
+                  $ref: '#/components/schemas/TestPayload'
+                }
+              }
+            }
+          }
+        },
+        components: {
+          schemas: {
+            TestPayload: {
+              type: 'object',
+              properties: {
+                status: {
+                  'x-modelgen-inferred-name': 'Status',
+                  type: 'string',
+                  enum: ['active', 'inactive']
+                }
+              }
+            }
+          }
+        }
+      };
+      const processor = new AsyncAPIInputProcessor();
+      const commonInputModel = await processor.process(doc);
+
+      // The enum should be named "Status", NOT "TestPayloadStatusEnum"
+      const schema = AsyncAPIInputProcessor.convertToInternalSchema(
+        commonInputModel.originalInput.schemas()[0] as any
+      ) as any;
+      expect(schema.properties.status['x-modelgen-inferred-name']).toEqual(
+        'Status'
+      );
+    });
+
+    test('should respect user-provided x-modelgen-inferred-name for inline object', async () => {
+      const doc = {
+        asyncapi: '2.0.0',
+        info: { title: 'Test', version: '1.0.0' },
+        channels: {
+          test: {
+            subscribe: {
+              message: {
+                payload: {
+                  $ref: '#/components/schemas/TestPayload'
+                }
+              }
+            }
+          }
+        },
+        components: {
+          schemas: {
+            TestPayload: {
+              type: 'object',
+              properties: {
+                nested: {
+                  'x-modelgen-inferred-name': 'CustomNestedObject',
+                  type: 'object',
+                  properties: {
+                    value: { type: 'string' }
+                  }
+                }
+              }
+            }
+          }
+        }
+      };
+      const processor = new AsyncAPIInputProcessor();
+      const commonInputModel = await processor.process(doc);
+
+      // The nested object should be named "CustomNestedObject", NOT "TestPayloadNested"
+      const schema = AsyncAPIInputProcessor.convertToInternalSchema(
+        commonInputModel.originalInput.schemas()[0] as any
+      ) as any;
+      expect(schema.properties.nested['x-modelgen-inferred-name']).toEqual(
+        'CustomNestedObject'
+      );
+    });
+
+    test('should still use context-based naming for schemas without the extension', async () => {
+      const doc = {
+        asyncapi: '2.0.0',
+        info: { title: 'Test', version: '1.0.0' },
+        channels: {
+          test: {
+            subscribe: {
+              message: {
+                payload: {
+                  $ref: '#/components/schemas/TestPayload'
+                }
+              }
+            }
+          }
+        },
+        components: {
+          schemas: {
+            TestPayload: {
+              type: 'object',
+              properties: {
+                statusWithExtension: {
+                  'x-modelgen-inferred-name': 'MyCustomStatus',
+                  type: 'string',
+                  enum: ['a', 'b']
+                },
+                statusWithoutExtension: {
+                  type: 'string',
+                  enum: ['x', 'y']
+                }
+              }
+            }
+          }
+        }
+      };
+      const processor = new AsyncAPIInputProcessor();
+      const commonInputModel = await processor.process(doc);
+
+      const schema = AsyncAPIInputProcessor.convertToInternalSchema(
+        commonInputModel.originalInput.schemas()[0] as any
+      ) as any;
+
+      // Schema WITH extension should use the provided name
+      expect(
+        schema.properties.statusWithExtension['x-modelgen-inferred-name']
+      ).toEqual('MyCustomStatus');
+
+      // Schema WITHOUT extension should use context-based inferred name
+      expect(
+        schema.properties.statusWithoutExtension['x-modelgen-inferred-name']
+      ).toEqual('TestPayloadStatusWithoutExtensionEnum');
+    });
+  });
 });
