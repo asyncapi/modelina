@@ -445,13 +445,15 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
    * Determine the best name for a schema based on available metadata and context.
    *
    * Priority order:
+   * 0. User-provided x-modelgen-inferred-name extension (highest priority)
    * 1. Component schema key (from components/schemas)
-   * 2. Schema title field
-   * 3. Source file name (from custom resolver metadata)
-   * 4. Message ID (for payloads)
-   * 5. Context-based inference (property name, array item, enum)
-   * 6. Inferred name parameter
-   * 7. Fallback to sanitized anonymous ID
+   * 2. Schema ID (if looks like component name)
+   * 3. Schema title field
+   * 4. Source file name (from custom resolver metadata)
+   * 5. Message ID (for payloads)
+   * 6. Context-based inference (property name, array item, enum)
+   * 7. Inferred name parameter
+   * 8. Fallback to sanitized anonymous ID
    *
    * @param schemaId The schema ID from AsyncAPI parser
    * @param schemaJson The JSON representation of the schema
@@ -466,6 +468,15 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
     context?: SchemaContext,
     inferredName?: string
   ): string {
+    // Priority 0: User-provided x-modelgen-inferred-name extension (highest priority)
+    const existingInferredName = schemaJson?.[this.MODELINA_INFERRED_NAME];
+    if (existingInferredName && typeof existingInferredName === 'string') {
+      Logger.debug(
+        `Using user-provided x-modelgen-inferred-name: ${existingInferredName}`
+      );
+      return existingInferredName;
+    }
+
     // Priority 1: Component schema key from context
     if (context?.componentKey) {
       Logger.debug(`Using component key from context: ${context.componentKey}`);
