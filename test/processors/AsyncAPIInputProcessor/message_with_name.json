@@ -1,0 +1,48 @@
+{
+  "asyncapi": "3.0.0",
+  "info": {
+    "title": "Test API with message names",
+    "version": "1.0.0"
+  },
+  "channels": {
+    "userSignup": {
+      "address": "user/signedup",
+      "messages": {
+        "UserSignedUp": {
+          "$ref": "#/components/messages/UserSignedUp"
+        }
+      }
+    }
+  },
+  "operations": {
+    "onUserSignup": {
+      "action": "receive",
+      "channel": {
+        "$ref": "#/channels/userSignup"
+      },
+      "messages": [
+        {
+          "$ref": "#/channels/userSignup/messages/UserSignedUp"
+        }
+      ]
+    }
+  },
+  "components": {
+    "messages": {
+      "UserSignedUp": {
+        "payload": {
+          "type": "object",
+          "properties": {
+            "displayName": {
+              "type": "string"
+            },
+            "email": {
+              "type": "string",
+              "format": "email"
+            }
+          }
+        }
+      }
+    }
+  }
+}

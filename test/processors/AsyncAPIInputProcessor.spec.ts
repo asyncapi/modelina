@@ -32,6 +32,17 @@ const multipleMessagesInOperation = fs.readFileSync(
   ),
   'utf8'
 );
+const messageWithNameDocString = fs.readFileSync(
+  path.resolve(__dirname, './AsyncAPIInputProcessor/message_with_name.json'),
+  'utf8'
+);
+const messageWithInlineNameDocString = fs.readFileSync(
+  path.resolve(
+    __dirname,
+    './AsyncAPIInputProcessor/message_with_inline_name.json'
+  ),
+  'utf8'
+);
 const ymlFileURI = `file://${path.resolve(
   __dirname,
   './AsyncAPIInputProcessor/testasyncapi.yml'
@@ -236,6 +247,28 @@ describe('AsyncAPIInputProcessor', () => {
       expect(commonInputModel.models['workers']).toBeDefined();
       // Snapshot the model names
       expect(Object.keys(commonInputModel.models).sort()).toMatchSnapshot();
+    });
+
+    test('should use message name for anonymous payload schema (AsyncAPI v3 with $ref)', async () => {
+      const processor = new AsyncAPIInputProcessor();
+      const commonInputModel = await processor.process(messageWithNameDocString);
+      expect(commonInputModel instanceof InputMetaModel).toBeTruthy();
+      // The model should be named 'UserSignedUp' (from message component name) instead of 'AnonymousSchema_1'
+      expect(commonInputModel.models['UserSignedUp']).toBeDefined();
+      expect(commonInputModel.models['AnonymousSchema_1']).toBeUndefined();
+      expect(Object.keys(commonInputModel.models)).toEqual(['UserSignedUp']);
+    });
+
+    test('should use message name for anonymous payload schema (AsyncAPI v2 with inline name)', async () => {
+      const processor = new AsyncAPIInputProcessor();
+      const commonInputModel = await processor.process(
+        messageWithInlineNameDocString
+      );
+      expect(commonInputModel instanceof InputMetaModel).toBeTruthy();
+      // The model should be named 'UserSignedUp' (from message.name) instead of 'AnonymousSchema_1'
+      expect(commonInputModel.models['UserSignedUp']).toBeDefined();
+      expect(commonInputModel.models['AnonymousSchema_1']).toBeUndefined();
+      expect(Object.keys(commonInputModel.models)).toEqual(['UserSignedUp']);
     });
   });
 

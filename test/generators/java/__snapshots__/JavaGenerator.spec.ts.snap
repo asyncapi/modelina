@@ -1049,35 +1049,6 @@ public interface Pet {
     return o.toString().replace(\\"\\\\n\\", \\"\\\\n    \\");
   }
 }",
-  "public enum CloudEventType {
-  DOG((String)\\"Dog\\"), CAT((String)\\"Cat\\");
-
-  private final String value;
-
-  CloudEventType(String value) {
-    this.value = value;
-  }
-
-  @JsonValue
-  public String getValue() {
-    return value;
-  }
-
-  @JsonCreator
-  public static CloudEventType fromValue(String value) {
-    for (CloudEventType e : CloudEventType.values()) {
-      if (e.value.equals(value)) {
-        return e;
-      }
-    }
-    throw new IllegalArgumentException(\\"Unexpected value '\\" + value + \\"'\\");
-  }
-
-  @Override
-  public String toString() {
-    return String.valueOf(value);
-  }
-}",
   "public class Cat implements Pet {
   @NotNull
   @JsonProperty(\\"id\\")
@@ -1170,6 +1141,35 @@ public interface Pet {
     return o.toString().replace(\\"\\\\n\\", \\"\\\\n    \\");
   }
 }",
+  "public enum CloudEventType {
+  DOG((String)\\"Dog\\"), CAT((String)\\"Cat\\");
+
+  private final String value;
+
+  CloudEventType(String value) {
+    this.value = value;
+  }
+
+  @JsonValue
+  public String getValue() {
+    return value;
+  }
+
+  @JsonCreator
+  public static CloudEventType fromValue(String value) {
+    for (CloudEventType e : CloudEventType.values()) {
+      if (e.value.equals(value)) {
+        return e;
+      }
+    }
+    throw new IllegalArgumentException(\\"Unexpected value '\\" + value + \\"'\\");
+  }
+
+  @Override
+  public String toString() {
+    return String.valueOf(value);
+  }
+}",
 ]
 `;
 
@@ -1179,10 +1179,9 @@ Array [
   @NotNull
   @JsonProperty(\\"id\\")
   private String id;
-  @Valid
   @NotNull
   @JsonProperty(\\"type\\")
-  private final CloudEventType type = CloudEventType.DOG;
+  private String type;
   @JsonAnySetter
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
@@ -1190,7 +1189,8 @@ Array [
   public String getId() { return this.id; }
   public void setId(String id) { this.id = id; }
 
-  public CloudEventType getType() { return this.type; }
+  public String getType() { return this.type; }
+  public void setType(String type) { this.type = type; }
 
   @JsonAnyGetter
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
@@ -1234,35 +1234,6 @@ Array [
       return \\"null\\";
     }
     return o.toString().replace(\\"\\\\n\\", \\"\\\\n    \\");
-  }
-}",
-  "public enum CloudEventType {
-  DOG((String)\\"Dog\\");
-
-  private final String value;
-
-  CloudEventType(String value) {
-    this.value = value;
-  }
-
-  @JsonValue
-  public String getValue() {
-    return value;
-  }
-
-  @JsonCreator
-  public static CloudEventType fromValue(String value) {
-    for (CloudEventType e : CloudEventType.values()) {
-      if (e.value.equals(value)) {
-        return e;
-      }
-    }
-    throw new IllegalArgumentException(\\"Unexpected value '\\" + value + \\"'\\");
-  }
-
-  @Override
-  public String toString() {
-    return String.valueOf(value);
   }
 }",
 ]
@@ -1334,35 +1305,6 @@ public interface Pet {
     return o.toString().replace(\\"\\\\n\\", \\"\\\\n    \\");
   }
 }",
-  "public enum DogType {
-  DOG((String)\\"Dog\\");
-
-  private final String value;
-
-  DogType(String value) {
-    this.value = value;
-  }
-
-  @JsonValue
-  public String getValue() {
-    return value;
-  }
-
-  @JsonCreator
-  public static DogType fromValue(String value) {
-    for (DogType e : DogType.values()) {
-      if (e.value.equals(value)) {
-        return e;
-      }
-    }
-    throw new IllegalArgumentException(\\"Unexpected value '\\" + value + \\"'\\");
-  }
-
-  @Override
-  public String toString() {
-    return String.valueOf(value);
-  }
-}",
   "public class Cat implements Pet {
   @Valid
   @NotNull
@@ -1416,6 +1358,35 @@ public interface Pet {
     return o.toString().replace(\\"\\\\n\\", \\"\\\\n    \\");
   }
 }",
+  "public enum DogType {
+  DOG((String)\\"Dog\\");
+
+  private final String value;
+
+  DogType(String value) {
+    this.value = value;
+  }
+
+  @JsonValue
+  public String getValue() {
+    return value;
+  }
+
+  @JsonCreator
+  public static DogType fromValue(String value) {
+    for (DogType e : DogType.values()) {
+      if (e.value.equals(value)) {
+        return e;
+      }
+    }
+    throw new IllegalArgumentException(\\"Unexpected value '\\" + value + \\"'\\");
+  }
+
+  @Override
+  public String toString() {
+    return String.valueOf(value);
+  }
+}",
   "public enum CatType {
   CAT((String)\\"Cat\\");
 
@@ -1450,28 +1421,17 @@ public interface Pet {
 
 exports[`JavaGenerator oneOf/discriminator with jackson preset should create an interface for child models 1`] = `
 Array [
-  "@JsonTypeInfo(use=JsonTypeInfo.Id.NAME, include=JsonTypeInfo.As.EXISTING_PROPERTY, property=\\"vehicleType\\", visible=true)
-@JsonSubTypes({
-  @JsonSubTypes.Type(value = Car.class, name = \\"Car\\"),
-  @JsonSubTypes.Type(value = Truck.class, name = \\"Truck\\")
-})
-/**
- * Vehicle represents a union of types: Car, Truck
- */
-public interface Vehicle {
-  VehicleType getVehicleType();
-}",
   "public class Cargo {
   @Valid
   @JsonProperty(\\"vehicle\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
-  private Vehicle vehicle;
+  private Cargo vehicle;
   @JsonAnySetter
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private Map<String, Object> additionalProperties;
 
-  public Vehicle getVehicle() { return this.vehicle; }
-  public void setVehicle(Vehicle vehicle) { this.vehicle = vehicle; }
+  public Cargo getVehicle() { return this.vehicle; }
+  public void setVehicle(Cargo vehicle) { this.vehicle = vehicle; }
 
   @JsonAnyGetter
   public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
@@ -1500,141 +1460,6 @@ public interface Vehicle {
   public String toString() {
     return \\"class Cargo {\\\\n\\" +   
       \\"    vehicle: \\" + toIndentedString(vehicle) + \\"\\\\n\\" +
-      \\"    additionalProperties: \\" + toIndentedString(additionalProperties) + \\"\\\\n\\" +
-    \\"}\\";
-  }
-
-  /**
-   * Convert the given object to string with each line indented by 4 spaces
-   * (except the first line).
-   */
-  private String toIndentedString(Object o) {
-    if (o == null) {
-      return \\"null\\";
-    }
-    return o.toString().replace(\\"\\\\n\\", \\"\\\\n    \\");
-  }
-}",
-  "public class Car implements Vehicle {
-  @Valid
-  @NotNull
-  @JsonProperty(\\"vehicleType\\")
-  private final VehicleType vehicleType = VehicleType.CAR;
-  @JsonAnySetter
-  @JsonInclude(JsonInclude.Include.NON_NULL)
-  private Map<String, Object> additionalProperties;
-
-  public VehicleType getVehicleType() { return this.vehicleType; }
-
-  @JsonAnyGetter
-  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
-  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-    Car self = (Car) o;
-      return 
-        Objects.equals(this.vehicleType, self.vehicleType) &&
-        Objects.equals(this.additionalProperties, self.additionalProperties);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash((Object)vehicleType, (Object)additionalProperties);
-  }
-
-  @Override
-  public String toString() {
-    return \\"class Car {\\\\n\\" +   
-      \\"    vehicleType: \\" + toIndentedString(vehicleType) + \\"\\\\n\\" +
-      \\"    additionalProperties: \\" + toIndentedString(additionalProperties) + \\"\\\\n\\" +
-    \\"}\\";
-  }
-
-  /**
-   * Convert the given object to string with each line indented by 4 spaces
-   * (except the first line).
-   */
-  private String toIndentedString(Object o) {
-    if (o == null) {
-      return \\"null\\";
-    }
-    return o.toString().replace(\\"\\\\n\\", \\"\\\\n    \\");
-  }
-}",
-  "public enum VehicleType {
-  CAR((String)\\"Car\\"), TRUCK((String)\\"Truck\\");
-
-  private final String value;
-
-  VehicleType(String value) {
-    this.value = value;
-  }
-
-  @JsonValue
-  public String getValue() {
-    return value;
-  }
-
-  @JsonCreator
-  public static VehicleType fromValue(String value) {
-    for (VehicleType e : VehicleType.values()) {
-      if (e.value.equals(value)) {
-        return e;
-      }
-    }
-    throw new IllegalArgumentException(\\"Unexpected value '\\" + value + \\"'\\");
-  }
-
-  @Override
-  public String toString() {
-    return String.valueOf(value);
-  }
-}",
-  "public class Truck implements Vehicle {
-  @Valid
-  @NotNull
-  @JsonProperty(\\"vehicleType\\")
-  private final VehicleType vehicleType = VehicleType.TRUCK;
-  @JsonAnySetter
-  @JsonInclude(JsonInclude.Include.NON_NULL)
-  private Map<String, Object> additionalProperties;
-
-  public VehicleType getVehicleType() { return this.vehicleType; }
-
-  @JsonAnyGetter
-  public Map<String, Object> getAdditionalProperties() { return this.additionalProperties; }
-  public void setAdditionalProperties(Map<String, Object> additionalProperties) { this.additionalProperties = additionalProperties; }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-    Truck self = (Truck) o;
-      return 
-        Objects.equals(this.vehicleType, self.vehicleType) &&
-        Objects.equals(this.additionalProperties, self.additionalProperties);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash((Object)vehicleType, (Object)additionalProperties);
-  }
-
-  @Override
-  public String toString() {
-    return \\"class Truck {\\\\n\\" +   
-      \\"    vehicleType: \\" + toIndentedString(vehicleType) + \\"\\\\n\\" +
       \\"    additionalProperties: \\" + toIndentedString(additionalProperties) + \\"\\\\n\\" +
     \\"}\\";
   }

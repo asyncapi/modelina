@@ -161,6 +161,7 @@ These are all specific examples only relevant to the Kotlin generator:
 - [kotlin-generate-kdoc](./kotlin-generate-kdoc)
 - [kotlin-generate-javax-constraint-annotations](./kotlin-generate-javax-constraint-annotation)
 - [kotlin-change-collection-type](./kotlin-change-collection-type)
+- [kotlin-custom-type-mappings](./kotlin-custom-type-mappings) - A basic example showing how to use type mappings to switch data types.
 
 ### PHP
 These are all specific examples only relevant to the PHP generator:
