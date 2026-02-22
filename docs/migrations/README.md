@@ -8,3 +8,4 @@ When it happens, we try to list the breaking changes and a migration guide, to m
 - [From v1 to v2](./version-1-to-2.md)
 - [From v2 to v3](./version-2-to-3.md)
 - [From v3 to v4](./version-3-to-4.md)
+- [From v4 to v5](./version-4-to-5.md)

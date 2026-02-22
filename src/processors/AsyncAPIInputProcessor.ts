@@ -8,7 +8,8 @@ import {
   SchemaV2 as AsyncAPISchema,
   fromFile,
   createAsyncAPIDocument,
-  MessagesInterface
+  MessagesInterface,
+  MessageInterface
 } from '@asyncapi/parser';
 import yaml from 'js-yaml';
 import { AbstractInputProcessor } from './AbstractInputProcessor';
@@ -102,8 +103,31 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
 
     inputModel.originalInput = doc;
 
-    const addToInputModel = (payload: AsyncAPISchemaInterface) => {
-      const schema = AsyncAPIInputProcessor.convertToInternalSchema(payload);
+
+    /**
+     * Get the effective message name to use for the schema.
+     * Returns undefined if the message name is anonymous.
+     */
+    const getEffectiveMessageName = (
+      message: MessageInterface
+    ): string | undefined => {
+      const messageName = message.id() || message.name();
+      // Only use message name if it's not an anonymous message
+      if (messageName && !messageName.includes('<anonymous-message')) {
+        return messageName;
+      }
+      return undefined;
+    };
+
+    const addToInputModel = (
+      payload: AsyncAPISchemaInterface,
+      messageName?: string
+    ) => {
+      const schema = AsyncAPIInputProcessor.convertToInternalSchema(
+        payload,
+        new Map(),
+        messageName
+      );
       const newMetaModel = JsonSchemaInputProcessor.convertSchemaToMetaModel(
         schema,
         options
@@ -136,7 +160,8 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
                 }
 
                 // Add each individual message payload as a separate model
-                addToInputModel(payload);
+
+                addToInputModel(payload, getEffectiveMessageName(message));
                 oneOf.push(payload.json());
               }
 
@@ -150,9 +175,11 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
 
               addToInputModel(payload);
             } else if (messages.length === 1) {
-              const payload = messages[0].payload();
+              const message = messages[0];
+              const payload = message.payload();
               if (payload) {
-                addToInputModel(payload);
+                // Use message name as the model name if payload schema is anonymous
+                addToInputModel(payload, getEffectiveMessageName(message));
               }
             }
           };
@@ -175,7 +202,8 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
       for (const message of doc.allMessages()) {
         const payload = message.payload();
         if (payload) {
-          addToInputModel(payload);
+          // Use message name as the model name if payload schema is anonymous
+          addToInputModel(payload, getEffectiveMessageName(message));
         }
       }
     }
@@ -195,7 +223,8 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
   // eslint-disable-next-line sonarjs/cognitive-complexity
   static convertToInternalSchema(
     schema: AsyncAPISchemaInterface | boolean,
-    alreadyIteratedSchemas: Map<string, AsyncapiV2Schema> = new Map()
+    alreadyIteratedSchemas: Map<string, AsyncapiV2Schema> = new Map(),
+    messageName?: string
   ): AsyncapiV2Schema | boolean {
     if (typeof schema === 'boolean') {
       return schema;
@@ -207,10 +236,15 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
       typeof schemaUid !== 'undefined' &&
       schemaUid.includes('<anonymous-schema')
     ) {
-      schemaUid = schemaUid
-        .replace('<', '')
-        .replace(/-/g, '_')
-        .replace('>', '');
+      // Use message name as the model name if provided and schema is anonymous
+      if (messageName) {
+        schemaUid = messageName;
+      } else {
+        schemaUid = schemaUid
+          .replace('<', '')
+          .replace(/-/g, '_')
+          .replace('>', '');
+      }
     }
 
     if (alreadyIteratedSchemas.has(schemaUid)) {

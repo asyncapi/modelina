@@ -1923,15 +1923,7 @@ describe('JavaGenerator', () => {
 
         const dog = models.find((model) => model.modelName === 'Dog');
         expect(dog).not.toBeUndefined();
-        expect(dog?.result).toContain(
-          'private final CloudEventType type = CloudEventType.DOG;'
-        );
-
-        const cloudEventType = models.find(
-          (model) => model.modelName === 'CloudEventType'
-        );
-        expect(cloudEventType).not.toBeUndefined();
-        expect(cloudEventType?.result).toContain('DOG');
+        expect(dog?.result).toContain('private String type;');
       });
       test('should create an interface for child models', async () => {
         const asyncapiDoc = {

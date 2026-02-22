@@ -2,8 +2,8 @@
 
 exports[`AsyncAPIInputProcessor process() should be able to process YAML file 1`] = `
 Object {
-  "anonymous_schema_1": ObjectModel {
-    "name": "anonymous_schema_1",
+  "UserSignedUp": ObjectModel {
+    "name": "UserSignedUp",
     "options": Object {
       "isNullable": false,
     },
@@ -24,7 +24,7 @@ Object {
         },
       },
       "type": "object",
-      "x-modelgen-inferred-name": "anonymous_schema_1",
+      "x-modelgen-inferred-name": "UserSignedUp",
       "x-parser-schema-id": "<anonymous-schema-1>",
     },
     "properties": Object {
@@ -101,8 +101,8 @@ Object {
 
 exports[`AsyncAPIInputProcessor process() should be able to process file 1`] = `
 Object {
-  "anonymous_schema_1": ObjectModel {
-    "name": "anonymous_schema_1",
+  "UserSignedUp": ObjectModel {
+    "name": "UserSignedUp",
     "options": Object {
       "isNullable": false,
     },
@@ -123,7 +123,7 @@ Object {
         },
       },
       "type": "object",
-      "x-modelgen-inferred-name": "anonymous_schema_1",
+      "x-modelgen-inferred-name": "UserSignedUp",
       "x-parser-schema-id": "<anonymous-schema-1>",
     },
     "properties": Object {
@@ -286,7 +286,7 @@ InputMetaModel {
           },
         ],
         "title": "Cat",
-        "x-modelgen-inferred-name": "anonymous_schema_10",
+        "x-modelgen-inferred-name": "Cat",
         "x-parser-schema-id": "<anonymous-schema-10>",
       },
       "properties": Object {
@@ -370,7 +370,7 @@ InputMetaModel {
                     },
                   ],
                   "title": "Cat",
-                  "x-modelgen-inferred-name": "anonymous_schema_10",
+                  "x-modelgen-inferred-name": "Cat",
                   "x-parser-schema-id": "<anonymous-schema-10>",
                 },
               ],
@@ -452,7 +452,7 @@ InputMetaModel {
                   },
                 ],
                 "title": "Cat",
-                "x-modelgen-inferred-name": "anonymous_schema_10",
+                "x-modelgen-inferred-name": "Cat",
                 "x-parser-schema-id": "<anonymous-schema-10>",
               },
             ],
@@ -531,7 +531,7 @@ InputMetaModel {
                   },
                 ],
                 "title": "Cat",
-                "x-modelgen-inferred-name": "anonymous_schema_10",
+                "x-modelgen-inferred-name": "Cat",
                 "x-parser-schema-id": "<anonymous-schema-10>",
               },
             },
@@ -702,7 +702,7 @@ InputMetaModel {
                 },
               ],
               "title": "Cat",
-              "x-modelgen-inferred-name": "anonymous_schema_10",
+              "x-modelgen-inferred-name": "Cat",
               "x-parser-schema-id": "<anonymous-schema-10>",
             },
             "values": Array [
@@ -794,7 +794,7 @@ InputMetaModel {
           },
         ],
         "title": "Dog",
-        "x-modelgen-inferred-name": "anonymous_schema_1",
+        "x-modelgen-inferred-name": "Dog",
         "x-parser-schema-id": "<anonymous-schema-1>",
       },
       "properties": Object {
@@ -878,7 +878,7 @@ InputMetaModel {
                     },
                   ],
                   "title": "Dog",
-                  "x-modelgen-inferred-name": "anonymous_schema_1",
+                  "x-modelgen-inferred-name": "Dog",
                   "x-parser-schema-id": "<anonymous-schema-1>",
                 },
               ],
@@ -960,7 +960,7 @@ InputMetaModel {
                   },
                 ],
                 "title": "Dog",
-                "x-modelgen-inferred-name": "anonymous_schema_1",
+                "x-modelgen-inferred-name": "Dog",
                 "x-parser-schema-id": "<anonymous-schema-1>",
               },
             ],
@@ -1039,7 +1039,7 @@ InputMetaModel {
                   },
                 ],
                 "title": "Dog",
-                "x-modelgen-inferred-name": "anonymous_schema_1",
+                "x-modelgen-inferred-name": "Dog",
                 "x-parser-schema-id": "<anonymous-schema-1>",
               },
             },
@@ -1210,7 +1210,7 @@ InputMetaModel {
                 },
               ],
               "title": "Dog",
-              "x-modelgen-inferred-name": "anonymous_schema_1",
+              "x-modelgen-inferred-name": "Dog",
               "x-parser-schema-id": "<anonymous-schema-1>",
             },
             "values": Array [
@@ -3261,7 +3261,7 @@ InputMetaModel {
           },
         ],
         "title": "Cat",
-        "x-modelgen-inferred-name": "anonymous_schema_10",
+        "x-modelgen-inferred-name": "Cat",
         "x-parser-schema-id": "<anonymous-schema-10>",
       },
       "properties": Object {
@@ -3345,7 +3345,7 @@ InputMetaModel {
                     },
                   ],
                   "title": "Cat",
-                  "x-modelgen-inferred-name": "anonymous_schema_10",
+                  "x-modelgen-inferred-name": "Cat",
                   "x-parser-schema-id": "<anonymous-schema-10>",
                 },
               ],
@@ -3427,7 +3427,7 @@ InputMetaModel {
                   },
                 ],
                 "title": "Cat",
-                "x-modelgen-inferred-name": "anonymous_schema_10",
+                "x-modelgen-inferred-name": "Cat",
                 "x-parser-schema-id": "<anonymous-schema-10>",
               },
             ],
@@ -3506,7 +3506,7 @@ InputMetaModel {
                   },
                 ],
                 "title": "Cat",
-                "x-modelgen-inferred-name": "anonymous_schema_10",
+                "x-modelgen-inferred-name": "Cat",
                 "x-parser-schema-id": "<anonymous-schema-10>",
               },
             },
@@ -3677,7 +3677,7 @@ InputMetaModel {
                 },
               ],
               "title": "Cat",
-              "x-modelgen-inferred-name": "anonymous_schema_10",
+              "x-modelgen-inferred-name": "Cat",
               "x-parser-schema-id": "<anonymous-schema-10>",
             },
             "values": Array [
@@ -3769,7 +3769,7 @@ InputMetaModel {
           },
         ],
         "title": "Dog",
-        "x-modelgen-inferred-name": "anonymous_schema_1",
+        "x-modelgen-inferred-name": "Dog",
         "x-parser-schema-id": "<anonymous-schema-1>",
       },
       "properties": Object {
@@ -3853,7 +3853,7 @@ InputMetaModel {
                     },
                   ],
                   "title": "Dog",
-                  "x-modelgen-inferred-name": "anonymous_schema_1",
+                  "x-modelgen-inferred-name": "Dog",
                   "x-parser-schema-id": "<anonymous-schema-1>",
                 },
               ],
@@ -3935,7 +3935,7 @@ InputMetaModel {
                   },
                 ],
                 "title": "Dog",
-                "x-modelgen-inferred-name": "anonymous_schema_1",
+                "x-modelgen-inferred-name": "Dog",
                 "x-parser-schema-id": "<anonymous-schema-1>",
               },
             ],
@@ -4014,7 +4014,7 @@ InputMetaModel {
                   },
                 ],
                 "title": "Dog",
-                "x-modelgen-inferred-name": "anonymous_schema_1",
+                "x-modelgen-inferred-name": "Dog",
                 "x-parser-schema-id": "<anonymous-schema-1>",
               },
             },
@@ -4185,7 +4185,7 @@ InputMetaModel {
                 },
               ],
               "title": "Dog",
-              "x-modelgen-inferred-name": "anonymous_schema_1",
+              "x-modelgen-inferred-name": "Dog",
               "x-parser-schema-id": "<anonymous-schema-1>",
             },
             "values": Array [
@@ -6616,8 +6616,8 @@ InputMetaModel {
 exports[`AsyncAPIInputProcessor process() should be able to process pure object for v3 1`] = `
 InputMetaModel {
   "models": Object {
-    "anonymous_schema_1": ObjectModel {
-      "name": "anonymous_schema_1",
+    "userSignUpMessage": ObjectModel {
+      "name": "userSignUpMessage",
       "options": Object {
         "isNullable": false,
       },
@@ -6631,7 +6631,7 @@ InputMetaModel {
           },
         },
         "type": "object",
-        "x-modelgen-inferred-name": "anonymous_schema_1",
+        "x-modelgen-inferred-name": "userSignUpMessage",
         "x-parser-schema-id": "<anonymous-schema-1>",
       },
       "properties": Object {
