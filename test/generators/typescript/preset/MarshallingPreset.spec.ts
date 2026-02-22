@@ -163,7 +163,9 @@ describe('Marshalling preset', () => {
 
       // Should include null safety check for date conversion
       // Pattern: value == null ? null : new Date(value)
-      expect(result).toMatch(/obj\["createdAt"\]\s*==\s*null\s*\?\s*null\s*:\s*new Date/);
+      expect(result).toMatch(
+        /obj\["createdAt"\]\s*==\s*null\s*\?\s*null\s*:\s*new Date/
+      );
     });
   });
 });
