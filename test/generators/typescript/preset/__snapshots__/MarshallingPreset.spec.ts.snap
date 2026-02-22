@@ -82,10 +82,10 @@ exports[`Marshalling preset should render un/marshal code 1`] = `
       json += \`\\"numberProp\\": \${typeof this.numberProp === 'number' || typeof this.numberProp === 'boolean' ? this.numberProp : JSON.stringify(this.numberProp)},\`;
     }
     if(this.nestedObject !== undefined) {
-      json += \`\\"nestedObject\\": \${this.nestedObject.marshal()},\`;
+      json += \`\\"nestedObject\\": \${this.nestedObject && typeof this.nestedObject === 'object' && 'marshal' in this.nestedObject && typeof this.nestedObject.marshal === 'function' ? this.nestedObject.marshal() : JSON.stringify(this.nestedObject)},\`;
     }
     if(this.unionTest !== undefined) {
-      if(this.unionTest instanceof NestedTest) {
+      if(this.unionTest && typeof this.unionTest === 'object' && 'marshal' in this.unionTest && typeof this.unionTest.marshal === 'function') {
           json += \`\\"unionTest\\": \${this.unionTest.marshal()},\`;
         } else {
           json += \`\\"unionTest\\": \${typeof this.unionTest === 'number' || typeof this.unionTest === 'boolean' ? this.unionTest : JSON.stringify(this.unionTest)},\`;
@@ -94,7 +94,7 @@ exports[`Marshalling preset should render un/marshal code 1`] = `
     if(this.unionArrayTest !== undefined) {
       const unionArrayTestJsonValues: any[] = [];
       for (const unionItem of this.unionArrayTest) {
-        if(unionItem instanceof NestedTest) {
+        if(unionItem && typeof unionItem === 'object' && 'marshal' in unionItem && typeof unionItem.marshal === 'function') {
           unionArrayTestJsonValues.push(unionItem.marshal());
         } else {
           unionArrayTestJsonValues.push(typeof unionItem === 'number' || typeof unionItem === 'boolean' ? unionItem : JSON.stringify(unionItem))
@@ -105,7 +105,7 @@ exports[`Marshalling preset should render un/marshal code 1`] = `
     if(this.arrayTest !== undefined) {
       let arrayTestJsonValues: any[] = [];
       for (const unionItem of this.arrayTest) {
-        arrayTestJsonValues.push(\`\${unionItem.marshal()}\`);
+        arrayTestJsonValues.push(\`\${unionItem && typeof unionItem === 'object' && 'marshal' in unionItem && typeof unionItem.marshal === 'function' ? unionItem.marshal() : JSON.stringify(unionItem)}\`);
       }
       json += \`\\"arrayTest\\": [\${arrayTestJsonValues.join(',')}],\`;
     }
@@ -119,7 +119,7 @@ exports[`Marshalling preset should render un/marshal code 1`] = `
     if(this.tupleTest !== undefined) {
       const serializedTuple: any[] = [];
     if(this.tupleTest[0]) {
-      serializedTuple[0] = \`\${this.tupleTest[0].marshal()}\`
+      serializedTuple[0] = \`\${this.tupleTest[0] && typeof this.tupleTest[0] === 'object' && 'marshal' in this.tupleTest[0] && typeof this.tupleTest[0].marshal === 'function' ? this.tupleTest[0].marshal() : JSON.stringify(this.tupleTest[0])}\`
     } else {
       serializedTuple[0] = null;
     }
@@ -137,7 +137,7 @@ exports[`Marshalling preset should render un/marshal code 1`] = `
       for (const [key, value] of this.additionalProperties.entries()) {
         //Only unwrap those that are not already a property in the JSON object
         if([\\"string prop\\",\\"enumProp\\",\\"numberProp\\",\\"nestedObject\\",\\"unionTest\\",\\"unionArrayTest\\",\\"arrayTest\\",\\"primitiveArrayTest\\",\\"tupleTest\\",\\"constTest\\",\\"additionalProperties\\"].includes(String(key))) continue;
-        if(value instanceof NestedTest) {
+        if(value && typeof value === 'object' && 'marshal' in value && typeof value.marshal === 'function') {
           json += \`\\"\${key}\\": \${value.marshal()},\`;
         } else {
           json += \`\\"\${key}\\": \${typeof value === 'number' || typeof value === 'boolean' ? value : JSON.stringify(value)},\`;
