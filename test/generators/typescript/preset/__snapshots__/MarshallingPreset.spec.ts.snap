@@ -1,5 +1,106 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Marshalling preset date unmarshal should convert date-formatted string properties to Date objects in unmarshal 1`] = `
+"class DateTest {
+  private _createdAt: Date;
+  private _birthDate?: Date;
+  private _meetingTime?: Date;
+  private _regularString?: string;
+  private _optionalDate?: Date;
+  private _additionalProperties?: Map<string, any>;
+
+  constructor(input: {
+    createdAt: Date,
+    birthDate?: Date,
+    meetingTime?: Date,
+    regularString?: string,
+    optionalDate?: Date,
+    additionalProperties?: Map<string, any>,
+  }) {
+    this._createdAt = input.createdAt;
+    this._birthDate = input.birthDate;
+    this._meetingTime = input.meetingTime;
+    this._regularString = input.regularString;
+    this._optionalDate = input.optionalDate;
+    this._additionalProperties = input.additionalProperties;
+  }
+
+  get createdAt(): Date { return this._createdAt; }
+  set createdAt(createdAt: Date) { this._createdAt = createdAt; }
+
+  get birthDate(): Date | undefined { return this._birthDate; }
+  set birthDate(birthDate: Date | undefined) { this._birthDate = birthDate; }
+
+  get meetingTime(): Date | undefined { return this._meetingTime; }
+  set meetingTime(meetingTime: Date | undefined) { this._meetingTime = meetingTime; }
+
+  get regularString(): string | undefined { return this._regularString; }
+  set regularString(regularString: string | undefined) { this._regularString = regularString; }
+
+  get optionalDate(): Date | undefined { return this._optionalDate; }
+  set optionalDate(optionalDate: Date | undefined) { this._optionalDate = optionalDate; }
+
+  get additionalProperties(): Map<string, any> | undefined { return this._additionalProperties; }
+  set additionalProperties(additionalProperties: Map<string, any> | undefined) { this._additionalProperties = additionalProperties; }
+
+  public marshal() : string {
+    let json = '{'
+    if(this.createdAt !== undefined) {
+      json += \`\\"createdAt\\": \${typeof this.createdAt === 'number' || typeof this.createdAt === 'boolean' ? this.createdAt : JSON.stringify(this.createdAt)},\`;
+    }
+    if(this.birthDate !== undefined) {
+      json += \`\\"birthDate\\": \${typeof this.birthDate === 'number' || typeof this.birthDate === 'boolean' ? this.birthDate : JSON.stringify(this.birthDate)},\`;
+    }
+    if(this.meetingTime !== undefined) {
+      json += \`\\"meetingTime\\": \${typeof this.meetingTime === 'number' || typeof this.meetingTime === 'boolean' ? this.meetingTime : JSON.stringify(this.meetingTime)},\`;
+    }
+    if(this.regularString !== undefined) {
+      json += \`\\"regularString\\": \${typeof this.regularString === 'number' || typeof this.regularString === 'boolean' ? this.regularString : JSON.stringify(this.regularString)},\`;
+    }
+    if(this.optionalDate !== undefined) {
+      json += \`\\"optionalDate\\": \${typeof this.optionalDate === 'number' || typeof this.optionalDate === 'boolean' ? this.optionalDate : JSON.stringify(this.optionalDate)},\`;
+    }
+    if(this.additionalProperties !== undefined) { 
+      for (const [key, value] of this.additionalProperties.entries()) {
+        //Only unwrap those that are not already a property in the JSON object
+        if([\\"createdAt\\",\\"birthDate\\",\\"meetingTime\\",\\"regularString\\",\\"optionalDate\\",\\"additionalProperties\\"].includes(String(key))) continue;
+        json += \`\\"\${key}\\": \${typeof value === 'number' || typeof value === 'boolean' ? value : JSON.stringify(value)},\`;
+      }
+    }
+    //Remove potential last comma 
+    return \`\${json.charAt(json.length-1) === ',' ? json.slice(0, json.length-1) : json}}\`;
+  }
+
+  public static unmarshal(json: string | object): DateTest {
+    const obj = typeof json === \\"object\\" ? json : JSON.parse(json);
+    const instance = new DateTest({} as any);
+
+    if (obj[\\"createdAt\\"] !== undefined) {
+      instance.createdAt = obj[\\"createdAt\\"] == null ? null : new Date(obj[\\"createdAt\\"]);
+    }
+    if (obj[\\"birthDate\\"] !== undefined) {
+      instance.birthDate = obj[\\"birthDate\\"] == null ? null : new Date(obj[\\"birthDate\\"]);
+    }
+    if (obj[\\"meetingTime\\"] !== undefined) {
+      instance.meetingTime = obj[\\"meetingTime\\"] == null ? null : new Date(obj[\\"meetingTime\\"]);
+    }
+    if (obj[\\"regularString\\"] !== undefined) {
+      instance.regularString = obj[\\"regularString\\"];
+    }
+    if (obj[\\"optionalDate\\"] !== undefined) {
+      instance.optionalDate = obj[\\"optionalDate\\"] == null ? null : new Date(obj[\\"optionalDate\\"]);
+    }
+  
+    instance.additionalProperties = new Map();
+    const propsToCheck = Object.entries(obj).filter((([key,]) => {return ![\\"createdAt\\",\\"birthDate\\",\\"meetingTime\\",\\"regularString\\",\\"optionalDate\\",\\"additionalProperties\\"].includes(key);}));
+    for (const [key, value] of propsToCheck) {
+      instance.additionalProperties.set(key, value as any);
+    }
+    return instance;
+  }
+}"
+`;
+
 exports[`Marshalling preset should render un/marshal code 1`] = `
 "class Test {
   private _stringProp: string;

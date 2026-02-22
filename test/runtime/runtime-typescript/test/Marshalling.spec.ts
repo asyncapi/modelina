@@ -10,7 +10,7 @@ describe('Marshalling', () => {
       });
       const testObject = new TestObject({
         createdAt: new Date('2023-01-01T10:00:00Z'),
-        stringType: 'test', 
+        stringType: 'test',
         numberType: 1,
         booleanType: true,
         arrayType: [1, 'test'],
@@ -30,6 +30,26 @@ describe('Marshalling', () => {
         const serialized = testObject.marshal();
         const newAddress = TestObject.unmarshal(serialized);
         expect(serialized).toEqual(newAddress.marshal());
+      });
+
+      test('unmarshal should convert date-formatted strings to Date objects', () => {
+        const serialized = testObject.marshal();
+        const unmarshalled = TestObject.unmarshal(serialized);
+
+        // Verify the createdAt property is a Date object, not a string
+        expect(unmarshalled.createdAt).toBeInstanceOf(Date);
+
+        // Verify the Date value is correct
+        expect(unmarshalled.createdAt?.toISOString()).toBe('2023-01-01T10:00:00.000Z');
+      });
+
+      test('unmarshal should handle null date values gracefully', () => {
+        // Create a JSON string with null createdAt
+        const jsonWithNullDate = '{"string_type": "test", "createdAt": null, "boolean_type": true}';
+        const unmarshalled = TestObject.unmarshal(jsonWithNullDate);
+
+        // Should be null, not Invalid Date
+        expect(unmarshalled.createdAt).toBeNull();
       });
     })
   });

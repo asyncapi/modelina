@@ -8,6 +8,7 @@ import {
   ConstrainedObjectModel,
   ConstrainedObjectPropertyModel,
   ConstrainedReferenceModel,
+  ConstrainedStringModel,
   ConstrainedUnionModel
 } from '../../../../models';
 
@@ -34,6 +35,15 @@ function renderUnmarshalProperty(
     return `${modelInstanceVariable} == null
     ? null
     : ${modelInstanceVariable}.map((item: any) => ${model.valueModel.type}.unmarshal(item))`;
+  }
+
+  // Date-typed properties need string→Date conversion
+  if (
+    model instanceof ConstrainedStringModel &&
+    ['date', 'date-time', 'time'].includes(model.options?.format ?? '')
+  ) {
+    // Null check prevents new Date(null) → epoch date
+    return `${modelInstanceVariable} == null ? null : new Date(${modelInstanceVariable})`;
   }
 
   return `${modelInstanceVariable}`;
