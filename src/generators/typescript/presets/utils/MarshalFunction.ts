@@ -28,7 +28,8 @@ function renderMarshalProperty(
     model instanceof ConstrainedReferenceModel &&
     !(model.ref instanceof ConstrainedEnumModel)
   ) {
-    return `$\{${modelInstanceVariable}.marshal()}`;
+    // Runtime check for .marshal() method to handle plain objects passed to constructor
+    return `$\{${modelInstanceVariable} && typeof ${modelInstanceVariable} === 'object' && 'marshal' in ${modelInstanceVariable} && typeof ${modelInstanceVariable}.marshal === 'function' ? ${modelInstanceVariable}.marshal() : JSON.stringify(${modelInstanceVariable})}`;
   }
 
   return realizePropertyFactory(modelInstanceVariable);
@@ -82,7 +83,8 @@ function renderUnionSerializationArray(
   const hasUnionReference = allUnionReferences.length > 0;
   let unionSerialization = `${propName}.push(typeof unionItem === 'number' || typeof unionItem === 'boolean' ? unionItem : JSON.stringify(unionItem))`;
   if (hasUnionReference) {
-    unionSerialization = `if(${allUnionReferencesCondition}) {
+    // Runtime check for .marshal() method to handle plain objects
+    unionSerialization = `if(unionItem && typeof unionItem === 'object' && 'marshal' in unionItem && typeof unionItem.marshal === 'function') {
       ${propName}.push(unionItem.marshal());
     } else {
       ${propName}.push(typeof unionItem === 'number' || typeof unionItem === 'boolean' ? unionItem : JSON.stringify(unionItem))
@@ -136,7 +138,8 @@ function renderUnionSerialization(
   const allUnionReferencesCondition = allUnionReferences.join(' || ');
   const hasUnionReference = allUnionReferences.length > 0;
   if (hasUnionReference) {
-    return `if(${allUnionReferencesCondition}) {
+    // Runtime check for .marshal() method to handle plain objects
+    return `if(${modelInstanceVariable} && typeof ${modelInstanceVariable} === 'object' && 'marshal' in ${modelInstanceVariable} && typeof ${modelInstanceVariable}.marshal === 'function') {
       json += \`"${unconstrainedProperty}": $\{${modelInstanceVariable}.marshal()},\`;
     } else {
       json += \`"${unconstrainedProperty}": ${realizePropertyFactory(
