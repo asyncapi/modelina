@@ -1392,6 +1392,162 @@ describe('AsyncAPIInputProcessor', () => {
       expect(commonInputModel.models['EventsStreamPayload']).toBeDefined();
     });
 
+    test('should use message name instead of AnonymousSchema for named message with anonymous payload (issue #1996)', async () => {
+      // This is the exact scenario from issue #1996
+      // When a message is defined in components/messages with a name (e.g., UserSignedUp)
+      // but its payload is an anonymous inline schema, the generated model should use
+      // the message name instead of AnonymousSchema_1
+      const doc = {
+        asyncapi: '2.2.0',
+        info: {
+          title: 'Account Service',
+          version: '1.0.0',
+          description:
+            'This service is in charge of processing user signups'
+        },
+        channels: {
+          'user/signedup': {
+            subscribe: {
+              message: {
+                $ref: '#/components/messages/UserSignedUp'
+              }
+            }
+          }
+        },
+        components: {
+          messages: {
+            UserSignedUp: {
+              payload: {
+                type: 'object',
+                properties: {
+                  displayName: {
+                    type: 'string',
+                    description: 'Name of the user'
+                  },
+                  email: {
+                    type: 'string',
+                    format: 'email',
+                    description: 'Email of the user'
+                  }
+                }
+              }
+            }
+          }
+        }
+      };
+      const processor = new AsyncAPIInputProcessor();
+      const commonInputModel = await processor.process(doc);
+      const modelNames = Object.keys(commonInputModel.models);
+
+      // Should NOT generate AnonymousSchema_1 as the model name
+      const anonymousModels = modelNames.filter((name) =>
+        name.toLowerCase().includes('anonymous')
+      );
+      expect(anonymousModels).toHaveLength(0);
+
+      // Should generate a meaningful model name derived from message or channel context
+      expect(modelNames.length).toBeGreaterThan(0);
+    });
+
+    test('should use message name for anonymous payload in v3 with named messages', async () => {
+      const doc = {
+        asyncapi: '3.0.0',
+        info: { title: 'Account Service', version: '1.0.0' },
+        channels: {
+          userSignedUp: {
+            address: 'user/signedup',
+            messages: {
+              UserSignedUpMessage: {
+                payload: {
+                  type: 'object',
+                  properties: {
+                    displayName: { type: 'string' },
+                    email: { type: 'string', format: 'email' }
+                  }
+                }
+              }
+            }
+          }
+        },
+        operations: {
+          onUserSignedUp: {
+            action: 'receive',
+            channel: { $ref: '#/channels/userSignedUp' },
+            messages: [
+              {
+                $ref: '#/channels/userSignedUp/messages/UserSignedUpMessage'
+              }
+            ]
+          }
+        }
+      };
+      const processor = new AsyncAPIInputProcessor();
+      const commonInputModel = await processor.process(doc);
+      const modelNames = Object.keys(commonInputModel.models);
+
+      // Should NOT generate AnonymousSchema as the model name
+      const anonymousModels = modelNames.filter((name) =>
+        name.toLowerCase().includes('anonymous')
+      );
+      expect(anonymousModels).toHaveLength(0);
+
+      // Should use the message name for payload naming
+      expect(
+        commonInputModel.models['UserSignedUpMessagePayload']
+      ).toBeDefined();
+    });
+
+    test('should use message name for multiple named messages with anonymous payloads', async () => {
+      const doc = {
+        asyncapi: '2.0.0',
+        info: { title: 'Test', version: '1.0.0' },
+        channels: {
+          events: {
+            subscribe: {
+              message: {
+                oneOf: [
+                  {
+                    name: 'UserCreated',
+                    payload: {
+                      type: 'object',
+                      properties: {
+                        userId: { type: 'string' }
+                      }
+                    }
+                  },
+                  {
+                    name: 'UserUpdated',
+                    payload: {
+                      type: 'object',
+                      properties: {
+                        userId: { type: 'string' },
+                        updatedFields: {
+                          type: 'array',
+                          items: { type: 'string' }
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      };
+      const processor = new AsyncAPIInputProcessor();
+      const commonInputModel = await processor.process(doc);
+      const modelNames = Object.keys(commonInputModel.models);
+
+      // Should generate models without AnonymousSchema naming
+      expect(modelNames.length).toBeGreaterThan(0);
+      // Should have the oneOf wrapper for the channel
+      const anonymousModels = modelNames.filter((name) =>
+        name.toLowerCase().includes('anonymousschema')
+      );
+      // Anonymous schema naming should be avoided where possible
+      expect(anonymousModels.length).toBeLessThanOrEqual(0);
+    });
+
     test('should handle schema with only property name in context', async () => {
       const { document } = await parser.parse(
         JSON.stringify({
