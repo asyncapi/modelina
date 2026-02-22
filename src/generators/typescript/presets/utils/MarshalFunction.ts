@@ -79,7 +79,6 @@ function renderUnionSerializationArray(
     .map((model) => {
       return `unionItem instanceof ${model.type}`;
     });
-  const allUnionReferencesCondition = allUnionReferences.join(' || ');
   const hasUnionReference = allUnionReferences.length > 0;
   let unionSerialization = `${propName}.push(typeof unionItem === 'number' || typeof unionItem === 'boolean' ? unionItem : JSON.stringify(unionItem))`;
   if (hasUnionReference) {
@@ -135,7 +134,6 @@ function renderUnionSerialization(
     .map((model) => {
       return `${modelInstanceVariable} instanceof ${model.type}`;
     });
-  const allUnionReferencesCondition = allUnionReferences.join(' || ');
   const hasUnionReference = allUnionReferences.length > 0;
   if (hasUnionReference) {
     // Runtime check for .marshal() method to handle plain objects
