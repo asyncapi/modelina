@@ -15,8 +15,11 @@ function prepareContent(content) {
   // Replace all relative links with .md (./readme.md) to pure names (./readme)
   content = content.replace(/\]\(\.\/(.*?).md\)/g, '](/docs/$1)');
   
-  // Use absolute links for anything relative and non-markdown related
-  content = content.replace(/\]\((\.(.*?))\)/g, '](https://github.com/asyncapi/modelina/blob/master/docs/.$2)');
+  // Handle ../ links specifically to resolve them correctly to GitHub URLs
+  content = content.replace(/\]\(\.\.\/(.*?\.md[^)]*)\)/g, '](https://github.com/asyncapi/modelina/blob/master/docs/$1)');
+  
+  // Convert relative non-markdown links (like PDFs, CSS) to GitHub URLs
+  content = content.replace(/\]\((\.(?!.*?\.md)(.*?))\)/g, '](https://github.com/asyncapi/modelina/blob/master/docs/.$2)');
   
   // Replace all relative links with README (./README) to  (./)
   content = content.replace(/\]\(\.\/(.*?)README\)/g, '](./$1)');
@@ -38,14 +41,14 @@ function prepareContent(content) {
  */
 async function buildDocsTree(rootPath) {
   if (!rootPath) return undefined;
-  let slug = rootPath.replace(MODELINA_ROOT_PATH, '').toLowerCase().replace('/docs/', '');
+  let slug = rootPath.replace(MODELINA_ROOT_PATH, '').toLowerCase().replace(/\\/g, '/').replace('/docs/', '');
   if(slug === '/docs') slug = '';
   // Check if rootPath is a file
   const fileStat = await stat(rootPath);
   if (!fileStat.isDirectory()) {
     //Ignore non-markdown and README files
     if(rootPath.endsWith('.md') && !rootPath.includes('README')) {
-      const relativeRootPath = rootPath.split(MODELINA_ROOT_PATH)[1];
+      const relativeRootPath = rootPath.split(MODELINA_ROOT_PATH)[1].replace(/\\/g, '/');
       let title = path.basename(rootPath, '.md');
       title = title.replace(/_/g, ' ');
       title = title.replace(/-/g, ' ');
@@ -88,7 +91,7 @@ async function buildDocsTree(rootPath) {
     if(tree !== undefined) subPaths.push(tree);
   }
   const folderName = path.basename(rootPath);
-  const relativeRootPath = rootPath.split(MODELINA_ROOT_PATH)[1] + '/README.md';
+  const relativeRootPath = rootPath.split(MODELINA_ROOT_PATH)[1].replace(/\\/g, '/') + '/README.md';
   const pascalFolderName = folderName.replace(/(\w)(\w*)/g, function(g0,g1,g2){return g1.toUpperCase() + g2.toLowerCase();});
   return {type: 'dir', fullPath: rootPath, relativeRootPath: relativeRootPath, title: pascalFolderName, slug, subPaths, content: readmeContent};
 }
