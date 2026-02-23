@@ -17,7 +17,8 @@ describe('Named exports', () => {
       additionalProperties: new Map(Object.entries({"test": "test"})),
       enumType: EnumType.CURLYLEFT_QUOTATION_TEST_QUOTATION_COLON_2_CURLYRIGHT,
       tupleType: ['test', 1],
-      unionType: 'test'
+      unionType: 'test',
+      requiredNullableDate: new Date('2023-01-01T00:00:00Z')
     });
     expect(testObject.stringType).toEqual('test');
     expect(testObject.numberType).toEqual(1);
