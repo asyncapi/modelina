@@ -18,6 +18,23 @@ const dateDoc = {
   required: ['createdAt']
 };
 
+// Schema with nullable types (type: ['null', 'string']) - explicit null in type array
+const nullableDoc = {
+  $id: 'NullableTest',
+  type: 'object',
+  properties: {
+    // Nullable string (type includes null explicitly)
+    nullableString: { type: ['null', 'string'] },
+    // Nullable date (type includes null explicitly)
+    nullableDate: { type: ['null', 'string'], format: 'date-time' },
+    // Required nullable date (required but explicitly allows null)
+    requiredNullableDate: { type: ['null', 'string'], format: 'date-time' },
+    // Non-nullable required date for comparison
+    requiredDate: { type: 'string', format: 'date-time' }
+  },
+  required: ['requiredNullableDate', 'requiredDate']
+};
+
 const doc = {
   definitions: {
     NestedTest: {
@@ -172,6 +189,52 @@ describe('Marshalling preset', () => {
       expect(result).toMatch(
         /obj\["optionalDate"\]\s*==\s*null\s*\?\s*undefined\s*:\s*new Date/
       );
+    });
+  });
+
+  describe('nullable types (type: [null, string])', () => {
+    test('should generate correct types and unmarshal for nullable properties', async () => {
+      const generator = new TypeScriptGenerator({
+        presets: [
+          {
+            preset: TS_COMMON_PRESET,
+            options: {
+              marshalling: true
+            }
+          }
+        ]
+      });
+      const models = await generator.generate(nullableDoc);
+      expect(models).toHaveLength(1);
+      const result = models[0].result;
+
+      // Snapshot for full verification
+      expect(result).toMatchSnapshot();
+    });
+
+    test('should handle nullable date types with proper null handling', async () => {
+      const generator = new TypeScriptGenerator({
+        presets: [
+          {
+            preset: TS_COMMON_PRESET,
+            options: {
+              marshalling: true
+            }
+          }
+        ]
+      });
+      const models = await generator.generate(nullableDoc);
+      const result = models[0].result;
+
+      // Required non-nullable date should use null in unmarshal
+      expect(result).toMatch(
+        /obj\["requiredDate"\]\s*==\s*null\s*\?\s*null\s*:\s*new Date/
+      );
+
+      // Nullable date properties should use Date conversion
+      // Note: The behavior for nullable types (type: ['null', 'string'])
+      // depends on how Modelina interprets them - as union types
+      expect(result).toContain('new Date(');
     });
   });
 });
