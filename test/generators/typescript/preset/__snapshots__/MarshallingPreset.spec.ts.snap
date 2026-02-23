@@ -79,16 +79,16 @@ exports[`Marshalling preset date unmarshal should convert date-formatted string 
       instance.createdAt = obj[\\"createdAt\\"] == null ? null : new Date(obj[\\"createdAt\\"]);
     }
     if (obj[\\"birthDate\\"] !== undefined) {
-      instance.birthDate = obj[\\"birthDate\\"] == null ? null : new Date(obj[\\"birthDate\\"]);
+      instance.birthDate = obj[\\"birthDate\\"] == null ? undefined : new Date(obj[\\"birthDate\\"]);
     }
     if (obj[\\"meetingTime\\"] !== undefined) {
-      instance.meetingTime = obj[\\"meetingTime\\"] == null ? null : new Date(obj[\\"meetingTime\\"]);
+      instance.meetingTime = obj[\\"meetingTime\\"] == null ? undefined : new Date(obj[\\"meetingTime\\"]);
     }
     if (obj[\\"regularString\\"] !== undefined) {
       instance.regularString = obj[\\"regularString\\"];
     }
     if (obj[\\"optionalDate\\"] !== undefined) {
-      instance.optionalDate = obj[\\"optionalDate\\"] == null ? null : new Date(obj[\\"optionalDate\\"]);
+      instance.optionalDate = obj[\\"optionalDate\\"] == null ? undefined : new Date(obj[\\"optionalDate\\"]);
     }
   
     instance.additionalProperties = new Map();
@@ -273,7 +273,7 @@ exports[`Marshalling preset should render un/marshal code 1`] = `
     }
     if (obj[\\"arrayTest\\"] !== undefined) {
       instance.arrayTest = obj[\\"arrayTest\\"] == null
-        ? null
+        ? undefined
         : obj[\\"arrayTest\\"].map((item: any) => NestedTest.unmarshal(item));
     }
     if (obj[\\"primitiveArrayTest\\"] !== undefined) {
