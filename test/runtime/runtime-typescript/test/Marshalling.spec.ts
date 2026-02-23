@@ -48,8 +48,9 @@ describe('Marshalling', () => {
         const jsonWithNullDate = '{"string_type": "test", "createdAt": null, "boolean_type": true}';
         const unmarshalled = TestObject.unmarshal(jsonWithNullDate);
 
-        // Should be null, not Invalid Date
-        expect(unmarshalled.createdAt).toBeNull();
+        // Optional properties should return undefined (not null) when JSON value is null
+        // This is type-safe: createdAt is Date | undefined, not Date | null
+        expect(unmarshalled.createdAt).toBeUndefined();
       });
     })
   });
