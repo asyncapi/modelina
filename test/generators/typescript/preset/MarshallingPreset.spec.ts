@@ -147,7 +147,7 @@ describe('Marshalling preset', () => {
       expect(result).toMatchSnapshot();
     });
 
-    test('should handle null/undefined values for date properties', async () => {
+    test('should return null for required date properties, undefined for optional', async () => {
       const generator = new TypeScriptGenerator({
         presets: [
           {
@@ -161,10 +161,16 @@ describe('Marshalling preset', () => {
       const models = await generator.generate(dateDoc);
       const result = models[0].result;
 
-      // Should include null safety check for date conversion
+      // Required property (createdAt) should use null in unmarshal
       // Pattern: value == null ? null : new Date(value)
       expect(result).toMatch(
         /obj\["createdAt"\]\s*==\s*null\s*\?\s*null\s*:\s*new Date/
+      );
+
+      // Optional property (optionalDate) should use undefined in unmarshal
+      // Pattern: value == null ? undefined : new Date(value)
+      expect(result).toMatch(
+        /obj\["optionalDate"\]\s*==\s*null\s*\?\s*undefined\s*:\s*new Date/
       );
     });
   });
