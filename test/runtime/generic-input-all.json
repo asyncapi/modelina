@@ -71,6 +71,20 @@
     },
     "enum_type": {
       "enum": ["test", 1, true, {"test": 2}]
+    },
+    "nullable_string": {
+      "type": ["null", "string"],
+      "description": "Optional nullable string (type includes null explicitly)"
+    },
+    "nullable_date": {
+      "type": ["null", "string"],
+      "format": "date-time",
+      "description": "Optional nullable date (type includes null explicitly)"
+    },
+    "required_nullable_date": {
+      "type": ["null", "string"],
+      "format": "date-time",
+      "description": "Required nullable date (required but explicitly allows null)"
     }
   },
   "patternProperties": {
@@ -78,5 +92,5 @@
       "type": "string"
     }
   },
-  "required": ["string_type", "boolean_type"]
+  "required": ["string_type", "boolean_type", "required_nullable_date"]
 }

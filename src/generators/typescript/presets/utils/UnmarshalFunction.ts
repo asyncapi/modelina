@@ -17,8 +17,10 @@ import {
  */
 function renderUnmarshalProperty(
   modelInstanceVariable: string,
-  model: ConstrainedMetaModel
+  model: ConstrainedMetaModel,
+  isOptional: boolean = false
 ) {
+  const nullValue = isOptional ? 'undefined' : 'null';
   if (
     model instanceof ConstrainedReferenceModel &&
     !(model.ref instanceof ConstrainedEnumModel)
@@ -33,7 +35,7 @@ function renderUnmarshalProperty(
     !(model.valueModel instanceof ConstrainedUnionModel)
   ) {
     return `${modelInstanceVariable} == null
-    ? null
+    ? ${nullValue}
     : ${modelInstanceVariable}.map((item: any) => ${model.valueModel.type}.unmarshal(item))`;
   }
 
@@ -43,7 +45,7 @@ function renderUnmarshalProperty(
     ['date', 'date-time', 'time'].includes(model.options?.format ?? '')
   ) {
     // Null check prevents new Date(null) → epoch date
-    return `${modelInstanceVariable} == null ? null : new Date(${modelInstanceVariable})`;
+    return `${modelInstanceVariable} == null ? ${nullValue} : new Date(${modelInstanceVariable})`;
   }
 
   return `${modelInstanceVariable}`;
@@ -58,9 +60,11 @@ function unmarshalRegularProperty(propModel: ConstrainedObjectPropertyModel) {
   }
 
   const modelInstanceVariable = `obj["${propModel.unconstrainedPropertyName}"]`;
+  const isOptional = propModel.required === false;
   const unmarshalCode = renderUnmarshalProperty(
     modelInstanceVariable,
-    propModel.property
+    propModel.property,
+    isOptional
   );
   return `if (${modelInstanceVariable} !== undefined) {
   instance.${propModel.propertyName} = ${unmarshalCode};
