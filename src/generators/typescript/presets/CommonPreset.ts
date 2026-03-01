@@ -21,10 +21,12 @@ export const TS_COMMON_PRESET: TypeScriptPreset<TypeScriptCommonPresetOptions> =
         const blocks: string[] = [];
 
         if (options.marshalling === true) {
-          blocks.push(renderToJson({ renderer, model }));
-          blocks.push(renderMarshal());
-          blocks.push(renderFromJson({ renderer, model }));
-          blocks.push(renderUnmarshal({ renderer, model }));
+          blocks.push(
+            renderToJson({ renderer, model }), 
+            renderMarshal(),
+            renderFromJson({ renderer, model }),
+            renderUnmarshal({ renderer, model })
+          );
         }
 
         if (options.example === true) {
