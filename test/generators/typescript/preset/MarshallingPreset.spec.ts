@@ -154,8 +154,9 @@ describe('Marshalling preset', () => {
       // Should use new Date() conversion for date format
       expect(result).toContain('new Date(obj["birthDate"])');
 
-      // Should use new Date() conversion for time format
-      expect(result).toContain('new Date(obj["meetingTime"])');
+      // Should NOT use new Date() for time format
+      // time-only strings (e.g., "14:30:00") are not valid Date constructor arguments
+      expect(result).not.toContain('new Date(obj["meetingTime"])');
 
       // Should NOT use new Date() for regular strings
       expect(result).not.toContain('new Date(obj["regularString"])');

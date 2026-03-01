@@ -7,6 +7,7 @@ There are special use-cases that each language supports; this document pertains 
 <!-- toc -->
 
 - [Generate an interface instead of classes](#generate-an-interface-instead-of-classes)
+- [Date and time format mappings](#date-and-time-format-mappings)
 - [Generate different `mapType`s for an `object`](#generate-different-maptypes-for-an-object)
 - [Generate union types instead of enums](#generate-union-types-instead-of-enums)
 - [Generate serializer and deserializer functionality](#generate-serializer-and-deserializer-functionality)
@@ -27,6 +28,27 @@ There are special use-cases that each language supports; this document pertains 
 Sometimes you don't care about classes, but rather have interfaces generated. This can be changed through the `modelType` configuration
 
 Check out this [example out for a live demonstration](../../examples/typescript-interface).
+
+## Date and time format mappings
+
+JSON Schema string properties can specify a `format` keyword to indicate the expected data format. TypeScript maps these formats to appropriate types:
+
+| JSON Schema format | TypeScript type | Notes |
+|--------------------|-----------------|-------|
+| `date-time` | `Date` | ISO 8601 date-time strings (e.g., `"2023-01-01T10:00:00Z"`) |
+| `date` | `Date` | ISO 8601 date strings (e.g., `"2023-01-01"`) |
+| `time` | `string` | Time-only strings (e.g., `"14:30:00"`) |
+| Other formats | `string` | Email, URI, UUID, etc. |
+
+**Why is `time` mapped to `string`?**
+
+Time-only strings like `"14:30:00"` are not valid JavaScript `Date` constructor arguments. Passing them to `new Date()` produces unreliable results (implementation-dependent behavior). Therefore, `format: time` is mapped to `string` to preserve the time value as-is.
+
+When using the marshalling preset, the unmarshal function will:
+- Convert `date-time` and `date` values to `Date` objects using `new Date(value)`
+- Keep `time` values as strings without Date conversion
+
+Check out this [example for a live demonstration of date and time handling](../../examples/typescript-generate-marshalling).
 
 ## Generate different `mapType`s for an `object`
 
