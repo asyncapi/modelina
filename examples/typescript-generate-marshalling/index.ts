@@ -13,13 +13,28 @@ const generator = new TypeScriptGenerator({
 });
 const jsonSchemaDraft7 = {
   $schema: 'http://json-schema.org/draft-07/schema#',
-  $id: 'Test',
+  $id: 'Meeting',
   type: 'object',
   additionalProperties: false,
   properties: {
     email: {
       type: 'string',
       format: 'email'
+    },
+    // date-time and date map to Date type
+    createdAt: {
+      type: 'string',
+      format: 'date-time'
+    },
+    meetingDate: {
+      type: 'string',
+      format: 'date'
+    },
+    // time maps to string (not Date) because time-only strings
+    // like "14:30:00" are not valid Date constructor arguments
+    meetingTime: {
+      type: 'string',
+      format: 'time'
     }
   }
 };

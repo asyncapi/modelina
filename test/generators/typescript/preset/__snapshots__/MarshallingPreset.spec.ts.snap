@@ -4,7 +4,7 @@ exports[`Marshalling preset date unmarshal should convert date-formatted string 
 "class DateTest {
   private _createdAt: Date;
   private _birthDate?: Date;
-  private _meetingTime?: Date;
+  private _meetingTime?: string;
   private _regularString?: string;
   private _optionalDate?: Date;
   private _additionalProperties?: Map<string, any>;
@@ -12,7 +12,7 @@ exports[`Marshalling preset date unmarshal should convert date-formatted string 
   constructor(input: {
     createdAt: Date,
     birthDate?: Date,
-    meetingTime?: Date,
+    meetingTime?: string,
     regularString?: string,
     optionalDate?: Date,
     additionalProperties?: Map<string, any>,
@@ -31,8 +31,8 @@ exports[`Marshalling preset date unmarshal should convert date-formatted string 
   get birthDate(): Date | undefined { return this._birthDate; }
   set birthDate(birthDate: Date | undefined) { this._birthDate = birthDate; }
 
-  get meetingTime(): Date | undefined { return this._meetingTime; }
-  set meetingTime(meetingTime: Date | undefined) { this._meetingTime = meetingTime; }
+  get meetingTime(): string | undefined { return this._meetingTime; }
+  set meetingTime(meetingTime: string | undefined) { this._meetingTime = meetingTime; }
 
   get regularString(): string | undefined { return this._regularString; }
   set regularString(regularString: string | undefined) { this._regularString = regularString; }
@@ -82,7 +82,7 @@ exports[`Marshalling preset date unmarshal should convert date-formatted string 
       instance.birthDate = obj[\\"birthDate\\"] == null ? undefined : new Date(obj[\\"birthDate\\"]);
     }
     if (obj[\\"meetingTime\\"] !== undefined) {
-      instance.meetingTime = obj[\\"meetingTime\\"] == null ? undefined : new Date(obj[\\"meetingTime\\"]);
+      instance.meetingTime = obj[\\"meetingTime\\"];
     }
     if (obj[\\"regularString\\"] !== undefined) {
       instance.regularString = obj[\\"regularString\\"];

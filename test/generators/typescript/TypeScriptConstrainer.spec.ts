@@ -88,6 +88,53 @@ describe('TypeScriptConstrainer', () => {
       });
       expect(type).toEqual('string');
     });
+
+    test('should render Date type for format: date-time', () => {
+      const model = new ConstrainedStringModel(
+        'test',
+        undefined,
+        { format: 'date-time' },
+        ''
+      );
+      const type = TypeScriptDefaultTypeMapping.String({
+        constrainedModel: model,
+        options: TypeScriptGenerator.defaultOptions,
+        dependencyManager: undefined as never
+      });
+      expect(type).toEqual('Date');
+    });
+
+    test('should render Date type for format: date', () => {
+      const model = new ConstrainedStringModel(
+        'test',
+        undefined,
+        { format: 'date' },
+        ''
+      );
+      const type = TypeScriptDefaultTypeMapping.String({
+        constrainedModel: model,
+        options: TypeScriptGenerator.defaultOptions,
+        dependencyManager: undefined as never
+      });
+      expect(type).toEqual('Date');
+    });
+
+    test('should render string type for format: time', () => {
+      // time-only strings (e.g., "14:30:00") are not valid Date constructor arguments
+      // so format: time should map to string, not Date
+      const model = new ConstrainedStringModel(
+        'test',
+        undefined,
+        { format: 'time' },
+        ''
+      );
+      const type = TypeScriptDefaultTypeMapping.String({
+        constrainedModel: model,
+        options: TypeScriptGenerator.defaultOptions,
+        dependencyManager: undefined as never
+      });
+      expect(type).toEqual('string');
+    });
   });
   describe('Boolean', () => {
     test('should render type', () => {

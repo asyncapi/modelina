@@ -40,9 +40,10 @@ function renderUnmarshalProperty(
   }
 
   // Date-typed properties need string→Date conversion
+  // Note: 'time' is excluded - time-only strings (e.g., "14:30:00") are not valid Date constructor arguments
   if (
     model instanceof ConstrainedStringModel &&
-    ['date', 'date-time', 'time'].includes(model.options?.format ?? '')
+    ['date', 'date-time'].includes(model.options?.format ?? '')
   ) {
     // Null check prevents new Date(null) → epoch date
     return `${modelInstanceVariable} == null ? ${nullValue} : new Date(${modelInstanceVariable})`;
