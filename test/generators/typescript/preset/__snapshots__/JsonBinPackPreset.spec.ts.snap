@@ -19,36 +19,43 @@ exports[`JsonBinPack preset should work fine with AsyncAPI inputs 1`] = `
   get additionalProperties(): Map<string, any> | undefined { return this._additionalProperties; }
   set additionalProperties(additionalProperties: Map<string, any> | undefined) { this._additionalProperties = additionalProperties; }
 
-  public marshal() : string {
-    let json = '{'
+  public toJson(): Record<string, unknown> {
+    const json: Record<string, unknown> = {};
     if(this.email !== undefined) {
-      json += \`\\"email\\": \${typeof this.email === 'number' || typeof this.email === 'boolean' ? this.email : JSON.stringify(this.email)},\`;
+      json[\\"email\\"] = this.email;
     }
-    if(this.additionalProperties !== undefined) { 
+    if(this.additionalProperties !== undefined) {
       for (const [key, value] of this.additionalProperties.entries()) {
         //Only unwrap those that are not already a property in the JSON object
         if([\\"email\\",\\"additionalProperties\\"].includes(String(key))) continue;
-        json += \`\\"\${key}\\": \${typeof value === 'number' || typeof value === 'boolean' ? value : JSON.stringify(value)},\`;
+        json[key] = value;
       }
     }
-    //Remove potential last comma 
-    return \`\${json.charAt(json.length-1) === ',' ? json.slice(0, json.length-1) : json}}\`;
+    return json;
   }
 
-  public static unmarshal(json: string | object): UserSignedupPayload {
-    const obj = typeof json === \\"object\\" ? json : JSON.parse(json);
+  public marshal(): string {
+    return JSON.stringify(this.toJson());
+  }
+
+  public static fromJson(obj: Record<string, unknown>): UserSignedupPayload {
     const instance = new UserSignedupPayload({} as any);
 
     if (obj[\\"email\\"] !== undefined) {
       instance.email = obj[\\"email\\"];
     }
-  
+
     instance.additionalProperties = new Map();
     const propsToCheck = Object.entries(obj).filter((([key,]) => {return ![\\"email\\",\\"additionalProperties\\"].includes(key);}));
     for (const [key, value] of propsToCheck) {
-      instance.additionalProperties.set(key, value as any);
+      instance.additionalProperties.set(key, value);
     }
     return instance;
+  }
+
+  public static unmarshal(json: string | object): UserSignedupPayload {
+    const obj = typeof json === \\"object\\" ? json : JSON.parse(json);
+    return UserSignedupPayload.fromJson(obj as Record<string, unknown>);
   }
   public async jsonbinSerialize(): Promise<Buffer>{
     const jsonData = JSON.parse(this.marshal());
@@ -83,36 +90,43 @@ exports[`JsonBinPack preset should work fine with JSON Schema draft 4 1`] = `
   get additionalProperties(): Map<string, any> | undefined { return this._additionalProperties; }
   set additionalProperties(additionalProperties: Map<string, any> | undefined) { this._additionalProperties = additionalProperties; }
 
-  public marshal() : string {
-    let json = '{'
+  public toJson(): Record<string, unknown> {
+    const json: Record<string, unknown> = {};
     if(this.email !== undefined) {
-      json += \`\\"email\\": \${typeof this.email === 'number' || typeof this.email === 'boolean' ? this.email : JSON.stringify(this.email)},\`;
+      json[\\"email\\"] = this.email;
     }
-    if(this.additionalProperties !== undefined) { 
+    if(this.additionalProperties !== undefined) {
       for (const [key, value] of this.additionalProperties.entries()) {
         //Only unwrap those that are not already a property in the JSON object
         if([\\"email\\",\\"additionalProperties\\"].includes(String(key))) continue;
-        json += \`\\"\${key}\\": \${typeof value === 'number' || typeof value === 'boolean' ? value : JSON.stringify(value)},\`;
+        json[key] = value;
       }
     }
-    //Remove potential last comma 
-    return \`\${json.charAt(json.length-1) === ',' ? json.slice(0, json.length-1) : json}}\`;
+    return json;
   }
 
-  public static unmarshal(json: string | object): Root {
-    const obj = typeof json === \\"object\\" ? json : JSON.parse(json);
+  public marshal(): string {
+    return JSON.stringify(this.toJson());
+  }
+
+  public static fromJson(obj: Record<string, unknown>): Root {
     const instance = new Root({} as any);
 
     if (obj[\\"email\\"] !== undefined) {
       instance.email = obj[\\"email\\"];
     }
-  
+
     instance.additionalProperties = new Map();
     const propsToCheck = Object.entries(obj).filter((([key,]) => {return ![\\"email\\",\\"additionalProperties\\"].includes(key);}));
     for (const [key, value] of propsToCheck) {
-      instance.additionalProperties.set(key, value as any);
+      instance.additionalProperties.set(key, value);
     }
     return instance;
+  }
+
+  public static unmarshal(json: string | object): Root {
+    const obj = typeof json === \\"object\\" ? json : JSON.parse(json);
+    return Root.fromJson(obj as Record<string, unknown>);
   }
   public async jsonbinSerialize(): Promise<Buffer>{
     const jsonData = JSON.parse(this.marshal());
@@ -147,36 +161,43 @@ exports[`JsonBinPack preset should work fine with JSON Schema draft 6 1`] = `
   get additionalProperties(): Map<string, any> | undefined { return this._additionalProperties; }
   set additionalProperties(additionalProperties: Map<string, any> | undefined) { this._additionalProperties = additionalProperties; }
 
-  public marshal() : string {
-    let json = '{'
+  public toJson(): Record<string, unknown> {
+    const json: Record<string, unknown> = {};
     if(this.email !== undefined) {
-      json += \`\\"email\\": \${typeof this.email === 'number' || typeof this.email === 'boolean' ? this.email : JSON.stringify(this.email)},\`;
+      json[\\"email\\"] = this.email;
     }
-    if(this.additionalProperties !== undefined) { 
+    if(this.additionalProperties !== undefined) {
       for (const [key, value] of this.additionalProperties.entries()) {
         //Only unwrap those that are not already a property in the JSON object
         if([\\"email\\",\\"additionalProperties\\"].includes(String(key))) continue;
-        json += \`\\"\${key}\\": \${typeof value === 'number' || typeof value === 'boolean' ? value : JSON.stringify(value)},\`;
+        json[key] = value;
       }
     }
-    //Remove potential last comma 
-    return \`\${json.charAt(json.length-1) === ',' ? json.slice(0, json.length-1) : json}}\`;
+    return json;
   }
 
-  public static unmarshal(json: string | object): Root {
-    const obj = typeof json === \\"object\\" ? json : JSON.parse(json);
+  public marshal(): string {
+    return JSON.stringify(this.toJson());
+  }
+
+  public static fromJson(obj: Record<string, unknown>): Root {
     const instance = new Root({} as any);
 
     if (obj[\\"email\\"] !== undefined) {
       instance.email = obj[\\"email\\"];
     }
-  
+
     instance.additionalProperties = new Map();
     const propsToCheck = Object.entries(obj).filter((([key,]) => {return ![\\"email\\",\\"additionalProperties\\"].includes(key);}));
     for (const [key, value] of propsToCheck) {
-      instance.additionalProperties.set(key, value as any);
+      instance.additionalProperties.set(key, value);
     }
     return instance;
+  }
+
+  public static unmarshal(json: string | object): Root {
+    const obj = typeof json === \\"object\\" ? json : JSON.parse(json);
+    return Root.fromJson(obj as Record<string, unknown>);
   }
   public async jsonbinSerialize(): Promise<Buffer>{
     const jsonData = JSON.parse(this.marshal());

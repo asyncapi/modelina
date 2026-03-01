@@ -14,26 +14,33 @@ Array [
   get email(): string | undefined { return this._email; }
   set email(email: string | undefined) { this._email = email; }
 
-  public marshal() : string {
-    let json = '{'
+  public toJson(): Record<string, unknown> {
+    const json: Record<string, unknown> = {};
     if(this.email !== undefined) {
-      json += \`\\"email\\": \${typeof this.email === 'number' || typeof this.email === 'boolean' ? this.email : JSON.stringify(this.email)},\`;
+      json[\\"email\\"] = this.email;
     }
   
-    //Remove potential last comma 
-    return \`\${json.charAt(json.length-1) === ',' ? json.slice(0, json.length-1) : json}}\`;
+    return json;
   }
 
-  public static unmarshal(json: string | object): Test {
-    const obj = typeof json === \\"object\\" ? json : JSON.parse(json);
+  public marshal(): string {
+    return JSON.stringify(this.toJson());
+  }
+
+  public static fromJson(obj: Record<string, unknown>): Test {
     const instance = new Test({} as any);
 
     if (obj[\\"email\\"] !== undefined) {
       instance.email = obj[\\"email\\"];
     }
-  
+
   
     return instance;
+  }
+
+  public static unmarshal(json: string | object): Test {
+    const obj = typeof json === \\"object\\" ? json : JSON.parse(json);
+    return Test.fromJson(obj as Record<string, unknown>);
   }
   public async jsonbinSerialize(): Promise<Buffer>{
     const jsonData = JSON.parse(this.marshal());

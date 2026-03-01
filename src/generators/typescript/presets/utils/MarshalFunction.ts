@@ -16,233 +16,221 @@ import {
   ConstrainedUnionModel
 } from '../../../../models';
 
-function realizePropertyFactory(prop: string) {
-  return `$\{typeof ${prop} === 'number' || typeof ${prop} === 'boolean' ? ${prop} : JSON.stringify(${prop})}`;
-}
-
-function renderMarshalProperty(
+/**
+ * Render toJson property conversion - returns the value to assign to the JSON object property
+ */
+function renderToJsonProperty(
   modelInstanceVariable: string,
   model: ConstrainedMetaModel
-) {
+): string {
   if (
     model instanceof ConstrainedReferenceModel &&
     !(model.ref instanceof ConstrainedEnumModel)
   ) {
-    // Runtime check for .marshal() method to handle plain objects passed to constructor
-    return `$\{${modelInstanceVariable} && typeof ${modelInstanceVariable} === 'object' && 'marshal' in ${modelInstanceVariable} && typeof ${modelInstanceVariable}.marshal === 'function' ? ${modelInstanceVariable}.marshal() : JSON.stringify(${modelInstanceVariable})}`;
+    // Runtime check for .toJson() method to handle plain objects passed to constructor
+    return `${modelInstanceVariable} && typeof ${modelInstanceVariable} === 'object' && 'toJson' in ${modelInstanceVariable} && typeof ${modelInstanceVariable}.toJson === 'function' ? ${modelInstanceVariable}.toJson() : ${modelInstanceVariable}`;
   }
 
-  return realizePropertyFactory(modelInstanceVariable);
+  return modelInstanceVariable;
 }
 
 /**
- * Render marshalling logic for tuples
+ * Render `marshal` function based on model - delegates to toJson()
  */
-function renderTupleSerialization(
+export function renderMarshal(): string {
+  return `public marshal(): string {
+  return JSON.stringify(this.toJson());
+}`;
+}
+
+/**
+ * Render toJson logic for tuples - returns array with converted values
+ */
+function renderToJsonTuple(
   modelInstanceVariable: string,
   unconstrainedProperty: string,
   tuple: ConstrainedTupleModel
-) {
-  const t = tuple.tuple.map((tupleEntry) => {
-    const temp = renderMarshalProperty(
-      `${modelInstanceVariable}[${tupleEntry.index}]`,
-      tupleEntry.value
-    );
-    return `if(${modelInstanceVariable}[${tupleEntry.index}]) {
-  serializedTuple[${tupleEntry.index}] = \`${temp}\`
-} else {
-  serializedTuple[${tupleEntry.index}] = null;
-}`;
+): string {
+  const tupleAssignments = tuple.tuple.map((tupleEntry) => {
+    const itemVar = `${modelInstanceVariable}[${tupleEntry.index}]`;
+    const itemConversion = renderToJsonProperty(itemVar, tupleEntry.value);
+    return `${itemVar} !== undefined ? ${itemConversion} : null`;
   });
-  return `const serializedTuple: any[] = [];
-${t.join('\n')}
-json += \`"${unconstrainedProperty}": [\${serializedTuple.join(',')}],\`;`;
+  return `json["${unconstrainedProperty}"] = [${tupleAssignments.join(', ')}];`;
 }
 
 /**
- * Render marshalling logic for unions
+ * Render toJson logic for arrays of unions
  */
-function renderUnionSerializationArray(
+function renderToJsonUnionArray(
   modelInstanceVariable: string,
-  prop: string,
   unconstrainedProperty: string,
   unionModel: ConstrainedUnionModel
-) {
-  const propName = `${prop}JsonValues`;
-  const allUnionReferences = unionModel.union
-    .filter((model) => {
-      return (
-        model instanceof ConstrainedReferenceModel &&
-        !(model.ref instanceof ConstrainedEnumModel)
-      );
-    })
-    .map((model) => {
-      return `unionItem instanceof ${model.type}`;
-    });
-  const hasUnionReference = allUnionReferences.length > 0;
-  let unionSerialization = `${propName}.push(typeof unionItem === 'number' || typeof unionItem === 'boolean' ? unionItem : JSON.stringify(unionItem))`;
+): string {
+  const hasUnionReference = unionModel.union.some(
+    (model) =>
+      model instanceof ConstrainedReferenceModel &&
+      !(model.ref instanceof ConstrainedEnumModel)
+  );
+
   if (hasUnionReference) {
-    // Runtime check for .marshal() method to handle plain objects
-    unionSerialization = `if(unionItem && typeof unionItem === 'object' && 'marshal' in unionItem && typeof unionItem.marshal === 'function') {
-      ${propName}.push(unionItem.marshal());
-    } else {
-      ${propName}.push(typeof unionItem === 'number' || typeof unionItem === 'boolean' ? unionItem : JSON.stringify(unionItem))
-    }`;
+    return `json["${unconstrainedProperty}"] = ${modelInstanceVariable}.map((item: any) =>
+    item && typeof item === 'object' && 'toJson' in item && typeof item.toJson === 'function'
+      ? item.toJson()
+      : item
+  );`;
   }
-  return `const ${propName}: any[] = [];
-  for (const unionItem of ${modelInstanceVariable}) {
-    ${unionSerialization}
-  }
-  json += \`"${unconstrainedProperty}": [\${${propName}.join(',')}],\`;`;
+
+  return `json["${unconstrainedProperty}"] = ${modelInstanceVariable};`;
 }
 
 /**
- * Render marshalling logic for Arrays
+ * Render toJson logic for arrays
  */
-function renderArraySerialization(
+function renderToJsonArray(
   modelInstanceVariable: string,
-  prop: string,
   unconstrainedProperty: string,
   arrayModel: ConstrainedArrayModel
-) {
-  const propName = `${prop}JsonValues`;
-  return `let ${propName}: any[] = [];
-  for (const unionItem of ${modelInstanceVariable}) {
-    ${propName}.push(\`${renderMarshalProperty(
-      'unionItem',
-      arrayModel.valueModel
-    )}\`);
+): string {
+  if (
+    arrayModel.valueModel instanceof ConstrainedReferenceModel &&
+    !(arrayModel.valueModel.ref instanceof ConstrainedEnumModel)
+  ) {
+    return `json["${unconstrainedProperty}"] = ${modelInstanceVariable}.map((item: any) =>
+    item && typeof item === 'object' && 'toJson' in item && typeof item.toJson === 'function'
+      ? item.toJson()
+      : item
+  );`;
   }
-  json += \`"${unconstrainedProperty}": [\${${propName}.join(',')}],\`;`;
+
+  return `json["${unconstrainedProperty}"] = ${modelInstanceVariable};`;
 }
 
 /**
- * Render marshalling logic for unions
+ * Render toJson logic for unions
  */
-function renderUnionSerialization(
+function renderToJsonUnion(
   modelInstanceVariable: string,
   unconstrainedProperty: string,
   unionModel: ConstrainedUnionModel
-) {
-  const allUnionReferences = unionModel.union
-    .filter((model) => {
-      return (
-        model instanceof ConstrainedReferenceModel &&
-        !(model.ref instanceof ConstrainedEnumModel)
-      );
-    })
-    .map((model) => {
-      return `${modelInstanceVariable} instanceof ${model.type}`;
-    });
-  const hasUnionReference = allUnionReferences.length > 0;
+): string {
+  const hasUnionReference = unionModel.union.some(
+    (model) =>
+      model instanceof ConstrainedReferenceModel &&
+      !(model.ref instanceof ConstrainedEnumModel)
+  );
+
   if (hasUnionReference) {
-    // Runtime check for .marshal() method to handle plain objects
-    return `if(${modelInstanceVariable} && typeof ${modelInstanceVariable} === 'object' && 'marshal' in ${modelInstanceVariable} && typeof ${modelInstanceVariable}.marshal === 'function') {
-      json += \`"${unconstrainedProperty}": $\{${modelInstanceVariable}.marshal()},\`;
-    } else {
-      json += \`"${unconstrainedProperty}": ${realizePropertyFactory(
-        modelInstanceVariable
-      )},\`;
-    }`;
+    return `if(${modelInstanceVariable} && typeof ${modelInstanceVariable} === 'object' && 'toJson' in ${modelInstanceVariable} && typeof ${modelInstanceVariable}.toJson === 'function') {
+    json["${unconstrainedProperty}"] = ${modelInstanceVariable}.toJson();
+  } else {
+    json["${unconstrainedProperty}"] = ${modelInstanceVariable};
+  }`;
   }
-  return `json += \`"${unconstrainedProperty}": ${realizePropertyFactory(
-    modelInstanceVariable
-  )},\`;`;
+
+  return `json["${unconstrainedProperty}"] = ${modelInstanceVariable};`;
 }
 
 /**
- * Render marshalling logic for dictionary types
+ * Render toJson logic for dictionary types (additionalProperties)
  */
-function renderDictionarySerialization(
+function renderToJsonDictionary(
   properties: Record<string, ConstrainedObjectPropertyModel>
-) {
+): string[] {
   const unwrapDictionaryProperties = getDictionary(properties);
   const originalPropertyNames = getOriginalPropertyList(properties);
+
   return unwrapDictionaryProperties.map(([prop, propModel]) => {
-    let dictionaryValueType;
-    if (
-      (propModel.property as ConstrainedDictionaryModel).value instanceof
-      ConstrainedUnionModel
-    ) {
-      dictionaryValueType = renderUnionSerialization(
-        'value',
-        '${key}',
-        (propModel.property as ConstrainedDictionaryModel)
-          .value as ConstrainedUnionModel
+    const dictValue = (propModel.property as ConstrainedDictionaryModel).value;
+    let valueConversion: string;
+
+    if (dictValue instanceof ConstrainedUnionModel) {
+      const hasUnionReference = dictValue.union.some(
+        (model) =>
+          model instanceof ConstrainedReferenceModel &&
+          !(model.ref instanceof ConstrainedEnumModel)
       );
+      if (hasUnionReference) {
+        valueConversion = `value && typeof value === 'object' && 'toJson' in value && typeof value.toJson === 'function' ? value.toJson() : value`;
+      } else {
+        valueConversion = 'value';
+      }
+    } else if (
+      dictValue instanceof ConstrainedReferenceModel &&
+      !(dictValue.ref instanceof ConstrainedEnumModel)
+    ) {
+      valueConversion = `value && typeof value === 'object' && 'toJson' in value && typeof value.toJson === 'function' ? value.toJson() : value`;
     } else {
-      const type = renderMarshalProperty('value', propModel.property);
-      dictionaryValueType = `json += \`"$\{key}": ${type},\`;`;
+      valueConversion = 'value';
     }
-    return `if(this.${prop} !== undefined) { 
+
+    return `if(this.${prop} !== undefined) {
   for (const [key, value] of this.${prop}.entries()) {
     //Only unwrap those that are not already a property in the JSON object
-    if([${originalPropertyNames
-      .map((value) => `"${value}"`)
-      .join(',')}].includes(String(key))) continue;
-    ${dictionaryValueType}
+    if([${originalPropertyNames.map((v) => `"${v}"`).join(',')}].includes(String(key))) continue;
+    json[key] = ${valueConversion};
   }
 }`;
   });
 }
 
 /**
- * Render marshalling code for all the normal properties (not dictionaries with unwrap)
+ * Render toJson code for all normal properties (not dictionaries with unwrap)
  */
-function renderNormalProperties(
+function renderToJsonNormalProperties(
   properties: Record<string, ConstrainedObjectPropertyModel>
-) {
+): string[] {
   const normalProperties = getNormalProperties(properties);
 
   return normalProperties.map(([prop, propModel]) => {
     const modelInstanceVariable = `this.${prop}`;
-    let marshalCode;
+    let toJsonCode: string;
+
     if (
       propModel.property instanceof ConstrainedArrayModel &&
       propModel.property.valueModel instanceof ConstrainedUnionModel
     ) {
-      marshalCode = renderUnionSerializationArray(
+      toJsonCode = renderToJsonUnionArray(
         modelInstanceVariable,
-        prop,
         propModel.unconstrainedPropertyName,
         propModel.property.valueModel
       );
     } else if (propModel.property instanceof ConstrainedUnionModel) {
-      marshalCode = renderUnionSerialization(
+      toJsonCode = renderToJsonUnion(
         modelInstanceVariable,
         propModel.unconstrainedPropertyName,
         propModel.property
       );
     } else if (propModel.property instanceof ConstrainedArrayModel) {
-      marshalCode = renderArraySerialization(
+      toJsonCode = renderToJsonArray(
         modelInstanceVariable,
-        prop,
         propModel.unconstrainedPropertyName,
         propModel.property
       );
     } else if (propModel.property instanceof ConstrainedTupleModel) {
-      marshalCode = renderTupleSerialization(
+      toJsonCode = renderToJsonTuple(
         modelInstanceVariable,
         propModel.unconstrainedPropertyName,
         propModel.property
       );
     } else {
-      const propMarshalCode = renderMarshalProperty(
+      const propToJsonCode = renderToJsonProperty(
         modelInstanceVariable,
         propModel.property
       );
-      marshalCode = `json += \`"${propModel.unconstrainedPropertyName}": ${propMarshalCode},\`;`;
+      toJsonCode = `json["${propModel.unconstrainedPropertyName}"] = ${propToJsonCode};`;
     }
+
     return `if(${modelInstanceVariable} !== undefined) {
-  ${marshalCode}
+  ${toJsonCode}
 }`;
   });
 }
 
 /**
- * Render `marshal` function based on model
+ * Render `toJson` function based on model
  */
-export function renderMarshal({
+export function renderToJson({
   renderer,
   model
 }: {
@@ -250,15 +238,13 @@ export function renderMarshal({
   model: ConstrainedObjectModel;
 }): string {
   const properties = model.properties || {};
-  const marshalNormalProperties = renderNormalProperties(properties);
-  const marshalUnwrapDictionaryProperties =
-    renderDictionarySerialization(properties);
+  const toJsonNormalProperties = renderToJsonNormalProperties(properties);
+  const toJsonDictionaryProperties = renderToJsonDictionary(properties);
 
-  return `public marshal() : string {
-  let json = '{'
-${renderer.indent(marshalNormalProperties.join('\n'))}
-${renderer.indent(marshalUnwrapDictionaryProperties.join('\n'))}
-  //Remove potential last comma 
-  return \`$\{json.charAt(json.length-1) === ',' ? json.slice(0, json.length-1) : json}}\`;
+  return `public toJson(): Record<string, unknown> {
+  const json: Record<string, unknown> = {};
+${renderer.indent(toJsonNormalProperties.join('\n'))}
+${renderer.indent(toJsonDictionaryProperties.join('\n'))}
+  return json;
 }`;
 }

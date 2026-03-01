@@ -132,6 +132,176 @@ describe('Marshalling preset', () => {
     expect(models[2].result).toMatchSnapshot();
   });
 
+  describe('toJson/fromJson methods', () => {
+    test('should render toJson method that returns Record<string, unknown>', async () => {
+      const generator = new TypeScriptGenerator({
+        presets: [
+          {
+            preset: TS_COMMON_PRESET,
+            options: {
+              marshalling: true
+            }
+          }
+        ]
+      });
+      const models = await generator.generate(doc);
+      const result = models[0].result;
+
+      // Should have toJson method with correct signature
+      expect(result).toContain('public toJson(): Record<string, unknown>');
+
+      // Should return an object, not a string
+      expect(result).toMatch(/public toJson\(\): Record<string, unknown>\s*\{[\s\S]*?return json;[\s\S]*?\}/);
+    });
+
+    test('should render fromJson static method that accepts Record<string, unknown>', async () => {
+      const generator = new TypeScriptGenerator({
+        presets: [
+          {
+            preset: TS_COMMON_PRESET,
+            options: {
+              marshalling: true
+            }
+          }
+        ]
+      });
+      const models = await generator.generate(doc);
+      const result = models[0].result;
+
+      // Should have fromJson static method with correct signature
+      expect(result).toContain(
+        'public static fromJson(obj: Record<string, unknown>): Test'
+      );
+    });
+
+    test('should render marshal method that calls toJson', async () => {
+      const generator = new TypeScriptGenerator({
+        presets: [
+          {
+            preset: TS_COMMON_PRESET,
+            options: {
+              marshalling: true
+            }
+          }
+        ]
+      });
+      const models = await generator.generate(doc);
+      const result = models[0].result;
+
+      // marshal() should delegate to toJson()
+      expect(result).toContain('JSON.stringify(this.toJson())');
+    });
+
+    test('should render unmarshal method that calls fromJson', async () => {
+      const generator = new TypeScriptGenerator({
+        presets: [
+          {
+            preset: TS_COMMON_PRESET,
+            options: {
+              marshalling: true
+            }
+          }
+        ]
+      });
+      const models = await generator.generate(doc);
+      const result = models[0].result;
+
+      // unmarshal() should delegate to fromJson()
+      expect(result).toContain('.fromJson(');
+    });
+
+    test('should render toJson with nested model calling .toJson()', async () => {
+      const generator = new TypeScriptGenerator({
+        presets: [
+          {
+            preset: TS_COMMON_PRESET,
+            options: {
+              marshalling: true
+            }
+          }
+        ]
+      });
+      const models = await generator.generate(doc);
+      const result = models[0].result;
+
+      // For nested objects, toJson should call .toJson() on the nested model
+      expect(result).toMatch(/nestedObject.*\.toJson\(\)/);
+    });
+
+    test('should render fromJson with nested model calling .fromJson()', async () => {
+      const generator = new TypeScriptGenerator({
+        presets: [
+          {
+            preset: TS_COMMON_PRESET,
+            options: {
+              marshalling: true
+            }
+          }
+        ]
+      });
+      const models = await generator.generate(doc);
+      const result = models[0].result;
+
+      // For nested objects, fromJson should call .fromJson() on the nested model
+      expect(result).toContain('NestedTest.fromJson(');
+    });
+
+    test('should render toJson for arrays of models calling .toJson()', async () => {
+      const generator = new TypeScriptGenerator({
+        presets: [
+          {
+            preset: TS_COMMON_PRESET,
+            options: {
+              marshalling: true
+            }
+          }
+        ]
+      });
+      const models = await generator.generate(doc);
+      const result = models[0].result;
+
+      // For arrays of models, toJson should map items with .toJson()
+      expect(result).toMatch(/\.map\([\s\S]*?\.toJson\(\)/);
+    });
+
+    test('should render fromJson for arrays of models calling .fromJson()', async () => {
+      const generator = new TypeScriptGenerator({
+        presets: [
+          {
+            preset: TS_COMMON_PRESET,
+            options: {
+              marshalling: true
+            }
+          }
+        ]
+      });
+      const models = await generator.generate(doc);
+      const result = models[0].result;
+
+      // For arrays of models, fromJson should map items with .fromJson()
+      // Check in fromJson context
+      expect(result).toMatch(/fromJson[\s\S]*?\.map\(.*NestedTest\.fromJson/);
+    });
+
+    test('should render complete toJson/fromJson/marshal/unmarshal methods', async () => {
+      const generator = new TypeScriptGenerator({
+        presets: [
+          {
+            preset: TS_COMMON_PRESET,
+            options: {
+              marshalling: true
+            }
+          }
+        ]
+      });
+      const models = await generator.generate(doc);
+      const result = models[0].result;
+
+      // Snapshot for full generated output verification
+      expect(result).toMatchSnapshot();
+    });
+  });
+
   describe('date unmarshal', () => {
     test('should convert date-formatted string properties to Date objects in unmarshal', async () => {
       const generator = new TypeScriptGenerator({
@@ -149,17 +319,17 @@ describe('Marshalling preset', () => {
       const result = models[0].result;
 
       // Should use new Date() conversion for date-time format
-      expect(result).toContain('new Date(obj["createdAt"])');
+      expect(result).toMatch(/new Date\(obj\["createdAt"\]/);
 
       // Should use new Date() conversion for date format
-      expect(result).toContain('new Date(obj["birthDate"])');
+      expect(result).toMatch(/new Date\(obj\["birthDate"\]/);
 
       // Should NOT use new Date() for time format
       // time-only strings (e.g., "14:30:00") are not valid Date constructor arguments
-      expect(result).not.toContain('new Date(obj["meetingTime"])');
+      expect(result).not.toMatch(/new Date\(obj\["meetingTime"\]/);
 
       // Should NOT use new Date() for regular strings
-      expect(result).not.toContain('new Date(obj["regularString"])');
+      expect(result).not.toMatch(/new Date\(obj\["regularString"\]/);
 
       // Snapshot for full verification
       expect(result).toMatchSnapshot();

@@ -1,7 +1,7 @@
 import { TypeScriptPreset } from '../TypeScriptPreset';
 import renderExampleFunction from './utils/ExampleFunction';
-import { renderUnmarshal } from './utils/UnmarshalFunction';
-import { renderMarshal } from './utils/MarshalFunction';
+import { renderFromJson, renderUnmarshal } from './utils/UnmarshalFunction';
+import { renderMarshal, renderToJson } from './utils/MarshalFunction';
 
 export interface TypeScriptCommonPresetOptions {
   marshalling: boolean;
@@ -9,7 +9,7 @@ export interface TypeScriptCommonPresetOptions {
 }
 
 /**
- * Preset which adds `marshal`, `unmarshal`, `example` functions to class.
+ * Preset which adds `toJson`, `marshal`, `fromJson`, `unmarshal`, `example` functions to class.
  *
  * @implements {TypeScriptPreset}
  */
@@ -21,7 +21,9 @@ export const TS_COMMON_PRESET: TypeScriptPreset<TypeScriptCommonPresetOptions> =
         const blocks: string[] = [];
 
         if (options.marshalling === true) {
-          blocks.push(renderMarshal({ renderer, model }));
+          blocks.push(renderToJson({ renderer, model }));
+          blocks.push(renderMarshal());
+          blocks.push(renderFromJson({ renderer, model }));
           blocks.push(renderUnmarshal({ renderer, model }));
         }
 

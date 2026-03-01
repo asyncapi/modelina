@@ -13,19 +13,19 @@ import {
 } from '../../../../models';
 
 /**
- * Render the unmarshalled value
+ * Render the fromJson property value - uses .fromJson() for nested models
  */
-function renderUnmarshalProperty(
+function renderFromJsonProperty(
   modelInstanceVariable: string,
   model: ConstrainedMetaModel,
   isOptional: boolean = false
-) {
+): string {
   const nullValue = isOptional ? 'undefined' : 'null';
   if (
     model instanceof ConstrainedReferenceModel &&
     !(model.ref instanceof ConstrainedEnumModel)
   ) {
-    return `${model.type}.unmarshal(${modelInstanceVariable})`;
+    return `${model.type}.fromJson(${modelInstanceVariable} as Record<string, unknown>)`;
   }
 
   if (
@@ -36,7 +36,7 @@ function renderUnmarshalProperty(
   ) {
     return `${modelInstanceVariable} == null
     ? ${nullValue}
-    : ${modelInstanceVariable}.map((item: any) => ${model.valueModel.type}.unmarshal(item))`;
+    : (${modelInstanceVariable} as Record<string, unknown>[]).map((item: Record<string, unknown>) => ${model.valueModel.type}.fromJson(item))`;
   }
 
   // Date-typed properties need string→Date conversion
@@ -46,38 +46,40 @@ function renderUnmarshalProperty(
     ['date', 'date-time'].includes(model.options?.format ?? '')
   ) {
     // Null check prevents new Date(null) → epoch date
-    return `${modelInstanceVariable} == null ? ${nullValue} : new Date(${modelInstanceVariable})`;
+    return `${modelInstanceVariable} == null ? ${nullValue} : new Date(${modelInstanceVariable} as string)`;
   }
 
   return `${modelInstanceVariable}`;
 }
 
 /**
- * Render the code for unmarshalling of regular properties
+ * Render the code for fromJson of regular properties
  */
-function unmarshalRegularProperty(propModel: ConstrainedObjectPropertyModel) {
+function fromJsonRegularProperty(
+  propModel: ConstrainedObjectPropertyModel
+): string | undefined {
   if (propModel.property.options.const) {
     return undefined;
   }
 
   const modelInstanceVariable = `obj["${propModel.unconstrainedPropertyName}"]`;
   const isOptional = propModel.required === false;
-  const unmarshalCode = renderUnmarshalProperty(
+  const fromJsonCode = renderFromJsonProperty(
     modelInstanceVariable,
     propModel.property,
     isOptional
   );
   return `if (${modelInstanceVariable} !== undefined) {
-  instance.${propModel.propertyName} = ${unmarshalCode};
+  instance.${propModel.propertyName} = ${fromJsonCode};
 }`;
 }
 
 /**
- * Render the code for unmarshalling unwrappable dictionary models
+ * Render the code for fromJson of unwrappable dictionary models
  */
-function unmarshalDictionary(model: ConstrainedObjectModel) {
-  const setDictionaryProperties = [];
-  const unmarshalDictionaryProperties = [];
+function fromJsonDictionary(model: ConstrainedObjectModel): string {
+  const setDictionaryProperties: string[] = [];
+  const fromJsonDictionaryProperties: string[] = [];
   const properties = model.properties || {};
   const propertyKeys = [...Object.entries(properties)];
   const originalPropertyNames = propertyKeys.map(([, model]) => {
@@ -86,14 +88,14 @@ function unmarshalDictionary(model: ConstrainedObjectModel) {
   const unwrapDictionaryProperties = getDictionary(properties);
 
   for (const [prop, propModel] of unwrapDictionaryProperties) {
-    const modelInstanceVariable = 'value as any';
-    const unmarshalCode = renderUnmarshalProperty(
+    const modelInstanceVariable = 'value';
+    const fromJsonCode = renderFromJsonProperty(
       modelInstanceVariable,
       (propModel.property as ConstrainedDictionaryModel).value
     );
     setDictionaryProperties.push(`instance.${prop} = new Map();`);
-    unmarshalDictionaryProperties.push(
-      `instance.${prop}.set(key, ${unmarshalCode});`
+    fromJsonDictionaryProperties.push(
+      `instance.${prop}.set(key, ${fromJsonCode});`
     );
   }
 
@@ -104,16 +106,16 @@ function unmarshalDictionary(model: ConstrainedObjectModel) {
     return `${setDictionaryProperties.join('\n')}
 const propsToCheck = Object.entries(obj).filter((([key,]) => {return ![${corePropertyKeys}].includes(key);}));
 for (const [key, value] of propsToCheck) {
-  ${unmarshalDictionaryProperties.join('\n')}
+  ${fromJsonDictionaryProperties.join('\n')}
 }`;
   }
   return '';
 }
 
 /**
- * Render `unmarshal` function based on model
+ * Render `fromJson` function based on model
  */
-export function renderUnmarshal({
+export function renderFromJson({
   renderer,
   model
 }: {
@@ -122,18 +124,32 @@ export function renderUnmarshal({
 }): string {
   const properties = model.properties || {};
   const normalProperties = getNormalProperties(properties);
-  const unmarshalNormalProperties = normalProperties.map(([, propModel]) =>
-    unmarshalRegularProperty(propModel)
+  const fromJsonNormalProperties = normalProperties.map(([, propModel]) =>
+    fromJsonRegularProperty(propModel)
   );
-  const unwrappedDictionaryCode = unmarshalDictionary(model);
+  const fromJsonDictionaryCode = fromJsonDictionary(model);
 
-  return `public static unmarshal(json: string | object): ${model.type} {
-  const obj = typeof json === "object" ? json : JSON.parse(json);
+  return `public static fromJson(obj: Record<string, unknown>): ${model.type} {
   const instance = new ${model.type}({} as any);
 
-${renderer.indent(unmarshalNormalProperties.join('\n'))}
-  
-${renderer.indent(unwrappedDictionaryCode)}
+${renderer.indent(fromJsonNormalProperties.join('\n'))}
+
+${renderer.indent(fromJsonDictionaryCode)}
   return instance;
+}`;
+}
+
+/**
+ * Render `unmarshal` function based on model - delegates to fromJson()
+ */
+export function renderUnmarshal({
+  model
+}: {
+  renderer: ClassRenderer;
+  model: ConstrainedObjectModel;
+}): string {
+  return `public static unmarshal(json: string | object): ${model.type} {
+  const obj = typeof json === "object" ? json : JSON.parse(json);
+  return ${model.type}.fromJson(obj as Record<string, unknown>);
 }`;
 }
