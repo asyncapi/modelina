@@ -334,14 +334,15 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
 
                 // Add each individual message payload as a separate model
                 const messageId = message.id();
-                // Use message ID if available, otherwise use channel name
+                const messageName = message.name();
+                // Use message ID if available, then message name, otherwise use channel name
                 const contextId =
                   messageId &&
                   !messageId.includes(
                     AsyncAPIInputProcessor.ANONYMOUS_MESSAGE_PREFIX
                   )
                     ? messageId
-                    : contextChannelName;
+                    : messageName || contextChannelName;
                 const messageContext: SchemaContext = contextId
                   ? { messageId: contextId }
                   : {};
@@ -364,14 +365,15 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
               if (payload) {
                 // Use message ID as context for better naming
                 const messageId = message.id();
-                // Use message ID if available, otherwise use channel name
+                const messageName = message.name();
+                // Use message ID if available, then message name, otherwise use channel name
                 const contextId =
                   messageId &&
                   !messageId.includes(
                     AsyncAPIInputProcessor.ANONYMOUS_MESSAGE_PREFIX
                   )
                     ? messageId
-                    : contextChannelName;
+                    : messageName || contextChannelName;
                 const messageContext: SchemaContext = contextId
                   ? { messageId: contextId }
                   : {};
@@ -398,10 +400,11 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
       for (const message of doc.allMessages()) {
         const payload = message.payload();
         if (payload) {
-          // Use message id with 'Payload' suffix as the inferred name for the payload schema
+          // Use message id or message name with 'Payload' suffix as the inferred name for the payload schema
           // This avoids potential collisions with component schemas that might have the same name
-          const messageName = message.id()
-            ? `${message.id()}Payload`
+          const messageIdentifier = message.id() || message.name();
+          const messageName = messageIdentifier
+            ? `${messageIdentifier}Payload`
             : undefined;
           addToInputModel(payload, messageName);
         }

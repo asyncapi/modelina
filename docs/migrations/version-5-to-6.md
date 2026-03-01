@@ -110,6 +110,61 @@ Generated model: `AnonymousSchema_1` or `<anonymous-message-1>Payload`
 **After (v6):**
 Generated model: `UserSignedupPayload` (derived from channel path `/user/signedup`)
 
+#### Named messages with anonymous payloads (fixes #1996)
+
+When using named messages in `components/messages` with inline (anonymous) payload schemas, the generated model now uses the message name instead of generic `AnonymousSchema_1`.
+
+**Before (v5):**
+
+```yaml
+asyncapi: 2.2.0
+info:
+  title: Account Service
+  version: 1.0.0
+channels:
+  user/signedup:
+    subscribe:
+      message:
+        $ref: '#/components/messages/UserSignedUp'
+components:
+  messages:
+    UserSignedUp:
+      payload:
+        type: object
+        properties:
+          displayName:
+            type: string
+          email:
+            type: string
+            format: email
+```
+
+Generated model: `AnonymousSchema_1`
+
+**After (v6):**
+
+Generated model: `UserSignedUpPayload` (derived from message name `UserSignedUp`)
+
+This also works for AsyncAPI v3 named messages:
+
+```yaml
+asyncapi: 3.0.0
+channels:
+  userSignedUp:
+    address: user/signedup
+    messages:
+      UserSignedUpMessage:
+        payload:
+          type: object
+          properties:
+            displayName:
+              type: string
+            email:
+              type: string
+```
+
+Generated model: `UserSignedUpMessagePayload` (derived from message name `UserSignedUpMessage`)
+
 #### Hierarchical naming for nested schemas
 
 Nested schemas in properties, `allOf`, `oneOf`, `anyOf`, `dependencies`, and `definitions` now receive hierarchical names based on their parent schema and property path.
