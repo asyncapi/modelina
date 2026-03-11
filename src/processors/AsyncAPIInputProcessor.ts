@@ -23,9 +23,8 @@ import {
   NewParser
 } from '@asyncapi/multi-parser';
 import { createDetailedAsyncAPI } from '@asyncapi/parser/cjs/utils';
-import { InterpreterOptions } from '../interpreter/Interpreter';
 import { ParseOptions } from '@asyncapi/parser';
-export interface AsyncAPIInputProcessorOptions extends InterpreterOptions, ParseOptions {
+export interface AsyncAPIInputProcessorOptions extends ParseOptions {
   /**
    * This option will include message headers in the list of models built whilst traversing the AsyncAPI spec.
    */
