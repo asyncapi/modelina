@@ -1,4 +1,3 @@
-import { ParseOptions } from '@asyncapi/parser';
 import { InterpreterOptions } from '../interpreter/Interpreter';
 import {
   AsyncAPIInputProcessorOptions,

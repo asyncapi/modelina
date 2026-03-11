@@ -158,7 +158,9 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
 
               const payload = new AsyncAPISchema(
                 {
-                  $id: options?.asyncapi?.includeMessageHeaders ? `${channel.id()}Payload` : channel.id(),
+                  $id: options?.asyncapi?.includeMessageHeaders
+                    ? `${channel.id()}Payload`
+                    : channel.id(),
                   oneOf: payloadOneOf
                 },
                 channel.meta()
