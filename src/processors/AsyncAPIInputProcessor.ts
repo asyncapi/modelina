@@ -28,7 +28,7 @@ export interface AsyncAPIInputProcessorOptions extends InterpreterOptions {
   /**
    * This option will include message headers in the list of models built whilst traversing the AsyncAPI spec.
    */
-  includeHeaders?: boolean;
+  includeMessageHeaders?: boolean;
 }
 
 /**
@@ -145,7 +145,7 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
                   payloadOneOf.push(payload.json());
                 }
 
-                if (options?.asyncapi?.includeHeaders) {
+                if (options?.asyncapi?.includeMessageHeaders) {
                   const headers = message.headers();
 
                   if (headers) {
@@ -158,7 +158,7 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
 
               const payload = new AsyncAPISchema(
                 {
-                  $id: options?.asyncapi?.includeHeaders ? `${channel.id()}Payload` : channel.id(),
+                  $id: options?.asyncapi?.includeMessageHeaders ? `${channel.id()}Payload` : channel.id(),
                   oneOf: payloadOneOf
                 },
                 channel.meta()
@@ -166,7 +166,7 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
 
               addToInputModel(payload);
 
-              if (options?.asyncapi?.includeHeaders) {
+              if (options?.asyncapi?.includeMessageHeaders) {
                 const headers = new AsyncAPISchema(
                   {
                     $id: `${channel.id()}Headers`,
@@ -183,7 +183,7 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
                 addToInputModel(payload);
               }
 
-              if (options?.asyncapi?.includeHeaders) {
+              if (options?.asyncapi?.includeMessageHeaders) {
                 const headers = messages[0].headers();
                 if (headers) {
                   addToInputModel(headers);

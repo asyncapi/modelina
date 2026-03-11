@@ -246,13 +246,13 @@ describe('AsyncAPIInputProcessor', () => {
       expect(Object.keys(commonInputModel.models).sort()).toMatchSnapshot();
     });
 
-    test('should be able to process operation with message headers when includeHeaders is true', async () => {
+    test('should be able to process operation with message headers when includeMessageHeaders is true', async () => {
       const processor = new AsyncAPIInputProcessor();
       const commonInputModel = await processor.process(
         messageWithHeaders,
         {
           asyncapi: {
-            includeHeaders: true,
+            includeMessageHeaders: true,
           }
         }
       );
@@ -262,13 +262,13 @@ describe('AsyncAPIInputProcessor', () => {
       expect(commonInputModel.models['userSignUpMessagePayload']).toBeDefined();
     })
 
-    test('should be able to process operation with multiple messages with headers when includeHeaders is true', async () => {
+    test('should be able to process operation with multiple messages with headers when includeMessageHeaders is true', async () => {
       const processor = new AsyncAPIInputProcessor();
       const commonInputModel = await processor.process(
         oneofMessageWithHeaders,
         {
           asyncapi: {
-            includeHeaders: true,
+            includeMessageHeaders: true,
           }
         }
       );
