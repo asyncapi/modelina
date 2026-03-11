@@ -23,6 +23,13 @@ import {
   NewParser
 } from '@asyncapi/multi-parser';
 import { createDetailedAsyncAPI } from '@asyncapi/parser/cjs/utils';
+import { InterpreterOptions } from '../interpreter/Interpreter';
+export interface AsyncAPIInputProcessorOptions extends InterpreterOptions {
+  /**
+   * This option will include message headers in the list of models built whilst traversing the AsyncAPI spec.
+   */
+  includeHeaders?: boolean;
+}
 
 /**
  * Class for processing AsyncAPI inputs
@@ -126,33 +133,61 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
           const handleMessages = (messages: MessagesInterface) => {
             // treat multiple messages as oneOf
             if (messages.length > 1) {
-              const oneOf: any[] = [];
+              const payloadOneOf: any[] = [];
+              const headersOneOf: any[] = [];
 
               for (const message of messages) {
                 const payload = message.payload();
 
-                if (!payload) {
-                  continue;
+                if (payload) {
+                  // Add each individual message payload as a separate model
+                  addToInputModel(payload);
+                  payloadOneOf.push(payload.json());
                 }
 
-                // Add each individual message payload as a separate model
-                addToInputModel(payload);
-                oneOf.push(payload.json());
+                if (options?.asyncapi?.includeHeaders) {
+                  const headers = message.headers();
+
+                  if (headers) {
+                    // Add each individual message header as a separate model
+                    addToInputModel(headers);
+                    headersOneOf.push(headers.json());
+                  }
+                }
               }
 
               const payload = new AsyncAPISchema(
                 {
-                  $id: channel.id(),
-                  oneOf
+                  $id: options?.asyncapi?.includeHeaders ? `${channel.id()}Payload` : channel.id(),
+                  oneOf: payloadOneOf
                 },
                 channel.meta()
               );
 
               addToInputModel(payload);
+
+              if (options?.asyncapi?.includeHeaders) {
+                const headers = new AsyncAPISchema(
+                  {
+                    $id: `${channel.id()}Headers`,
+                    oneOf: headersOneOf
+                  },
+                  channel.meta()
+                );
+
+                addToInputModel(headers);
+              }
             } else if (messages.length === 1) {
               const payload = messages[0].payload();
               if (payload) {
                 addToInputModel(payload);
+              }
+
+              if (options?.asyncapi?.includeHeaders) {
+                const headers = messages[0].headers();
+                if (headers) {
+                  addToInputModel(headers);
+                }
               }
             }
           };
