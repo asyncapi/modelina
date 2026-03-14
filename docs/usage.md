@@ -78,7 +78,9 @@ All `generate` functions return an array of `OutputModel`s, which contains the f
 
 ## Generate models from AsyncAPI documents
 
-When providing an AsyncAPI document, the library iterates the entire document and generate models for all defined message payloads. The message payloads are interpreted based on the schema format. 
+When providing an AsyncAPI document, the library iterates the entire document and generate models for all defined message payloads. The message payloads are interpreted based on the schema format.
+
+You can optionally include message headers by providing the `includeMessageHeaders` option and setting to `true`.
 
 For JSON Schema it follows the [JSON Schema input processing](#generate-models-from-json-schema-documents).
 
