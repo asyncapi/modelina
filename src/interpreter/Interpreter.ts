@@ -142,6 +142,10 @@ export class Interpreter {
     if (schema.type !== undefined) {
       model.addTypes(schema.type);
     }
+    // Handle nullable property from OpenAPI 3.0.x schemas
+    if ('nullable' in schema && schema.nullable === true) {
+      model.addTypes('null');
+    }
     if (schema.required !== undefined) {
       model.required = schema.required;
     }
