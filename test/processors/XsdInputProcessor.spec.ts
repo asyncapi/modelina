@@ -1,5 +1,6 @@
 import * as fs from 'fs';
 import * as path from 'path';
+import { XMLParser } from 'fast-xml-parser';
 import { XsdInputProcessor } from '../../src/processors';
 import { XsdSchema } from '../../src/models/XsdSchema';
 
@@ -199,7 +200,6 @@ describe('XsdInputProcessor', () => {
   </xs:complexType>
 </xs:schema>`;
 
-      const { XMLParser } = require('fast-xml-parser');
       const parser = new XMLParser({
         ignoreAttributes: false,
         attributeNamePrefix: '@_',
@@ -233,7 +233,6 @@ describe('XsdInputProcessor', () => {
   </xs:complexType>
 </xs:schema>`;
 
-      const { XMLParser } = require('fast-xml-parser');
       const parser = new XMLParser({
         ignoreAttributes: false,
         attributeNamePrefix: '@_',
@@ -280,7 +279,6 @@ describe('XsdInputProcessor', () => {
   </xs:complexType>
 </xs:schema>`;
 
-      const { XMLParser } = require('fast-xml-parser');
       const parser = new XMLParser({
         ignoreAttributes: false,
         attributeNamePrefix: '@_',
@@ -298,9 +296,9 @@ describe('XsdInputProcessor', () => {
       expect(car!.complexContent!.extension).toBeDefined();
       expect(car!.complexContent!.extension!.base).toBe('Vehicle');
       expect(car!.complexContent!.extension!.sequence).toBeDefined();
-      expect(
-        car!.complexContent!.extension!.sequence!.elements!.length
-      ).toBe(1);
+      expect(car!.complexContent!.extension!.sequence!.elements!.length).toBe(
+        1
+      );
       expect(car!.complexContent!.extension!.attributes).toBeDefined();
       expect(car!.complexContent!.extension!.attributes!.length).toBe(1);
       expect(car!.complexContent!.extension!.attributes![0].name).toBe('vin');
@@ -323,7 +321,6 @@ describe('XsdInputProcessor', () => {
   </xs:complexType>
 </xs:schema>`;
 
-      const { XMLParser } = require('fast-xml-parser');
       const parser = new XMLParser({
         ignoreAttributes: false,
         attributeNamePrefix: '@_',
@@ -358,7 +355,6 @@ describe('XsdInputProcessor', () => {
   </xs:simpleType>
 </xs:schema>`;
 
-      const { XMLParser } = require('fast-xml-parser');
       const parser = new XMLParser({
         ignoreAttributes: false,
         attributeNamePrefix: '@_',
@@ -389,7 +385,6 @@ describe('XsdInputProcessor', () => {
   </xs:simpleType>
 </xs:schema>`;
 
-      const { XMLParser } = require('fast-xml-parser');
       const parser = new XMLParser({
         ignoreAttributes: false,
         attributeNamePrefix: '@_',
@@ -415,7 +410,6 @@ describe('XsdInputProcessor', () => {
   </xs:simpleType>
 </xs:schema>`;
 
-      const { XMLParser } = require('fast-xml-parser');
       const parser = new XMLParser({
         ignoreAttributes: false,
         attributeNamePrefix: '@_',
@@ -440,7 +434,6 @@ describe('XsdInputProcessor', () => {
   </xs:simpleType>
 </xs:schema>`;
 
-      const { XMLParser } = require('fast-xml-parser');
       const parser = new XMLParser({
         ignoreAttributes: false,
         attributeNamePrefix: '@_',
@@ -465,7 +458,6 @@ describe('XsdInputProcessor', () => {
   </xs:simpleType>
 </xs:schema>`;
 
-      const { XMLParser } = require('fast-xml-parser');
       const parser = new XMLParser({
         ignoreAttributes: false,
         attributeNamePrefix: '@_',
@@ -490,7 +482,6 @@ describe('XsdInputProcessor', () => {
   </xs:simpleType>
 </xs:schema>`;
 
-      const { XMLParser } = require('fast-xml-parser');
       const parser = new XMLParser({
         ignoreAttributes: false,
         attributeNamePrefix: '@_',
@@ -515,7 +506,6 @@ describe('XsdInputProcessor', () => {
   </xs:simpleType>
 </xs:schema>`;
 
-      const { XMLParser } = require('fast-xml-parser');
       const parser = new XMLParser({
         ignoreAttributes: false,
         attributeNamePrefix: '@_',
@@ -560,7 +550,6 @@ describe('XsdInputProcessor', () => {
   </xs:element>
 </xs:schema>`;
 
-      const { XMLParser } = require('fast-xml-parser');
       const parser = new XMLParser({
         ignoreAttributes: false,
         attributeNamePrefix: '@_',
@@ -579,7 +568,9 @@ describe('XsdInputProcessor', () => {
       expect(priorityElement.name).toBe('priority');
       expect(priorityElement.simpleType).toBeDefined();
       expect(priorityElement.simpleType!.restriction).toBeDefined();
-      expect(priorityElement.simpleType!.restriction!.enumeration).toBeDefined();
+      expect(
+        priorityElement.simpleType!.restriction!.enumeration
+      ).toBeDefined();
       expect(priorityElement.simpleType!.restriction!.enumeration!.length).toBe(
         3
       );
@@ -612,7 +603,6 @@ describe('XsdInputProcessor', () => {
   <xs:element name="Root" type="xs:string"/>
 </xs:schema>`;
 
-      const { XMLParser } = require('fast-xml-parser');
       const parser = new XMLParser({
         ignoreAttributes: false,
         attributeNamePrefix: '@_',
