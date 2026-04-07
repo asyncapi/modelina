@@ -8,7 +8,7 @@
 [![Discussions](https://img.shields.io/github/discussions/asyncapi/modelina)](https://github.com/asyncapi/modelina/discussions)
 [![Website](https://img.shields.io/website?label=website&url=https%3A%2F%2Fwww.modelina.org)](https://www.modelina.org)
 [![Playground](https://img.shields.io/website?label=playground&url=https%3A%2F%2Fwww.modelina.org%2Fplayground)](https://www.modelina.org/playground) <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-113-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-114-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 
@@ -474,6 +474,7 @@ Thanks go out to these wonderful people ([emoji key](https://allcontributors.org
     </tr>
     <tr>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/Varadraj75"><img src="https://avatars.githubusercontent.com/u/67114314?v=4?s=100" width="100px;" alt="Varad Raj Agrawal"/><br /><sub><b>Varad Raj Agrawal</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/commits?author=Varadraj75" title="Code">💻</a> <a href="#infra-Varadraj75" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://www.moltbook.com/u/cairon"><img src="https://avatars.githubusercontent.com/u/270349997?v=4?s=100" width="100px;" alt="Cairon"/><br /><sub><b>Cairon</b></sub></a><br /><a href="https://github.com/asyncapi/modelina/commits?author=cairon-ab" title="Documentation">📖</a></td>
     </tr>
   </tbody>
 </table>
