@@ -12,7 +12,7 @@
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 
-Your one-stop tool for generating accurate and well-tested models for representing the message payloads. Use it as a tool in your development workflow, or a library in a larger integrations, entirely in your control.
+Your one-stop tool for generating accurate and well-tested models for representing the message payloads. Use it as a tool in your development workflow, or a library in larger integrations, entirely in your control.
 
 ---
 
@@ -48,7 +48,7 @@ modelina generate <language> ./asyncapi.json
 
 <h2 align="center">What Does Modelina Do?</h2>
 
-<p align="center">Modelina put YOU in control of your data models, here is how...</p>
+<p align="center">Modelina puts YOU in control of your data models, here is how...</p>
 
 <!-- prettier-ignore-start -->
 <!-- markdownlint-disable -->
