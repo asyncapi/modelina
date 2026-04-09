@@ -32,44 +32,51 @@ Array [
   get meetingTime(): string | undefined { return this._meetingTime; }
   set meetingTime(meetingTime: string | undefined) { this._meetingTime = meetingTime; }
 
-  public marshal() : string {
-    let json = '{'
+  public toJson(): Record<string, unknown> {
+    const json: Record<string, unknown> = {};
     if(this.email !== undefined) {
-      json += \`\\"email\\": \${typeof this.email === 'number' || typeof this.email === 'boolean' ? this.email : JSON.stringify(this.email)},\`;
+      json[\\"email\\"] = this.email;
     }
     if(this.createdAt !== undefined) {
-      json += \`\\"createdAt\\": \${typeof this.createdAt === 'number' || typeof this.createdAt === 'boolean' ? this.createdAt : JSON.stringify(this.createdAt)},\`;
+      json[\\"createdAt\\"] = this.createdAt;
     }
     if(this.meetingDate !== undefined) {
-      json += \`\\"meetingDate\\": \${typeof this.meetingDate === 'number' || typeof this.meetingDate === 'boolean' ? this.meetingDate : JSON.stringify(this.meetingDate)},\`;
+      json[\\"meetingDate\\"] = this.meetingDate;
     }
     if(this.meetingTime !== undefined) {
-      json += \`\\"meetingTime\\": \${typeof this.meetingTime === 'number' || typeof this.meetingTime === 'boolean' ? this.meetingTime : JSON.stringify(this.meetingTime)},\`;
+      json[\\"meetingTime\\"] = this.meetingTime;
     }
   
-    //Remove potential last comma 
-    return \`\${json.charAt(json.length-1) === ',' ? json.slice(0, json.length-1) : json}}\`;
+    return json;
   }
 
-  public static unmarshal(json: string | object): Meeting {
-    const obj = typeof json === \\"object\\" ? json : JSON.parse(json);
+  public marshal(): string {
+    return JSON.stringify(this.toJson());
+  }
+
+  public static fromJson(obj: Record<string, unknown>): Meeting {
     const instance = new Meeting({} as any);
 
     if (obj[\\"email\\"] !== undefined) {
       instance.email = obj[\\"email\\"];
     }
     if (obj[\\"createdAt\\"] !== undefined) {
-      instance.createdAt = obj[\\"createdAt\\"] == null ? undefined : new Date(obj[\\"createdAt\\"]);
+      instance.createdAt = obj[\\"createdAt\\"] == null ? undefined : new Date(obj[\\"createdAt\\"] as string);
     }
     if (obj[\\"meetingDate\\"] !== undefined) {
-      instance.meetingDate = obj[\\"meetingDate\\"] == null ? undefined : new Date(obj[\\"meetingDate\\"]);
+      instance.meetingDate = obj[\\"meetingDate\\"] == null ? undefined : new Date(obj[\\"meetingDate\\"] as string);
     }
     if (obj[\\"meetingTime\\"] !== undefined) {
       instance.meetingTime = obj[\\"meetingTime\\"];
     }
-  
+
   
     return instance;
+  }
+
+  public static unmarshal(json: string | object): Meeting {
+    const obj = typeof json === \\"object\\" ? json : JSON.parse(json);
+    return Meeting.fromJson(obj as Record<string, unknown>);
   }
 }",
 ]
