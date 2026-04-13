@@ -76,6 +76,85 @@ All `generate` functions return an array of `OutputModel`s, which contains the f
 | `inputModel` | `InputMetaModel` | Contains all the raw models along side the input they where generated for. Check the code for further information. |
 | `dependencies` | String[] | List of rendered dependency imports that the model uses. |
 
+## Using the dependency manager
+
+The dependency manager is responsible for collecting and deduplicating import statements that generated models depend on. Every generator has an internal dependency manager, and you can interact with it in several ways.
+
+### How it works
+
+When Modelina generates code, presets and type mappings can call `dependencyManager.addDependency()` to register import statements. The dependency manager ensures each unique dependency appears only once in the final output. After generation, the `dependencies` array on each `OutputModel` contains all collected imports for that model.
+
+### Providing a custom dependency manager
+
+You can pass a custom dependency manager (or a factory function) through generator options:
+
+```ts
+import { TypeScriptGenerator, TypeScriptDependencyManager } from 'modelina';
+
+const generator = new TypeScriptGenerator({
+  dependencyManager: () => {
+    const depManager = new TypeScriptDependencyManager();
+    // Pre-register common dependencies
+    depManager.addDependency("import { logger } from './utils';");
+    return depManager;
+  }
+});
+```
+
+This is useful when you need to inject additional imports that are not automatically detected by the generators or presets.
+
+### Using the dependency manager in type mappings
+
+Type mappings receive a `dependencyManager` parameter, letting you register imports when custom types require external modules:
+
+```ts
+import { TypeScriptGenerator } from 'modelina';
+
+const generator = new TypeScriptGenerator({
+  typeMapping: {
+    Float: ({ dependencyManager }) => {
+      // Register the import for the custom type
+      dependencyManager.addTypeScriptDependency(
+        'Decimal',
+        'decimal.js'
+      );
+      return 'Decimal';
+    }
+  }
+});
+```
+
+See the [complete example](../examples/change-type-mapping-with-dependency) for a working implementation.
+
+### Using the dependency manager in custom presets
+
+Custom preset hooks also have access to the dependency manager:
+
+```ts
+const myPreset = {
+  self({ dependencyManager, content }) {
+    dependencyManager.addDependency("import { validate } from './validator';");
+    return content;
+  }
+};
+```
+
+For more details about writing presets, see the [presets documentation](./presets).
+
+### Language-specific dependency managers
+
+Each language has its own dependency manager class with language-aware helper methods:
+
+| Language | Class | Notable helpers |
+|---|---|---|
+| TypeScript | `TypeScriptDependencyManager` | `addTypeScriptDependency(name, path)` — handles ESM/CJS module systems |
+| Java | (base `AbstractDependencyManager`) | Direct `addDependency()` with full import strings |
+| Python | `PythonDependencyManager` | Direct `addDependency()` with import statements |
+| C# | `CSharpDependencyManager` | Direct `addDependency()` with using directives |
+| Go | (base `AbstractDependencyManager`) | Direct `addDependency()` |
+
+The TypeScript dependency manager is especially useful because it adapts the import format based on the configured `moduleSystem` option (`ESM` or `CJS`).
+
 ## Generate models from AsyncAPI documents
 
 When providing an AsyncAPI document, the library iterates the entire document and generate models for all defined message payloads. The message payloads are interpreted based on the schema format. 
