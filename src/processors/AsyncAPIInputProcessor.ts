@@ -25,6 +25,17 @@ import {
 import { createDetailedAsyncAPI } from '@asyncapi/parser/cjs/utils';
 
 /**
+ * Options for the AsyncAPI input processor
+ */
+export interface AsyncAPIInputProcessorOptions {
+  /**
+   * Whether to include message headers schemas in addition to payloads.
+   * @default false
+   */
+  includeHeaders?: boolean;
+}
+
+/**
  * Class for processing AsyncAPI inputs
  */
 export class AsyncAPIInputProcessor extends AbstractInputProcessor {
@@ -47,7 +58,7 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
   // eslint-disable-next-line sonarjs/cognitive-complexity
   async process(
     input?: any,
-    options?: ProcessorOptions
+    options?: ProcessorOptions & { asyncapiProcessor?: AsyncAPIInputProcessorOptions }
   ): Promise<InputMetaModel> {
     const rawInput = input;
     let doc: AsyncAPIDocumentInterface | undefined;
@@ -102,6 +113,8 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
 
     inputModel.originalInput = doc;
 
+    const includeHeaders = options?.asyncapiProcessor?.includeHeaders === true;
+
     const addToInputModel = (payload: AsyncAPISchemaInterface) => {
       const schema = AsyncAPIInputProcessor.convertToInternalSchema(payload);
       const newMetaModel = JsonSchemaInputProcessor.convertSchemaToMetaModel(
@@ -115,6 +128,17 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
         );
       }
       inputModel.models[newMetaModel.name] = newMetaModel;
+    };
+
+    /**
+     * Process message headers if includeHeaders is enabled and headers are defined
+     */
+    const processMessageHeaders = (message: any) => {
+      if (!includeHeaders) return;
+      const headers = message.headers();
+      if (headers) {
+        addToInputModel(headers);
+      }
     };
 
     // Go over all the message payloads and convert them to models
@@ -137,6 +161,7 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
 
                 // Add each individual message payload as a separate model
                 addToInputModel(payload);
+                processMessageHeaders(message);
                 oneOf.push(payload.json());
               }
 
@@ -154,6 +179,7 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
               if (payload) {
                 addToInputModel(payload);
               }
+              processMessageHeaders(messages[0]);
             }
           };
           const replyOperation = operation.reply();
@@ -177,6 +203,7 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
         if (payload) {
           addToInputModel(payload);
         }
+        processMessageHeaders(message);
       }
     }
 

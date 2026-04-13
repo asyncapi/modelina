@@ -350,4 +350,56 @@ describe('AsyncAPIInputProcessor', () => {
       );
     });
   });
+
+  describe('headers support', () => {
+    const withHeadersDocString = fs.readFileSync(
+      path.resolve(__dirname, './AsyncAPIInputProcessor/with_headers.json'),
+      'utf8'
+    );
+
+    test('should not include headers by default', async () => {
+      const doc = JSON.parse(withHeadersDocString);
+      const processor = new AsyncAPIInputProcessor();
+      const inputModel = await processor.process(doc);
+
+      // Should only have the payload model, not headers
+      const modelNames = Object.keys(inputModel.models);
+      expect(modelNames.length).toBe(1);
+      // The single model should be the payload (email property), not headers
+      const soleModel = inputModel.models[modelNames[0]];
+      expect(soleModel.originalInput?.properties?.['email']).toBeDefined();
+    });
+
+    test('should include headers when includeHeaders option is true', async () => {
+      const doc = JSON.parse(withHeadersDocString);
+      const processor = new AsyncAPIInputProcessor();
+      const inputModel = await processor.process(doc, {
+        asyncapiProcessor: { includeHeaders: true }
+      });
+
+      const modelNames = Object.keys(inputModel.models);
+      // Should have both payload and headers models
+      expect(modelNames.length).toBeGreaterThanOrEqual(2);
+
+      // Check that headers properties are present
+      const hasCorrelationId = modelNames.some((name) => {
+        const model = inputModel.models[name];
+        return (
+          model.originalInput?.properties?.['correlation-id'] !== undefined
+        );
+      });
+      expect(hasCorrelationId).toBe(true);
+    });
+
+    test('should not fail when messages have no headers and includeHeaders is true', async () => {
+      const basicDoc = JSON.parse(basicDocString);
+      const processor = new AsyncAPIInputProcessor();
+      const inputModel = await processor.process(basicDoc, {
+        asyncapiProcessor: { includeHeaders: true }
+      });
+
+      // Should work fine, just no additional header models
+      expect(Object.keys(inputModel.models).length).toBe(1);
+    });
+  });
 });
