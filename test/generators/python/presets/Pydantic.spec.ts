@@ -225,4 +225,35 @@ describe('PYTHON_PYDANTIC_PRESET', () => {
     const models = await generator.generate(doc);
     expect(models.map((model) => model.result)).toMatchSnapshot();
   });
+
+  test('should properly escape quotes in const string values', async () => {
+    const doc = {
+      title: 'ConstEscapeTest',
+      type: 'object',
+      properties: {
+        withSingleQuote: {
+          type: 'string',
+          const: "it's a test"
+        },
+        withDoubleQuote: {
+          type: 'string',
+          const: 'say "hello"'
+        },
+        normalString: {
+          type: 'string',
+          const: 'normal'
+        }
+      },
+      required: ['withSingleQuote', 'withDoubleQuote', 'normalString']
+    };
+
+    const models = await generator.generate(doc);
+    const output = models[0].result;
+    // Should use double quotes when value contains single quotes
+    expect(output).toContain('Literal["it\'s a test"]');
+    expect(output).toContain('default="it\'s a test"');
+    // Normal strings should still use single quotes
+    expect(output).toContain("Literal['normal']");
+    expect(output).toContain("default='normal'");
+  });
 });
