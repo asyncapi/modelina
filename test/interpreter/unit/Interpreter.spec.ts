@@ -313,6 +313,35 @@ describe('Interpreter', () => {
       expect(discriminator).toBe('OpenapiV3SchemaDiscriminatorPropertyName');
     });
   });
+  test('should interpret nullable schema and add null type', () => {
+    const schema = {
+      type: 'string',
+      nullable: true
+    };
+    const interpreter = new Interpreter();
+    const model = interpreter.interpret(schema);
+    expect(model).not.toBeUndefined();
+    expect(model?.type).toEqual(['string', 'null']);
+  });
+  test('should not add null type when nullable is false', () => {
+    const schema = {
+      type: 'string',
+      nullable: false
+    };
+    const interpreter = new Interpreter();
+    const model = interpreter.interpret(schema);
+    expect(model).not.toBeUndefined();
+    expect(model?.type).toEqual('string');
+  });
+  test('should not add null type when nullable is not set', () => {
+    const schema = {
+      type: 'string'
+    };
+    const interpreter = new Interpreter();
+    const model = interpreter.interpret(schema);
+    expect(model).not.toBeUndefined();
+    expect(model?.type).toEqual('string');
+  });
   test('should not use cache if disableCache is set', () => {
     const schema = { type: 'object' };
     const interpreter = new Interpreter();
