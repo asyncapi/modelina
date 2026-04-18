@@ -43,6 +43,12 @@ export class JavaDefaultRendererUtil {
       }
       return `private ${property.property.type} ${property.propertyName} = ${property.property.type}.${defaultEnumValue.key};`;
     }
+    if (property.property.type === 'Long') {
+      return `private ${property.property.type} ${property.propertyName} = ${property.property.originalInput.default}L;`;
+    }
+    if (property.property.type === 'Integer') {
+      return `private ${property.property.type} ${property.propertyName} = ${property.property.originalInput.default};`;
+    }
     return `private ${property.property.type} ${property.propertyName} = ${property.property.originalInput.default};`;
   }
 }
