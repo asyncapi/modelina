@@ -9,10 +9,15 @@ on:
     types: 
       - published
 
+permissions: {}
+
 jobs:
   version_bump:
     name: Generate assets and bump NodeJS
     runs-on: ubuntu-latest
+    permissions:
+      contents: write                 # required to create PR with bumped version in package.json   
+      pull-requests: write            # required to create PR with bumped version in package.json
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -21,9 +26,10 @@ jobs:
           # in case release is created from release branch then we need to checkout from given branch
           # if @semantic-release/github is used to publish, the minimum version is 7.2.0 for proper working
           ref: ${{ github.event.release.target_commitish }}
+          persist-credentials: false
       - name: Check if Node.js project and has package.json
         id: packagejson
-        run: test -e ./package.json && echo "exists=true" >> $GITHUB_OUTPUT || echo "exists=false" >> $GITHUB_OUTPUT
+        run: test -e ./package.json && echo "exists=true" >> "$GITHUB_OUTPUT" || echo "exists=false" >> "$GITHUB_OUTPUT"
       - if: steps.packagejson.outputs.exists == 'true'
         name: Determine what node version to use
         # This workflow is from our own org repo and safe to reference by 'master'.
@@ -59,7 +65,7 @@ jobs:
           RELEASE_TAG: ${{github.event.release.tag_name}}
           RELEASE_URL: ${{github.event.release.html_url}}
         with:
-          token: ${{ secrets.GH_TOKEN }}
+          token: ${{ github.token }}
           commit-message: 'chore(release): ${{ env.RELEASE_TAG }}'
           committer: asyncapi-bot <info@asyncapi.io>
           author: asyncapi-bot <info@asyncapi.io>
