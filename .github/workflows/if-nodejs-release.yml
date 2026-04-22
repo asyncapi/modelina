@@ -18,13 +18,9 @@ on:
       - next
 
 permissions:
-  contents: write # to be able to publish a GitHub release
-  issues: write # to be able to comment on released issues
-  pull-requests: write # to be able to comment on released pull requests
-  id-token: write # to enable use of OIDC for trusted publishing and npm provenance
+  contents: read
 
 jobs:
-
   test-nodejs:
     # We just check the message of first commit as there is always just one commit because we squash into one before merging
     # "commits" contains array of objects where one of the properties is commit "message"
@@ -48,9 +44,11 @@ jobs:
         shell: bash
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          persist-credentials: false
       - name: Check if Node.js project and has package.json
         id: packagejson
-        run: test -e ./package.json && echo "exists=true" >> $GITHUB_OUTPUT || echo "exists=false" >> $GITHUB_OUTPUT
+        run: test -e ./package.json && echo "exists=true" >> "$GITHUB_OUTPUT" || echo "exists=false" >> "$GITHUB_OUTPUT"
         shell: bash
       - if: steps.packagejson.outputs.exists == 'true'
         name: Determine what node version to use
@@ -90,6 +88,11 @@ jobs:
     needs: [test-nodejs]
     name: Publish to any of NPM, Github, or Docker Hub
     runs-on: ubuntu-latest
+    permissions:
+      contents: write # to be able to publish a GitHub release
+      issues: write # to be able to comment on released issues
+      pull-requests: write # to be able to comment on released pull requests
+      id-token: write # to enable use of OIDC for trusted publishing and npm provenance
     steps:
       - name: Set git to use LF #to once and for all finish neverending fight between Unix and Windows
         run: |
@@ -97,9 +100,11 @@ jobs:
           git config --global core.eol lf
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          persist-credentials: false
       - name: Check if Node.js project and has package.json
         id: packagejson
-        run: test -e ./package.json && echo "exists=true" >> $GITHUB_OUTPUT || echo "exists=false" >> $GITHUB_OUTPUT
+        run: test -e ./package.json && echo "exists=true" >> "$GITHUB_OUTPUT" || echo "exists=false" >> "$GITHUB_OUTPUT"
         shell: bash
       - if: steps.packagejson.outputs.exists == 'true'
         name: Determine what node version to use
