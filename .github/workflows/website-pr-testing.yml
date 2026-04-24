@@ -13,6 +13,7 @@ jobs:
   lighthouse-ci:
     name: Lighthouse CI
     runs-on: ubuntu-latest
+    timeout-minutes: 60
 
     steps:
       - name: Checkout repository
