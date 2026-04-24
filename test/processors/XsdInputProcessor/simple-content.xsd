@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <!-- ComplexType with simpleContent extension (adds an attribute to a base simple type) -->
+  <xs:complexType name="PersonType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="id" type="xs:int" use="required"/>
+        <xs:attribute name="lang" type="xs:string" use="optional" default="en"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <!-- ComplexType with simpleContent restriction -->
+  <xs:complexType name="ShortString">
+    <xs:simpleContent>
+      <xs:restriction base="xs:string">
+        <xs:maxLength value="50"/>
+      </xs:restriction>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <xs:element name="Person" type="PersonType"/>
+</xs:schema>
