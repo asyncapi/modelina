@@ -32,6 +32,17 @@ const multipleMessagesInOperation = fs.readFileSync(
   ),
   'utf8'
 );
+const messageWithHeaders = fs.readFileSync(
+  path.resolve(__dirname, './AsyncAPIInputProcessor/message_with_headers.json'),
+  'utf8'
+);
+const oneofMessageWithHeaders = fs.readFileSync(
+  path.resolve(
+    __dirname,
+    './AsyncAPIInputProcessor/oneof_message_with_headers.json'
+  ),
+  'utf8'
+);
 const ymlFileURI = `file://${path.resolve(
   __dirname,
   './AsyncAPIInputProcessor/testasyncapi.yml'
@@ -236,6 +247,47 @@ describe('AsyncAPIInputProcessor', () => {
       expect(commonInputModel.models['workers']).toBeDefined();
       // Snapshot the model names
       expect(Object.keys(commonInputModel.models).sort()).toMatchSnapshot();
+    });
+
+    test('should be able to process operation with message headers when includeMessageHeaders is true', async () => {
+      const processor = new AsyncAPIInputProcessor();
+      const commonInputModel = await processor.process(messageWithHeaders, {
+        asyncapi: {
+          includeMessageHeaders: true
+        }
+      });
+      expect(commonInputModel instanceof InputMetaModel).toBeTruthy();
+      expect(Object.keys(commonInputModel.models).length).toBe(2);
+      expect(commonInputModel.models['userSignUpMessageHeaders']).toBeDefined();
+      expect(commonInputModel.models['userSignUpMessagePayload']).toBeDefined();
+    });
+
+    test('should be able to process operation with multiple messages with headers when includeMessageHeaders is true', async () => {
+      const processor = new AsyncAPIInputProcessor();
+      const commonInputModel = await processor.process(
+        oneofMessageWithHeaders,
+        {
+          asyncapi: {
+            includeMessageHeaders: true
+          }
+        }
+      );
+      expect(commonInputModel instanceof InputMetaModel).toBeTruthy();
+      expect(Object.keys(commonInputModel.models).length).toBe(6);
+      expect(commonInputModel.models['userSignedUpPayload']).toBeDefined();
+      expect(commonInputModel.models['userSignedUpHeaders']).toBeDefined();
+      expect(
+        commonInputModel.models['userSignUpMessageV1Headers']
+      ).toBeDefined();
+      expect(
+        commonInputModel.models['userSignUpMessageV1Payload']
+      ).toBeDefined();
+      expect(
+        commonInputModel.models['userSignUpMessageV2Headers']
+      ).toBeDefined();
+      expect(
+        commonInputModel.models['userSignUpMessageV2Payload']
+      ).toBeDefined();
     });
   });
 
