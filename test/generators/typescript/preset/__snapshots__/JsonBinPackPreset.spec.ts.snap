@@ -52,12 +52,12 @@ exports[`JsonBinPack preset should work fine with AsyncAPI inputs 1`] = `
   }
   public async jsonbinSerialize(): Promise<Buffer>{
     const jsonData = JSON.parse(this.marshal());
-    const jsonbinpackEncodedSchema = await jsonbinpack.compileSchema({\\"$schema\\":\\"https://json-schema.org/draft/2020-12/schema\\",\\"type\\":\\"object\\",\\"properties\\":{\\"email\\":{\\"format\\":\\"email\\",\\"type\\":\\"string\\",\\"x-parser-schema-id\\":\\"<anonymous-schema-2>\\",\\"x-modelgen-inferred-name\\":\\"anonymous_schema_2\\"}},\\"x-parser-schema-id\\":\\"<anonymous-schema-1>\\",\\"x-modelgen-inferred-name\\":\\"anonymous_schema_1\\"});
+    const jsonbinpackEncodedSchema = await jsonbinpack.compileSchema({\\"type\\":\\"object\\",\\"properties\\":{\\"email\\":{\\"format\\":\\"email\\",\\"type\\":\\"string\\",\\"x-parser-schema-id\\":\\"<anonymous-schema-2>\\",\\"x-modelgen-inferred-name\\":\\"anonymous_schema_2\\"}},\\"x-parser-schema-id\\":\\"<anonymous-schema-1>\\",\\"x-modelgen-inferred-name\\":\\"anonymous_schema_1\\",\\"$schema\\":\\"https://json-schema.org/draft/2020-12/schema\\"});
     return jsonbinpack.serialize(jsonbinpackEncodedSchema, jsonData);
   }
 
   public static async jsonbinDeserialize(buffer: Buffer): Promise<AnonymousSchema_1> {
-    const jsonbinpackEncodedSchema = await jsonbinpack.compileSchema({\\"$schema\\":\\"https://json-schema.org/draft/2020-12/schema\\",\\"type\\":\\"object\\",\\"properties\\":{\\"email\\":{\\"format\\":\\"email\\",\\"type\\":\\"string\\",\\"x-parser-schema-id\\":\\"<anonymous-schema-2>\\",\\"x-modelgen-inferred-name\\":\\"anonymous_schema_2\\"}},\\"x-parser-schema-id\\":\\"<anonymous-schema-1>\\",\\"x-modelgen-inferred-name\\":\\"anonymous_schema_1\\"});
+    const jsonbinpackEncodedSchema = await jsonbinpack.compileSchema({\\"type\\":\\"object\\",\\"properties\\":{\\"email\\":{\\"format\\":\\"email\\",\\"type\\":\\"string\\",\\"x-parser-schema-id\\":\\"<anonymous-schema-2>\\",\\"x-modelgen-inferred-name\\":\\"anonymous_schema_2\\"}},\\"x-parser-schema-id\\":\\"<anonymous-schema-1>\\",\\"x-modelgen-inferred-name\\":\\"anonymous_schema_1\\",\\"$schema\\":\\"https://json-schema.org/draft/2020-12/schema\\"});
     const json = jsonbinpack.deserialize(jsonbinpackEncodedSchema, buffer);
     return AnonymousSchema_1.unmarshal(json);
   }
