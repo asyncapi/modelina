@@ -66,6 +66,14 @@ export interface TypeScriptOptions
    * where you most likely need to access them with obj["propertyName"] instead of obj.propertyName
    */
   rawPropertyNames: boolean;
+  /**
+   * When true, generates `export type { }` for type-only exports (interfaces, type aliases)
+   * and `import type { }` for type-only cross-model imports.
+   * Required when using TypeScript's `isolatedModules: true` compiler option
+   * (e.g. Next.js, SWC, esbuild projects).
+   * Enums are always exported as `export { }` because they are runtime values.
+   */
+  isolatedModules: boolean;
 }
 export type TypeScriptConstantConstraint =
   ConstantConstraint<TypeScriptOptions>;
@@ -117,6 +125,7 @@ export class TypeScriptGenerator extends AbstractGenerator<
     moduleSystem: 'ESM',
     rawPropertyNames: false,
     useJavascriptReservedKeywords: true,
+    isolatedModules: false,
     // Temporarily set
     dependencyManager: () => {
       return {} as TypeScriptDependencyManager;
