@@ -381,6 +381,46 @@ ${content}`;
     expect(models[1].result).toMatchSnapshot();
   });
 
+  test('should render `export type` for ESM named exports with isolatedModules and interface modelType', async () => {
+    generator = new TypeScriptGenerator({
+      moduleSystem: 'ESM',
+      modelType: 'interface',
+      isolatedModules: true
+    });
+    const models = await generator.generateCompleteModels(doc, {
+      exportType: 'named'
+    });
+    expect(models).toHaveLength(2);
+    expect(models[0].result).toMatchSnapshot();
+    expect(models[1].result).toMatchSnapshot();
+    // Verify that type-only exports use `export type`
+    const hasExportType = models.some((m) =>
+      m.result.includes('export type {')
+    );
+    expect(hasExportType).toBe(true);
+    // Verify that plain `export {` is NOT used for interfaces
+    const hasPlainExport = models.some((m) =>
+      /^export \{/.test(m.result.split('\n').find((l) => l.startsWith('export')) ?? '')
+    );
+    expect(hasPlainExport).toBe(false);
+  });
+
+  test('should render `import type` for cross-model dependencies with isolatedModules and interface modelType', async () => {
+    generator = new TypeScriptGenerator({
+      moduleSystem: 'ESM',
+      modelType: 'interface',
+      isolatedModules: true
+    });
+    const models = await generator.generateCompleteModels(doc, {
+      exportType: 'named'
+    });
+    // The model that imports OtherModel should use `import type`
+    const modelWithDep = models.find((m) => m.result.includes('import'));
+    if (modelWithDep) {
+      expect(modelWithDep.result).toMatch(/import type \{/);
+    }
+  });
+
   describe('AsyncAPI with polymorphism', () => {
     const asyncapiDoc = {
       asyncapi: '2.4.0',
