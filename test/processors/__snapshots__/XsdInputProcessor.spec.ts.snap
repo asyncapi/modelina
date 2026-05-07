@@ -295,6 +295,860 @@ InputMetaModel {
 }
 `;
 
+exports[`XsdInputProcessor complexContent parsing should process XSD with complexContent extension 1`] = `
+InputMetaModel {
+  "models": Object {
+    "Animal": ObjectModel {
+      "name": "Animal",
+      "options": Object {},
+      "originalInput": Object {
+        "?xml": Object {
+          "@_encoding": "UTF-8",
+          "@_version": 1,
+        },
+        "xs:schema": Object {
+          "@_xmlns:xs": "http://www.w3.org/2001/XMLSchema",
+          "xs:complexType": Array [
+            Object {
+              "@_name": "Animal",
+              "xs:attribute": Object {
+                "@_name": "species",
+                "@_type": "xs:string",
+                "@_use": "required",
+              },
+              "xs:sequence": Object {
+                "xs:element": Array [
+                  Object {
+                    "@_name": "name",
+                    "@_type": "xs:string",
+                  },
+                  Object {
+                    "@_name": "age",
+                    "@_type": "xs:int",
+                  },
+                ],
+              },
+            },
+            Object {
+              "@_name": "Dog",
+              "xs:complexContent": Object {
+                "xs:extension": Object {
+                  "@_base": "Animal",
+                  "xs:attribute": Object {
+                    "@_name": "registrationId",
+                    "@_type": "xs:string",
+                  },
+                  "xs:sequence": Object {
+                    "xs:element": Array [
+                      Object {
+                        "@_name": "breed",
+                        "@_type": "xs:string",
+                      },
+                      Object {
+                        "@_name": "trained",
+                        "@_type": "xs:boolean",
+                      },
+                    ],
+                  },
+                },
+              },
+            },
+          ],
+          "xs:element": Object {
+            "@_name": "pet",
+            "@_type": "Dog",
+          },
+        },
+      },
+      "properties": Object {
+        "age": ObjectPropertyModel {
+          "property": IntegerModel {
+            "name": "age",
+            "options": Object {},
+            "originalInput": Object {
+              "?xml": Object {
+                "@_encoding": "UTF-8",
+                "@_version": 1,
+              },
+              "xs:schema": Object {
+                "@_xmlns:xs": "http://www.w3.org/2001/XMLSchema",
+                "xs:complexType": Array [
+                  Object {
+                    "@_name": "Animal",
+                    "xs:attribute": Object {
+                      "@_name": "species",
+                      "@_type": "xs:string",
+                      "@_use": "required",
+                    },
+                    "xs:sequence": Object {
+                      "xs:element": Array [
+                        Object {
+                          "@_name": "name",
+                          "@_type": "xs:string",
+                        },
+                        Object {
+                          "@_name": "age",
+                          "@_type": "xs:int",
+                        },
+                      ],
+                    },
+                  },
+                  Object {
+                    "@_name": "Dog",
+                    "xs:complexContent": Object {
+                      "xs:extension": Object {
+                        "@_base": "Animal",
+                        "xs:attribute": Object {
+                          "@_name": "registrationId",
+                          "@_type": "xs:string",
+                        },
+                        "xs:sequence": Object {
+                          "xs:element": Array [
+                            Object {
+                              "@_name": "breed",
+                              "@_type": "xs:string",
+                            },
+                            Object {
+                              "@_name": "trained",
+                              "@_type": "xs:boolean",
+                            },
+                          ],
+                        },
+                      },
+                    },
+                  },
+                ],
+                "xs:element": Object {
+                  "@_name": "pet",
+                  "@_type": "Dog",
+                },
+              },
+            },
+          },
+          "propertyName": "age",
+          "required": true,
+        },
+        "name": ObjectPropertyModel {
+          "property": StringModel {
+            "name": "name",
+            "options": Object {},
+            "originalInput": Object {
+              "?xml": Object {
+                "@_encoding": "UTF-8",
+                "@_version": 1,
+              },
+              "xs:schema": Object {
+                "@_xmlns:xs": "http://www.w3.org/2001/XMLSchema",
+                "xs:complexType": Array [
+                  Object {
+                    "@_name": "Animal",
+                    "xs:attribute": Object {
+                      "@_name": "species",
+                      "@_type": "xs:string",
+                      "@_use": "required",
+                    },
+                    "xs:sequence": Object {
+                      "xs:element": Array [
+                        Object {
+                          "@_name": "name",
+                          "@_type": "xs:string",
+                        },
+                        Object {
+                          "@_name": "age",
+                          "@_type": "xs:int",
+                        },
+                      ],
+                    },
+                  },
+                  Object {
+                    "@_name": "Dog",
+                    "xs:complexContent": Object {
+                      "xs:extension": Object {
+                        "@_base": "Animal",
+                        "xs:attribute": Object {
+                          "@_name": "registrationId",
+                          "@_type": "xs:string",
+                        },
+                        "xs:sequence": Object {
+                          "xs:element": Array [
+                            Object {
+                              "@_name": "breed",
+                              "@_type": "xs:string",
+                            },
+                            Object {
+                              "@_name": "trained",
+                              "@_type": "xs:boolean",
+                            },
+                          ],
+                        },
+                      },
+                    },
+                  },
+                ],
+                "xs:element": Object {
+                  "@_name": "pet",
+                  "@_type": "Dog",
+                },
+              },
+            },
+          },
+          "propertyName": "name",
+          "required": true,
+        },
+        "species": ObjectPropertyModel {
+          "property": StringModel {
+            "name": "species",
+            "options": Object {},
+            "originalInput": Object {
+              "?xml": Object {
+                "@_encoding": "UTF-8",
+                "@_version": 1,
+              },
+              "xs:schema": Object {
+                "@_xmlns:xs": "http://www.w3.org/2001/XMLSchema",
+                "xs:complexType": Array [
+                  Object {
+                    "@_name": "Animal",
+                    "xs:attribute": Object {
+                      "@_name": "species",
+                      "@_type": "xs:string",
+                      "@_use": "required",
+                    },
+                    "xs:sequence": Object {
+                      "xs:element": Array [
+                        Object {
+                          "@_name": "name",
+                          "@_type": "xs:string",
+                        },
+                        Object {
+                          "@_name": "age",
+                          "@_type": "xs:int",
+                        },
+                      ],
+                    },
+                  },
+                  Object {
+                    "@_name": "Dog",
+                    "xs:complexContent": Object {
+                      "xs:extension": Object {
+                        "@_base": "Animal",
+                        "xs:attribute": Object {
+                          "@_name": "registrationId",
+                          "@_type": "xs:string",
+                        },
+                        "xs:sequence": Object {
+                          "xs:element": Array [
+                            Object {
+                              "@_name": "breed",
+                              "@_type": "xs:string",
+                            },
+                            Object {
+                              "@_name": "trained",
+                              "@_type": "xs:boolean",
+                            },
+                          ],
+                        },
+                      },
+                    },
+                  },
+                ],
+                "xs:element": Object {
+                  "@_name": "pet",
+                  "@_type": "Dog",
+                },
+              },
+            },
+          },
+          "propertyName": "species",
+          "required": true,
+        },
+      },
+    },
+    "Dog": ObjectModel {
+      "name": "Dog",
+      "options": Object {},
+      "originalInput": Object {
+        "?xml": Object {
+          "@_encoding": "UTF-8",
+          "@_version": 1,
+        },
+        "xs:schema": Object {
+          "@_xmlns:xs": "http://www.w3.org/2001/XMLSchema",
+          "xs:complexType": Array [
+            Object {
+              "@_name": "Animal",
+              "xs:attribute": Object {
+                "@_name": "species",
+                "@_type": "xs:string",
+                "@_use": "required",
+              },
+              "xs:sequence": Object {
+                "xs:element": Array [
+                  Object {
+                    "@_name": "name",
+                    "@_type": "xs:string",
+                  },
+                  Object {
+                    "@_name": "age",
+                    "@_type": "xs:int",
+                  },
+                ],
+              },
+            },
+            Object {
+              "@_name": "Dog",
+              "xs:complexContent": Object {
+                "xs:extension": Object {
+                  "@_base": "Animal",
+                  "xs:attribute": Object {
+                    "@_name": "registrationId",
+                    "@_type": "xs:string",
+                  },
+                  "xs:sequence": Object {
+                    "xs:element": Array [
+                      Object {
+                        "@_name": "breed",
+                        "@_type": "xs:string",
+                      },
+                      Object {
+                        "@_name": "trained",
+                        "@_type": "xs:boolean",
+                      },
+                    ],
+                  },
+                },
+              },
+            },
+          ],
+          "xs:element": Object {
+            "@_name": "pet",
+            "@_type": "Dog",
+          },
+        },
+      },
+      "properties": Object {
+        "breed": ObjectPropertyModel {
+          "property": StringModel {
+            "name": "breed",
+            "options": Object {},
+            "originalInput": Object {
+              "?xml": Object {
+                "@_encoding": "UTF-8",
+                "@_version": 1,
+              },
+              "xs:schema": Object {
+                "@_xmlns:xs": "http://www.w3.org/2001/XMLSchema",
+                "xs:complexType": Array [
+                  Object {
+                    "@_name": "Animal",
+                    "xs:attribute": Object {
+                      "@_name": "species",
+                      "@_type": "xs:string",
+                      "@_use": "required",
+                    },
+                    "xs:sequence": Object {
+                      "xs:element": Array [
+                        Object {
+                          "@_name": "name",
+                          "@_type": "xs:string",
+                        },
+                        Object {
+                          "@_name": "age",
+                          "@_type": "xs:int",
+                        },
+                      ],
+                    },
+                  },
+                  Object {
+                    "@_name": "Dog",
+                    "xs:complexContent": Object {
+                      "xs:extension": Object {
+                        "@_base": "Animal",
+                        "xs:attribute": Object {
+                          "@_name": "registrationId",
+                          "@_type": "xs:string",
+                        },
+                        "xs:sequence": Object {
+                          "xs:element": Array [
+                            Object {
+                              "@_name": "breed",
+                              "@_type": "xs:string",
+                            },
+                            Object {
+                              "@_name": "trained",
+                              "@_type": "xs:boolean",
+                            },
+                          ],
+                        },
+                      },
+                    },
+                  },
+                ],
+                "xs:element": Object {
+                  "@_name": "pet",
+                  "@_type": "Dog",
+                },
+              },
+            },
+          },
+          "propertyName": "breed",
+          "required": true,
+        },
+        "registrationId": ObjectPropertyModel {
+          "property": StringModel {
+            "name": "registrationId",
+            "options": Object {},
+            "originalInput": Object {
+              "?xml": Object {
+                "@_encoding": "UTF-8",
+                "@_version": 1,
+              },
+              "xs:schema": Object {
+                "@_xmlns:xs": "http://www.w3.org/2001/XMLSchema",
+                "xs:complexType": Array [
+                  Object {
+                    "@_name": "Animal",
+                    "xs:attribute": Object {
+                      "@_name": "species",
+                      "@_type": "xs:string",
+                      "@_use": "required",
+                    },
+                    "xs:sequence": Object {
+                      "xs:element": Array [
+                        Object {
+                          "@_name": "name",
+                          "@_type": "xs:string",
+                        },
+                        Object {
+                          "@_name": "age",
+                          "@_type": "xs:int",
+                        },
+                      ],
+                    },
+                  },
+                  Object {
+                    "@_name": "Dog",
+                    "xs:complexContent": Object {
+                      "xs:extension": Object {
+                        "@_base": "Animal",
+                        "xs:attribute": Object {
+                          "@_name": "registrationId",
+                          "@_type": "xs:string",
+                        },
+                        "xs:sequence": Object {
+                          "xs:element": Array [
+                            Object {
+                              "@_name": "breed",
+                              "@_type": "xs:string",
+                            },
+                            Object {
+                              "@_name": "trained",
+                              "@_type": "xs:boolean",
+                            },
+                          ],
+                        },
+                      },
+                    },
+                  },
+                ],
+                "xs:element": Object {
+                  "@_name": "pet",
+                  "@_type": "Dog",
+                },
+              },
+            },
+          },
+          "propertyName": "registrationId",
+          "required": false,
+        },
+        "trained": ObjectPropertyModel {
+          "property": BooleanModel {
+            "name": "trained",
+            "options": Object {},
+            "originalInput": Object {
+              "?xml": Object {
+                "@_encoding": "UTF-8",
+                "@_version": 1,
+              },
+              "xs:schema": Object {
+                "@_xmlns:xs": "http://www.w3.org/2001/XMLSchema",
+                "xs:complexType": Array [
+                  Object {
+                    "@_name": "Animal",
+                    "xs:attribute": Object {
+                      "@_name": "species",
+                      "@_type": "xs:string",
+                      "@_use": "required",
+                    },
+                    "xs:sequence": Object {
+                      "xs:element": Array [
+                        Object {
+                          "@_name": "name",
+                          "@_type": "xs:string",
+                        },
+                        Object {
+                          "@_name": "age",
+                          "@_type": "xs:int",
+                        },
+                      ],
+                    },
+                  },
+                  Object {
+                    "@_name": "Dog",
+                    "xs:complexContent": Object {
+                      "xs:extension": Object {
+                        "@_base": "Animal",
+                        "xs:attribute": Object {
+                          "@_name": "registrationId",
+                          "@_type": "xs:string",
+                        },
+                        "xs:sequence": Object {
+                          "xs:element": Array [
+                            Object {
+                              "@_name": "breed",
+                              "@_type": "xs:string",
+                            },
+                            Object {
+                              "@_name": "trained",
+                              "@_type": "xs:boolean",
+                            },
+                          ],
+                        },
+                      },
+                    },
+                  },
+                ],
+                "xs:element": Object {
+                  "@_name": "pet",
+                  "@_type": "Dog",
+                },
+              },
+            },
+          },
+          "propertyName": "trained",
+          "required": true,
+        },
+      },
+    },
+  },
+  "originalInput": "<?xml version=\\"1.0\\" encoding=\\"UTF-8\\"?>
+<xs:schema xmlns:xs=\\"http://www.w3.org/2001/XMLSchema\\">
+  <!-- Base type -->
+  <xs:complexType name=\\"Animal\\">
+    <xs:sequence>
+      <xs:element name=\\"name\\" type=\\"xs:string\\"/>
+      <xs:element name=\\"age\\" type=\\"xs:int\\"/>
+    </xs:sequence>
+    <xs:attribute name=\\"species\\" type=\\"xs:string\\" use=\\"required\\"/>
+  </xs:complexType>
+
+  <!-- Extension via complexContent -->
+  <xs:complexType name=\\"Dog\\">
+    <xs:complexContent>
+      <xs:extension base=\\"Animal\\">
+        <xs:sequence>
+          <xs:element name=\\"breed\\" type=\\"xs:string\\"/>
+          <xs:element name=\\"trained\\" type=\\"xs:boolean\\"/>
+        </xs:sequence>
+        <xs:attribute name=\\"registrationId\\" type=\\"xs:string\\"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name=\\"pet\\" type=\\"Dog\\"/>
+</xs:schema>
+",
+}
+`;
+
+exports[`XsdInputProcessor inline simpleType within element should process XSD with inline simpleType in element 1`] = `
+InputMetaModel {
+  "models": Object {
+    "Product": ObjectModel {
+      "name": "Product",
+      "options": Object {},
+      "originalInput": Object {
+        "?xml": Object {
+          "@_encoding": "UTF-8",
+          "@_version": 1,
+        },
+        "xs:schema": Object {
+          "@_xmlns:xs": "http://www.w3.org/2001/XMLSchema",
+          "xs:element": Object {
+            "@_name": "Product",
+            "xs:complexType": Object {
+              "xs:sequence": Object {
+                "xs:element": Array [
+                  Object {
+                    "@_name": "status",
+                    "xs:simpleType": Object {
+                      "xs:restriction": Object {
+                        "@_base": "xs:string",
+                        "xs:enumeration": Array [
+                          Object {
+                            "@_value": "active",
+                          },
+                          Object {
+                            "@_value": "inactive",
+                          },
+                          Object {
+                            "@_value": "pending",
+                          },
+                        ],
+                      },
+                    },
+                  },
+                  Object {
+                    "@_name": "sku",
+                    "xs:simpleType": Object {
+                      "xs:restriction": Object {
+                        "@_base": "xs:string",
+                        "xs:pattern": Object {
+                          "@_value": "[A-Z]{3}-[0-9]{4}",
+                        },
+                      },
+                    },
+                  },
+                  Object {
+                    "@_name": "quantity",
+                    "@_type": "xs:int",
+                  },
+                ],
+              },
+            },
+          },
+        },
+      },
+      "properties": Object {
+        "quantity": ObjectPropertyModel {
+          "property": IntegerModel {
+            "name": "quantity",
+            "options": Object {},
+            "originalInput": Object {
+              "?xml": Object {
+                "@_encoding": "UTF-8",
+                "@_version": 1,
+              },
+              "xs:schema": Object {
+                "@_xmlns:xs": "http://www.w3.org/2001/XMLSchema",
+                "xs:element": Object {
+                  "@_name": "Product",
+                  "xs:complexType": Object {
+                    "xs:sequence": Object {
+                      "xs:element": Array [
+                        Object {
+                          "@_name": "status",
+                          "xs:simpleType": Object {
+                            "xs:restriction": Object {
+                              "@_base": "xs:string",
+                              "xs:enumeration": Array [
+                                Object {
+                                  "@_value": "active",
+                                },
+                                Object {
+                                  "@_value": "inactive",
+                                },
+                                Object {
+                                  "@_value": "pending",
+                                },
+                              ],
+                            },
+                          },
+                        },
+                        Object {
+                          "@_name": "sku",
+                          "xs:simpleType": Object {
+                            "xs:restriction": Object {
+                              "@_base": "xs:string",
+                              "xs:pattern": Object {
+                                "@_value": "[A-Z]{3}-[0-9]{4}",
+                              },
+                            },
+                          },
+                        },
+                        Object {
+                          "@_name": "quantity",
+                          "@_type": "xs:int",
+                        },
+                      ],
+                    },
+                  },
+                },
+              },
+            },
+          },
+          "propertyName": "quantity",
+          "required": true,
+        },
+        "sku": ObjectPropertyModel {
+          "property": StringModel {
+            "name": "sku",
+            "options": Object {},
+            "originalInput": Object {
+              "?xml": Object {
+                "@_encoding": "UTF-8",
+                "@_version": 1,
+              },
+              "xs:schema": Object {
+                "@_xmlns:xs": "http://www.w3.org/2001/XMLSchema",
+                "xs:element": Object {
+                  "@_name": "Product",
+                  "xs:complexType": Object {
+                    "xs:sequence": Object {
+                      "xs:element": Array [
+                        Object {
+                          "@_name": "status",
+                          "xs:simpleType": Object {
+                            "xs:restriction": Object {
+                              "@_base": "xs:string",
+                              "xs:enumeration": Array [
+                                Object {
+                                  "@_value": "active",
+                                },
+                                Object {
+                                  "@_value": "inactive",
+                                },
+                                Object {
+                                  "@_value": "pending",
+                                },
+                              ],
+                            },
+                          },
+                        },
+                        Object {
+                          "@_name": "sku",
+                          "xs:simpleType": Object {
+                            "xs:restriction": Object {
+                              "@_base": "xs:string",
+                              "xs:pattern": Object {
+                                "@_value": "[A-Z]{3}-[0-9]{4}",
+                              },
+                            },
+                          },
+                        },
+                        Object {
+                          "@_name": "quantity",
+                          "@_type": "xs:int",
+                        },
+                      ],
+                    },
+                  },
+                },
+              },
+            },
+          },
+          "propertyName": "sku",
+          "required": true,
+        },
+        "status": ObjectPropertyModel {
+          "property": EnumModel {
+            "name": "status",
+            "options": Object {},
+            "originalInput": Object {
+              "?xml": Object {
+                "@_encoding": "UTF-8",
+                "@_version": 1,
+              },
+              "xs:schema": Object {
+                "@_xmlns:xs": "http://www.w3.org/2001/XMLSchema",
+                "xs:element": Object {
+                  "@_name": "Product",
+                  "xs:complexType": Object {
+                    "xs:sequence": Object {
+                      "xs:element": Array [
+                        Object {
+                          "@_name": "status",
+                          "xs:simpleType": Object {
+                            "xs:restriction": Object {
+                              "@_base": "xs:string",
+                              "xs:enumeration": Array [
+                                Object {
+                                  "@_value": "active",
+                                },
+                                Object {
+                                  "@_value": "inactive",
+                                },
+                                Object {
+                                  "@_value": "pending",
+                                },
+                              ],
+                            },
+                          },
+                        },
+                        Object {
+                          "@_name": "sku",
+                          "xs:simpleType": Object {
+                            "xs:restriction": Object {
+                              "@_base": "xs:string",
+                              "xs:pattern": Object {
+                                "@_value": "[A-Z]{3}-[0-9]{4}",
+                              },
+                            },
+                          },
+                        },
+                        Object {
+                          "@_name": "quantity",
+                          "@_type": "xs:int",
+                        },
+                      ],
+                    },
+                  },
+                },
+              },
+            },
+            "values": Array [
+              EnumValueModel {
+                "key": "active",
+                "value": "active",
+              },
+              EnumValueModel {
+                "key": "inactive",
+                "value": "inactive",
+              },
+              EnumValueModel {
+                "key": "pending",
+                "value": "pending",
+              },
+            ],
+          },
+          "propertyName": "status",
+          "required": true,
+        },
+      },
+    },
+  },
+  "originalInput": "<?xml version=\\"1.0\\" encoding=\\"UTF-8\\"?>
+<xs:schema xmlns:xs=\\"http://www.w3.org/2001/XMLSchema\\">
+  <!-- Element with inline simpleType -->
+  <xs:element name=\\"Product\\">
+    <xs:complexType>
+      <xs:sequence>
+        <!-- Inline simpleType on element -->
+        <xs:element name=\\"status\\">
+          <xs:simpleType>
+            <xs:restriction base=\\"xs:string\\">
+              <xs:enumeration value=\\"active\\"/>
+              <xs:enumeration value=\\"inactive\\"/>
+              <xs:enumeration value=\\"pending\\"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name=\\"sku\\">
+          <xs:simpleType>
+            <xs:restriction base=\\"xs:string\\">
+              <xs:pattern value=\\"[A-Z]{3}-[0-9]{4}\\"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name=\\"quantity\\" type=\\"xs:int\\"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
+",
+}
+`;
+
 exports[`XsdInputProcessor process() should process XSD Schema with arrays (maxOccurs unbounded) 1`] = `
 InputMetaModel {
   "models": Object {
@@ -2439,6 +3293,758 @@ InputMetaModel {
   
 </xs:schema>
 
+",
+}
+`;
+
+exports[`XsdInputProcessor simpleContent parsing should process XSD with simpleContent extension 1`] = `
+InputMetaModel {
+  "models": Object {
+    "PersonType": ObjectModel {
+      "name": "PersonType",
+      "options": Object {},
+      "originalInput": Object {
+        "?xml": Object {
+          "@_encoding": "UTF-8",
+          "@_version": 1,
+        },
+        "xs:schema": Object {
+          "@_xmlns:xs": "http://www.w3.org/2001/XMLSchema",
+          "xs:complexType": Array [
+            Object {
+              "@_name": "PersonType",
+              "xs:simpleContent": Object {
+                "xs:extension": Object {
+                  "@_base": "xs:string",
+                  "xs:attribute": Array [
+                    Object {
+                      "@_name": "id",
+                      "@_type": "xs:int",
+                      "@_use": "required",
+                    },
+                    Object {
+                      "@_default": "en",
+                      "@_name": "lang",
+                      "@_type": "xs:string",
+                      "@_use": "optional",
+                    },
+                  ],
+                },
+              },
+            },
+            Object {
+              "@_name": "ShortString",
+              "xs:simpleContent": Object {
+                "xs:restriction": Object {
+                  "@_base": "xs:string",
+                  "xs:maxLength": Object {
+                    "@_value": 50,
+                  },
+                },
+              },
+            },
+          ],
+          "xs:element": Object {
+            "@_name": "Person",
+            "@_type": "PersonType",
+          },
+        },
+      },
+      "properties": Object {
+        "id": ObjectPropertyModel {
+          "property": IntegerModel {
+            "name": "id",
+            "options": Object {},
+            "originalInput": Object {
+              "?xml": Object {
+                "@_encoding": "UTF-8",
+                "@_version": 1,
+              },
+              "xs:schema": Object {
+                "@_xmlns:xs": "http://www.w3.org/2001/XMLSchema",
+                "xs:complexType": Array [
+                  Object {
+                    "@_name": "PersonType",
+                    "xs:simpleContent": Object {
+                      "xs:extension": Object {
+                        "@_base": "xs:string",
+                        "xs:attribute": Array [
+                          Object {
+                            "@_name": "id",
+                            "@_type": "xs:int",
+                            "@_use": "required",
+                          },
+                          Object {
+                            "@_default": "en",
+                            "@_name": "lang",
+                            "@_type": "xs:string",
+                            "@_use": "optional",
+                          },
+                        ],
+                      },
+                    },
+                  },
+                  Object {
+                    "@_name": "ShortString",
+                    "xs:simpleContent": Object {
+                      "xs:restriction": Object {
+                        "@_base": "xs:string",
+                        "xs:maxLength": Object {
+                          "@_value": 50,
+                        },
+                      },
+                    },
+                  },
+                ],
+                "xs:element": Object {
+                  "@_name": "Person",
+                  "@_type": "PersonType",
+                },
+              },
+            },
+          },
+          "propertyName": "id",
+          "required": true,
+        },
+        "lang": ObjectPropertyModel {
+          "property": StringModel {
+            "name": "lang",
+            "options": Object {},
+            "originalInput": Object {
+              "?xml": Object {
+                "@_encoding": "UTF-8",
+                "@_version": 1,
+              },
+              "xs:schema": Object {
+                "@_xmlns:xs": "http://www.w3.org/2001/XMLSchema",
+                "xs:complexType": Array [
+                  Object {
+                    "@_name": "PersonType",
+                    "xs:simpleContent": Object {
+                      "xs:extension": Object {
+                        "@_base": "xs:string",
+                        "xs:attribute": Array [
+                          Object {
+                            "@_name": "id",
+                            "@_type": "xs:int",
+                            "@_use": "required",
+                          },
+                          Object {
+                            "@_default": "en",
+                            "@_name": "lang",
+                            "@_type": "xs:string",
+                            "@_use": "optional",
+                          },
+                        ],
+                      },
+                    },
+                  },
+                  Object {
+                    "@_name": "ShortString",
+                    "xs:simpleContent": Object {
+                      "xs:restriction": Object {
+                        "@_base": "xs:string",
+                        "xs:maxLength": Object {
+                          "@_value": 50,
+                        },
+                      },
+                    },
+                  },
+                ],
+                "xs:element": Object {
+                  "@_name": "Person",
+                  "@_type": "PersonType",
+                },
+              },
+            },
+          },
+          "propertyName": "lang",
+          "required": false,
+        },
+        "value": ObjectPropertyModel {
+          "property": StringModel {
+            "name": "value",
+            "options": Object {},
+            "originalInput": Object {
+              "?xml": Object {
+                "@_encoding": "UTF-8",
+                "@_version": 1,
+              },
+              "xs:schema": Object {
+                "@_xmlns:xs": "http://www.w3.org/2001/XMLSchema",
+                "xs:complexType": Array [
+                  Object {
+                    "@_name": "PersonType",
+                    "xs:simpleContent": Object {
+                      "xs:extension": Object {
+                        "@_base": "xs:string",
+                        "xs:attribute": Array [
+                          Object {
+                            "@_name": "id",
+                            "@_type": "xs:int",
+                            "@_use": "required",
+                          },
+                          Object {
+                            "@_default": "en",
+                            "@_name": "lang",
+                            "@_type": "xs:string",
+                            "@_use": "optional",
+                          },
+                        ],
+                      },
+                    },
+                  },
+                  Object {
+                    "@_name": "ShortString",
+                    "xs:simpleContent": Object {
+                      "xs:restriction": Object {
+                        "@_base": "xs:string",
+                        "xs:maxLength": Object {
+                          "@_value": 50,
+                        },
+                      },
+                    },
+                  },
+                ],
+                "xs:element": Object {
+                  "@_name": "Person",
+                  "@_type": "PersonType",
+                },
+              },
+            },
+          },
+          "propertyName": "value",
+          "required": true,
+        },
+      },
+    },
+    "ShortString": ObjectModel {
+      "name": "ShortString",
+      "options": Object {},
+      "originalInput": Object {
+        "?xml": Object {
+          "@_encoding": "UTF-8",
+          "@_version": 1,
+        },
+        "xs:schema": Object {
+          "@_xmlns:xs": "http://www.w3.org/2001/XMLSchema",
+          "xs:complexType": Array [
+            Object {
+              "@_name": "PersonType",
+              "xs:simpleContent": Object {
+                "xs:extension": Object {
+                  "@_base": "xs:string",
+                  "xs:attribute": Array [
+                    Object {
+                      "@_name": "id",
+                      "@_type": "xs:int",
+                      "@_use": "required",
+                    },
+                    Object {
+                      "@_default": "en",
+                      "@_name": "lang",
+                      "@_type": "xs:string",
+                      "@_use": "optional",
+                    },
+                  ],
+                },
+              },
+            },
+            Object {
+              "@_name": "ShortString",
+              "xs:simpleContent": Object {
+                "xs:restriction": Object {
+                  "@_base": "xs:string",
+                  "xs:maxLength": Object {
+                    "@_value": 50,
+                  },
+                },
+              },
+            },
+          ],
+          "xs:element": Object {
+            "@_name": "Person",
+            "@_type": "PersonType",
+          },
+        },
+      },
+      "properties": Object {},
+    },
+  },
+  "originalInput": "<?xml version=\\"1.0\\" encoding=\\"UTF-8\\"?>
+<xs:schema xmlns:xs=\\"http://www.w3.org/2001/XMLSchema\\">
+  <!-- ComplexType with simpleContent extension (adds an attribute to a base simple type) -->
+  <xs:complexType name=\\"PersonType\\">
+    <xs:simpleContent>
+      <xs:extension base=\\"xs:string\\">
+        <xs:attribute name=\\"id\\" type=\\"xs:int\\" use=\\"required\\"/>
+        <xs:attribute name=\\"lang\\" type=\\"xs:string\\" use=\\"optional\\" default=\\"en\\"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <!-- ComplexType with simpleContent restriction -->
+  <xs:complexType name=\\"ShortString\\">
+    <xs:simpleContent>
+      <xs:restriction base=\\"xs:string\\">
+        <xs:maxLength value=\\"50\\"/>
+      </xs:restriction>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <xs:element name=\\"Person\\" type=\\"PersonType\\"/>
+</xs:schema>
+",
+}
+`;
+
+exports[`XsdInputProcessor simpleType constraint parsing should process XSD with pattern and length restrictions 1`] = `
+InputMetaModel {
+  "models": Object {
+    "EmailType": StringModel {
+      "name": "EmailType",
+      "options": Object {},
+      "originalInput": Object {
+        "?xml": Object {
+          "@_encoding": "UTF-8",
+          "@_version": 1,
+        },
+        "xs:schema": Object {
+          "@_xmlns:xs": "http://www.w3.org/2001/XMLSchema",
+          "xs:element": Array [
+            Object {
+              "@_name": "email",
+              "@_type": "EmailType",
+            },
+            Object {
+              "@_name": "password",
+              "@_type": "PasswordType",
+            },
+            Object {
+              "@_name": "percentage",
+              "@_type": "PercentageType",
+            },
+          ],
+          "xs:simpleType": Array [
+            Object {
+              "@_name": "EmailType",
+              "xs:restriction": Object {
+                "@_base": "xs:string",
+                "xs:pattern": Object {
+                  "@_value": "[a-zA-Z0-9._%+\\\\-]+@[a-zA-Z0-9.\\\\-]+\\\\.[a-zA-Z]{2,}",
+                },
+              },
+            },
+            Object {
+              "@_name": "PasswordType",
+              "xs:restriction": Object {
+                "@_base": "xs:string",
+                "xs:maxLength": Object {
+                  "@_value": 128,
+                },
+                "xs:minLength": Object {
+                  "@_value": 8,
+                },
+              },
+            },
+            Object {
+              "@_name": "PercentageType",
+              "xs:restriction": Object {
+                "@_base": "xs:decimal",
+                "xs:maxInclusive": Object {
+                  "@_value": 100,
+                },
+                "xs:minInclusive": Object {
+                  "@_value": 1,
+                },
+              },
+            },
+            Object {
+              "@_name": "NonEmptyString",
+              "xs:restriction": Object {
+                "@_base": "xs:string",
+                "xs:minLength": Object {
+                  "@_value": 1,
+                },
+              },
+            },
+            Object {
+              "@_name": "ShortLabel",
+              "xs:restriction": Object {
+                "@_base": "xs:string",
+                "xs:maxLength": Object {
+                  "@_value": 20,
+                },
+              },
+            },
+          ],
+        },
+      },
+    },
+    "NonEmptyString": StringModel {
+      "name": "NonEmptyString",
+      "options": Object {},
+      "originalInput": Object {
+        "?xml": Object {
+          "@_encoding": "UTF-8",
+          "@_version": 1,
+        },
+        "xs:schema": Object {
+          "@_xmlns:xs": "http://www.w3.org/2001/XMLSchema",
+          "xs:element": Array [
+            Object {
+              "@_name": "email",
+              "@_type": "EmailType",
+            },
+            Object {
+              "@_name": "password",
+              "@_type": "PasswordType",
+            },
+            Object {
+              "@_name": "percentage",
+              "@_type": "PercentageType",
+            },
+          ],
+          "xs:simpleType": Array [
+            Object {
+              "@_name": "EmailType",
+              "xs:restriction": Object {
+                "@_base": "xs:string",
+                "xs:pattern": Object {
+                  "@_value": "[a-zA-Z0-9._%+\\\\-]+@[a-zA-Z0-9.\\\\-]+\\\\.[a-zA-Z]{2,}",
+                },
+              },
+            },
+            Object {
+              "@_name": "PasswordType",
+              "xs:restriction": Object {
+                "@_base": "xs:string",
+                "xs:maxLength": Object {
+                  "@_value": 128,
+                },
+                "xs:minLength": Object {
+                  "@_value": 8,
+                },
+              },
+            },
+            Object {
+              "@_name": "PercentageType",
+              "xs:restriction": Object {
+                "@_base": "xs:decimal",
+                "xs:maxInclusive": Object {
+                  "@_value": 100,
+                },
+                "xs:minInclusive": Object {
+                  "@_value": 1,
+                },
+              },
+            },
+            Object {
+              "@_name": "NonEmptyString",
+              "xs:restriction": Object {
+                "@_base": "xs:string",
+                "xs:minLength": Object {
+                  "@_value": 1,
+                },
+              },
+            },
+            Object {
+              "@_name": "ShortLabel",
+              "xs:restriction": Object {
+                "@_base": "xs:string",
+                "xs:maxLength": Object {
+                  "@_value": 20,
+                },
+              },
+            },
+          ],
+        },
+      },
+    },
+    "PasswordType": StringModel {
+      "name": "PasswordType",
+      "options": Object {},
+      "originalInput": Object {
+        "?xml": Object {
+          "@_encoding": "UTF-8",
+          "@_version": 1,
+        },
+        "xs:schema": Object {
+          "@_xmlns:xs": "http://www.w3.org/2001/XMLSchema",
+          "xs:element": Array [
+            Object {
+              "@_name": "email",
+              "@_type": "EmailType",
+            },
+            Object {
+              "@_name": "password",
+              "@_type": "PasswordType",
+            },
+            Object {
+              "@_name": "percentage",
+              "@_type": "PercentageType",
+            },
+          ],
+          "xs:simpleType": Array [
+            Object {
+              "@_name": "EmailType",
+              "xs:restriction": Object {
+                "@_base": "xs:string",
+                "xs:pattern": Object {
+                  "@_value": "[a-zA-Z0-9._%+\\\\-]+@[a-zA-Z0-9.\\\\-]+\\\\.[a-zA-Z]{2,}",
+                },
+              },
+            },
+            Object {
+              "@_name": "PasswordType",
+              "xs:restriction": Object {
+                "@_base": "xs:string",
+                "xs:maxLength": Object {
+                  "@_value": 128,
+                },
+                "xs:minLength": Object {
+                  "@_value": 8,
+                },
+              },
+            },
+            Object {
+              "@_name": "PercentageType",
+              "xs:restriction": Object {
+                "@_base": "xs:decimal",
+                "xs:maxInclusive": Object {
+                  "@_value": 100,
+                },
+                "xs:minInclusive": Object {
+                  "@_value": 1,
+                },
+              },
+            },
+            Object {
+              "@_name": "NonEmptyString",
+              "xs:restriction": Object {
+                "@_base": "xs:string",
+                "xs:minLength": Object {
+                  "@_value": 1,
+                },
+              },
+            },
+            Object {
+              "@_name": "ShortLabel",
+              "xs:restriction": Object {
+                "@_base": "xs:string",
+                "xs:maxLength": Object {
+                  "@_value": 20,
+                },
+              },
+            },
+          ],
+        },
+      },
+    },
+    "PercentageType": FloatModel {
+      "name": "PercentageType",
+      "options": Object {},
+      "originalInput": Object {
+        "?xml": Object {
+          "@_encoding": "UTF-8",
+          "@_version": 1,
+        },
+        "xs:schema": Object {
+          "@_xmlns:xs": "http://www.w3.org/2001/XMLSchema",
+          "xs:element": Array [
+            Object {
+              "@_name": "email",
+              "@_type": "EmailType",
+            },
+            Object {
+              "@_name": "password",
+              "@_type": "PasswordType",
+            },
+            Object {
+              "@_name": "percentage",
+              "@_type": "PercentageType",
+            },
+          ],
+          "xs:simpleType": Array [
+            Object {
+              "@_name": "EmailType",
+              "xs:restriction": Object {
+                "@_base": "xs:string",
+                "xs:pattern": Object {
+                  "@_value": "[a-zA-Z0-9._%+\\\\-]+@[a-zA-Z0-9.\\\\-]+\\\\.[a-zA-Z]{2,}",
+                },
+              },
+            },
+            Object {
+              "@_name": "PasswordType",
+              "xs:restriction": Object {
+                "@_base": "xs:string",
+                "xs:maxLength": Object {
+                  "@_value": 128,
+                },
+                "xs:minLength": Object {
+                  "@_value": 8,
+                },
+              },
+            },
+            Object {
+              "@_name": "PercentageType",
+              "xs:restriction": Object {
+                "@_base": "xs:decimal",
+                "xs:maxInclusive": Object {
+                  "@_value": 100,
+                },
+                "xs:minInclusive": Object {
+                  "@_value": 1,
+                },
+              },
+            },
+            Object {
+              "@_name": "NonEmptyString",
+              "xs:restriction": Object {
+                "@_base": "xs:string",
+                "xs:minLength": Object {
+                  "@_value": 1,
+                },
+              },
+            },
+            Object {
+              "@_name": "ShortLabel",
+              "xs:restriction": Object {
+                "@_base": "xs:string",
+                "xs:maxLength": Object {
+                  "@_value": 20,
+                },
+              },
+            },
+          ],
+        },
+      },
+    },
+    "ShortLabel": StringModel {
+      "name": "ShortLabel",
+      "options": Object {},
+      "originalInput": Object {
+        "?xml": Object {
+          "@_encoding": "UTF-8",
+          "@_version": 1,
+        },
+        "xs:schema": Object {
+          "@_xmlns:xs": "http://www.w3.org/2001/XMLSchema",
+          "xs:element": Array [
+            Object {
+              "@_name": "email",
+              "@_type": "EmailType",
+            },
+            Object {
+              "@_name": "password",
+              "@_type": "PasswordType",
+            },
+            Object {
+              "@_name": "percentage",
+              "@_type": "PercentageType",
+            },
+          ],
+          "xs:simpleType": Array [
+            Object {
+              "@_name": "EmailType",
+              "xs:restriction": Object {
+                "@_base": "xs:string",
+                "xs:pattern": Object {
+                  "@_value": "[a-zA-Z0-9._%+\\\\-]+@[a-zA-Z0-9.\\\\-]+\\\\.[a-zA-Z]{2,}",
+                },
+              },
+            },
+            Object {
+              "@_name": "PasswordType",
+              "xs:restriction": Object {
+                "@_base": "xs:string",
+                "xs:maxLength": Object {
+                  "@_value": 128,
+                },
+                "xs:minLength": Object {
+                  "@_value": 8,
+                },
+              },
+            },
+            Object {
+              "@_name": "PercentageType",
+              "xs:restriction": Object {
+                "@_base": "xs:decimal",
+                "xs:maxInclusive": Object {
+                  "@_value": 100,
+                },
+                "xs:minInclusive": Object {
+                  "@_value": 1,
+                },
+              },
+            },
+            Object {
+              "@_name": "NonEmptyString",
+              "xs:restriction": Object {
+                "@_base": "xs:string",
+                "xs:minLength": Object {
+                  "@_value": 1,
+                },
+              },
+            },
+            Object {
+              "@_name": "ShortLabel",
+              "xs:restriction": Object {
+                "@_base": "xs:string",
+                "xs:maxLength": Object {
+                  "@_value": 20,
+                },
+              },
+            },
+          ],
+        },
+      },
+    },
+  },
+  "originalInput": "<?xml version=\\"1.0\\" encoding=\\"UTF-8\\"?>
+<xs:schema xmlns:xs=\\"http://www.w3.org/2001/XMLSchema\\">
+  <!-- Pattern restriction -->
+  <xs:simpleType name=\\"EmailType\\">
+    <xs:restriction base=\\"xs:string\\">
+      <xs:pattern value=\\"[a-zA-Z0-9._%+\\\\-]+@[a-zA-Z0-9.\\\\-]+\\\\.[a-zA-Z]{2,}\\"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!-- minLength / maxLength restrictions -->
+  <xs:simpleType name=\\"PasswordType\\">
+    <xs:restriction base=\\"xs:string\\">
+      <xs:minLength value=\\"8\\"/>
+      <xs:maxLength value=\\"128\\"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!-- Numeric range constraints -->
+  <xs:simpleType name=\\"PercentageType\\">
+    <xs:restriction base=\\"xs:decimal\\">
+      <xs:minInclusive value=\\"1\\"/>
+      <xs:maxInclusive value=\\"100\\"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!-- minLength only -->
+  <xs:simpleType name=\\"NonEmptyString\\">
+    <xs:restriction base=\\"xs:string\\">
+      <xs:minLength value=\\"1\\"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!-- maxLength only -->
+  <xs:simpleType name=\\"ShortLabel\\">
+    <xs:restriction base=\\"xs:string\\">
+      <xs:maxLength value=\\"20\\"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:element name=\\"email\\" type=\\"EmailType\\"/>
+  <xs:element name=\\"password\\" type=\\"PasswordType\\"/>
+  <xs:element name=\\"percentage\\" type=\\"PercentageType\\"/>
+</xs:schema>
 ",
 }
 `;
