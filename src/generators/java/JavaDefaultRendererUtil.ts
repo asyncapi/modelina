@@ -43,6 +43,20 @@ export class JavaDefaultRendererUtil {
       }
       return `private ${property.property.type} ${property.propertyName} = ${property.property.type}.${defaultEnumValue.key};`;
     }
-    return `private ${property.property.type} ${property.propertyName} = ${property.property.originalInput.default};`;
+    // Append type suffixes for boxed numeric defaults: Long(2) → 2L, Float(1.5) → 1.5f
+    const defaultValue = property.property.originalInput.default;
+    const numValue = String(defaultValue);
+    if ((typeof defaultValue === 'number' || (!isNaN(Number(defaultValue)) && defaultValue !== '')) && !numValue.includes('"')) {
+      if (property.property.type === 'Long' || property.property.type === 'long') {
+        return `private ${property.property.type} ${property.propertyName} = ${numValue}L;`;
+      }
+      if (property.property.type === 'Float' || property.property.type === 'float') {
+        return `private ${property.property.type} ${property.propertyName} = ${numValue}f;`;
+      }
+      if (property.property.type === 'Double' || property.property.type === 'double') {
+        return `private ${property.property.type} ${property.propertyName} = ${numValue}d;`;
+      }
+    }
+    return `private ${property.property.type} ${property.propertyName} = ${defaultValue};`;
   }
 }
