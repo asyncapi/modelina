@@ -13,6 +13,9 @@ on:
     branches:
       - master
 
+permissions:
+  contents: read  # To checkout code
+
 jobs:
   bump-in-dependent-projects:
     name: Bump this package in repositories that depend on it
@@ -21,9 +24,11 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
+        with:
+          persist-credentials: false
       - name: Check if Node.js project and has package.json
         id: packagejson
-        run: test -e ./package.json && echo "exists=true" >> $GITHUB_OUTPUT || echo "exists=false" >> $GITHUB_OUTPUT
+        run: test -e ./package.json && echo "exists=true" >> "$GITHUB_OUTPUT" || echo "exists=false" >> "$GITHUB_OUTPUT"
       - name: Setup corepack with pnpm and yarn
         if: steps.packagejson.outputs.exists == 'true'
         run: corepack enable
