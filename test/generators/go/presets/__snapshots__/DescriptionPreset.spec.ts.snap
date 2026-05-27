@@ -5,7 +5,7 @@ exports[`Description generation should render example function for model 1`] = `
 type Test struct {
   StringProp string
   // Description
-  NumberProp float64
+  NumberProp *float64
   ObjectProp *NestedTest
   // AnyTest description
   AnyProp map[string]interface{}
@@ -15,6 +15,6 @@ type Test struct {
 exports[`Description generation should render example function for model 2`] = `
 "type NestedTest struct {
   // string prop
-  StringProp string
+  StringProp *string
 }"
 `;
