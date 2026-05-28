@@ -28,6 +28,10 @@ const unionIncludesDiscriminator = (model: ConstrainedUnionModel): boolean => {
  */
 export class UnionRenderer extends GoRenderer<ConstrainedUnionModel> {
   public async defaultSelf(): Promise<string> {
+    // oneOf:[T, null] collapses to *T at the property level; no standalone type needed.
+    if (this.model.options.isNullable && this.model.union.length === 1) {
+      return '';
+    }
     if (unionIncludesDiscriminator(this.model)) {
       const content: string[] = [await this.runDiscriminatorAccessorPreset()];
 
