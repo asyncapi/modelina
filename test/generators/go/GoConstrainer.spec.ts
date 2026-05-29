@@ -268,6 +268,54 @@ describe('GoConstrainer', () => {
       });
       expect(type).toEqual('test');
     });
+
+    test('nullable single-member union renders as pointer to member type', () => {
+      const memberModel = new ConstrainedStringModel(
+        'test',
+        undefined,
+        {},
+        'string'
+      );
+      const model = new ConstrainedUnionModel(
+        'NullableString',
+        undefined,
+        { isNullable: true },
+        '',
+        [memberModel]
+      );
+      const type = GoDefaultTypeMapping.Union({
+        constrainedModel: model,
+        ...defaultOptions
+      });
+      expect(type).toEqual('*string');
+    });
+
+    test('nullable multi-member union still renders as union type name', () => {
+      const stringModel = new ConstrainedStringModel(
+        'test',
+        undefined,
+        {},
+        'string'
+      );
+      const intModel = new ConstrainedIntegerModel(
+        'test',
+        undefined,
+        {},
+        'int'
+      );
+      const model = new ConstrainedUnionModel(
+        'NullableMulti',
+        undefined,
+        { isNullable: true },
+        '',
+        [stringModel, intModel]
+      );
+      const type = GoDefaultTypeMapping.Union({
+        constrainedModel: model,
+        ...defaultOptions
+      });
+      expect(type).toEqual('NullableMulti');
+    });
   });
 
   describe('Dictionary', () => {
