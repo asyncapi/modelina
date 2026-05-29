@@ -13,6 +13,7 @@ jobs:
     name: Generate and upload assets
     if: startsWith(github.event.commits[0].message, 'chore(release):')
     runs-on: ${{ matrix.os }}
+    timeout-minutes: 45
     strategy:
       fail-fast: false
       matrix:
