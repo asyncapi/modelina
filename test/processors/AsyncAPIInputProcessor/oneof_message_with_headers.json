@@ -1,0 +1,71 @@
+{
+  "asyncapi": "3.0.0",
+  "defaultContentType": "application/json",
+  "info": {
+    "title": "Signup service example (internal)",
+    "version": "0.1.0"
+  },
+  "channels": {
+    "userSignedUp": {
+      "address": "/user/signedup",
+      "messages": {
+        "userSignUpMessageV1": {
+          "headers": {
+            "title": "userSignUpMessageV1Headers",
+            "type": "object",
+            "properties": {
+              "x-correlation-id": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "x-correlation-id"
+            ]
+          },
+          "payload": {
+            "title": "userSignUpMessageV1Payload",
+            "type": "object",
+            "properties": {
+              "email": {
+                "type": "string",
+                "format": "email"
+              }
+            }
+          }
+        },
+        "userSignUpMessageV2": {
+          "headers": {
+            "title": "userSignUpMessageV2Headers",
+            "type": "object",
+            "properties": {
+              "x-correlation-id": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "x-correlation-id"
+            ]
+          },
+          "payload": {
+            "title": "userSignUpMessageV2Payload",
+            "type": "object",
+            "properties": {
+              "email": {
+                "type": "string",
+                "format": "email"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "operations": {
+    "userSignup": {
+      "action": "send",
+      "channel": {
+        "$ref": "#/channels/userSignedUp"
+      }
+    }
+  }
+}
