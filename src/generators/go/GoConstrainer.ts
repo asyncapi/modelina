@@ -64,6 +64,10 @@ export const GoDefaultTypeMapping: GoTypeMapping = {
     return constrainedModel.name;
   },
   Union({ constrainedModel }): string {
+    // A oneOf:[T, null] schema becomes a single-member nullable union — render as *T.
+    if (constrainedModel.options.isNullable && constrainedModel.union.length === 1) {
+      return `*${constrainedModel.union[0].type}`;
+    }
     //Because Go have no notion of unions (and no custom implementation), we have to render it as any value.
     return constrainedModel.name;
   },
