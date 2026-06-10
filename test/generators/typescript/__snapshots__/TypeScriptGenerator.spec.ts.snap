@@ -3,7 +3,9 @@
 exports[`TypeScriptGenerator AsyncAPI with polymorphism should render 6 models (1 oneOf, 3 classes and 2 enums) 1`] = `
 Array [
   "type AnonymousSchema_1 = Cat | Dog | StickInsect;",
-  "class Cat {
+  "export const PET_TYPE = PetType.CAT;
+
+class Cat {
   private _petType: PetType.CAT = PetType.CAT;
   private _reservedName: string;
   private _huntingSkill: HuntingSkill;
@@ -35,7 +37,9 @@ Array [
   ADVENTUROUS = \\"adventurous\\",
   AGGRESSIVE = \\"aggressive\\",
 }",
-  "class Dog {
+  "export const PET_TYPE = PetType.DOG;
+
+class Dog {
   private _petType: PetType.DOG = PetType.DOG;
   private _reservedName: string;
   private _packSize: number;
@@ -56,7 +60,9 @@ Array [
   get packSize(): number { return this._packSize; }
   set packSize(packSize: number) { this._packSize = packSize; }
 }",
-  "class StickInsect {
+  "export const PET_TYPE = PetType.STICK_BUG;
+
+class StickInsect {
   private _petType: PetType.STICK_BUG = PetType.STICK_BUG;
   private _reservedName: string;
   private _color: string;
@@ -91,7 +97,9 @@ exports[`TypeScriptGenerator AsyncAPI with polymorphism should render enum with 
 exports[`TypeScriptGenerator CloudEvent handle allOf with const in CloudEvent type 1`] = `
 Array [
   "type Pet = Dog | Cat;",
-  "class Dog {
+  "export const RESERVED_TYPE = DogType.DOG;
+
+class Dog {
   private _id: string;
   private _source: string;
   private _specversion: string;
@@ -139,7 +147,9 @@ Array [
   "enum DogType {
   DOG = \\"Dog\\",
 }",
-  "class Cat {
+  "export const RESERVED_TYPE = CatType.CAT;
+
+class Cat {
   private _id: string;
   private _source: string;
   private _specversion: string;
@@ -193,7 +203,9 @@ Array [
 exports[`TypeScriptGenerator Combine oneOf and allOf should combine oneOf and allOf 1`] = `
 Array [
   "type Pet = Cat | Dog;",
-  "class Cat {
+  "export const ANIMAL_TYPE = AnimalType.CAT;
+
+class Cat {
   private _animalType?: AnimalType.CAT = AnimalType.CAT;
   private _age?: number;
   private _huntingSkill?: HuntingSkill;
@@ -222,7 +234,9 @@ Array [
   CLUELESS = \\"clueless\\",
   LAZY = \\"lazy\\",
 }",
-  "class Dog {
+  "export const ANIMAL_TYPE = AnimalType.DOG;
+
+class Dog {
   private _animalType?: AnimalType.DOG = AnimalType.DOG;
   private _age?: number;
   private _breed?: DogBreed;
@@ -253,7 +267,9 @@ Array [
 exports[`TypeScriptGenerator Combine properties and oneOf should combine properties and oneOf 1`] = `
 Array [
   "type Pet = Cat | Dog;",
-  "class Cat {
+  "export const PET_TYPE = PetType.CAT;
+
+class Cat {
   private _petType: PetType.CAT = PetType.CAT;
   private _age?: number;
   private _huntingSkill?: HuntingSkill;
@@ -282,7 +298,9 @@ Array [
   CLUELESS = \\"clueless\\",
   LAZY = \\"lazy\\",
 }",
-  "class Dog {
+  "export const PET_TYPE = PetType.DOG;
+
+class Dog {
   private _petType: PetType.DOG = PetType.DOG;
   private _age?: number;
   private _breed?: DogBreed;
@@ -312,7 +330,9 @@ Array [
 
 exports[`TypeScriptGenerator const should generate a const string 1`] = `
 Array [
-  "class LightMeasured {
+  "export const RESERVED_TYPE = 'test';
+
+class LightMeasured {
   private _reservedType?: 'test' = 'test';
 
   constructor(input: {
@@ -328,7 +348,10 @@ Array [
 
 exports[`TypeScriptGenerator const should generate a single enum with two values 1`] = `
 Array [
-  "class LightMeasured {
+  "export const RESERVED_TYPE = ReservedType.MY_MESSAGE;
+export const TYPE2 = Type2.MY_MESSAGE2;
+
+class LightMeasured {
   private _reservedType?: ReservedType.MY_MESSAGE = ReservedType.MY_MESSAGE;
   private _type2?: Type2.MY_MESSAGE2 = Type2.MY_MESSAGE2;
 
@@ -372,6 +395,30 @@ Array [
   MY_MESSAGE2 = \\"MyMessage2\\",
 }",
 ]
+`;
+
+exports[`TypeScriptGenerator const should generate exported constants for const properties 1`] = `
+"export const EVENT_TYPE = 'EXAMPLE_EVENT';
+export const EVENT_STATUS = 'ACTIVE';
+
+class EventMessage {
+  private _eventType?: 'EXAMPLE_EVENT' = 'EXAMPLE_EVENT';
+  private _eventStatus?: 'ACTIVE' = 'ACTIVE';
+  private _reservedName?: string;
+
+  constructor(input: {
+    reservedName?: string,
+  }) {
+    this._reservedName = input.reservedName;
+  }
+
+  get eventType(): 'EXAMPLE_EVENT' | undefined { return this._eventType; }
+
+  get eventStatus(): 'ACTIVE' | undefined { return this._eventStatus; }
+
+  get reservedName(): string | undefined { return this._reservedName; }
+  set reservedName(reservedName: string | undefined) { this._reservedName = reservedName; }
+}"
 `;
 
 exports[`TypeScriptGenerator if/then/else handle if/then/else required properties 1`] = `
