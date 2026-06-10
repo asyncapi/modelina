@@ -8,6 +8,7 @@ exports[`KOTLIN_CONSTRAINTS_PRESET should render jakarta constraints annotations
     @get:NotNull
     @get:Max(99)
     val maxNumberProp: Double,
+    @get:Valid
     @get:Size(min=2, max=3)
     val arrayProp: List<Any>? = null,
     @get:Pattern(regexp=\\"^I_\\")
@@ -25,6 +26,7 @@ exports[`KOTLIN_CONSTRAINTS_PRESET should render javax constraints annotations b
     @get:NotNull
     @get:Max(99)
     val maxNumberProp: Double,
+    @get:Valid
     @get:Size(min=2, max=3)
     val arrayProp: List<Any>? = null,
     @get:Pattern(regexp=\\"^I_\\")
@@ -42,6 +44,7 @@ exports[`KOTLIN_CONSTRAINTS_PRESET should render javax constraints annotations w
     @get:NotNull
     @get:Max(99)
     val maxNumberProp: Double,
+    @get:Valid
     @get:Size(min=2, max=3)
     val arrayProp: List<Any>? = null,
     @get:Pattern(regexp=\\"^I_\\")
