@@ -132,5 +132,11 @@
   },
   "publishConfig": {
     "access": "public"
+  },
+  "overrides": {
+    "@hyperjump/json-schema": "^1.0.0"
+  },
+  "resolutions": {
+    "@hyperjump/json-schema": "^1.0.0"
   }
 }
