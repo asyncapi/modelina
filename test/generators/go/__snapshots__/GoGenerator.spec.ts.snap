@@ -43,7 +43,7 @@ type Address struct {
   City string
   State string
   HouseNumber float64
-  Marriage bool
+  Marriage *bool
   Members *Members
   ArrayType []Union
   OtherModel *OtherModel
@@ -58,7 +58,7 @@ import (
   \\"time\\"
 )
 type OtherModel struct {
-  StreetName string
+  StreetName *string
   AdditionalProperties map[string]interface{}
 }"
 `;
@@ -104,7 +104,7 @@ type Address struct {
   City string
   State string
   HouseNumber float64
-  Marriage bool
+  Marriage *bool
   Members *Members
   ArrayType []Union
   OtherModel *OtherModel
@@ -117,7 +117,7 @@ exports[`GoGenerator generateCompleteModels() should render models 5`] = `
 package some_package
 
 type OtherModel struct {
-  StreetName string
+  StreetName *string
   AdditionalProperties map[string]interface{}
 }"
 `;
@@ -263,9 +263,9 @@ var ValuesToThings = map[any]Things{
 
 exports[`GoGenerator should render \`required\` for required properties 1`] = `
 "type ExampleStruct struct {
-  Id int \`json:\\"id,omitempty\\"\`
+  Id *int \`json:\\"id,omitempty\\"\`
   MsgUid string \`json:\\"msgUid\\" binding:\\"required\\"\`
-  EvtName string \`json:\\"evtName,omitempty\\"\`
+  EvtName *string \`json:\\"evtName,omitempty\\"\`
 }"
 `;
 
@@ -297,7 +297,7 @@ exports[`GoGenerator should render \`struct\` type 4`] = `
   City string
   State string
   HouseNumber float64
-  Marriage bool
+  Marriage *bool
   Members *Members
   TupleType []Union
   ArrayType []string
@@ -328,7 +328,7 @@ type Address struct {
   City string
   State string
   HouseNumber float64
-  Marriage bool
+  Marriage *bool
   Members *Members
   TupleType []Union
   ArrayType []string
@@ -336,11 +336,11 @@ type Address struct {
   AdditionalProperties map[string]AdditionalProperties
 }
 type LocationAdditionalPropertyOneOf_0 struct {
-  Ref string
+  Ref *string
   AdditionalProperties map[string]interface{}
 }
 type LocationAdditionalPropertyOneOf_1 struct {
-  Id string
+  Id *string
   AdditionalProperties map[string]interface{}
 }"
 `;
