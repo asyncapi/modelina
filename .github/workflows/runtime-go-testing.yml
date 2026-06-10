@@ -30,3 +30,4 @@ jobs:
       run: npm run generate:runtime:go
     -name: Run runtime Tests
       run: npm run test:runtime:go
+      
