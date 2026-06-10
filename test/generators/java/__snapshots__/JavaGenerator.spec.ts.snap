@@ -2355,10 +2355,10 @@ Array [
   private Integer age = 18;
   @JsonProperty(\\"daysSince\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
-  private Long daysSince = 544999999;
+  private Long daysSince = 544999999L;
   @JsonProperty(\\"daysBefore\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
-  private Double daysBefore = 100.5;
+  private Double daysBefore = 100.5d;
   @JsonProperty(\\"creationTime\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private java.time.OffsetDateTime creationTime = java.time.OffsetDateTime.parse(\\"2023-01-01T00:00:00Z\\");
@@ -2477,7 +2477,7 @@ Array [
   private Integer age = 18;
   @JsonProperty(\\"daysSince\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
-  private Long daysSince = 544999999;
+  private Long daysSince = 544999999L;
   @JsonProperty(\\"daysBefore\\")
   @JsonInclude(JsonInclude.Include.NON_NULL)
   private BigDecimal daysBefore = new BigDecimal(100.5);
