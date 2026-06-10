@@ -300,9 +300,8 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
       if (Array.isArray(schema.items())) {
         convertedSchema.items = (
           schema.items() as AsyncAPISchemaInterface[]
-        ).map(
-          (item) => this.convertToInternalSchema(item),
-          alreadyIteratedSchemas
+        ).map((item) =>
+          this.convertToInternalSchema(item, alreadyIteratedSchemas)
         );
       } else {
         convertedSchema.items = this.convertToInternalSchema(
