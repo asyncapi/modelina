@@ -225,4 +225,25 @@ describe('PYTHON_PYDANTIC_PRESET', () => {
     const models = await generator.generate(doc);
     expect(models.map((model) => model.result)).toMatchSnapshot();
   });
+
+  test('should escape quotes in const string values', async () => {
+    const doc = {
+      title: 'QuoteTest',
+      type: 'object',
+      properties: {
+        greeting: {
+          const: "it's working"
+        },
+        path: {
+          const: 'C:\\Users\\test'
+        },
+        quoted: {
+          const: 'say "hello"'
+        }
+      }
+    };
+
+    const models = await generator.generate(doc);
+    expect(models.map((model) => model.result)).toMatchSnapshot();
+  });
 });
