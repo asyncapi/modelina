@@ -16,7 +16,10 @@ describe('KOTLIN_CONSTRAINTS_PRESET', () => {
     const generator = new KotlinGenerator({
       presets: [KOTLIN_CONSTRAINTS_PRESET]
     });
-    const expectedDependencies = ['import javax.validation.constraints.*'];
+    const expectedDependencies = [
+      'import javax.validation.constraints.*',
+      'import javax.validation.Valid'
+    ];
 
     const models = await generator.generate(doc);
     expect(models).toHaveLength(1);
@@ -36,7 +39,10 @@ describe('KOTLIN_CONSTRAINTS_PRESET', () => {
       ]
     });
 
-    const expectedDependencies = ['import javax.validation.constraints.*'];
+    const expectedDependencies = [
+      'import javax.validation.constraints.*',
+      'import javax.validation.Valid'
+    ];
 
     const models = await generator.generate(doc);
     expect(models).toHaveLength(1);
@@ -56,7 +62,10 @@ describe('KOTLIN_CONSTRAINTS_PRESET', () => {
       ]
     });
 
-    const expectedDependencies = ['import jakarta.validation.constraints.*'];
+    const expectedDependencies = [
+      'import jakarta.validation.constraints.*',
+      'import jakarta.validation.Valid'
+    ];
 
     const models = await generator.generate(doc);
     expect(models).toHaveLength(1);
