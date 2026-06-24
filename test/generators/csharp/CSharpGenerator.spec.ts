@@ -170,6 +170,30 @@ describe('CSharpGenerator', () => {
     ]);
   });
 
+  test('should generate a valid const property with autoImplementedProperties', async () => {
+    const autoImplementGenerator = new CSharpGenerator({
+      modelType: 'class',
+      autoImplementedProperties: true
+    });
+    const doc = {
+      $id: 'Event',
+      type: 'object',
+      properties: {
+        eventType: { type: 'string', const: 'OnEntryStarted' }
+      },
+      required: ['eventType']
+    };
+
+    const models = await autoImplementGenerator.generate(doc);
+    expect(models).toHaveLength(1);
+    // A C# `const` field cannot have `{ get; }` accessors, so it must be
+    // rendered as a plain const field assignment.
+    expect(models[0].result).toContain(
+      'public const string EventType = "OnEntryStarted";'
+    );
+    expect(models[0].result).not.toContain('public const string EventType {');
+  });
+
   test('should render `enum` type', async () => {
     const doc = {
       $id: 'Things',
