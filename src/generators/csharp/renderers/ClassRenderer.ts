@@ -119,7 +119,7 @@ export const CSHARP_DEFAULT_CLASS_PRESET: CsharpClassPreset<CSharpOptions> = {
       if (property.property.options.const) {
         return `public const ${property.property.type} ${pascalCase(
           property.propertyName
-        )} { ${getter} } = ${property.property.options.const.value};`;
+        )} = ${property.property.options.const.value};`;
       }
 
       const semiColon = nullablePropertyEnding !== '' ? ';' : '';

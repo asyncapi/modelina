@@ -90,6 +90,13 @@ function renderDeserialize({
 
   const corePropsRead = coreProps
     .map((prop) => {
+      // `const` properties are rendered as read-only (a `const` field or a
+      // getter-only property), so assigning to them here would not compile
+      // (CS0200/CS0131). The value is fixed by the schema, so there is nothing
+      // to deserialize into it.
+      if (prop.property.options.const) {
+        return '';
+      }
       const propertyAccessor = pascalCase(prop.propertyName);
       let toValue = `jo["${prop.unconstrainedPropertyName}"].ToObject<${prop.property.type}>(serializer)`;
       if (
