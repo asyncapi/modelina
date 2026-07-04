@@ -1,6 +1,7 @@
 package com.mycompany.app.generic
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Assertions.assertNotNull
@@ -21,13 +22,15 @@ class AddressTest {
             marriage = true,
             members = 2,
             arrayType = listOf(2, "test"),
-            nestedObject = nestedObj
+            nestedObject = nestedObj,
+            requiredDate = java.time.OffsetDateTime.parse("2024-03-10T08:00:00Z"),
+            requiredRefArray = listOf()
         )
     }
 
     @Test
     fun shouldBeAbleToSerializeModel() {
-        val objectMapper: ObjectMapper = jacksonObjectMapper()
+        val objectMapper: ObjectMapper = jacksonObjectMapper().registerModule(JavaTimeModule())
         val json = objectMapper.writeValueAsString(address)
         assertTrue(json.isNotEmpty())
         assertNotNull(json)
