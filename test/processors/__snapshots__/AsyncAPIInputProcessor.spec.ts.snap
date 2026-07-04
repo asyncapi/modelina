@@ -32,9 +32,6 @@ Object {
         "property": DictionaryModel {
           "key": StringModel {
             "name": "additionalProperties",
-            "options": Object {
-              "isNullable": false,
-            },
             "originalInput": Array [
               true,
             ],
@@ -131,9 +128,6 @@ Object {
         "property": DictionaryModel {
           "key": StringModel {
             "name": "additionalProperties",
-            "options": Object {
-              "isNullable": false,
-            },
             "originalInput": Array [
               true,
             ],
@@ -294,12 +288,6 @@ InputMetaModel {
           "property": DictionaryModel {
             "key": StringModel {
               "name": "additionalProperties",
-              "options": Object {
-                "discriminator": Object {
-                  "discriminator": "type",
-                },
-                "isNullable": false,
-              },
               "originalInput": Array [
                 AsyncapiV2Schema {
                   "allOf": Array [
@@ -802,12 +790,6 @@ InputMetaModel {
           "property": DictionaryModel {
             "key": StringModel {
               "name": "additionalProperties",
-              "options": Object {
-                "discriminator": Object {
-                  "discriminator": "type",
-                },
-                "isNullable": false,
-              },
               "originalInput": Array [
                 AsyncapiV2Schema {
                   "allOf": Array [
@@ -1469,12 +1451,6 @@ InputMetaModel {
               "property": DictionaryModel {
                 "key": StringModel {
                   "name": "additionalProperties",
-                  "options": Object {
-                    "discriminator": Object {
-                      "discriminator": "type",
-                    },
-                    "isNullable": false,
-                  },
                   "originalInput": Array [
                     AsyncapiV2Schema {
                       "allOf": Array [
@@ -1977,12 +1953,6 @@ InputMetaModel {
               "property": DictionaryModel {
                 "key": StringModel {
                   "name": "additionalProperties",
-                  "options": Object {
-                    "discriminator": Object {
-                      "discriminator": "type",
-                    },
-                    "isNullable": false,
-                  },
                   "originalInput": Array [
                     AsyncapiV2Schema {
                       "allOf": Array [
@@ -3273,12 +3243,6 @@ InputMetaModel {
           "property": DictionaryModel {
             "key": StringModel {
               "name": "additionalProperties",
-              "options": Object {
-                "discriminator": Object {
-                  "discriminator": "type",
-                },
-                "isNullable": false,
-              },
               "originalInput": Array [
                 AsyncapiV2Schema {
                   "allOf": Array [
@@ -3781,12 +3745,6 @@ InputMetaModel {
           "property": DictionaryModel {
             "key": StringModel {
               "name": "additionalProperties",
-              "options": Object {
-                "discriminator": Object {
-                  "discriminator": "type",
-                },
-                "isNullable": false,
-              },
               "originalInput": Array [
                 AsyncapiV2Schema {
                   "allOf": Array [
@@ -4448,12 +4406,6 @@ InputMetaModel {
               "property": DictionaryModel {
                 "key": StringModel {
                   "name": "additionalProperties",
-                  "options": Object {
-                    "discriminator": Object {
-                      "discriminator": "type",
-                    },
-                    "isNullable": false,
-                  },
                   "originalInput": Array [
                     AsyncapiV2Schema {
                       "allOf": Array [
@@ -4956,12 +4908,6 @@ InputMetaModel {
               "property": DictionaryModel {
                 "key": StringModel {
                   "name": "additionalProperties",
-                  "options": Object {
-                    "discriminator": Object {
-                      "discriminator": "type",
-                    },
-                    "isNullable": false,
-                  },
                   "originalInput": Array [
                     AsyncapiV2Schema {
                       "allOf": Array [
@@ -6293,9 +6239,6 @@ InputMetaModel {
           "property": DictionaryModel {
             "key": StringModel {
               "name": "additionalProperties",
-              "options": Object {
-                "isNullable": false,
-              },
               "originalInput": Array [
                 true,
               ],
@@ -6468,9 +6411,6 @@ InputMetaModel {
           "property": DictionaryModel {
             "key": StringModel {
               "name": "additionalProperties",
-              "options": Object {
-                "isNullable": false,
-              },
               "originalInput": Array [
                 true,
               ],
@@ -6643,9 +6583,6 @@ InputMetaModel {
           "property": DictionaryModel {
             "key": StringModel {
               "name": "additionalProperties",
-              "options": Object {
-                "isNullable": false,
-              },
               "originalInput": Array [
                 true,
               ],

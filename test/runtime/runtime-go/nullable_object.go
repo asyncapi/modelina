@@ -3,5 +3,5 @@ package runtimego
 
 type NullableObject struct {
   Test string
-  AdditionalProperties map[*string]interface{}
+  AdditionalProperties map[string]interface{}
 }
