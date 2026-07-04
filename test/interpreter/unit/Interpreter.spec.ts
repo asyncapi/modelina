@@ -322,4 +322,65 @@ describe('Interpreter', () => {
     expect(model2).not.toBeUndefined();
     expect(model1).not.toBe(model2);
   });
+  describe('nullable', () => {
+    test('should add null type for OpenAPI 3.0 schema with nullable: true', () => {
+      const schema = OpenapiV3Schema.toSchema({
+        type: 'string',
+        nullable: true
+      });
+      const interpreter = new Interpreter();
+      const model = interpreter.interpret(schema);
+      expect(model).not.toBeUndefined();
+      expect(model?.type).toEqual(['string', 'null']);
+    });
+    test('should not add null type when nullable is false', () => {
+      const schema = OpenapiV3Schema.toSchema({
+        type: 'string',
+        nullable: false
+      });
+      const interpreter = new Interpreter();
+      const model = interpreter.interpret(schema);
+      expect(model).not.toBeUndefined();
+      expect(model?.type).toEqual('string');
+    });
+    test('should not add null type when nullable is not present', () => {
+      const schema = OpenapiV3Schema.toSchema({
+        type: 'string'
+      });
+      const interpreter = new Interpreter();
+      const model = interpreter.interpret(schema);
+      expect(model).not.toBeUndefined();
+      expect(model?.type).toEqual('string');
+    });
+    test('should not duplicate null type if already present', () => {
+      const schema = OpenapiV3Schema.toSchema({
+        type: ['string', 'null'],
+        nullable: true
+      });
+      const interpreter = new Interpreter();
+      const model = interpreter.interpret(schema);
+      expect(model).not.toBeUndefined();
+      expect(model?.type).toEqual(['string', 'null']);
+    });
+    test('should handle nullable on object type', () => {
+      const schema = OpenapiV3Schema.toSchema({
+        type: 'object',
+        nullable: true
+      });
+      const interpreter = new Interpreter();
+      const model = interpreter.interpret(schema);
+      expect(model).not.toBeUndefined();
+      expect(model?.type).toEqual(['object', 'null']);
+    });
+    test('should handle nullable on integer type', () => {
+      const schema = OpenapiV3Schema.toSchema({
+        type: 'integer',
+        nullable: true
+      });
+      const interpreter = new Interpreter();
+      const model = interpreter.interpret(schema);
+      expect(model).not.toBeUndefined();
+      expect(model?.type).toEqual(['integer', 'null']);
+    });
+  });
 });
