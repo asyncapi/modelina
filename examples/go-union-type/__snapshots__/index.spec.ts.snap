@@ -43,7 +43,7 @@ Array [
 exports[`Should be able to render union types and should log expected output to console 5`] = `
 Array [
   "type AdditionalPropertyOneOf_0 struct {
-  Ref string
+  Ref *string
   AdditionalProperties map[string]interface{}
 }",
 ]
@@ -52,7 +52,7 @@ Array [
 exports[`Should be able to render union types and should log expected output to console 6`] = `
 Array [
   "type AdditionalPropertyOneOf_1 struct {
-  Id string
+  Id *string
   AdditionalProperties map[string]interface{}
 }",
 ]

@@ -2,9 +2,9 @@
 
 exports[`GO_COMMON_PRESET should render json tags for structs 1`] = `
 "type Root struct {
-  StringProp string \`json:\\"stringProp,omitempty\\"\`
-  NumberProp float64 \`json:\\"numberProp,omitempty\\"\`
-  BooleanProp bool \`json:\\"booleanProp,omitempty\\"\`
+  StringProp *string \`json:\\"stringProp,omitempty\\"\`
+  NumberProp *float64 \`json:\\"numberProp,omitempty\\"\`
+  BooleanProp *bool \`json:\\"booleanProp,omitempty\\"\`
 }"
 `;
 

@@ -96,6 +96,26 @@ describe('GoConstrainer', () => {
       });
       expect(type).toEqual('float64');
     });
+
+    test('nullable and required', () => {
+      const model = new ConstrainedFloatModel(
+        'test',
+        undefined,
+        { isNullable: true },
+        ''
+      );
+      const type = GoDefaultTypeMapping.Float({
+        constrainedModel: model,
+        partOfProperty: new ConstrainedObjectPropertyModel(
+          'object',
+          '',
+          true,
+          model
+        ),
+        ...defaultOptions
+      });
+      expect(type).toEqual('*float64');
+    });
   });
   describe('Integer', () => {
     test('should render type', () => {
@@ -133,6 +153,26 @@ describe('GoConstrainer', () => {
         ...defaultOptions
       });
       expect(type).toEqual('int');
+    });
+
+    test('nullable and required', () => {
+      const model = new ConstrainedIntegerModel(
+        'test',
+        undefined,
+        { isNullable: true },
+        ''
+      );
+      const type = GoDefaultTypeMapping.Integer({
+        constrainedModel: model,
+        partOfProperty: new ConstrainedObjectPropertyModel(
+          'object',
+          '',
+          true,
+          model
+        ),
+        ...defaultOptions
+      });
+      expect(type).toEqual('*int');
     });
   });
   describe('String', () => {
@@ -173,6 +213,26 @@ describe('GoConstrainer', () => {
       });
       expect(type).toEqual('string');
     });
+
+    test('nullable and required', () => {
+      const model = new ConstrainedStringModel(
+        'test',
+        undefined,
+        { isNullable: true },
+        ''
+      );
+      const type = GoDefaultTypeMapping.String({
+        constrainedModel: model,
+        partOfProperty: new ConstrainedObjectPropertyModel(
+          'object',
+          '',
+          true,
+          model
+        ),
+        ...defaultOptions
+      });
+      expect(type).toEqual('*string');
+    });
   });
   describe('Boolean', () => {
     test('should render type', () => {
@@ -211,6 +271,26 @@ describe('GoConstrainer', () => {
         ...defaultOptions
       });
       expect(type).toEqual('bool');
+    });
+
+    test('nullable and required', () => {
+      const model = new ConstrainedBooleanModel(
+        'test',
+        undefined,
+        { isNullable: true },
+        ''
+      );
+      const type = GoDefaultTypeMapping.Boolean({
+        constrainedModel: model,
+        partOfProperty: new ConstrainedObjectPropertyModel(
+          'object',
+          '',
+          true,
+          model
+        ),
+        ...defaultOptions
+      });
+      expect(type).toEqual('*bool');
     });
   });
 

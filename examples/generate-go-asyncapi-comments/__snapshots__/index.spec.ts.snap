@@ -6,9 +6,9 @@ Array [
 type StockUpdatePayload struct {
   ProductId string \`json:\\"productId\\" binding:\\"required\\"\`
   // The updated quantity of the product
-  Quantity int \`json:\\"quantity,omitempty\\"\`
+  Quantity *int \`json:\\"quantity,omitempty\\"\`
   // Warehouse location of the product
-  Location string \`json:\\"location,omitempty\\"\`
+  Location *string \`json:\\"location,omitempty\\"\`
 }",
 ]
 `;
@@ -21,7 +21,7 @@ type LowStockPayload struct {
   // The stock level threshold
   Threshold int \`json:\\"threshold\\" binding:\\"required\\"\`
   // The current stock level
-  CurrentStock int \`json:\\"currentStock,omitempty\\"\`
+  CurrentStock *int \`json:\\"currentStock,omitempty\\"\`
 }",
 ]
 `;
