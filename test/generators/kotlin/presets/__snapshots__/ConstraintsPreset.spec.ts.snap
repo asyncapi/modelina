@@ -1,5 +1,15 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`KOTLIN_CONSTRAINTS_PRESET should render @Valid for cascade validation on nested object and array properties 1`] = `
+"data class NestedClazz(
+    @get:Valid
+    val arrayProp: List<String>? = null,
+    @get:Valid
+    val objProp: ObjProp? = null,
+    val additionalProperties: Map<String, Any>? = null,
+)"
+`;
+
 exports[`KOTLIN_CONSTRAINTS_PRESET should render jakarta constraints annotations when configured 1`] = `
 "data class Clazz(
     @get:NotNull
@@ -8,6 +18,7 @@ exports[`KOTLIN_CONSTRAINTS_PRESET should render jakarta constraints annotations
     @get:NotNull
     @get:Max(99)
     val maxNumberProp: Double,
+    @get:Valid
     @get:Size(min=2, max=3)
     val arrayProp: List<Any>? = null,
     @get:Pattern(regexp=\\"^I_\\")
@@ -25,6 +36,7 @@ exports[`KOTLIN_CONSTRAINTS_PRESET should render javax constraints annotations b
     @get:NotNull
     @get:Max(99)
     val maxNumberProp: Double,
+    @get:Valid
     @get:Size(min=2, max=3)
     val arrayProp: List<Any>? = null,
     @get:Pattern(regexp=\\"^I_\\")
@@ -42,6 +54,7 @@ exports[`KOTLIN_CONSTRAINTS_PRESET should render javax constraints annotations w
     @get:NotNull
     @get:Max(99)
     val maxNumberProp: Double,
+    @get:Valid
     @get:Size(min=2, max=3)
     val arrayProp: List<Any>? = null,
     @get:Pattern(regexp=\\"^I_\\")
