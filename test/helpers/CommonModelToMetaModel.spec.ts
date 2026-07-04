@@ -297,6 +297,40 @@ describe('CommonModelToMetaModel', () => {
       (model as ObjectModel).properties['additionalProperties']
     ).not.toBeUndefined();
   });
+  test('should not make the additionalProperties map key nullable for a nullable object', () => {
+    // Regression: a `type: ['null', 'object']` with additionalProperties used to
+    // copy the parent object's isNullable=true onto the implicit map-key model,
+    // producing a nullable key (e.g. map[*string]... in Go, an invalid JSON map
+    // key). A map key is never nullable.
+    const spm = new CommonModel();
+    spm.type = 'string';
+    const cm = new CommonModel();
+    cm.type = ['object', 'null'];
+    cm.$id = 'test';
+    cm.properties = {
+      test: spm
+    };
+    cm.additionalProperties = spm;
+
+    const model = convertToMetaModel({
+      ...defaultOptions,
+      jsonSchemaModel: cm
+    });
+
+    expect(model instanceof ObjectModel).toEqual(true);
+    const additionalProp = (model as ObjectModel).properties[
+      'additionalProperties'
+    ].property;
+    expect(additionalProp instanceof DictionaryModel).toEqual(true);
+    // The dictionary itself is nullable (mirrors the nullable object) ...
+    expect((additionalProp as DictionaryModel).options.isNullable).toEqual(
+      true
+    );
+    // ... but its key must NOT be nullable.
+    expect(
+      (additionalProp as DictionaryModel).key.options.isNullable
+    ).not.toEqual(true);
+  });
   test('should convert to object model with additional properties and already existing property with that name', () => {
     const spm = new CommonModel();
     spm.type = 'string';

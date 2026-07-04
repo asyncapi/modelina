@@ -15,6 +15,16 @@ class AddressSpec extends AnyFlatSpec with Matchers {
       enumTest = None,
       houseType = None,
       roofType = None,
+      requiredDate = java.time.OffsetDateTime.parse("2024-03-10T08:00:00Z"),
+      nullableString = None,
+      nullableNumber = None,
+      nullableDate = None,
+      nullableArray = None,
+      nullableUnionArray = None,
+      nullableTuple = None,
+      nullableObject = None,
+      nullableDictionary = None,
+      requiredRefArray = List.empty[RefObject],
       additionalProperties = None
     )
 

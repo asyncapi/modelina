@@ -2,14 +2,30 @@
   "$id": "TestObject",
   "description": "This object contains all types of MetaModel generations",
   "type": "object",
+  "definitions": {
+    "ArrayItem": {
+      "$id": "ArrayItem",
+      "type": "object",
+      "properties": {
+        "itemName": {
+          "type": "string"
+        }
+      }
+    }
+  },
   "properties": {
     "string_type": {
       "type": "string"
     },
     "createdAt": {
-  "type": "string",
-  "format": "date-time"
-},
+      "type": "string",
+      "format": "date-time"
+    },
+    "required_date": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Required non-nullable date (must convert directly, no null fallback)"
+    },
     "number_type": {
       "type": "number"
     },
@@ -85,6 +101,50 @@
       "type": ["null", "string"],
       "format": "date-time",
       "description": "Required nullable date (required but explicitly allows null)"
+    },
+    "required_ref_array": {
+      "type": "array",
+      "additionalItems": false,
+      "items": {
+        "$ref": "#/definitions/ArrayItem"
+      },
+      "description": "Required non-nullable array of references (maps directly, no null fallback)"
+    },
+    "nullable_array": {
+      "type": ["null", "array"],
+      "additionalItems": false,
+      "items": {
+        "type": "string"
+      },
+      "description": "Nullable primitive array (marshal guard must narrow away null)"
+    },
+    "nullable_union_array": {
+      "type": ["null", "array"],
+      "additionalItems": false,
+      "items": {
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "description": "Nullable union array (marshal guard must narrow away null)"
+    },
+    "nullable_tuple": {
+      "type": ["null", "array"],
+      "additionalItems": false,
+      "items": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "number"
+        }
+      ],
+      "description": "Nullable tuple (marshal guard must narrow away null)"
     }
   },
   "patternProperties": {
@@ -92,5 +152,11 @@
       "type": "string"
     }
   },
-  "required": ["string_type", "boolean_type", "required_nullable_date"]
+  "required": [
+    "string_type",
+    "boolean_type",
+    "required_nullable_date",
+    "required_date",
+    "required_ref_array"
+  ]
 }

@@ -35,6 +35,85 @@ const nullableDoc = {
   required: ['requiredNullableDate', 'requiredDate']
 };
 
+// Schema exercising array-of-references unmarshal across the
+// {required, optional} x {nullable, non-nullable} matrix.
+const arrayRefDoc = {
+  definitions: {
+    RefItem: {
+      type: 'object',
+      $id: 'RefItem',
+      properties: { name: { type: 'string' } }
+    }
+  },
+  $id: 'ArrayRefTest',
+  type: 'object',
+  properties: {
+    requiredRefArray: {
+      type: 'array',
+      additionalItems: false,
+      items: { $ref: '#/definitions/RefItem' }
+    },
+    optionalRefArray: {
+      type: 'array',
+      additionalItems: false,
+      items: { $ref: '#/definitions/RefItem' }
+    },
+    requiredNullableRefArray: {
+      type: ['null', 'array'],
+      additionalItems: false,
+      items: { $ref: '#/definitions/RefItem' }
+    },
+    optionalNullableRefArray: {
+      type: ['null', 'array'],
+      additionalItems: false,
+      items: { $ref: '#/definitions/RefItem' }
+    }
+  },
+  required: ['requiredRefArray', 'requiredNullableRefArray']
+};
+
+// Schema exercising nullable iterated kinds (array, union-array, tuple,
+// dictionary) in marshal, plus non-nullable and scalar scope locks.
+// Root `type: ['null', 'object']` makes the unwrapped additionalProperties
+// dictionary itself nullable.
+const iterMarshalDoc = {
+  definitions: {
+    NullIterRef: {
+      type: 'object',
+      $id: 'NullIterRef',
+      properties: { name: { type: 'string' } }
+    }
+  },
+  $id: 'IterMarshalTest',
+  type: ['null', 'object'],
+  additionalProperties: { type: 'string' },
+  properties: {
+    nullableArray: {
+      type: ['null', 'array'],
+      additionalItems: false,
+      items: { type: 'string' }
+    },
+    nonNullableArray: {
+      type: 'array',
+      additionalItems: false,
+      items: { type: 'string' }
+    },
+    nullableUnionArray: {
+      type: ['null', 'array'],
+      additionalItems: false,
+      items: {
+        oneOf: [{ $ref: '#/definitions/NullIterRef' }, { type: 'string' }]
+      }
+    },
+    nullableTuple: {
+      type: ['null', 'array'],
+      additionalItems: false,
+      items: [{ $ref: '#/definitions/NullIterRef' }, { type: 'string' }]
+    },
+    nullableScalar: { type: ['null', 'string'] }
+  }
+};
+
 const doc = {
   definitions: {
     NestedTest: {
@@ -165,7 +244,7 @@ describe('Marshalling preset', () => {
       expect(result).toMatchSnapshot();
     });
 
-    test('should return null for required date properties, undefined for optional', async () => {
+    test('should emit no null fallback for required non-nullable dates, undefined for optional', async () => {
       const generator = new TypeScriptGenerator({
         presets: [
           {
@@ -179,11 +258,10 @@ describe('Marshalling preset', () => {
       const models = await generator.generate(dateDoc);
       const result = models[0].result;
 
-      // Required property (createdAt) should use null in unmarshal
-      // Pattern: value == null ? null : new Date(value)
-      expect(result).toMatch(
-        /obj\["createdAt"\]\s*==\s*null\s*\?\s*null\s*:\s*new Date/
-      );
+      // Required non-nullable property (createdAt) must convert directly with no
+      // null fallback - a `null` assigned to a non-nullable `Date` field is TS2322.
+      expect(result).toContain('new Date(obj["createdAt"])');
+      expect(result).not.toMatch(/obj\["createdAt"\]\s*==\s*null\s*\?\s*null/);
 
       // Optional property (optionalDate) should use undefined in unmarshal
       // Pattern: value == null ? undefined : new Date(value)
@@ -227,15 +305,120 @@ describe('Marshalling preset', () => {
       const models = await generator.generate(nullableDoc);
       const result = models[0].result;
 
-      // Required non-nullable date should use null in unmarshal
+      // Required non-nullable date must convert directly with no null fallback
+      // (a `null` assigned to a non-nullable `Date` field is TS2322).
+      expect(result).toContain('new Date(obj["requiredDate"])');
+      expect(result).not.toMatch(/obj\["requiredDate"\]\s*==\s*null\s*\?\s*null/);
+
+      // Required NULLABLE date must keep the `null` fallback (declared `Date | null`).
       expect(result).toMatch(
-        /obj\["requiredDate"\]\s*==\s*null\s*\?\s*null\s*:\s*new Date/
+        /obj\["requiredNullableDate"\]\s*==\s*null\s*\?\s*null\s*:\s*new Date/
       );
 
       // Nullable date properties should use Date conversion
       // Note: The behavior for nullable types (type: ['null', 'string'])
       // depends on how Modelina interprets them - as union types
       expect(result).toContain('new Date(');
+    });
+  });
+
+  describe('array-of-references unmarshal', () => {
+    async function generateArrayRef(): Promise<string> {
+      const generator = new TypeScriptGenerator({
+        presets: [
+          {
+            preset: TS_COMMON_PRESET,
+            options: {
+              marshalling: true
+            }
+          }
+        ]
+      });
+      const models = await generator.generate(arrayRefDoc);
+      return models[0].result;
+    }
+
+    test('required non-nullable array-of-refs maps directly with no null fallback', async () => {
+      const result = await generateArrayRef();
+
+      // Required non-nullable -> direct `.map`, no `== null ? null :` branch
+      // (a `null` assigned to a non-nullable `RefItem[]` field is TS2322).
+      expect(result).toContain(
+        'obj["requiredRefArray"].map((item: any) => RefItem.unmarshal(item))'
+      );
+      expect(result).not.toMatch(/obj\["requiredRefArray"\]\s*==\s*null/);
+    });
+
+    test('optional array-of-refs falls back to undefined', async () => {
+      const result = await generateArrayRef();
+
+      expect(result).toMatch(
+        /obj\["optionalRefArray"\]\s*==\s*null[\s\S]*?\?\s*undefined[\s\S]*?\.map\(\(item: any\) => RefItem\.unmarshal\(item\)\)/
+      );
+    });
+
+    test('required nullable array-of-refs falls back to null', async () => {
+      const result = await generateArrayRef();
+
+      expect(result).toMatch(
+        /obj\["requiredNullableRefArray"\]\s*==\s*null[\s\S]*?\?\s*null[\s\S]*?\.map\(\(item: any\) => RefItem\.unmarshal\(item\)\)/
+      );
+    });
+
+    test('optional nullable array-of-refs falls back to undefined', async () => {
+      const result = await generateArrayRef();
+
+      expect(result).toMatch(
+        /obj\["optionalNullableRefArray"\]\s*==\s*null[\s\S]*?\?\s*undefined[\s\S]*?\.map\(\(item: any\) => RefItem\.unmarshal\(item\)\)/
+      );
+    });
+  });
+
+  describe('nullable iterated marshal guards', () => {
+    async function generateIterMarshal(): Promise<string> {
+      const generator = new TypeScriptGenerator({
+        presets: [
+          {
+            preset: TS_COMMON_PRESET,
+            options: {
+              marshalling: true
+            }
+          }
+        ]
+      });
+      const models = await generator.generate(iterMarshalDoc);
+      return models[0].result;
+    }
+
+    test('nullable iterated kinds guard against both undefined and null', async () => {
+      const result = await generateIterMarshal();
+
+      // Nullable primitive array, union-array, tuple and dictionary each
+      // dereference their value; the guard must narrow away `null` (TS2531).
+      expect(result).toContain(
+        'if(this.nullableArray !== undefined && this.nullableArray !== null)'
+      );
+      expect(result).toContain(
+        'if(this.nullableUnionArray !== undefined && this.nullableUnionArray !== null)'
+      );
+      expect(result).toContain(
+        'if(this.nullableTuple !== undefined && this.nullableTuple !== null)'
+      );
+      expect(result).toContain(
+        'if(this.additionalProperties !== undefined && this.additionalProperties !== null)'
+      );
+    });
+
+    test('non-nullable array and nullable scalar keep the plain undefined guard', async () => {
+      const result = await generateIterMarshal();
+
+      // Non-nullable iterated array: plain guard, no `!== null`.
+      expect(result).toContain('if(this.nonNullableArray !== undefined) {');
+      expect(result).not.toContain('this.nonNullableArray !== null');
+
+      // Nullable scalar keeps emitting `null` -> plain `!== undefined` guard.
+      expect(result).toContain('if(this.nullableScalar !== undefined) {');
+      expect(result).not.toContain('this.nullableScalar !== null');
     });
   });
 });

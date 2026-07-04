@@ -76,7 +76,7 @@ exports[`Marshalling preset date unmarshal should convert date-formatted string 
     const instance = new DateTest({} as any);
 
     if (obj[\\"createdAt\\"] !== undefined) {
-      instance.createdAt = obj[\\"createdAt\\"] == null ? null : new Date(obj[\\"createdAt\\"]);
+      instance.createdAt = new Date(obj[\\"createdAt\\"]);
     }
     if (obj[\\"birthDate\\"] !== undefined) {
       instance.birthDate = obj[\\"birthDate\\"] == null ? undefined : new Date(obj[\\"birthDate\\"]);
@@ -177,7 +177,7 @@ exports[`Marshalling preset nullable types (type: [null, string]) should generat
       instance.requiredNullableDate = obj[\\"requiredNullableDate\\"] == null ? null : new Date(obj[\\"requiredNullableDate\\"]);
     }
     if (obj[\\"requiredDate\\"] !== undefined) {
-      instance.requiredDate = obj[\\"requiredDate\\"] == null ? null : new Date(obj[\\"requiredDate\\"]);
+      instance.requiredDate = new Date(obj[\\"requiredDate\\"]);
     }
   
     instance.additionalProperties = new Map();

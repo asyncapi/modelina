@@ -604,11 +604,11 @@ export function convertToObjectModel(
     }
     const originalInput =
       getOriginalInputFromAdditionalAndPatterns(jsonSchemaModel);
-    const keyModel = new StringModel(
-      propertyName,
-      originalInput,
-      getMetaModelOptions(jsonSchemaModel, options)
-    );
+    // A map key is always a plain, non-nullable string. Do not copy the parent
+    // object's options (e.g. isNullable for a `type: ['null','object']`) onto the
+    // key - a nullable key is meaningless and produces invalid output such as
+    // `map[*string]...` in Go. Mirrors convertToDictionaryModel's key handling.
+    const keyModel = new StringModel(propertyName, originalInput, {});
     const valueModel = convertAdditionalAndPatterns({
       ...context,
       name: propertyName
