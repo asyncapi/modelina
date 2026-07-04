@@ -43,6 +43,42 @@ export class JavaDefaultRendererUtil {
       }
       return `private ${property.property.type} ${property.propertyName} = ${property.property.type}.${defaultEnumValue.key};`;
     }
-    return `private ${property.property.type} ${property.propertyName} = ${property.property.originalInput.default};`;
+    const defaultValue = property.property.originalInput.default;
+    const literal = JavaDefaultRendererUtil.numericLiteral(
+      property.property.type,
+      defaultValue
+    );
+    return `private ${property.property.type} ${property.propertyName} = ${literal};`;
+  }
+
+  /**
+   * Boxed numeric types need a typed literal suffix, otherwise the generated
+   * assignment does not compile (e.g. `Long x = 2;` — an int literal cannot be
+   * assigned to a Long). Long → 2L, Float → 1.5f, Double → 3.14d. Non-numeric
+   * defaults (and Integer, which accepts a plain int literal) are returned
+   * unchanged.
+   */
+  private static numericLiteral(type: string, defaultValue: unknown): string {
+    const isNumeric =
+      typeof defaultValue === 'number' ||
+      (typeof defaultValue === 'string' &&
+        defaultValue.trim() !== '' &&
+        !isNaN(Number(defaultValue)));
+    if (!isNumeric) {
+      return `${defaultValue}`;
+    }
+    switch (type) {
+      case 'Long':
+      case 'long':
+        return `${defaultValue}L`;
+      case 'Float':
+      case 'float':
+        return `${defaultValue}f`;
+      case 'Double':
+      case 'double':
+        return `${defaultValue}d`;
+      default:
+        return `${defaultValue}`;
+    }
   }
 }
