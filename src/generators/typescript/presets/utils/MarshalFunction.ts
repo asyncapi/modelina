@@ -17,6 +17,33 @@ import {
 } from '../../../../models';
 
 /**
+ * Build the guard expression that wraps a property's serialization.
+ *
+ * Every property is guarded with `!== undefined`. When the accessed value is
+ * dereferenced/iterated (arrays, tuples, dictionaries) AND the property is
+ * nullable, `null` must be narrowed away too or `tsc` reports TS2531 under
+ * strictNullChecks. Scalars/references keep the plain guard so nullable scalars
+ * still serialize `null`.
+ */
+function definedGuard(accessor: string, alsoCheckNull: boolean): string {
+  return alsoCheckNull
+    ? `${accessor} !== undefined && ${accessor} !== null`
+    : `${accessor} !== undefined`;
+}
+
+/**
+ * Whether an iterated kind (array, union-array, tuple) is nullable and therefore
+ * needs the `null` narrowing in its marshal guard.
+ */
+function isIteratedNullable(model: ConstrainedMetaModel): boolean {
+  return (
+    (model instanceof ConstrainedArrayModel ||
+      model instanceof ConstrainedTupleModel) &&
+    model.options?.isNullable === true
+  );
+}
+
+/**
  * Render toJson property conversion - returns the value to assign to the JSON object property
  */
 function renderToJsonProperty(
@@ -163,8 +190,14 @@ function renderToJsonDictionary(
     } else {
       valueConversion = 'value';
     }
-
-    return `if(this.${prop} !== undefined) {
+    // A nullable dictionary (e.g. a root `type: ['null', 'object']`) is a
+    // `Map | null`; `.entries()` is dereferenced inside the guard so `null`
+    // must be narrowed away too.
+    const dictionaryGuard = definedGuard(
+      `this.${prop}`,
+      propModel.property.options?.isNullable === true
+    );
+    return `if(${dictionaryGuard}) {
   for (const [key, value] of this.${prop}.entries()) {
     //Only unwrap those that are not already a property in the JSON object
     if([${originalPropertyNames.map((v) => `"${v}"`).join(',')}].includes(String(key))) continue;
@@ -220,8 +253,11 @@ function renderToJsonNormalProperties(
       );
       toJsonCode = `json["${propModel.unconstrainedPropertyName}"] = ${propToJsonCode};`;
     }
-
-    return `if(${modelInstanceVariable} !== undefined) {
+    const guard = definedGuard(
+      modelInstanceVariable,
+      isIteratedNullable(propModel.property)
+    );
+    return `if(${guard}) {
   ${toJsonCode}
 }`;
   });

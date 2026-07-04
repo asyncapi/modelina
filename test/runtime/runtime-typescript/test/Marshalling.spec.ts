@@ -1,6 +1,7 @@
 import {TestObject} from '../src/marshalling/TestObject';
 import {ObjectType} from '../src/marshalling/ObjectType';
 import {EnumType} from '../src/marshalling/EnumType';
+import {ArrayItem} from '../src/marshalling/ArrayItem';
 
 describe('Marshalling', () => {
   describe('should be able to serialize and deserialize the model', () => {
@@ -10,6 +11,7 @@ describe('Marshalling', () => {
       });
       const testObject = new TestObject({
         createdAt: new Date('2023-01-01T10:00:00Z'),
+        requiredDate: new Date('2024-03-10T08:00:00Z'),
         stringType: 'test',
         numberType: 1,
         booleanType: true,
@@ -21,6 +23,10 @@ describe('Marshalling', () => {
         tupleType: ['test', 1],
         unionType: 'test',
         requiredNullableDate: new Date('2023-06-15T12:00:00Z'),
+        requiredRefArray: [new ArrayItem({itemName: 'item1'})],
+        nullableArray: ['a', 'b'],
+        nullableUnionArray: ['x', 2],
+        nullableTuple: ['y', 3],
       });
 
       test('toJson should return a plain object', () => {
@@ -100,6 +106,25 @@ describe('Marshalling', () => {
         expect(unmarshalled.createdAt?.toISOString()).toBe('2023-01-01T10:00:00.000Z');
       });
 
+      test('unmarshal should convert a required non-nullable date directly to a Date', () => {
+        const serialized = testObject.marshal();
+        const unmarshalled = TestObject.unmarshal(serialized);
+
+        // required_date is required & non-nullable -> Date (no null/undefined fallback)
+        expect(unmarshalled.requiredDate).toBeInstanceOf(Date);
+        expect(unmarshalled.requiredDate.toISOString()).toBe('2024-03-10T08:00:00.000Z');
+      });
+
+      test('unmarshal should map a required non-nullable array-of-refs to instances', () => {
+        const serialized = testObject.marshal();
+        const unmarshalled = TestObject.unmarshal(serialized);
+
+        // required_ref_array is required & non-nullable -> RefItem[] (mapped directly)
+        expect(Array.isArray(unmarshalled.requiredRefArray)).toBe(true);
+        expect(unmarshalled.requiredRefArray[0]).toBeInstanceOf(ArrayItem);
+        expect(unmarshalled.requiredRefArray[0].itemName).toBe('item1');
+      });
+
       test('unmarshal should handle null date values gracefully', () => {
         // Create a JSON string with null createdAt (optional date)
         const jsonWithNullDate = '{"string_type": "test", "createdAt": null, "boolean_type": true, "required_nullable_date": "2023-01-01T00:00:00Z"}';
@@ -156,6 +181,34 @@ describe('Marshalling', () => {
         // nullable_string preserves null because strings don't have
         // special Date conversion logic - the value passes through directly
         expect(unmarshalled.nullableString).toBeNull();
+      });
+
+      test('nullable iterated kinds set to null are skipped by marshal without throwing', () => {
+        const objectType = new ObjectType({ test: 'test' });
+        const nulledObject = new TestObject({
+          stringType: 'test',
+          requiredDate: new Date('2024-03-10T08:00:00Z'),
+          booleanType: true,
+          objectType: objectType,
+          requiredNullableDate: new Date('2023-06-15T12:00:00Z'),
+          requiredRefArray: [],
+          // Nullable iterated kinds explicitly set to null: the marshal guard
+          // must narrow away null before dereferencing (would be TS2531 / a
+          // runtime "not iterable" throw without the null guard).
+          nullableArray: null,
+          nullableUnionArray: null,
+          nullableTuple: null,
+        });
+
+        const serialized = nulledObject.marshal();
+
+        // Null iterables are omitted entirely from the serialized output.
+        expect(serialized).not.toContain('nullable_array');
+        expect(serialized).not.toContain('nullable_union_array');
+        expect(serialized).not.toContain('nullable_tuple');
+
+        // Round-trips cleanly.
+        expect(serialized).toEqual(TestObject.unmarshal(serialized).marshal());
       });
     });
   });

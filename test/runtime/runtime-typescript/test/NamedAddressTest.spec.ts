@@ -1,6 +1,7 @@
 import {TestObject} from '../src/namedExport/TestObject';
 import {ObjectType} from '../src/namedExport/ObjectType';
 import {EnumType} from '../src/namedExport/EnumType';
+import {ArrayItem} from '../src/namedExport/ArrayItem';
 
 describe('Named exports', () => {
   test('should be able to instantiate named export model', () => {
@@ -18,7 +19,9 @@ describe('Named exports', () => {
       enumType: EnumType.CURLYLEFT_QUOTATION_TEST_QUOTATION_COLON_2_CURLYRIGHT,
       tupleType: ['test', 1],
       unionType: 'test',
-      requiredNullableDate: new Date('2023-01-01T00:00:00Z')
+      requiredNullableDate: new Date('2023-01-01T00:00:00Z'),
+      requiredDate: new Date('2024-03-10T08:00:00Z'),
+      requiredRefArray: [new ArrayItem({itemName: 'item1'})]
     });
     expect(testObject.stringType).toEqual('test');
     expect(testObject.numberType).toEqual(1);

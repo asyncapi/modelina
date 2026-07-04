@@ -54,6 +54,84 @@
     "roofType": {
       "$id": "TypeOfRoof",
       "enum": ["tile", "straw", "wood", "metal"]
+    },
+    "required_date": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Required non-nullable date (must convert directly, no null fallback)"
+    },
+    "nullable_string": {
+      "type": ["null", "string"],
+      "description": "Optional nullable string"
+    },
+    "nullable_number": {
+      "type": ["null", "number"],
+      "description": "Optional nullable number"
+    },
+    "nullable_date": {
+      "type": ["null", "string"],
+      "format": "date-time",
+      "description": "Optional nullable date"
+    },
+    "nullable_array": {
+      "type": ["null", "array"],
+      "additionalItems": false,
+      "items": {
+        "type": "string"
+      },
+      "description": "Nullable primitive array"
+    },
+    "nullable_union_array": {
+      "type": ["null", "array"],
+      "additionalItems": false,
+      "items": {
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "number"
+          }
+        ]
+      },
+      "description": "Nullable union array"
+    },
+    "nullable_tuple": {
+      "type": ["null", "array"],
+      "additionalItems": false,
+      "items": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "number"
+        }
+      ],
+      "description": "Nullable tuple"
+    },
+    "nullable_object": {
+      "type": ["null", "object"],
+      "properties": {
+        "test": {
+          "type": "string"
+        }
+      },
+      "description": "Nullable nested object"
+    },
+    "nullable_dictionary": {
+      "type": ["null", "object"],
+      "additionalProperties": {
+        "type": "string"
+      },
+      "description": "Nullable dictionary"
+    },
+    "required_ref_array": {
+      "type": "array",
+      "additionalItems": false,
+      "items": {
+        "$ref": "#/$defs/ref-object"
+      },
+      "description": "Required non-nullable array of references"
     }
   },
   "patternProperties": {
@@ -64,12 +142,23 @@
   "required": [
     "house_number",
     "array_type",
-    "houseType"
+    "houseType",
+    "required_date",
+    "required_ref_array"
   ],
   "$defs": {
     "housing-types": {
       "$id": "HousingType",
       "enum": ["detached", "terraced", "bungalow", "flat"]
+    },
+    "ref-object": {
+      "$id": "RefObject",
+      "type": "object",
+      "properties": {
+        "item_name": {
+          "type": "string"
+        }
+      }
     }
   }
 }

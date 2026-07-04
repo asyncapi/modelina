@@ -13,6 +13,27 @@ import {
 } from '../../../../models';
 
 /**
+ * The `== null` fallback value is only emitted when the declared type can hold
+ * it, keeping `tsc` happy under strictNullChecks:
+ *  - optional               -> `undefined`
+ *  - nullable               -> `null`
+ *  - required non-nullable  -> `undefined` (no fallback branch; assigning
+ *    `null`/`undefined` to a non-nullable field would be TS2322).
+ */
+function nullFallbackFor(
+  isOptional: boolean,
+  model: ConstrainedMetaModel
+): string | undefined {
+  if (isOptional) {
+    return 'undefined';
+  }
+  if (model.options?.isNullable === true) {
+    return 'null';
+  }
+  return undefined;
+}
+
+/**
  * Render the fromJson property value - uses .fromJson() for nested models
  */
 function renderFromJsonProperty(
@@ -20,7 +41,7 @@ function renderFromJsonProperty(
   model: ConstrainedMetaModel,
   isOptional: boolean = false
 ): string {
-  const nullValue = isOptional ? 'undefined' : 'null';
+  const nullFallback = nullFallbackFor(isOptional, model);
   if (
     model instanceof ConstrainedReferenceModel &&
     !(model.ref instanceof ConstrainedEnumModel)
@@ -34,9 +55,12 @@ function renderFromJsonProperty(
     !(model.valueModel.ref instanceof ConstrainedEnumModel) &&
     !(model.valueModel instanceof ConstrainedUnionModel)
   ) {
-    return `${modelInstanceVariable} == null
-    ? ${nullValue}
-    : (${modelInstanceVariable} as Record<string, unknown>[]).map((item: Record<string, unknown>) => ${model.valueModel.type}.fromJson(item))`;
+    const mapExpression = `(${modelInstanceVariable} as Record<string, unknown>[]).map((item: Record<string, unknown>) => ${model.valueModel.type}.fromJson(item))`;
+    return nullFallback === undefined
+      ? mapExpression
+      : `${modelInstanceVariable} == null
+    ? ${nullFallback}
+    : ${mapExpression}`;
   }
 
   // Date-typed properties need string→Date conversion
@@ -45,8 +69,11 @@ function renderFromJsonProperty(
     model instanceof ConstrainedStringModel &&
     ['date', 'date-time'].includes(model.options?.format ?? '')
   ) {
-    // Null check prevents new Date(null) → epoch date
-    return `${modelInstanceVariable} == null ? ${nullValue} : new Date(${modelInstanceVariable} as string)`;
+    // Null check prevents new Date(null) → epoch date, but only emit the
+    // fallback branch when the declared type can hold it.
+    return nullFallback === undefined
+      ? `new Date(${modelInstanceVariable} as string)`
+      : `${modelInstanceVariable} == null ? ${nullFallback} : new Date(${modelInstanceVariable} as string)`;
   }
 
   return `${modelInstanceVariable}`;
