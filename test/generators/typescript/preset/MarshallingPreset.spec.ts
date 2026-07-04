@@ -308,7 +308,9 @@ describe('Marshalling preset', () => {
       // Required non-nullable date must convert directly with no null fallback
       // (a `null` assigned to a non-nullable `Date` field is TS2322).
       expect(result).toContain('new Date(obj["requiredDate"])');
-      expect(result).not.toMatch(/obj\["requiredDate"\]\s*==\s*null\s*\?\s*null/);
+      expect(result).not.toMatch(
+        /obj\["requiredDate"\]\s*==\s*null\s*\?\s*null/
+      );
 
       // Required NULLABLE date must keep the `null` fallback (declared `Date | null`).
       expect(result).toMatch(
