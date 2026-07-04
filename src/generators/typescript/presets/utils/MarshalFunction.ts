@@ -20,6 +20,33 @@ function realizePropertyFactory(prop: string) {
   return `$\{typeof ${prop} === 'number' || typeof ${prop} === 'boolean' ? ${prop} : JSON.stringify(${prop})}`;
 }
 
+/**
+ * Build the guard expression that wraps a property's serialization.
+ *
+ * Every property is guarded with `!== undefined`. When the accessed value is
+ * dereferenced/iterated (arrays, tuples, dictionaries) AND the property is
+ * nullable, `null` must be narrowed away too or `tsc` reports TS2531 under
+ * strictNullChecks. Scalars/references keep the plain guard so nullable scalars
+ * still serialize `null`.
+ */
+function definedGuard(accessor: string, alsoCheckNull: boolean): string {
+  return alsoCheckNull
+    ? `${accessor} !== undefined && ${accessor} !== null`
+    : `${accessor} !== undefined`;
+}
+
+/**
+ * Whether an iterated kind (array, union-array, tuple) is nullable and therefore
+ * needs the `null` narrowing in its marshal guard.
+ */
+function isIteratedNullable(model: ConstrainedMetaModel): boolean {
+  return (
+    (model instanceof ConstrainedArrayModel ||
+      model instanceof ConstrainedTupleModel) &&
+    model.options?.isNullable === true
+  );
+}
+
 function renderMarshalProperty(
   modelInstanceVariable: string,
   model: ConstrainedMetaModel
@@ -176,12 +203,11 @@ function renderDictionarySerialization(
     }
     // A nullable dictionary (e.g. a root `type: ['null', 'object']`) is a
     // `Map | null`; `.entries()` is dereferenced inside the guard so `null`
-    // must be narrowed away too (TS2531 under strictNullChecks).
-    const isNullableDictionary =
-      propModel.property.options?.isNullable === true;
-    const dictionaryGuard = isNullableDictionary
-      ? `this.${prop} !== undefined && this.${prop} !== null`
-      : `this.${prop} !== undefined`;
+    // must be narrowed away too.
+    const dictionaryGuard = definedGuard(
+      `this.${prop}`,
+      propModel.property.options?.isNullable === true
+    );
     return `if(${dictionaryGuard}) { 
   for (const [key, value] of this.${prop}.entries()) {
     //Only unwrap those that are not already a property in the JSON object
@@ -241,17 +267,10 @@ function renderNormalProperties(
       );
       marshalCode = `json += \`"${propModel.unconstrainedPropertyName}": ${propMarshalCode},\`;`;
     }
-    // Iterated nullable kinds (array, union-array, tuple) dereference the value
-    // inside the guard, so `null` must be narrowed away too or `tsc` reports
-    // TS2531 under strictNullChecks. Scalars/references keep the plain guard
-    // (nullable scalars intentionally still serialize `null`).
-    const isNullableIterated =
-      (propModel.property instanceof ConstrainedArrayModel ||
-        propModel.property instanceof ConstrainedTupleModel) &&
-      propModel.property.options?.isNullable === true;
-    const guard = isNullableIterated
-      ? `${modelInstanceVariable} !== undefined && ${modelInstanceVariable} !== null`
-      : `${modelInstanceVariable} !== undefined`;
+    const guard = definedGuard(
+      modelInstanceVariable,
+      isIteratedNullable(propModel.property)
+    );
     return `if(${guard}) {
   ${marshalCode}
 }`;
