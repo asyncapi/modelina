@@ -1,6 +1,7 @@
 import TestObject from '../src/defaultExport/TestObject';
 import ObjectType from '../src/defaultExport/ObjectType';
 import EnumType from '../src/defaultExport/EnumType';
+import ArrayItem from '../src/defaultExport/ArrayItem';
 
 describe('Default exports', () => {
   test('should be able to instantiate default export model', () => {
@@ -18,7 +19,9 @@ describe('Default exports', () => {
       enumType: EnumType.CURLYLEFT_QUOTATION_TEST_QUOTATION_COLON_2_CURLYRIGHT,
       tupleType: ['test', 1],
       unionType: 'test',
-      requiredNullableDate: new Date('2023-01-01T00:00:00Z')
+      requiredNullableDate: new Date('2023-01-01T00:00:00Z'),
+      requiredDate: new Date('2024-03-10T08:00:00Z'),
+      requiredRefArray: [new ArrayItem({itemName: 'item1'})]
     });
     expect(testObject.stringType).toEqual('test');
     expect(testObject.numberType).toEqual(1);
