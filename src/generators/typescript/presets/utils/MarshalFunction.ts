@@ -32,15 +32,37 @@ function definedGuard(accessor: string, alsoCheckNull: boolean): string {
 }
 
 /**
- * Whether an iterated kind (array, union-array, tuple) is nullable and therefore
- * needs the `null` narrowing in its marshal guard.
+ * Whether an iterated kind (array, union-array, tuple, dictionary) is nullable
+ * and therefore needs the `null` narrowing in its marshal guard — the value is
+ * dereferenced (`.map`/`.entries`) inside the guard, which would throw on `null`.
  */
 function isIteratedNullable(model: ConstrainedMetaModel): boolean {
   return (
     (model instanceof ConstrainedArrayModel ||
-      model instanceof ConstrainedTupleModel) &&
+      model instanceof ConstrainedTupleModel ||
+      model instanceof ConstrainedDictionaryModel) &&
     model.options?.isNullable === true
   );
+}
+
+/**
+ * Build the expression that converts a single dictionary/union value (bound to
+ * the local `value`) to its JSON form, calling `.toJson()` on nested models.
+ */
+function dictionaryValueToJson(valueModel: ConstrainedMetaModel): string {
+  const isReference = (model: ConstrainedMetaModel): boolean =>
+    model instanceof ConstrainedReferenceModel &&
+    !(model.ref instanceof ConstrainedEnumModel);
+
+  const hasReference =
+    valueModel instanceof ConstrainedUnionModel
+      ? valueModel.union.some(isReference)
+      : isReference(valueModel);
+
+  if (hasReference) {
+    return `value && typeof value === 'object' && 'toJson' in value && typeof value.toJson === 'function' ? value.toJson() : value`;
+  }
+  return 'value';
 }
 
 /**
@@ -169,27 +191,7 @@ function renderToJsonDictionary(
 
   return unwrapDictionaryProperties.map(([prop, propModel]) => {
     const dictValue = (propModel.property as ConstrainedDictionaryModel).value;
-    let valueConversion: string;
-
-    if (dictValue instanceof ConstrainedUnionModel) {
-      const hasUnionReference = dictValue.union.some(
-        (model) =>
-          model instanceof ConstrainedReferenceModel &&
-          !(model.ref instanceof ConstrainedEnumModel)
-      );
-      if (hasUnionReference) {
-        valueConversion = `value && typeof value === 'object' && 'toJson' in value && typeof value.toJson === 'function' ? value.toJson() : value`;
-      } else {
-        valueConversion = 'value';
-      }
-    } else if (
-      dictValue instanceof ConstrainedReferenceModel &&
-      !(dictValue.ref instanceof ConstrainedEnumModel)
-    ) {
-      valueConversion = `value && typeof value === 'object' && 'toJson' in value && typeof value.toJson === 'function' ? value.toJson() : value`;
-    } else {
-      valueConversion = 'value';
-    }
+    const valueConversion = dictionaryValueToJson(dictValue);
     // A nullable dictionary (e.g. a root `type: ['null', 'object']`) is a
     // `Map | null`; `.entries()` is dereferenced inside the guard so `null`
     // must be narrowed away too.
@@ -205,6 +207,24 @@ function renderToJsonDictionary(
   }
 }`;
   });
+}
+
+/**
+ * Render toJson logic for a normal (non-unwrap) dictionary property. The runtime
+ * value is a `Map`, which `JSON.stringify` would collapse to `{}`, so it must be
+ * converted to a plain object first (recursing into nested models).
+ */
+function renderToJsonDictionaryProperty(
+  modelInstanceVariable: string,
+  unconstrainedProperty: string,
+  dictionaryModel: ConstrainedDictionaryModel
+): string {
+  const valueConversion = dictionaryValueToJson(dictionaryModel.value);
+  return `const serializedMap: Record<string, unknown> = {};
+  for (const [key, value] of ${modelInstanceVariable}.entries()) {
+    serializedMap[key] = ${valueConversion};
+  }
+  json["${unconstrainedProperty}"] = serializedMap;`;
 }
 
 /**
@@ -242,6 +262,12 @@ function renderToJsonNormalProperties(
       );
     } else if (propModel.property instanceof ConstrainedTupleModel) {
       toJsonCode = renderToJsonTuple(
+        modelInstanceVariable,
+        propModel.unconstrainedPropertyName,
+        propModel.property
+      );
+    } else if (propModel.property instanceof ConstrainedDictionaryModel) {
+      toJsonCode = renderToJsonDictionaryProperty(
         modelInstanceVariable,
         propModel.unconstrainedPropertyName,
         propModel.property

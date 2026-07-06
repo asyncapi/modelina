@@ -34,6 +34,49 @@ function nullFallbackFor(
 }
 
 /**
+ * Whether a model is a nested model reference (not an enum) that exposes
+ * `.fromJson()`.
+ */
+function isModelReference(model: ConstrainedMetaModel): boolean {
+  return (
+    model instanceof ConstrainedReferenceModel &&
+    !(model.ref instanceof ConstrainedEnumModel)
+  );
+}
+
+/**
+ * Wrap an expression with a `== null` guard when the declared type can hold the
+ * fallback; otherwise return the expression untouched.
+ */
+function withNullFallback(
+  modelInstanceVariable: string,
+  nullFallback: string | undefined,
+  expression: string
+): string {
+  return nullFallback === undefined
+    ? expression
+    : `${modelInstanceVariable} == null
+    ? ${nullFallback}
+    : ${expression}`;
+}
+
+/**
+ * Build the expression that rebuilds a normal (non-unwrap) dictionary. It is a
+ * `Map` at runtime but arrives as a plain object in JSON, so it is reconstructed
+ * from the object entries, recursing into nested models.
+ */
+function renderDictionaryFromJson(
+  modelInstanceVariable: string,
+  dictionaryModel: ConstrainedDictionaryModel
+): string {
+  const valueModel = dictionaryModel.value;
+  if (isModelReference(valueModel)) {
+    return `new Map(Object.entries(${modelInstanceVariable} as Record<string, unknown>).map(([key, value]): [string, ${valueModel.type}] => [key, ${valueModel.type}.fromJson(value as Record<string, unknown>)]))`;
+  }
+  return `new Map(Object.entries(${modelInstanceVariable} as Record<string, ${valueModel.type}>))`;
+}
+
+/**
  * Render the fromJson property value - uses .fromJson() for nested models
  */
 function renderFromJsonProperty(
@@ -42,25 +85,25 @@ function renderFromJsonProperty(
   isOptional: boolean = false
 ): string {
   const nullFallback = nullFallbackFor(isOptional, model);
-  if (
-    model instanceof ConstrainedReferenceModel &&
-    !(model.ref instanceof ConstrainedEnumModel)
-  ) {
+  if (isModelReference(model)) {
     return `${model.type}.fromJson(${modelInstanceVariable} as Record<string, unknown>)`;
   }
 
   if (
     model instanceof ConstrainedArrayModel &&
-    model.valueModel instanceof ConstrainedReferenceModel &&
-    !(model.valueModel.ref instanceof ConstrainedEnumModel) &&
+    isModelReference(model.valueModel) &&
     !(model.valueModel instanceof ConstrainedUnionModel)
   ) {
     const mapExpression = `(${modelInstanceVariable} as Record<string, unknown>[]).map((item: Record<string, unknown>) => ${model.valueModel.type}.fromJson(item))`;
-    return nullFallback === undefined
-      ? mapExpression
-      : `${modelInstanceVariable} == null
-    ? ${nullFallback}
-    : ${mapExpression}`;
+    return withNullFallback(modelInstanceVariable, nullFallback, mapExpression);
+  }
+
+  if (model instanceof ConstrainedDictionaryModel) {
+    const mapExpression = renderDictionaryFromJson(
+      modelInstanceVariable,
+      model
+    );
+    return withNullFallback(modelInstanceVariable, nullFallback, mapExpression);
   }
 
   // Date-typed properties need string→Date conversion

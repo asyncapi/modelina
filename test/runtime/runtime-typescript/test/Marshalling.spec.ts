@@ -60,6 +60,20 @@ describe('Marshalling', () => {
         expect(instance.objectType?.test).toBe('test');
       });
 
+      test('toJson should convert a Map dictionary to a plain object', () => {
+        const json = testObject.toJson();
+        // A normal (non-unwrap) dictionary is a Map at runtime; it must be
+        // emitted as a plain object, not the empty `{}` a Map stringifies to.
+        expect(json['dictionary_type']).toEqual({ test: 'test' });
+      });
+
+      test('fromJson should rebuild a dictionary as a Map', () => {
+        const json = testObject.toJson();
+        const instance = TestObject.fromJson(json);
+        expect(instance.dictionaryType).toBeInstanceOf(Map);
+        expect(instance.dictionaryType?.get('test')).toBe('test');
+      });
+
       test('round-trip: fromJson(toJson()) produces equivalent instance', () => {
         const json = testObject.toJson();
         const instance = TestObject.fromJson(json);

@@ -40,13 +40,13 @@ class ObjectType {
     const instance = new ObjectType({} as any);
 
     if (obj["test"] !== undefined) {
-      instance.test = obj["test"] as string;
+      instance.test = obj["test"];
     }
 
     instance.additionalProperties = new Map();
     const propsToCheck = Object.entries(obj).filter((([key,]) => {return !["test","additionalProperties"].includes(key);}));
     for (const [key, value] of propsToCheck) {
-      instance.additionalProperties.set(key, value as any);
+      instance.additionalProperties.set(key, value);
     }
     return instance;
   }

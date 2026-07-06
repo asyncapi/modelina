@@ -63,7 +63,7 @@ export class JavaDefaultRendererUtil {
       typeof defaultValue === 'number' ||
       (typeof defaultValue === 'string' &&
         defaultValue.trim() !== '' &&
-        !isNaN(Number(defaultValue)));
+        !Number.isNaN(Number(defaultValue)));
     if (!isNumeric) {
       return `${defaultValue}`;
     }
