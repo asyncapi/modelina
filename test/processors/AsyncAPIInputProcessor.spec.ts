@@ -13,6 +13,10 @@ const basicV3DocString = fs.readFileSync(
   path.resolve(__dirname, './AsyncAPIInputProcessor/basic_v3.json'),
   'utf8'
 );
+const basicV31DocString = fs.readFileSync(
+  path.resolve(__dirname, './AsyncAPIInputProcessor/basic_v3_1.json'),
+  'utf8'
+);
 const operationOneOf1DocString = fs.readFileSync(
   path.resolve(__dirname, './AsyncAPIInputProcessor/operation_oneof1.json'),
   'utf8'
@@ -94,6 +98,10 @@ describe('AsyncAPIInputProcessor', () => {
       const parsedObject = { asyncapi: '3.0.0' };
       expect(processor.shouldProcess(parsedObject)).toEqual(true);
     });
+    test('should be able to process AsyncAPI 3.1.0', () => {
+      const parsedObject = { asyncapi: '3.1.0' };
+      expect(processor.shouldProcess(parsedObject)).toEqual(true);
+    });
     test('should not be able to process unsupported AsyncAPI 2.x', () => {
       const parsedObject = { asyncapi: '2.123.0' };
       expect(processor.shouldProcess(parsedObject)).toEqual(false);
@@ -162,6 +170,15 @@ describe('AsyncAPIInputProcessor', () => {
     });
     test('should be able to process pure object for v3', async () => {
       const basicDoc = JSON.parse(basicV3DocString);
+      const processor = new AsyncAPIInputProcessor();
+      const commonInputModel = await processor.process(basicDoc);
+      expect(
+        removeEmptyPropertiesFromObjects(commonInputModel)
+      ).toMatchSnapshot();
+    });
+
+    test('should be able to process pure object for v3.1.0', async () => {
+      const basicDoc = JSON.parse(basicV31DocString);
       const processor = new AsyncAPIInputProcessor();
       const commonInputModel = await processor.process(basicDoc);
       expect(
