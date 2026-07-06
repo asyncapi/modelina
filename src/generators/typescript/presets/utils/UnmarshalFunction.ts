@@ -119,7 +119,10 @@ function renderFromJsonProperty(
       : `${modelInstanceVariable} == null ? ${nullFallback} : new Date(${modelInstanceVariable} as string)`;
   }
 
-  return `${modelInstanceVariable}`;
+  // Plain passthrough: `obj[...]` narrows to `{} | null` after the `!== undefined`
+  // guard, so it must be asserted to the property's declared type — otherwise the
+  // generated assignment fails to compile under `strict`/`strictNullChecks`.
+  return `${modelInstanceVariable} as ${model.type}`;
 }
 
 /**

@@ -22,7 +22,7 @@ export const TS_COMMON_PRESET: TypeScriptPreset<TypeScriptCommonPresetOptions> =
 
         if (options.marshalling === true) {
           blocks.push(
-            renderToJson({ renderer, model }), 
+            renderToJson({ renderer, model }),
             renderMarshal(),
             renderFromJson({ renderer, model }),
             renderUnmarshal({ renderer, model })

@@ -31,7 +31,7 @@ Array [
     const instance = new Test({} as any);
 
     if (obj[\\"email\\"] !== undefined) {
-      instance.email = obj[\\"email\\"];
+      instance.email = obj[\\"email\\"] as string;
     }
 
   

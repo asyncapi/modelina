@@ -58,7 +58,7 @@ Array [
     const instance = new Meeting({} as any);
 
     if (obj[\\"email\\"] !== undefined) {
-      instance.email = obj[\\"email\\"];
+      instance.email = obj[\\"email\\"] as string;
     }
     if (obj[\\"createdAt\\"] !== undefined) {
       instance.createdAt = obj[\\"createdAt\\"] == null ? undefined : new Date(obj[\\"createdAt\\"] as string);
@@ -67,7 +67,7 @@ Array [
       instance.meetingDate = obj[\\"meetingDate\\"] == null ? undefined : new Date(obj[\\"meetingDate\\"] as string);
     }
     if (obj[\\"meetingTime\\"] !== undefined) {
-      instance.meetingTime = obj[\\"meetingTime\\"];
+      instance.meetingTime = obj[\\"meetingTime\\"] as string;
     }
 
   

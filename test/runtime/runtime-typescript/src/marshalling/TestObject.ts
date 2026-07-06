@@ -203,7 +203,7 @@ class TestObject {
     const instance = new TestObject({} as any);
 
     if (obj["string_type"] !== undefined) {
-      instance.stringType = obj["string_type"];
+      instance.stringType = obj["string_type"] as string;
     }
     if (obj["createdAt"] !== undefined) {
       instance.createdAt = obj["createdAt"] == null ? undefined : new Date(obj["createdAt"] as string);
@@ -212,19 +212,19 @@ class TestObject {
       instance.requiredDate = new Date(obj["required_date"] as string);
     }
     if (obj["number_type"] !== undefined) {
-      instance.numberType = obj["number_type"];
+      instance.numberType = obj["number_type"] as number;
     }
     if (obj["boolean_type"] !== undefined) {
-      instance.booleanType = obj["boolean_type"];
+      instance.booleanType = obj["boolean_type"] as boolean;
     }
     if (obj["union_type"] !== undefined) {
-      instance.unionType = obj["union_type"];
+      instance.unionType = obj["union_type"] as string | number | boolean;
     }
     if (obj["array_type"] !== undefined) {
-      instance.arrayType = obj["array_type"];
+      instance.arrayType = obj["array_type"] as (string | number)[];
     }
     if (obj["tuple_type"] !== undefined) {
-      instance.tupleType = obj["tuple_type"];
+      instance.tupleType = obj["tuple_type"] as [string, number];
     }
     if (obj["object_type"] !== undefined) {
       instance.objectType = ObjectType.fromJson(obj["object_type"] as Record<string, unknown>);
@@ -235,10 +235,10 @@ class TestObject {
         : new Map(Object.entries(obj["dictionary_type"] as Record<string, string>));
     }
     if (obj["enum_type"] !== undefined) {
-      instance.enumType = obj["enum_type"];
+      instance.enumType = obj["enum_type"] as EnumType;
     }
     if (obj["nullable_string"] !== undefined) {
-      instance.nullableString = obj["nullable_string"];
+      instance.nullableString = obj["nullable_string"] as string | null;
     }
     if (obj["nullable_date"] !== undefined) {
       instance.nullableDate = obj["nullable_date"] == null ? undefined : new Date(obj["nullable_date"] as string);
@@ -250,19 +250,19 @@ class TestObject {
       instance.requiredRefArray = (obj["required_ref_array"] as Record<string, unknown>[]).map((item: Record<string, unknown>) => ArrayItem.fromJson(item));
     }
     if (obj["nullable_array"] !== undefined) {
-      instance.nullableArray = obj["nullable_array"];
+      instance.nullableArray = obj["nullable_array"] as string[] | null;
     }
     if (obj["nullable_union_array"] !== undefined) {
-      instance.nullableUnionArray = obj["nullable_union_array"];
+      instance.nullableUnionArray = obj["nullable_union_array"] as (string | number)[] | null;
     }
     if (obj["nullable_tuple"] !== undefined) {
-      instance.nullableTuple = obj["nullable_tuple"];
+      instance.nullableTuple = obj["nullable_tuple"] as [string, number] | null;
     }
 
     instance.additionalProperties = new Map();
     const propsToCheck = Object.entries(obj).filter((([key,]) => {return !["string_type","createdAt","required_date","number_type","boolean_type","union_type","array_type","tuple_type","object_type","dictionary_type","enum_type","nullable_string","nullable_date","required_nullable_date","required_ref_array","nullable_array","nullable_union_array","nullable_tuple","additionalProperties"].includes(key);}));
     for (const [key, value] of propsToCheck) {
-      instance.additionalProperties.set(key, value);
+      instance.additionalProperties.set(key, value as any | string);
     }
     return instance;
   }
