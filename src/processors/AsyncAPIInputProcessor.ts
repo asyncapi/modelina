@@ -455,26 +455,6 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
   }
 
   /**
-   * Generate a hash of a schema's JSON representation for duplicate detection
-   */
-  private static hashSchema(schemaJson: any): string {
-    if (!schemaJson || typeof schemaJson !== 'object') {
-      return '';
-    }
-    // Create a stable string representation by sorting keys
-    const sortedJson = JSON.stringify(
-      schemaJson,
-      Object.keys(schemaJson).sort()
-    );
-    // Simple hash function (djb2)
-    let hash = 5381;
-    for (let i = 0; i < sortedJson.length; i++) {
-      hash = (hash << 5) + hash + (sortedJson.codePointAt(i) ?? Number.NaN);
-    }
-    return hash.toString(36);
-  }
-
-  /**
    * Determine the best name for a schema based on available metadata and context.
    *
    * Priority order:

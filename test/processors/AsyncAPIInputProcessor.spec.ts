@@ -1536,18 +1536,6 @@ describe('AsyncAPIInputProcessor', () => {
       expect(Object.keys(commonInputModel.models).length).toBeGreaterThan(0);
     });
 
-    test('should handle null or undefined schema json in hashSchema', () => {
-      // Test edge cases in hashSchema
-      const hash1 = (AsyncAPIInputProcessor as any).hashSchema(null);
-      expect(hash1).toBe('');
-
-      const hash2 = (AsyncAPIInputProcessor as any).hashSchema(undefined);
-      expect(hash2).toBe('');
-
-      const hash3 = (AsyncAPIInputProcessor as any).hashSchema('not an object');
-      expect(hash3).toBe('');
-    });
-
     test('should handle schema with anonymous title', async () => {
       const doc = {
         asyncapi: '2.0.0',
