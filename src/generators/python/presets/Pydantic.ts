@@ -7,7 +7,13 @@ import { ClassPresetType, PythonPreset } from '../PythonPreset';
 
 function formatPythonConstValue(constValue: unknown): string {
   if (typeof constValue === 'string') {
-    return `'${constValue}'`;
+    const backslashEscaped = constValue.replaceAll('\\', String.raw`\\`);
+    // Use a double-quoted Python string if the value contains single quotes
+    if (constValue.includes("'")) {
+      const quoteEscaped = backslashEscaped.replaceAll('"', String.raw`\"`);
+      return `"${quoteEscaped}"`;
+    }
+    return `'${backslashEscaped}'`;
   }
   if (typeof constValue === 'boolean') {
     return constValue ? 'True' : 'False';

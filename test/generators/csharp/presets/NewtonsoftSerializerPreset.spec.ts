@@ -47,4 +47,16 @@ describe('Newtonsoft JSON serializer preset', () => {
     expect(outputModels[1].result).toMatchSnapshot();
     expect(outputModels[2].result).toMatchSnapshot();
   });
+
+  test('should not assign to `const` properties in ReadJson', async () => {
+    const generator = new CSharpGenerator({
+      presets: [CSHARP_NEWTONSOFT_SERIALIZER_PRESET]
+    });
+
+    const outputModels = await generator.generate(doc);
+    // `const` properties are rendered as read-only, so assigning to them in
+    // ReadJson would not compile (CS0200/CS0131). The deserializer must skip
+    // them.
+    expect(outputModels[0].result).not.toContain('value.ConstStringProp =');
+  });
 });

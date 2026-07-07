@@ -102,7 +102,34 @@ Here are all the supported presets and the libraries they use for converting to 
 
 #### Generate marshalling and unmarshalling functions
 
-Using the preset `TS_COMMON_PRESET` with the option `marshalling` to `true`, renders two function for the class models. One which convert the model to JSON and another which convert the model from JSON to an instance of the class.
+Using the preset `TS_COMMON_PRESET` with the option `marshalling` to `true`, renders four methods for class models:
+
+| Method | Description |
+|--------|-------------|
+| `toJson(): Record<string, unknown>` | Converts the instance to a plain JSON-serializable object |
+| `marshal(): string` | Converts the instance to a JSON string (calls `JSON.stringify(this.toJson())`) |
+| `static fromJson(obj: Record<string, unknown>): ClassName` | Creates an instance from a plain JSON object |
+| `static unmarshal(json: string \| object): ClassName` | Creates an instance from a JSON string or object (calls `fromJson()` internally) |
+
+**When to use each method:**
+
+- Use `toJson()`/`fromJson()` when working with objects directly (e.g., API responses already parsed, or when you need to manipulate the data before serialization)
+- Use `marshal()`/`unmarshal()` when working with JSON strings
+
+**Example:**
+
+```typescript
+// Create an instance
+const meeting = new Meeting({ email: 'test@example.com', createdAt: new Date() });
+
+// Object conversion
+const obj = meeting.toJson();           // Returns plain object
+const fromObj = Meeting.fromJson(obj);  // Creates instance from object
+
+// String serialization
+const str = meeting.marshal();          // Returns JSON string
+const fromStr = Meeting.unmarshal(str); // Creates instance from string
+```
 
 Check out this [example out for a live demonstration](../../examples/typescript-generate-marshalling).
 

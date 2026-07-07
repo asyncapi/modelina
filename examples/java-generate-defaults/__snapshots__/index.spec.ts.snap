@@ -6,7 +6,7 @@ Array [
   private UUID id = UUID.fromString(\\"123e4567-e89b-12d3-a456-426614174000\\");
   private String gender = \\"male\\";
   private Integer age = 18;
-  private Double height = 1.75;
+  private Double height = 1.75d;
   private Boolean isEmployed = true;
   private LocalDate birthdate = LocalDate.parse(\\"2000-01-01\\");
   private java.time.OffsetDateTime creationTime = java.time.OffsetDateTime.parse(\\"2023-10-01T12:00:00Z\\");

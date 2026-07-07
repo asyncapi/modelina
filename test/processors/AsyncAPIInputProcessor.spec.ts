@@ -13,6 +13,10 @@ const basicV3DocString = fs.readFileSync(
   path.resolve(__dirname, './AsyncAPIInputProcessor/basic_v3.json'),
   'utf8'
 );
+const basicV31DocString = fs.readFileSync(
+  path.resolve(__dirname, './AsyncAPIInputProcessor/basic_v3_1.json'),
+  'utf8'
+);
 const operationOneOf1DocString = fs.readFileSync(
   path.resolve(__dirname, './AsyncAPIInputProcessor/operation_oneof1.json'),
   'utf8'
@@ -62,42 +66,24 @@ describe('AsyncAPIInputProcessor', () => {
     test('should be able to work with yaml input', () => {
       expect(processor.shouldProcess(yamlDocString)).toEqual(true);
     });
-    test('should be able to process AsyncAPI 2.0.0', () => {
-      const parsedObject = { asyncapi: '2.0.0' };
-      expect(processor.shouldProcess(parsedObject)).toEqual(true);
-    });
-    test('should be able to process AsyncAPI 2.1.0', () => {
-      const parsedObject = { asyncapi: '2.1.0' };
-      expect(processor.shouldProcess(parsedObject)).toEqual(true);
-    });
-    test('should be able to process AsyncAPI 2.2.0', () => {
-      const parsedObject = { asyncapi: '2.2.0' };
-      expect(processor.shouldProcess(parsedObject)).toEqual(true);
-    });
-    test('should be able to process AsyncAPI 2.3.0', () => {
-      const parsedObject = { asyncapi: '2.3.0' };
-      expect(processor.shouldProcess(parsedObject)).toEqual(true);
-    });
-    test('should be able to process AsyncAPI 2.4.0', () => {
-      const parsedObject = { asyncapi: '2.4.0' };
-      expect(processor.shouldProcess(parsedObject)).toEqual(true);
-    });
-    test('should be able to process AsyncAPI 2.5.0', () => {
-      const parsedObject = { asyncapi: '2.5.0' };
-      expect(processor.shouldProcess(parsedObject)).toEqual(true);
-    });
-    test('should be able to process AsyncAPI 2.6.0', () => {
-      const parsedObject = { asyncapi: '2.6.0' };
-      expect(processor.shouldProcess(parsedObject)).toEqual(true);
-    });
-    test('should be able to process AsyncAPI 3.x', () => {
-      const parsedObject = { asyncapi: '3.0.0' };
-      expect(processor.shouldProcess(parsedObject)).toEqual(true);
-    });
-    test('should not be able to process unsupported AsyncAPI 2.x', () => {
-      const parsedObject = { asyncapi: '2.123.0' };
-      expect(processor.shouldProcess(parsedObject)).toEqual(false);
-    });
+    test.each([
+      ['2.0.0', true],
+      ['2.1.0', true],
+      ['2.2.0', true],
+      ['2.3.0', true],
+      ['2.4.0', true],
+      ['2.5.0', true],
+      ['2.6.0', true],
+      ['3.0.0', true],
+      ['3.1.0', true],
+      ['2.123.0', false]
+    ] as [string, boolean][])(
+      'shouldProcess() for AsyncAPI %s should return %s',
+      (version, expected) => {
+        const parsedObject = { asyncapi: version };
+        expect(processor.shouldProcess(parsedObject)).toEqual(expected);
+      }
+    );
   });
   describe('tryGetVersionOfDocument()', () => {
     const processor = new AsyncAPIInputProcessor();
@@ -162,6 +148,15 @@ describe('AsyncAPIInputProcessor', () => {
     });
     test('should be able to process pure object for v3', async () => {
       const basicDoc = JSON.parse(basicV3DocString);
+      const processor = new AsyncAPIInputProcessor();
+      const commonInputModel = await processor.process(basicDoc);
+      expect(
+        removeEmptyPropertiesFromObjects(commonInputModel)
+      ).toMatchSnapshot();
+    });
+
+    test('should be able to process pure object for v3.1.0', async () => {
+      const basicDoc = JSON.parse(basicV31DocString);
       const processor = new AsyncAPIInputProcessor();
       const commonInputModel = await processor.process(basicDoc);
       expect(

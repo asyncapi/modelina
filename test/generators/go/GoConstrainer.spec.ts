@@ -96,6 +96,26 @@ describe('GoConstrainer', () => {
       });
       expect(type).toEqual('float64');
     });
+
+    test('nullable and required', () => {
+      const model = new ConstrainedFloatModel(
+        'test',
+        undefined,
+        { isNullable: true },
+        ''
+      );
+      const type = GoDefaultTypeMapping.Float({
+        constrainedModel: model,
+        partOfProperty: new ConstrainedObjectPropertyModel(
+          'object',
+          '',
+          true,
+          model
+        ),
+        ...defaultOptions
+      });
+      expect(type).toEqual('*float64');
+    });
   });
   describe('Integer', () => {
     test('should render type', () => {
@@ -133,6 +153,26 @@ describe('GoConstrainer', () => {
         ...defaultOptions
       });
       expect(type).toEqual('int');
+    });
+
+    test('nullable and required', () => {
+      const model = new ConstrainedIntegerModel(
+        'test',
+        undefined,
+        { isNullable: true },
+        ''
+      );
+      const type = GoDefaultTypeMapping.Integer({
+        constrainedModel: model,
+        partOfProperty: new ConstrainedObjectPropertyModel(
+          'object',
+          '',
+          true,
+          model
+        ),
+        ...defaultOptions
+      });
+      expect(type).toEqual('*int');
     });
   });
   describe('String', () => {
@@ -173,6 +213,26 @@ describe('GoConstrainer', () => {
       });
       expect(type).toEqual('string');
     });
+
+    test('nullable and required', () => {
+      const model = new ConstrainedStringModel(
+        'test',
+        undefined,
+        { isNullable: true },
+        ''
+      );
+      const type = GoDefaultTypeMapping.String({
+        constrainedModel: model,
+        partOfProperty: new ConstrainedObjectPropertyModel(
+          'object',
+          '',
+          true,
+          model
+        ),
+        ...defaultOptions
+      });
+      expect(type).toEqual('*string');
+    });
   });
   describe('Boolean', () => {
     test('should render type', () => {
@@ -211,6 +271,26 @@ describe('GoConstrainer', () => {
         ...defaultOptions
       });
       expect(type).toEqual('bool');
+    });
+
+    test('nullable and required', () => {
+      const model = new ConstrainedBooleanModel(
+        'test',
+        undefined,
+        { isNullable: true },
+        ''
+      );
+      const type = GoDefaultTypeMapping.Boolean({
+        constrainedModel: model,
+        partOfProperty: new ConstrainedObjectPropertyModel(
+          'object',
+          '',
+          true,
+          model
+        ),
+        ...defaultOptions
+      });
+      expect(type).toEqual('*bool');
     });
   });
 
@@ -267,6 +347,54 @@ describe('GoConstrainer', () => {
         ...defaultOptions
       });
       expect(type).toEqual('test');
+    });
+
+    test('nullable single-member union renders as pointer to member type', () => {
+      const memberModel = new ConstrainedStringModel(
+        'test',
+        undefined,
+        {},
+        'string'
+      );
+      const model = new ConstrainedUnionModel(
+        'NullableString',
+        undefined,
+        { isNullable: true },
+        '',
+        [memberModel]
+      );
+      const type = GoDefaultTypeMapping.Union({
+        constrainedModel: model,
+        ...defaultOptions
+      });
+      expect(type).toEqual('*string');
+    });
+
+    test('nullable multi-member union still renders as union type name', () => {
+      const stringModel = new ConstrainedStringModel(
+        'test',
+        undefined,
+        {},
+        'string'
+      );
+      const intModel = new ConstrainedIntegerModel(
+        'test',
+        undefined,
+        {},
+        'int'
+      );
+      const model = new ConstrainedUnionModel(
+        'NullableMulti',
+        undefined,
+        { isNullable: true },
+        '',
+        [stringModel, intModel]
+      );
+      const type = GoDefaultTypeMapping.Union({
+        constrainedModel: model,
+        ...defaultOptions
+      });
+      expect(type).toEqual('NullableMulti');
     });
   });
 

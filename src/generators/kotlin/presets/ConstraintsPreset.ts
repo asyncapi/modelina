@@ -3,6 +3,8 @@ import {
   ConstrainedFloatModel,
   ConstrainedIntegerModel,
   ConstrainedMetaModel,
+  ConstrainedObjectModel,
+  ConstrainedReferenceModel,
   ConstrainedStringModel
 } from '../../../models';
 import { KotlinPreset } from '../KotlinPreset';
@@ -20,6 +22,9 @@ export const KOTLIN_CONSTRAINTS_PRESET: KotlinPreset = {
       renderer.dependencyManager.addDependency(
         `${importFrom}.validation.constraints.*`
       );
+      renderer.dependencyManager.addDependency(
+        `${importFrom}.validation.Valid`
+      );
       return content;
     },
     property({ renderer, property, content }) {
@@ -27,6 +32,16 @@ export const KOTLIN_CONSTRAINTS_PRESET: KotlinPreset = {
 
       if (property.required) {
         annotations.push(renderer.renderAnnotation('NotNull', null, 'get:'));
+      }
+
+      // Cascade validation into nested objects, references and arrays so that
+      // constraints declared on their members are actually evaluated.
+      if (
+        property.property instanceof ConstrainedReferenceModel ||
+        property.property instanceof ConstrainedObjectModel ||
+        property.property instanceof ConstrainedArrayModel
+      ) {
+        annotations.push(renderer.renderAnnotation('Valid', null, 'get:'));
       }
 
       annotations.push(

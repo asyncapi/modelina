@@ -12,11 +12,27 @@ describe('KOTLIN_CONSTRAINTS_PRESET', () => {
     required: ['min_number_prop', 'max_number_prop']
   };
 
+  const docWithNested = {
+    $id: 'NestedClazz',
+    type: 'object',
+    properties: {
+      array_prop: { type: 'array', items: { type: 'string' } },
+      obj_prop: {
+        type: 'object',
+        $id: 'ObjProp',
+        properties: { inner: { type: 'string' } }
+      }
+    }
+  };
+
   test('should render javax constraints annotations by default', async () => {
     const generator = new KotlinGenerator({
       presets: [KOTLIN_CONSTRAINTS_PRESET]
     });
-    const expectedDependencies = ['import javax.validation.constraints.*'];
+    const expectedDependencies = [
+      'import javax.validation.constraints.*',
+      'import javax.validation.Valid'
+    ];
 
     const models = await generator.generate(doc);
     expect(models).toHaveLength(1);
@@ -36,7 +52,10 @@ describe('KOTLIN_CONSTRAINTS_PRESET', () => {
       ]
     });
 
-    const expectedDependencies = ['import javax.validation.constraints.*'];
+    const expectedDependencies = [
+      'import javax.validation.constraints.*',
+      'import javax.validation.Valid'
+    ];
 
     const models = await generator.generate(doc);
     expect(models).toHaveLength(1);
@@ -56,11 +75,26 @@ describe('KOTLIN_CONSTRAINTS_PRESET', () => {
       ]
     });
 
-    const expectedDependencies = ['import jakarta.validation.constraints.*'];
+    const expectedDependencies = [
+      'import jakarta.validation.constraints.*',
+      'import jakarta.validation.Valid'
+    ];
 
     const models = await generator.generate(doc);
     expect(models).toHaveLength(1);
     expect(models[0].result).toMatchSnapshot();
     expect(models[0].dependencies).toEqual(expectedDependencies);
+  });
+
+  test('should render @Valid for cascade validation on nested object and array properties', async () => {
+    const generator = new KotlinGenerator({
+      presets: [KOTLIN_CONSTRAINTS_PRESET]
+    });
+
+    const models = await generator.generate(docWithNested);
+    expect(models.length).toBeGreaterThanOrEqual(1);
+    const root = models.find((model) => model.modelName === 'NestedClazz');
+    expect(root?.result).toContain('@get:Valid');
+    expect(root?.result).toMatchSnapshot();
   });
 });
