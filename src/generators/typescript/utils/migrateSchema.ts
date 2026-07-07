@@ -129,7 +129,7 @@ function migrateObject(obj: SchemaObject): void {
  * `#/definitions/...` to `#/$defs/...`.
  */
 function rewriteRefPointers(json: string): string {
-  return json.replace(/"#\/definitions\//g, '"#/$defs/');
+  return json.replaceAll('"#/definitions/', '"#/$defs/');
 }
 
 /**

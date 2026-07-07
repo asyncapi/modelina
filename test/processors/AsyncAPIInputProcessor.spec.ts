@@ -252,7 +252,7 @@ describe('AsyncAPIInputProcessor', () => {
         }
       });
       expect(commonInputModel instanceof InputMetaModel).toBeTruthy();
-      expect(Object.keys(commonInputModel.models).length).toBe(2);
+      expect(Object.keys(commonInputModel.models)).toHaveLength(2);
       expect(commonInputModel.models['userSignUpMessageHeaders']).toBeDefined();
       expect(commonInputModel.models['userSignUpMessagePayload']).toBeDefined();
     });
@@ -268,7 +268,7 @@ describe('AsyncAPIInputProcessor', () => {
         }
       );
       expect(commonInputModel instanceof InputMetaModel).toBeTruthy();
-      expect(Object.keys(commonInputModel.models).length).toBe(6);
+      expect(Object.keys(commonInputModel.models)).toHaveLength(6);
       expect(commonInputModel.models['userSignedUpPayload']).toBeDefined();
       expect(commonInputModel.models['userSignedUpHeaders']).toBeDefined();
       expect(

@@ -326,90 +326,99 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
           : undefined;
 
         for (const operation of channel.operations()) {
+          const includeMessageHeaders =
+            options?.asyncapi?.includeMessageHeaders === true;
+
+          // Build the schema-naming context for a message
+          const getMessageContext = (
+            message: MessagesInterface[number],
+            contextChannelName?: string
+          ): SchemaContext => {
+            const messageId = message.id();
+            // Use message ID if available, otherwise use channel name
+            const contextId =
+              messageId &&
+              !messageId.includes(
+                AsyncAPIInputProcessor.ANONYMOUS_MESSAGE_PREFIX
+              )
+                ? messageId
+                : contextChannelName;
+            return contextId ? { messageId: contextId } : {};
+          };
+
+          // Add a single message's payload (and optionally headers) as models,
+          // collecting their JSON into the provided oneOf accumulators.
+          const addMessageModels = (
+            message: MessagesInterface[number],
+            contextChannelName?: string,
+            payloadOneOf?: any[],
+            headersOneOf?: any[]
+          ) => {
+            const messageContext = getMessageContext(
+              message,
+              contextChannelName
+            );
+
+            const payload = message.payload();
+            if (payload) {
+              // Add each individual message payload as a separate model
+              addToInputModel(payload, messageContext);
+              payloadOneOf?.push(payload.json());
+            }
+
+            if (includeMessageHeaders) {
+              const headers = message.headers();
+              if (headers) {
+                // Add each individual message header as a separate model
+                addToInputModel(headers, messageContext);
+                headersOneOf?.push(headers.json());
+              }
+            }
+          };
+
           const handleMessages = (
             messages: MessagesInterface,
             contextChannelName?: string
           ) => {
-            const includeMessageHeaders =
-              options?.asyncapi?.includeMessageHeaders === true;
-            // Build the schema-naming context for a message
-            const getMessageContext = (
-              message: MessagesInterface[number]
-            ): SchemaContext => {
-              const messageId = message.id();
-              // Use message ID if available, otherwise use channel name
-              const contextId =
-                messageId &&
-                !messageId.includes(
-                  AsyncAPIInputProcessor.ANONYMOUS_MESSAGE_PREFIX
-                )
-                  ? messageId
-                  : contextChannelName;
-              return contextId ? { messageId: contextId } : {};
-            };
             // treat multiple messages as oneOf
             if (messages.length > 1) {
               const payloadOneOf: any[] = [];
               const headersOneOf: any[] = [];
 
               for (const message of messages) {
-                const messageContext = getMessageContext(message);
-                const payload = message.payload();
-
-                if (payload) {
-                  // Add each individual message payload as a separate model
-                  addToInputModel(payload, messageContext);
-                  payloadOneOf.push(payload.json());
-                }
-
-                if (includeMessageHeaders) {
-                  const headers = message.headers();
-                  if (headers) {
-                    // Add each individual message header as a separate model
-                    addToInputModel(headers, messageContext);
-                    headersOneOf.push(headers.json());
-                  }
-                }
+                addMessageModels(
+                  message,
+                  contextChannelName,
+                  payloadOneOf,
+                  headersOneOf
+                );
               }
 
-              const payload = new AsyncAPISchema(
-                {
-                  $id: includeMessageHeaders
-                    ? `${channelId}Payload`
-                    : channelId,
-                  oneOf: payloadOneOf
-                },
-                channel.meta()
-              );
-
-              addToInputModel(payload);
-
-              if (includeMessageHeaders) {
-                const headers = new AsyncAPISchema(
+              addToInputModel(
+                new AsyncAPISchema(
                   {
-                    $id: `${channelId}Headers`,
-                    oneOf: headersOneOf
+                    $id: includeMessageHeaders
+                      ? `${channelId}Payload`
+                      : channelId,
+                    oneOf: payloadOneOf
                   },
                   channel.meta()
-                );
-
-                addToInputModel(headers);
-              }
-            } else if (messages.length === 1) {
-              const message = messages[0];
-              const messageContext = getMessageContext(message);
-              const payload = message.payload();
-              if (payload) {
-                // Use message ID as context for better naming
-                addToInputModel(payload, messageContext);
-              }
+                )
+              );
 
               if (includeMessageHeaders) {
-                const headers = message.headers();
-                if (headers) {
-                  addToInputModel(headers, messageContext);
-                }
+                addToInputModel(
+                  new AsyncAPISchema(
+                    {
+                      $id: `${channelId}Headers`,
+                      oneOf: headersOneOf
+                    },
+                    channel.meta()
+                  )
+                );
               }
+            } else if (messages.length === 1) {
+              addMessageModels(messages[0], contextChannelName);
             }
           };
           const replyOperation = operation.reply();
