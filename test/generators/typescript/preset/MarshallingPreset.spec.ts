@@ -230,7 +230,9 @@ describe('Marshalling preset', () => {
       expect(result).toContain('public toJson(): Record<string, unknown>');
 
       // Should return an object, not a string
-      expect(result).toMatch(/public toJson\(\): Record<string, unknown>\s*\{[\s\S]*?return json;[\s\S]*?\}/);
+      expect(result).toMatch(
+        /public toJson\(\): Record<string, unknown>\s*\{[\s\S]*?return json;[\s\S]*?\}/
+      );
     });
 
     test('should render fromJson static method that accepts Record<string, unknown>', async () => {
