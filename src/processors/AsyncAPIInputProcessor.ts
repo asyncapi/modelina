@@ -9,8 +9,7 @@ import {
   SchemaV2 as AsyncAPISchema,
   fromFile,
   createAsyncAPIDocument,
-  MessagesInterface,
-  ParseOptions
+  MessagesInterface
 } from '@asyncapi/parser';
 import yaml from 'js-yaml';
 import { AbstractInputProcessor } from './AbstractInputProcessor';
@@ -26,13 +25,6 @@ import {
 } from '@asyncapi/multi-parser';
 import { createDetailedAsyncAPI } from '@asyncapi/parser/cjs/utils';
 import { createMetadataPreservingResolver } from './utils';
-
-export interface AsyncAPIInputProcessorOptions extends ParseOptions {
-  /**
-   * This option will include message headers in the list of models built whilst traversing the AsyncAPI spec.
-   */
-  includeMessageHeaders?: boolean;
-}
 
 /**
  * Context information for schema name inference
@@ -330,85 +322,61 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
             messages: MessagesInterface,
             contextChannelName?: string
           ) => {
-            const includeMessageHeaders =
-              options?.asyncapi?.includeMessageHeaders === true;
-            // Build the schema-naming context for a message
-            const getMessageContext = (
-              message: MessagesInterface[number]
-            ): SchemaContext => {
-              const messageId = message.id();
-              // Use message ID if available, otherwise use channel name
-              const contextId =
-                messageId &&
-                !messageId.includes(
-                  AsyncAPIInputProcessor.ANONYMOUS_MESSAGE_PREFIX
-                )
-                  ? messageId
-                  : contextChannelName;
-              return contextId ? { messageId: contextId } : {};
-            };
             // treat multiple messages as oneOf
             if (messages.length > 1) {
-              const payloadOneOf: any[] = [];
-              const headersOneOf: any[] = [];
+              const oneOf: any[] = [];
 
               for (const message of messages) {
-                const messageContext = getMessageContext(message);
                 const payload = message.payload();
 
-                if (payload) {
-                  // Add each individual message payload as a separate model
-                  addToInputModel(payload, messageContext);
-                  payloadOneOf.push(payload.json());
+                if (!payload) {
+                  continue;
                 }
 
-                if (includeMessageHeaders) {
-                  const headers = message.headers();
-                  if (headers) {
-                    // Add each individual message header as a separate model
-                    addToInputModel(headers, messageContext);
-                    headersOneOf.push(headers.json());
-                  }
-                }
+                // Add each individual message payload as a separate model
+                const messageId = message.id();
+                // Use message ID if available, otherwise use channel name
+                const contextId =
+                  messageId &&
+                  !messageId.includes(
+                    AsyncAPIInputProcessor.ANONYMOUS_MESSAGE_PREFIX
+                  )
+                    ? messageId
+                    : contextChannelName;
+                const messageContext: SchemaContext = contextId
+                  ? { messageId: contextId }
+                  : {};
+                addToInputModel(payload, messageContext);
+                oneOf.push(payload.json());
               }
 
               const payload = new AsyncAPISchema(
                 {
-                  $id: includeMessageHeaders
-                    ? `${channelId}Payload`
-                    : channelId,
-                  oneOf: payloadOneOf
+                  $id: channelId,
+                  oneOf
                 },
                 channel.meta()
               );
 
               addToInputModel(payload);
-
-              if (includeMessageHeaders) {
-                const headers = new AsyncAPISchema(
-                  {
-                    $id: `${channelId}Headers`,
-                    oneOf: headersOneOf
-                  },
-                  channel.meta()
-                );
-
-                addToInputModel(headers);
-              }
             } else if (messages.length === 1) {
               const message = messages[0];
-              const messageContext = getMessageContext(message);
               const payload = message.payload();
               if (payload) {
                 // Use message ID as context for better naming
+                const messageId = message.id();
+                // Use message ID if available, otherwise use channel name
+                const contextId =
+                  messageId &&
+                  !messageId.includes(
+                    AsyncAPIInputProcessor.ANONYMOUS_MESSAGE_PREFIX
+                  )
+                    ? messageId
+                    : contextChannelName;
+                const messageContext: SchemaContext = contextId
+                  ? { messageId: contextId }
+                  : {};
                 addToInputModel(payload, messageContext);
-              }
-
-              if (includeMessageHeaders) {
-                const headers = message.headers();
-                if (headers) {
-                  addToInputModel(headers, messageContext);
-                }
               }
             }
           };
@@ -452,6 +420,26 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
       return str;
     }
     return str.charAt(0).toUpperCase() + str.slice(1);
+  }
+
+  /**
+   * Generate a hash of a schema's JSON representation for duplicate detection
+   */
+  private static hashSchema(schemaJson: any): string {
+    if (!schemaJson || typeof schemaJson !== 'object') {
+      return '';
+    }
+    // Create a stable string representation by sorting keys
+    const sortedJson = JSON.stringify(
+      schemaJson,
+      Object.keys(schemaJson).sort()
+    );
+    // Simple hash function (djb2)
+    let hash = 5381;
+    for (let i = 0; i < sortedJson.length; i++) {
+      hash = (hash << 5) + hash + (sortedJson.codePointAt(i) ?? Number.NaN);
+    }
+    return hash.toString(36);
   }
 
   /**

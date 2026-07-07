@@ -59,12 +59,12 @@ exports[`JsonBinPack preset should work fine with AsyncAPI inputs 1`] = `
   }
   public async jsonbinSerialize(): Promise<Buffer>{
     const jsonData = JSON.parse(this.marshal());
-    const jsonbinpackEncodedSchema = await jsonbinpack.compileSchema({\\"type\\":\\"object\\",\\"properties\\":{\\"email\\":{\\"format\\":\\"email\\",\\"type\\":\\"string\\",\\"x-parser-schema-id\\":\\"<anonymous-schema-2>\\",\\"x-modelgen-inferred-name\\":\\"UserSignedupPayloadEmail\\"}},\\"x-parser-schema-id\\":\\"<anonymous-schema-1>\\",\\"x-modelgen-inferred-name\\":\\"UserSignedupPayload\\",\\"$schema\\":\\"https://json-schema.org/draft/2020-12/schema\\"});
+    const jsonbinpackEncodedSchema = await jsonbinpack.compileSchema({\\"$schema\\":\\"https://json-schema.org/draft/2020-12/schema\\",\\"type\\":\\"object\\",\\"properties\\":{\\"email\\":{\\"format\\":\\"email\\",\\"type\\":\\"string\\",\\"x-parser-schema-id\\":\\"<anonymous-schema-2>\\",\\"x-modelgen-inferred-name\\":\\"UserSignedupPayloadEmail\\"}},\\"x-parser-schema-id\\":\\"<anonymous-schema-1>\\",\\"x-modelgen-inferred-name\\":\\"UserSignedupPayload\\"});
     return jsonbinpack.serialize(jsonbinpackEncodedSchema, jsonData);
   }
 
   public static async jsonbinDeserialize(buffer: Buffer): Promise<UserSignedupPayload> {
-    const jsonbinpackEncodedSchema = await jsonbinpack.compileSchema({\\"type\\":\\"object\\",\\"properties\\":{\\"email\\":{\\"format\\":\\"email\\",\\"type\\":\\"string\\",\\"x-parser-schema-id\\":\\"<anonymous-schema-2>\\",\\"x-modelgen-inferred-name\\":\\"UserSignedupPayloadEmail\\"}},\\"x-parser-schema-id\\":\\"<anonymous-schema-1>\\",\\"x-modelgen-inferred-name\\":\\"UserSignedupPayload\\",\\"$schema\\":\\"https://json-schema.org/draft/2020-12/schema\\"});
+    const jsonbinpackEncodedSchema = await jsonbinpack.compileSchema({\\"$schema\\":\\"https://json-schema.org/draft/2020-12/schema\\",\\"type\\":\\"object\\",\\"properties\\":{\\"email\\":{\\"format\\":\\"email\\",\\"type\\":\\"string\\",\\"x-parser-schema-id\\":\\"<anonymous-schema-2>\\",\\"x-modelgen-inferred-name\\":\\"UserSignedupPayloadEmail\\"}},\\"x-parser-schema-id\\":\\"<anonymous-schema-1>\\",\\"x-modelgen-inferred-name\\":\\"UserSignedupPayload\\"});
     const json = jsonbinpack.deserialize(jsonbinpackEncodedSchema, buffer);
     return UserSignedupPayload.unmarshal(json);
   }

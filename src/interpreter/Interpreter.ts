@@ -142,9 +142,6 @@ export class Interpreter {
     if (schema.type !== undefined) {
       model.addTypes(schema.type);
     }
-    if ('nullable' in schema && schema.nullable) {
-      model.addTypes('null');
-    }
     if (schema.required !== undefined) {
       model.required = schema.required;
     }

@@ -1,5 +1,6 @@
 import { TypeScriptPreset } from '../TypeScriptPreset';
-import { migrateSchemaTo202012 } from '../utils/migrateSchema';
+// eslint-disable-next-line @typescript-eslint/no-var-requires,no-undef
+const alterschema = require('alterschema');
 
 function getInputSchema(originalInput: any): string {
   if (originalInput.$schema !== undefined) {
@@ -24,17 +25,17 @@ function getInputSchema(originalInput: any): string {
  */
 export const TS_JSONBINPACK_PRESET: TypeScriptPreset = {
   class: {
-    additionalContent({ renderer, content, model }) {
+    async additionalContent({ renderer, content, model }) {
       renderer.dependencyManager.addDependency(
         "const jsonbinpack = require('jsonbinpack')"
       );
 
-      // Migrate source schema to JSON Schema 2020-12 for jsonbinpack compatibility
-      const fromVersion = getInputSchema(model.originalInput);
-      const jsonSchema = migrateSchemaTo202012(
-        model.originalInput as Record<string, unknown>,
-        fromVersion
+      const jsonSchema = await alterschema(
+        model.originalInput,
+        getInputSchema(model.originalInput),
+        '2020-12'
       );
+      jsonSchema['$schema'] = 'https://json-schema.org/draft/2020-12/schema';
       const json = JSON.stringify(jsonSchema);
       const packContent = `public async jsonbinSerialize(): Promise<Buffer>{
   const jsonData = JSON.parse(this.marshal());
