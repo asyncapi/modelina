@@ -39,7 +39,6 @@
     "@apidevtools/swagger-parser": "^10.1.0",
     "@asyncapi/multi-parser": "^2.3.0",
     "@asyncapi/parser": "^3.4.0",
-    "alterschema": "^1.1.2",
     "change-case": "^4.1.2",
     "fast-xml-parser": "^5.5.10",
     "js-yaml": "^4.1.0",
