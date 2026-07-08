@@ -406,7 +406,10 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
                 )
               );
 
-              if (includeMessageHeaders) {
+              // Only emit a combined headers model when at least one message
+              // actually declared headers; an empty `oneOf` would otherwise
+              // produce a spurious, typeless header model.
+              if (includeMessageHeaders && headersOneOf.length > 0) {
                 addToInputModel(
                   new AsyncAPISchema(
                     {

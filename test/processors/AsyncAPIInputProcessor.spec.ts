@@ -47,6 +47,13 @@ const oneofMessageWithHeaders = fs.readFileSync(
   ),
   'utf8'
 );
+const multipleMessagesNoHeaders = fs.readFileSync(
+  path.resolve(
+    __dirname,
+    './AsyncAPIInputProcessor/multiple_messages_no_headers.json'
+  ),
+  'utf8'
+);
 const ymlFileURI = `file://${path.resolve(
   __dirname,
   './AsyncAPIInputProcessor/testasyncapi.yml'
@@ -279,6 +286,28 @@ describe('AsyncAPIInputProcessor', () => {
       ).toBeDefined();
       expect(
         commonInputModel.models['userSignUpMessageV2Headers']
+      ).toBeDefined();
+      expect(
+        commonInputModel.models['userSignUpMessageV2Payload']
+      ).toBeDefined();
+    });
+
+    test('should not create a combined headers model when no message declares headers and includeMessageHeaders is true', async () => {
+      const processor = new AsyncAPIInputProcessor();
+      const commonInputModel = await processor.process(
+        multipleMessagesNoHeaders,
+        {
+          asyncapi: {
+            includeMessageHeaders: true
+          }
+        }
+      );
+      expect(commonInputModel instanceof InputMetaModel).toBeTruthy();
+      const modelNames = Object.keys(commonInputModel.models);
+      // No spurious `...Headers` model should be produced from an empty oneOf.
+      expect(modelNames.some((name) => name.endsWith('Headers'))).toBe(false);
+      expect(
+        commonInputModel.models['userSignUpMessageV1Payload']
       ).toBeDefined();
       expect(
         commonInputModel.models['userSignUpMessageV2Payload']

@@ -1,6 +1,11 @@
 import { AbstractDependencyManager } from '../AbstractDependencyManager';
 import { renderJavaScriptDependency } from '../../helpers';
-import { ConstrainedEnumModel, ConstrainedMetaModel } from '../../models';
+import {
+  ConstrainedEnumModel,
+  ConstrainedMetaModel,
+  ConstrainedObjectModel,
+  ConstrainedReferenceModel
+} from '../../models';
 import { TypeScriptExportType, TypeScriptOptions } from './TypeScriptGenerator';
 
 export class TypeScriptDependencyManager extends AbstractDependencyManager {
@@ -33,10 +38,29 @@ export class TypeScriptDependencyManager extends AbstractDependencyManager {
   /**
    * Returns true when the model is a type-only construct (interface, type alias)
    * that requires `export type` / `import type` under `isolatedModules: true`.
-   * Enums are runtime values and must always use the plain export/import form.
+   *
+   * Runtime values must always use the plain export/import form:
+   * - Enums are runtime values.
+   * - Object models rendered as classes (`modelType: 'class'`) are runtime values
+   *   (they are instantiated with `new` and expose static helpers like `unmarshal`).
+   *
+   * Cross-model dependencies arrive wrapped in a `ConstrainedReferenceModel`
+   * (see `getNearestDependencies`), so the reference must be unwrapped before the
+   * underlying model kind can be inspected.
    */
   private isTypeOnlyModel(model: ConstrainedMetaModel): boolean {
-    return !(model instanceof ConstrainedEnumModel);
+    const actualModel =
+      model instanceof ConstrainedReferenceModel ? model.ref : model;
+    if (actualModel instanceof ConstrainedEnumModel) {
+      return false;
+    }
+    if (
+      actualModel instanceof ConstrainedObjectModel &&
+      this.options.modelType === 'class'
+    ) {
+      return false;
+    }
+    return true;
   }
 
   /**

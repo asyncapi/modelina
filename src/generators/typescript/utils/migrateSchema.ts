@@ -8,7 +8,7 @@
  * - `$schema` URI update
  * - `definitions` → `$defs` + pointer rewrite
  * - `exclusiveMinimum`/`exclusiveMaximum` boolean → numeric form (draft-04)
- * - `items` tuple form → `prefixItems` (draft-04/06)
+ * - `items` tuple form → `prefixItems`, `additionalItems` → `items` (draft-04/06)
  * - Nested `$ref` pointer updates in sub-schemas
  */
 
@@ -16,10 +16,12 @@ const DRAFT_2020_12_SCHEMA = 'https://json-schema.org/draft/2020-12/schema';
 const OBJECT_TYPE = 'object';
 
 // Keys whose values are maps of named sub-schemas (e.g. `properties`).
+// NOTE: `additionalProperties` is intentionally NOT here — it is a single
+// sub-schema (or boolean), not a map of named sub-schemas, and is handled in
+// `migrateChildren`.
 const SCHEMA_MAP_KEYS = [
   'properties',
   'patternProperties',
-  'additionalProperties',
   '$defs',
   'definitions'
 ];
@@ -50,23 +52,43 @@ function renameDefinitions(obj: SchemaObject): void {
   }
 }
 
-// exclusiveMinimum/Maximum as boolean → numeric (draft-04 only)
+// exclusiveMinimum/Maximum as boolean → numeric (draft-04 only).
+// `true` becomes the numeric bound; `false` (the default) is simply dropped, as
+// a boolean value is invalid for these keywords in 2020-12.
 function normalizeExclusiveBounds(obj: SchemaObject): void {
-  if (obj.exclusiveMinimum === true && obj.minimum !== undefined) {
-    obj.exclusiveMinimum = obj.minimum;
-    delete obj.minimum;
+  if (obj.exclusiveMinimum === true) {
+    if (obj.minimum !== undefined) {
+      obj.exclusiveMinimum = obj.minimum;
+      delete obj.minimum;
+    } else {
+      delete obj.exclusiveMinimum;
+    }
+  } else if (obj.exclusiveMinimum === false) {
+    delete obj.exclusiveMinimum;
   }
-  if (obj.exclusiveMaximum === true && obj.maximum !== undefined) {
-    obj.exclusiveMaximum = obj.maximum;
-    delete obj.maximum;
+  if (obj.exclusiveMaximum === true) {
+    if (obj.maximum !== undefined) {
+      obj.exclusiveMaximum = obj.maximum;
+      delete obj.maximum;
+    } else {
+      delete obj.exclusiveMaximum;
+    }
+  } else if (obj.exclusiveMaximum === false) {
+    delete obj.exclusiveMaximum;
   }
 }
 
-// items (tuple) → prefixItems (draft-04/06)
+// items (tuple) → prefixItems, and the companion additionalItems → items
+// (draft-04/06). In 2020-12 `additionalItems` is not a keyword; the schema for
+// extra tuple elements is expressed via `items` alongside `prefixItems`.
 function tupleItemsToPrefixItems(obj: SchemaObject): void {
   if (Array.isArray(obj.items)) {
     obj.prefixItems = obj.items;
     delete obj.items;
+    if (obj.additionalItems !== undefined) {
+      obj.items = obj.additionalItems;
+      delete obj.additionalItems;
+    }
   }
 }
 
@@ -114,6 +136,11 @@ function migrateChildren(obj: SchemaObject): void {
     migrateObject(obj.items);
   }
 
+  // `additionalProperties` is a single sub-schema (or boolean), not a map.
+  if (isSchemaObject(obj.additionalProperties)) {
+    migrateObject(obj.additionalProperties);
+  }
+
   migrateSchemaLists(obj);
 }
 
@@ -145,10 +172,15 @@ export function migrateSchemaTo202012(
 ): SchemaObject {
   // Clone to avoid mutating the input
   const result = JSON.parse(JSON.stringify(schema)) as SchemaObject;
-  const isLegacyDraft = fromVersion === 'draft4' || fromVersion === 'draft6';
+  // draft-04/06/07 all use `definitions` and tuple-form `items`, none of which
+  // are valid 2020-12; the structural migration is a safe no-op for an
+  // already-2020-12 schema, so run it for every recognised legacy draft.
+  const needsMigration =
+    fromVersion === 'draft4' ||
+    fromVersion === 'draft6' ||
+    fromVersion === 'draft7';
 
-  // Apply structural migrations for draft-04 and draft-06
-  if (isLegacyDraft) {
+  if (needsMigration) {
     migrateObject(result);
   }
 
@@ -156,7 +188,7 @@ export function migrateSchemaTo202012(
   result.$schema = DRAFT_2020_12_SCHEMA;
 
   // Rewrite any remaining $ref pointers (covers nested refs in stringified sub-schemas)
-  if (isLegacyDraft) {
+  if (needsMigration) {
     return JSON.parse(
       rewriteRefPointers(JSON.stringify(result))
     ) as SchemaObject;
