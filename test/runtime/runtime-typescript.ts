@@ -55,6 +55,32 @@ async function generateMarshalling() {
   );
 }
 
+async function generateMarshallingMapType(
+  mapType: 'record' | 'indexedObject',
+  outDir: string
+) {
+  const generator = new TypeScriptFileGenerator({
+    mapType,
+    presets: [
+      {
+        preset: TS_COMMON_PRESET,
+        options: {
+          marshalling: true
+        }
+      }
+    ]
+  });
+  await generator.generateToFiles(
+    input,
+    path.resolve(
+      // eslint-disable-next-line no-undef
+      __dirname,
+      outDir
+    ),
+    { exportType: 'named' }
+  );
+}
+
 async function generateJsonBinPack() {
   const generator = new TypeScriptFileGenerator({
     presets: [
@@ -84,6 +110,8 @@ Promise.all(
     generateNamedExport(),
     generateDefaultExport(),
     generateMarshalling(),
+    generateMarshallingMapType('record', './runtime-typescript/src/marshalling-record'),
+    generateMarshallingMapType('indexedObject', './runtime-typescript/src/marshalling-indexed'),
     generateJsonBinPack()
   ]
 )

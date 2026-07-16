@@ -595,4 +595,75 @@ describe('Marshalling preset', () => {
       expect(result).not.toContain('this.nullableScalar !== null');
     });
   });
+
+  describe('mapType serialization', () => {
+    // A normal (non-unwrap) dictionary property `tags` plus a top-level
+    // `additionalProperties` unwrap dictionary. Both must serialize according
+    // to the configured `mapType`, not always as a `Map`.
+    const mapDoc = {
+      $id: 'MapTypeTest',
+      type: 'object',
+      properties: {
+        tags: { type: 'object', additionalProperties: { type: 'string' } }
+      },
+      additionalProperties: { type: 'number' }
+    };
+
+    async function generateMap(
+      mapType: 'map' | 'record' | 'indexedObject'
+    ): Promise<string> {
+      const generator = new TypeScriptGenerator({
+        mapType,
+        presets: [{ preset: TS_COMMON_PRESET, options: { marshalling: true } }]
+      });
+      const models = await generator.generate(mapDoc);
+      return models[0].result;
+    }
+
+    test('mapType "map" iterates with .entries() and rebuilds with new Map()', async () => {
+      const result = await generateMap('map');
+
+      // Normal dictionary property
+      expect(result).toContain('for (const [key, value] of this.tags.entries())');
+      expect(result).toContain('new Map(Object.entries(obj["tags"]');
+      // Unwrap additionalProperties
+      expect(result).toContain(
+        'for (const [key, value] of this.additionalProperties.entries())'
+      );
+      expect(result).toContain('instance.additionalProperties = new Map();');
+      expect(result).toContain('instance.additionalProperties.set(key,');
+    });
+
+    test('mapType "record" iterates with Object.entries() and rebuilds as a plain object', async () => {
+      const result = await generateMap('record');
+
+      // No Map usage anywhere in the serializer.
+      expect(result).not.toContain('.entries()');
+      expect(result).not.toContain('new Map(');
+
+      // Normal dictionary property
+      expect(result).toContain(
+        'for (const [key, value] of Object.entries(this.tags))'
+      );
+      expect(result).toContain('obj["tags"] as Record<string, string>');
+      // Unwrap additionalProperties
+      expect(result).toContain(
+        'for (const [key, value] of Object.entries(this.additionalProperties))'
+      );
+      expect(result).toContain('instance.additionalProperties = {};');
+      expect(result).toContain('instance.additionalProperties[key] =');
+    });
+
+    test('mapType "indexedObject" behaves like a plain object', async () => {
+      const result = await generateMap('indexedObject');
+
+      expect(result).not.toContain('.entries()');
+      expect(result).not.toContain('new Map(');
+      expect(result).toContain(
+        'for (const [key, value] of Object.entries(this.additionalProperties))'
+      );
+      expect(result).toContain('instance.additionalProperties = {};');
+      expect(result).toContain('obj["tags"] as { [name: string]: string }');
+    });
+  });
 });

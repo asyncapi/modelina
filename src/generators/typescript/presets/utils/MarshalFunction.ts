@@ -1,4 +1,5 @@
 import { ClassRenderer } from '../../renderers/ClassRenderer';
+import { TypeScriptOptions } from '../../TypeScriptGenerator';
 import {
   getDictionary,
   getNormalProperties,
@@ -15,6 +16,19 @@ import {
   ConstrainedTupleModel,
   ConstrainedUnionModel
 } from '../../../../models';
+
+type MapType = TypeScriptOptions['mapType'];
+
+/**
+ * Build the expression that iterates a dictionary's entries. Only `mapType: 'map'`
+ * produces a runtime `Map` (with `.entries()`); `record`/`indexedObject` produce a
+ * plain object, which must be iterated with `Object.entries()`.
+ */
+function dictionaryEntries(accessor: string, mapType: MapType): string {
+  return mapType === 'map'
+    ? `${accessor}.entries()`
+    : `Object.entries(${accessor})`;
+}
 
 /**
  * Build the guard expression that wraps a property's serialization.
@@ -184,7 +198,8 @@ function renderToJsonUnion(
  * Render toJson logic for dictionary types (additionalProperties)
  */
 function renderToJsonDictionary(
-  properties: Record<string, ConstrainedObjectPropertyModel>
+  properties: Record<string, ConstrainedObjectPropertyModel>,
+  mapType: MapType
 ): string[] {
   const unwrapDictionaryProperties = getDictionary(properties);
   const originalPropertyNames = getOriginalPropertyList(properties);
@@ -193,14 +208,14 @@ function renderToJsonDictionary(
     const dictValue = (propModel.property as ConstrainedDictionaryModel).value;
     const valueConversion = dictionaryValueToJson(dictValue);
     // A nullable dictionary (e.g. a root `type: ['null', 'object']`) is a
-    // `Map | null`; `.entries()` is dereferenced inside the guard so `null`
-    // must be narrowed away too.
+    // `Map | null` (or `object | null`); the value is dereferenced inside the
+    // guard so `null` must be narrowed away too.
     const dictionaryGuard = definedGuard(
       `this.${prop}`,
       propModel.property.options?.isNullable === true
     );
     return `if(${dictionaryGuard}) {
-  for (const [key, value] of this.${prop}.entries()) {
+  for (const [key, value] of ${dictionaryEntries(`this.${prop}`, mapType)}) {
     //Only unwrap those that are not already a property in the JSON object
     if([${originalPropertyNames.map((v) => `"${v}"`).join(',')}].includes(String(key))) continue;
     json[key] = ${valueConversion};
@@ -217,11 +232,12 @@ function renderToJsonDictionary(
 function renderToJsonDictionaryProperty(
   modelInstanceVariable: string,
   unconstrainedProperty: string,
-  dictionaryModel: ConstrainedDictionaryModel
+  dictionaryModel: ConstrainedDictionaryModel,
+  mapType: MapType
 ): string {
   const valueConversion = dictionaryValueToJson(dictionaryModel.value);
   return `const serializedMap: Record<string, unknown> = {};
-  for (const [key, value] of ${modelInstanceVariable}.entries()) {
+  for (const [key, value] of ${dictionaryEntries(modelInstanceVariable, mapType)}) {
     serializedMap[key] = ${valueConversion};
   }
   json["${unconstrainedProperty}"] = serializedMap;`;
@@ -231,7 +247,8 @@ function renderToJsonDictionaryProperty(
  * Render toJson code for all normal properties (not dictionaries with unwrap)
  */
 function renderToJsonNormalProperties(
-  properties: Record<string, ConstrainedObjectPropertyModel>
+  properties: Record<string, ConstrainedObjectPropertyModel>,
+  mapType: MapType
 ): string[] {
   const normalProperties = getNormalProperties(properties);
 
@@ -270,7 +287,8 @@ function renderToJsonNormalProperties(
       toJsonCode = renderToJsonDictionaryProperty(
         modelInstanceVariable,
         propModel.unconstrainedPropertyName,
-        propModel.property
+        propModel.property,
+        mapType
       );
     } else {
       const propToJsonCode = renderToJsonProperty(
@@ -300,8 +318,15 @@ export function renderToJson({
   model: ConstrainedObjectModel;
 }): string {
   const properties = model.properties || {};
-  const toJsonNormalProperties = renderToJsonNormalProperties(properties);
-  const toJsonDictionaryProperties = renderToJsonDictionary(properties);
+  const mapType = renderer.generator.options.mapType;
+  const toJsonNormalProperties = renderToJsonNormalProperties(
+    properties,
+    mapType
+  );
+  const toJsonDictionaryProperties = renderToJsonDictionary(
+    properties,
+    mapType
+  );
 
   return `public toJson(): Record<string, unknown> {
   const json: Record<string, unknown> = {};
