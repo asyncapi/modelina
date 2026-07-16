@@ -1,4 +1,5 @@
 import { ClassRenderer } from '../../renderers/ClassRenderer';
+import { TypeScriptOptions } from '../../TypeScriptGenerator';
 import { getDictionary, getNormalProperties } from '../../../../helpers';
 import {
   ConstrainedArrayModel,
@@ -11,6 +12,8 @@ import {
   ConstrainedStringModel,
   ConstrainedUnionModel
 } from '../../../../models';
+
+type MapType = TypeScriptOptions['mapType'];
 
 /**
  * The `== null` fallback value is only emitted when the declared type can hold
@@ -67,13 +70,22 @@ function withNullFallback(
  */
 function renderDictionaryFromJson(
   modelInstanceVariable: string,
-  dictionaryModel: ConstrainedDictionaryModel
+  dictionaryModel: ConstrainedDictionaryModel,
+  mapType: MapType
 ): string {
   const valueModel = dictionaryModel.value;
-  if (isModelReference(valueModel)) {
-    return `new Map(Object.entries(${modelInstanceVariable} as Record<string, unknown>).map(([key, value]): [string, ${valueModel.type}] => [key, ${valueModel.type}.fromJson(value as Record<string, unknown>)]))`;
+  if (mapType === 'map') {
+    if (isModelReference(valueModel)) {
+      return `new Map(Object.entries(${modelInstanceVariable} as Record<string, unknown>).map(([key, value]): [string, ${valueModel.type}] => [key, ${valueModel.type}.fromJson(value as Record<string, unknown>)]))`;
+    }
+    return `new Map(Object.entries(${modelInstanceVariable} as Record<string, ${valueModel.type}>))`;
   }
-  return `new Map(Object.entries(${modelInstanceVariable} as Record<string, ${valueModel.type}>))`;
+  // record / indexedObject: the property is a plain object at runtime, matching
+  // the JSON shape. Only nested model references need recursing into.
+  if (isModelReference(valueModel)) {
+    return `Object.fromEntries(Object.entries(${modelInstanceVariable} as Record<string, unknown>).map(([key, value]): [string, ${valueModel.type}] => [key, ${valueModel.type}.fromJson(value as Record<string, unknown>)])) as ${dictionaryModel.type}`;
+  }
+  return `${modelInstanceVariable} as ${dictionaryModel.type}`;
 }
 
 /**
@@ -82,6 +94,7 @@ function renderDictionaryFromJson(
 function renderFromJsonProperty(
   modelInstanceVariable: string,
   model: ConstrainedMetaModel,
+  mapType: MapType,
   isOptional: boolean = false
 ): string {
   const nullFallback = nullFallbackFor(isOptional, model);
@@ -101,7 +114,8 @@ function renderFromJsonProperty(
   if (model instanceof ConstrainedDictionaryModel) {
     const mapExpression = renderDictionaryFromJson(
       modelInstanceVariable,
-      model
+      model,
+      mapType
     );
     return withNullFallback(modelInstanceVariable, nullFallback, mapExpression);
   }
@@ -129,7 +143,8 @@ function renderFromJsonProperty(
  * Render the code for fromJson of regular properties
  */
 function fromJsonRegularProperty(
-  propModel: ConstrainedObjectPropertyModel
+  propModel: ConstrainedObjectPropertyModel,
+  mapType: MapType
 ): string | undefined {
   if (propModel.property.options.const) {
     return undefined;
@@ -140,6 +155,7 @@ function fromJsonRegularProperty(
   const fromJsonCode = renderFromJsonProperty(
     modelInstanceVariable,
     propModel.property,
+    mapType,
     isOptional
   );
   return `if (${modelInstanceVariable} !== undefined) {
@@ -150,7 +166,10 @@ function fromJsonRegularProperty(
 /**
  * Render the code for fromJson of unwrappable dictionary models
  */
-function fromJsonDictionary(model: ConstrainedObjectModel): string {
+function fromJsonDictionary(
+  model: ConstrainedObjectModel,
+  mapType: MapType
+): string {
   const setDictionaryProperties: string[] = [];
   const fromJsonDictionaryProperties: string[] = [];
   const properties = model.properties || {};
@@ -164,12 +183,21 @@ function fromJsonDictionary(model: ConstrainedObjectModel): string {
     const modelInstanceVariable = 'value';
     const fromJsonCode = renderFromJsonProperty(
       modelInstanceVariable,
-      (propModel.property as ConstrainedDictionaryModel).value
+      (propModel.property as ConstrainedDictionaryModel).value,
+      mapType
     );
-    setDictionaryProperties.push(`instance.${prop} = new Map();`);
-    fromJsonDictionaryProperties.push(
-      `instance.${prop}.set(key, ${fromJsonCode});`
-    );
+    if (mapType === 'map') {
+      setDictionaryProperties.push(`instance.${prop} = new Map();`);
+      fromJsonDictionaryProperties.push(
+        `instance.${prop}.set(key, ${fromJsonCode});`
+      );
+    } else {
+      // record / indexedObject: the dictionary is a plain object at runtime.
+      setDictionaryProperties.push(`instance.${prop} = {};`);
+      fromJsonDictionaryProperties.push(
+        `instance.${prop}[key] = ${fromJsonCode};`
+      );
+    }
   }
 
   const corePropertyKeys = originalPropertyNames
@@ -196,11 +224,12 @@ export function renderFromJson({
   model: ConstrainedObjectModel;
 }): string {
   const properties = model.properties || {};
+  const mapType = renderer.generator.options.mapType;
   const normalProperties = getNormalProperties(properties);
   const fromJsonNormalProperties = normalProperties.map(([, propModel]) =>
-    fromJsonRegularProperty(propModel)
+    fromJsonRegularProperty(propModel, mapType)
   );
-  const fromJsonDictionaryCode = fromJsonDictionary(model);
+  const fromJsonDictionaryCode = fromJsonDictionary(model, mapType);
 
   return `public static fromJson(obj: Record<string, unknown>): ${model.type} {
   const instance = new ${model.type}({} as any);
