@@ -38,7 +38,7 @@
     "react-dom": "18.2.0",
     "react-icons": "^4.12.0",
     "react-markdown": "^8.0.7",
-    "react-syntax-highlighter": "15.5.0",
+    "react-syntax-highlighter": "16.1.1",
     "rehype-raw": "^6.1.1",
     "rehype-slug": "^5.1.0",
     "remark-gfm": "^3.0.1",
