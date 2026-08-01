@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import { AnyModel, CommonModel } from '../../src/models';
+import { AnyModel, CommonModel, OpenapiV3Schema } from '../../src/models';
 import { OpenAPIInputProcessor } from '../../src/processors/OpenAPIInputProcessor';
 const basicDoc = JSON.parse(
   fs.readFileSync(
@@ -17,6 +17,15 @@ const noPathsDoc = JSON.parse(
 const circularDoc = JSON.parse(
   fs.readFileSync(
     path.resolve(__dirname, './OpenAPIInputProcessor/references_circular.json'),
+    'utf8'
+  )
+);
+const recursiveDoc = JSON.parse(
+  fs.readFileSync(
+    path.resolve(
+      __dirname,
+      './OpenAPIInputProcessor/references_recursive.json'
+    ),
     'utf8'
   )
 );
@@ -159,6 +168,19 @@ describe('OpenAPIInputProcessor', () => {
       const commonInputModel = await processor.process(circularDoc);
       expect(commonInputModel).toMatchSnapshot();
       expect(processorSpy.mock.calls).toMatchSnapshot();
+    });
+    test('should keep a self-referencing schema as a single schema', async () => {
+      const processor = new OpenAPIInputProcessor();
+      await processor.process(recursiveDoc);
+
+      const rootSchema = processorSpy.mock.results[0].value as OpenapiV3Schema;
+      const children = rootSchema.properties!['children'] as OpenapiV3Schema;
+
+      // The cycle has to close back onto the root schema itself. Naming the
+      // schemas must not introduce a second identity for it, because every
+      // downstream cache (Interpreter, CommonModelToMetaModel) is keyed on
+      // object identity and would emit a duplicate model for it.
+      expect(children.items).toBe(rootSchema);
     });
   });
 });

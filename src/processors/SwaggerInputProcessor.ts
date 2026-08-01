@@ -172,7 +172,7 @@ export class SwaggerInputProcessor extends AbstractInputProcessor {
     schema = JsonSchemaInputProcessor.reflectSchemaNames(
       schema,
       {},
-      new Set(),
+      new Map(),
       name,
       true
     );

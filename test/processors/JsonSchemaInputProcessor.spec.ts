@@ -388,7 +388,7 @@ describe('JsonSchemaInputProcessor', () => {
       const expected = JsonSchemaInputProcessor.reflectSchemaNames(
         schema,
         {},
-        new Set(),
+        new Map(),
         'root',
         true
       ) as any;

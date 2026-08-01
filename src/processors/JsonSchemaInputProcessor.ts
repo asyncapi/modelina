@@ -105,7 +105,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
     input = JsonSchemaInputProcessor.reflectSchemaNames(
       input,
       {},
-      new Set(),
+      new Map(),
       'root',
       true
     );
@@ -135,7 +135,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
     input = JsonSchemaInputProcessor.reflectSchemaNames(
       input,
       {},
-      new Set(),
+      new Map(),
       'root',
       true
     );
@@ -165,7 +165,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
     input = JsonSchemaInputProcessor.reflectSchemaNames(
       input,
       {},
-      new Set(),
+      new Map(),
       'root',
       true
     );
@@ -263,7 +263,7 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
    *
    * @param schema to process
    * @param namesStack is a aggregator of previous used names
-   * @param seenSchemas is a set of schema already seen and named
+   * @param seenSchemas maps each already seen schema to the named copy made for it
    * @param name to infer
    * @param isRoot indicates if performed schema is a root schema
    */
@@ -277,12 +277,13 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
       | OpenapiV3Schema
       | boolean,
     namesStack: Record<string, number>,
-    seenSchemas: Set<
+    seenSchemas: Map<
       | Draft4Schema
       | Draft6Schema
       | Draft7Schema
       | SwaggerV2Schema
-      | OpenapiV3Schema
+      | OpenapiV3Schema,
+      any
     >,
     name?: string,
     isRoot?: boolean
@@ -291,13 +292,21 @@ export class JsonSchemaInputProcessor extends AbstractInputProcessor {
       return schema;
     }
 
-    // short-circuit circular references
-    if (seenSchemas.has(schema)) {
-      return schema;
+    // Short-circuit circular references by handing back the copy already made
+    // for this schema. Returning the original instead would leave the cycle
+    // pointing at an unnamed object with a different identity, which every
+    // downstream identity cache (Interpreter, OpenapiV3Schema.internalToSchema,
+    // CommonModelToMetaModel) would then treat as a second, distinct schema.
+    const seenSchema = seenSchemas.get(schema);
+    if (seenSchema !== undefined) {
+      return seenSchema;
     }
-    seenSchemas.add(schema);
 
+    const originalSchema = schema;
     schema = { ...schema };
+    // Cache before recursing, so a self-reference reached while naming the
+    // children resolves to this same copy.
+    seenSchemas.set(originalSchema, schema);
 
     if (isRoot) {
       namesStack[String(name)] = 0;
