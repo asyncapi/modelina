@@ -21,6 +21,21 @@ const avroType = [
   'map'
 ];
 
+/**
+ * Detect an empty object or array without serializing the input.
+ *
+ * `shouldProcess` runs during processor detection on raw, caller-supplied
+ * input, which may be a circular object graph (for example a document that has
+ * already been dereferenced with circular references resolved). `JSON.stringify`
+ * throws on such input, so the emptiness check has to be structural.
+ */
+function isEmptyObjectOrArray(input: any): boolean {
+  if (typeof input !== 'object' || input === null) {
+    return false;
+  }
+  return Object.keys(input).length === 0;
+}
+
 export class AvroSchemaInputProcessor extends AbstractInputProcessor {
   /**
    * Function processing an Avro Schema input
@@ -28,11 +43,10 @@ export class AvroSchemaInputProcessor extends AbstractInputProcessor {
    * @param input
    */
   shouldProcess(input?: any): boolean {
-    if (
-      input === '' ||
-      JSON.stringify(input) === '{}' ||
-      JSON.stringify(input) === '[]'
-    ) {
+    if (input === '' || input === null || input === undefined) {
+      return false;
+    }
+    if (isEmptyObjectOrArray(input)) {
       return false;
     }
     if (!avroType.includes(input.type) || !input.name) {
