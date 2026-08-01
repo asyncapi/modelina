@@ -23,6 +23,23 @@ describe('AvroSchemaInputProcessor', () => {
       expect(processor.shouldProcess([])).toBeFalsy();
     });
 
+    test('should fail correctly for undefined input', () => {
+      expect(processor.shouldProcess(undefined)).toBeFalsy();
+    });
+
+    test('should fail correctly for null input', () => {
+      expect(processor.shouldProcess(null)).toBeFalsy();
+    });
+
+    test('should not throw for circular input', () => {
+      const circular: any = {
+        type: 'object',
+        properties: { children: { type: 'array', items: null } }
+      };
+      circular.properties.children.items = circular;
+      expect(processor.shouldProcess(circular)).toBeFalsy();
+    });
+
     test('should fail if input has no name property', () => {
       expect(
         processor.shouldProcess({ prop: 'hello', type: 'string' })

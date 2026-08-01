@@ -204,6 +204,42 @@ describe('InputProcessor', () => {
       expect(defaultInputProcessor.process).not.toHaveBeenCalled();
       expect(defaultInputProcessor.shouldProcess).not.toHaveBeenCalled();
     });
+    test('should be able to route circular input without serializing it', async () => {
+      const {
+        processor,
+        avroSchemaInputProcessor,
+        defaultInputProcessor,
+        openAPIInputProcessor
+      } = getProcessors();
+      // Mirrors an input that has already been dereferenced by the caller, where
+      // a self-referencing $ref has become a real JavaScript object cycle.
+      const inputSchema: any = {
+        $schema: 'http://json-schema.org/draft-07/schema#',
+        type: 'object',
+        properties: {
+          label: { type: 'string' },
+          children: { type: 'array', items: null }
+        }
+      };
+      inputSchema.properties.children.items = inputSchema;
+
+      await processor.process(inputSchema);
+
+      expect(openAPIInputProcessor.shouldProcess).toHaveNthReturnedWith(
+        1,
+        false
+      );
+      expect(avroSchemaInputProcessor.shouldProcess).toHaveNthReturnedWith(
+        1,
+        false
+      );
+      expect(avroSchemaInputProcessor.process).not.toHaveBeenCalled();
+      expect(defaultInputProcessor.process).toHaveBeenNthCalledWith(
+        1,
+        inputSchema,
+        undefined
+      );
+    });
     test('should be able to process AsyncAPI schema input with options', async () => {
       const { processor, asyncInputProcessor, defaultInputProcessor } =
         getProcessors();
