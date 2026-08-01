@@ -624,7 +624,9 @@ describe('Marshalling preset', () => {
       const result = await generateMap('map');
 
       // Normal dictionary property
-      expect(result).toContain('for (const [key, value] of this.tags.entries())');
+      expect(result).toContain(
+        'for (const [key, value] of this.tags.entries())'
+      );
       expect(result).toContain('new Map(Object.entries(obj["tags"]');
       // Unwrap additionalProperties
       expect(result).toContain(
