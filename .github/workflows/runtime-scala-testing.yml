@@ -8,6 +8,18 @@ on:
       - 'src/generators/scala/**'
       - 'test/runtime/runtime-scala/**'
       - 'test/runtime/**scala**'
+      # Shared code — a change to any of these feeds every language generator,
+      # so it can break this language's generated code too.
+      - 'src/generators/*.ts'
+      - 'src/helpers/**'
+      - 'src/interpreter/**'
+      - 'src/models/**'
+      - 'src/processors/**'
+      - 'src/utils/**'
+      - 'src/index.ts'
+      - 'package.json'
+      - 'package-lock.json'
+      - '.github/workflows/runtime-scala-testing.yml'
 
 jobs:
   test:

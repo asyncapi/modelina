@@ -7,6 +7,18 @@ on:
       - 'src/generators/go/**'
       - 'test/runtime/runtime-go/**'
       - 'test/runtime/**go**'
+      # Shared code — a change to any of these feeds every language generator,
+      # so it can break this language's generated code too.
+      - 'src/generators/*.ts'
+      - 'src/helpers/**'
+      - 'src/interpreter/**'
+      - 'src/models/**'
+      - 'src/processors/**'
+      - 'src/utils/**'
+      - 'src/index.ts'
+      - 'package.json'
+      - 'package-lock.json'
+      - '.github/workflows/runtime-go-testing.yml'
 
 jobs:
   test:

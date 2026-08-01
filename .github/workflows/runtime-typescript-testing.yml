@@ -5,12 +5,36 @@ on:
       - 'src/generators/typescript/**'
       - 'test/runtime/runtime-typescript/**'
       - 'test/runtime/**typescript**'
+      # Shared code — a change to any of these feeds every language generator,
+      # so it can break this language's generated code too.
+      - 'src/generators/*.ts'
+      - 'src/helpers/**'
+      - 'src/interpreter/**'
+      - 'src/models/**'
+      - 'src/processors/**'
+      - 'src/utils/**'
+      - 'src/index.ts'
+      - 'package.json'
+      - 'package-lock.json'
+      - '.github/workflows/runtime-typescript-testing.yml'
   pull_request:
     types: [opened, synchronize, reopened, ready_for_review]
     paths: 
       - 'src/generators/typescript/**'
       - 'test/runtime/runtime-typescript/**'
       - 'test/runtime/**typescript**'
+      # Shared code — a change to any of these feeds every language generator,
+      # so it can break this language's generated code too.
+      - 'src/generators/*.ts'
+      - 'src/helpers/**'
+      - 'src/interpreter/**'
+      - 'src/models/**'
+      - 'src/processors/**'
+      - 'src/utils/**'
+      - 'src/index.ts'
+      - 'package.json'
+      - 'package-lock.json'
+      - '.github/workflows/runtime-typescript-testing.yml'
 
 jobs:
   test:
