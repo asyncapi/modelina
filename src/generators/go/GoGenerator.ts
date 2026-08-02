@@ -48,7 +48,7 @@ import { UnionRenderer } from './renderers/UnionRenderer';
  * @prop {string} unionDictModelName Change default name for Dictionary Models.
  * @prop {string} unionArrModelName  Change default name for Array models.
  * @prop {boolean} usePointersForOptionalFields
- *   Render optional scalar fields as pointers.
+ *   Render optional value fields as pointers.
  * @prop {boolean} useTimeForDateTime
  *   Map string fields with the date-time format to time.Time.
  */
