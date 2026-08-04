@@ -13,6 +13,16 @@ export const GoOclifFlags = {
     required: false,
     default: false,
   }),
+  goUsePointersForOptionalFields: Flags.boolean({
+    description: 'Golang specific, render optional value fields as pointers.',
+    required: false,
+    default: false,
+  }),
+  goUseTimeForDateTime: Flags.boolean({
+    description: 'Golang specific, map date-time string fields to time.Time.',
+    required: false,
+    default: false,
+  }),
 }
 
 /**
@@ -22,7 +32,13 @@ export const GoOclifFlags = {
  * @returns 
  */
 export function buildGoGenerator(flags: any): BuilderReturnType {
-  const { packageName, goIncludeComments, goIncludeTags } = flags;
+  const {
+    packageName,
+    goIncludeComments,
+    goIncludeTags,
+    goUsePointersForOptionalFields,
+    goUseTimeForDateTime,
+  } = flags;
 
   if (packageName === undefined) {
     throw new Error('In order to generate models to Go, we need to know which package they are under. Add `--packageName=PACKAGENAME` to set the desired package name.');
@@ -35,7 +51,12 @@ export function buildGoGenerator(flags: any): BuilderReturnType {
   }
 
   if (goIncludeComments) { presets.push(GO_DESCRIPTION_PRESET); }
-  const fileGenerator = new GoFileGenerator({ presets });
+  const generatorOptions = {
+    presets,
+    usePointersForOptionalFields: Boolean(goUsePointersForOptionalFields),
+    useTimeForDateTime: Boolean(goUseTimeForDateTime),
+  };
+  const fileGenerator = new GoFileGenerator(generatorOptions);
   const fileOptions = {
     packageName
   };
