@@ -38,6 +38,9 @@ jacksonGenerator.generateToFiles(
 const inheritanceGenerator = new KotlinFileGenerator({
   presets: [KOTLIN_JACKSON_PRESET],
   processorOptions: {
+    asyncapi: {
+      includeComponentSchemas: true
+    },
     jsonSchema: {
       allowInheritance: true
     }

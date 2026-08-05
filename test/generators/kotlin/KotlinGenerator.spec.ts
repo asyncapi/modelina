@@ -203,6 +203,36 @@ describe('KotlinGenerator', () => {
     expect(models[0].result).toMatchSnapshot();
     expect(models[1].result).toMatchSnapshot();
   });
+  test('should generate unreferenced AsyncAPI component schemas when enabled', async () => {
+    const doc = {
+      asyncapi: '3.0.0',
+      info: {
+        title: 'Shared models',
+        version: '1.0.0'
+      },
+      channels: {},
+      components: {
+        schemas: {
+          SharedStatus: {
+            type: 'string',
+            enum: ['active', 'inactive']
+          }
+        }
+      }
+    };
+    generator = new KotlinGenerator({
+      processorOptions: {
+        asyncapi: {
+          includeComponentSchemas: true
+        }
+      }
+    });
+
+    const models = await generator.generate(doc);
+
+    expect(models.map((model) => model.modelName)).toContain('SharedStatus');
+  });
+
   test('should escape reserved keywords in package name', async () => {
     const doc = {
       $id: 'Address',
