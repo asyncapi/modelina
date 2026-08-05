@@ -18,7 +18,8 @@ export class EnumRenderer extends KotlinRenderer<ConstrainedEnumModel> {
       await this.runFromValuePreset(),
       await this.runAdditionalContentPreset()
     ];
-    return `enum class ${this.model.name}(val value: ${valueType}) {
+    const value = await this.runValuePreset(valueType);
+    return `enum class ${this.model.name}(${value}) {
 ${this.indent(this.renderBlock(content, 2))}
 }`;
   }
@@ -40,6 +41,10 @@ ${this.indent(this.renderBlock(content, 2))}
     return this.runPreset('item', { item });
   }
 
+  runValuePreset(valueType: string): Promise<string> {
+    return this.runPreset('value', { valueType });
+  }
+
   runFromValuePreset(): Promise<string> {
     return this.runPreset('fromValue');
   }
@@ -48,6 +53,9 @@ ${this.indent(this.renderBlock(content, 2))}
 export const KOTLIN_DEFAULT_ENUM_PRESET: EnumPresetType<KotlinOptions> = {
   self({ renderer, model }) {
     return renderer.defaultSelf(model.type);
+  },
+  value({ model }) {
+    return `val value: ${model.type}`;
   },
   item({ item }) {
     return `${item.key}(${item.value})`;

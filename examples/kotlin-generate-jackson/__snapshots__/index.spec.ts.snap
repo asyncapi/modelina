@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Should be able to generate Kotlin models with Jackson support and should log the annotated models to console 1`] = `
+Array [
+  "data class Order(
+    @get:JsonProperty(\\"order_id\\")
+    val orderId: String,
+    @get:JsonProperty(\\"status\\")
+    val status: OrderStatus,
+)
+
+enum class OrderStatus(@get:JsonValue val value: String) {
+    IN_MINUS_PROGRESS(\\"in-progress\\"),
+    DONE(\\"done\\");
+
+    companion object {
+        @JvmStatic
+        @JsonCreator
+        fun forValue(value: String): OrderStatus {
+            return values().firstOrNull { it.value == value }
+                ?: throw IllegalArgumentException(\\"Unexpected value '$value'\\")
+        }
+    }
+}",
+]
+`;

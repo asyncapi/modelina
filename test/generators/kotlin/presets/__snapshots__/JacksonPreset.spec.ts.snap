@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`KOTLIN_JACKSON_PRESET should render Jackson annotations for class properties 1`] = `
+"data class Order(
+    @get:JsonProperty(\\"order_id\\")
+    val orderId: String,
+    @get:JsonProperty(\\"description\\")
+    @get:JsonInclude(JsonInclude.Include.NON_NULL)
+    val description: String? = null,
+    @get:JsonAnyGetter
+    @field:JsonAnySetter
+    val additionalProperties: MutableMap<String, Any> = mutableMapOf(),
+)"
+`;
+
+exports[`KOTLIN_JACKSON_PRESET should render Jackson serialization and deserialization annotations for enum 1`] = `
+"enum class OrderStatus(@get:JsonValue val value: String) {
+    IN_MINUS_PROGRESS(\\"in-progress\\"),
+    DONE(\\"done\\");
+
+    companion object {
+        @JvmStatic
+        @JsonCreator
+        fun forValue(value: String): OrderStatus {
+            return values().firstOrNull { it.value == value }
+                ?: throw IllegalArgumentException(\\"Unexpected value '$value'\\")
+        }
+    }
+}"
+`;
