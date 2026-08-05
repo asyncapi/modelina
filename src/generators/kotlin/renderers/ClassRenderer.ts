@@ -44,10 +44,15 @@ ${this.indent(this.renderBlock(content, 2))}
   }
 
   async renderProperties(): Promise<string> {
-    const properties = this.model.properties || {};
+    const properties = Object.values(this.model.properties || {});
+    if (this.options.requiredPropertiesFirst) {
+      properties.sort(
+        (first, second) => Number(second.required) - Number(first.required)
+      );
+    }
     const content: string[] = [];
 
-    for (const property of Object.values(properties)) {
+    for (const property of properties) {
       const rendererProperty = await this.runPropertyPreset(property);
       content.push(rendererProperty);
     }

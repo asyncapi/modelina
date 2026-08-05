@@ -52,6 +52,7 @@ export interface KotlinOptions extends CommonGeneratorOptions<KotlinPreset> {
   typeMapping: TypeMapping<KotlinOptions, KotlinDependencyManager>;
   constraints: Constraints<KotlinOptions>;
   collectionType: 'List' | 'Array';
+  requiredPropertiesFirst: boolean;
 }
 export type KotlinConstantConstraint = ConstantConstraint<KotlinOptions>;
 export type KotlinEnumKeyConstraint = EnumKeyConstraint<KotlinOptions>;
@@ -94,6 +95,7 @@ export class KotlinGenerator extends AbstractGenerator<
     },
     defaultPreset: KOTLIN_DEFAULT_PRESET,
     collectionType: 'List',
+    requiredPropertiesFirst: false,
     typeMapping: KotlinDefaultTypeMapping,
     constraints: KotlinDefaultConstraints
   };

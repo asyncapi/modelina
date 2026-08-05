@@ -143,6 +143,31 @@ describe('KotlinGenerator', () => {
     expect(models[0].result).toMatchSnapshot();
   });
 
+  test('should render required properties before optional properties when configured', async () => {
+    const doc = {
+      $id: 'OrderedProperties',
+      type: 'object',
+      additionalProperties: false,
+      properties: {
+        optionalFirst: { type: 'string' },
+        requiredSecond: { type: 'string' },
+        optionalThird: { type: 'string' }
+      },
+      required: ['requiredSecond']
+    };
+    generator = new KotlinGenerator({ requiredPropertiesFirst: true });
+
+    const models = await generator.generate(doc);
+    const result = models[0].result;
+
+    expect(result.indexOf('requiredSecond')).toBeLessThan(
+      result.indexOf('optionalFirst')
+    );
+    expect(result.indexOf('optionalFirst')).toBeLessThan(
+      result.indexOf('optionalThird')
+    );
+  });
+
   test('should render List type for collections', async () => {
     const doc = {
       $id: 'CustomClass',
