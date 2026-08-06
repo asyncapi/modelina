@@ -1,5 +1,11 @@
 /* eslint-disable @typescript-eslint/ban-types */
-import { Preset, ClassPreset, EnumPreset } from '../../models';
+import {
+  Preset,
+  ClassPreset,
+  EnumPreset,
+  PresetArgs,
+  ConstrainedEnumModel
+} from '../../models';
 import { KotlinOptions } from './KotlinGenerator';
 import {
   ClassRenderer,
@@ -11,7 +17,14 @@ import {
 } from './renderers/EnumRenderer';
 
 export type ClassPresetType<O> = ClassPreset<ClassRenderer, O>;
-export type EnumPresetType<O> = EnumPreset<EnumRenderer, O>;
+export interface EnumPresetType<O> extends EnumPreset<EnumRenderer, O> {
+  value?: (
+    args: PresetArgs<EnumRenderer, O, ConstrainedEnumModel>
+  ) => Promise<string> | string;
+  fromValue?: (
+    args: PresetArgs<EnumRenderer, O, ConstrainedEnumModel>
+  ) => Promise<string> | string;
+}
 
 export type KotlinPreset<O = any> = Preset<{
   class: ClassPresetType<O>;

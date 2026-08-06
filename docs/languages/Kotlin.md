@@ -45,7 +45,18 @@ The most widely used use case for Modelina is to generate models that include se
 As you normally only need one library to do this, we developers can never get enough with creating new stuff, therefore there might be one specific library you need or want to integrate with. Therefore, there is not one specific preset that offers everything. Below is a list of all the supported serialization presets.
 
 ### To and from JSON
-Currently not supported, [let everyone know you need it](https://github.com/asyncapi/modelina/issues/new?assignees=&labels=enhancement&template=enhancement.md)!
+Here are all the supported presets and the libraries they use:
+
+- [Jackson annotation](#jackson-annotation)
+
+#### Jackson annotation
+
+To generate Kotlin data models with Jackson annotations, use the `KOTLIN_JACKSON_PRESET` option.
+
+Check out this [example for a live demonstration](../../examples/kotlin-generate-jackson).
+
+**External dependencies**
+Requires [com.fasterxml.jackson.annotation](https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-annotations) to work.
 
 ### To and from XML
 Currently not supported, [let everyone know you need it](https://github.com/asyncapi/modelina/issues/new?assignees=&labels=enhancement&template=enhancement.md)!
