@@ -163,6 +163,7 @@ These are all specific examples only relevant to the Kotlin generator:
 - [generate-kotlin-models](./generate-kotlin-models) - A basic example to generate Kotlin data models
 - [generate-kotlin-enums](./generate-kotlin-enums)
 - [kotlin-generate-kdoc](./kotlin-generate-kdoc)
+- [kotlin-generate-jackson](./kotlin-generate-jackson) - Generate Kotlin data classes and enums with Jackson JSON annotations.
 - [kotlin-generate-javax-constraint-annotations](./kotlin-generate-javax-constraint-annotation)
 - [kotlin-change-collection-type](./kotlin-change-collection-type)
 
