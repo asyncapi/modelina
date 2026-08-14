@@ -407,7 +407,7 @@ USAGE
     [--tsExportType default|named] [--tsJsonBinPack] [--tsMarshalling] [--tsExampleInstance] [--tsRawPropertyNames]
     [--csharpAutoImplement] [--csharpNewtonsoft] [--csharpArrayType Array|List] [--csharpHashcode] [--csharpEqual]
     [--csharpSystemJson] [--goIncludeComments] [--goIncludeTags] [--javaIncludeComments] [--javaJackson]
-    [--javaConstraints] [--javaArrayType Array|List] [--pyDantic]
+    [--javaConstraints] [--javaJakarta] [--javaArrayType Array|List] [--pyDantic]
 
 ARGUMENTS
   LANGUAGE  (typescript|csharp|golang|java|javascript|dart|python|rust|kotlin|php|cplusplus|scala) The language you want
@@ -432,6 +432,8 @@ FLAGS
       --javaConstraints           Java specific, generate the models with constraints
       --javaIncludeComments       Java specific, if enabled add comments while generating models.
       --javaJackson               Java specific, generate the models with Jackson serialization support
+      --javaJakarta               Java specific, use the jakarta.validation namespace instead of javax.validation for
+                                  constraints. Only has an effect together with --javaConstraints.
       --namespace=<value>         C#, C++ and PHP specific, define the namespace to use for the generated models. This
                                   is required when language is `csharp`,`c++` or `php`.
       --packageName=<value>       Go, Java and Kotlin specific, define the package to use for the generated models. This

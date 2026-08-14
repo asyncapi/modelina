@@ -3,6 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { expect } from '@oclif/test';
 import {buildPythonGenerator} from '../../src/helpers/python'
+import {buildJavaGenerator} from '../../src/helpers/java'
 
 const AsyncapiV3Yaml = fs.readFileSync(
   path.resolve(__dirname, '../fixtures/asyncapi_v3.yml'),
@@ -51,6 +52,34 @@ describe('generate models', () => {
       const {fileOptions, fileGenerator} = buildPythonGenerator({packageName: 'test', pyDantic: true});
       expect(fileOptions).to.have.property('packageName','test');
       expect(fileGenerator.options.presets.length).equal(1);
+    });
+  });
+
+  describe('for Java', () => {
+    it('should default to the javax namespace', async () => {
+      const { fileGenerator } = buildJavaGenerator({
+        packageName: 'test',
+        javaArrayType: 'Array',
+        javaConstraints: true
+      });
+      const models = await fileGenerator.generateCompleteModels(AsyncapiV3Yaml, {
+        packageName: 'test'
+      });
+      expect(models[0].result).to.include('javax.validation');
+    });
+
+    it('should properly parse --javaJakarta flag', async () => {
+      const { fileGenerator } = buildJavaGenerator({
+        packageName: 'test',
+        javaArrayType: 'Array',
+        javaConstraints: true,
+        javaJakarta: true
+      });
+      const models = await fileGenerator.generateCompleteModels(AsyncapiV3Yaml, {
+        packageName: 'test'
+      });
+      expect(models[0].result).to.include('jakarta.validation');
+      expect(models[0].result).to.not.include('javax.validation');
     });
   });
 });
