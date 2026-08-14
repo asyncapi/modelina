@@ -63,7 +63,7 @@ export const TS_DEFAULT_CLASS_PRESET: ClassPresetType<TypeScriptOptions> = {
         continue;
       }
       assignments.push(`this._${propertyName} = input.${propertyName};`);
-      ctorProperties.push(renderer.renderProperty(property).replace(';', ','));
+      ctorProperties.push(renderer.renderProperty(property).replaceAll(';', ','));
     }
 
     return `constructor(input: {
@@ -76,13 +76,18 @@ ${renderer.indent(renderer.renderBlock(assignments))}
     return `private _${renderer.renderProperty(property)}`;
   },
   getter({ property }): string {
-    return `get ${property.propertyName}(): ${
-      property.property.options.const?.value
-        ? property.property.options.const.value
-        : property.property.type
-    }${property.required === false ? ' | undefined' : ''} { return this._${
-      property.propertyName
-    }; }`;
+    const constVal = property.property.options.const?.value;
+    // Use JSON.stringify for non-string values to avoid [object Object] issues
+    let returnType: string;
+    if (constVal === undefined) {
+      returnType = property.property.type;
+    } else if (typeof constVal === 'string') {
+      returnType = constVal;
+    } else {
+      returnType = JSON.stringify(constVal);
+    }
+    const optionalSuffix = property.required === false ? ' | undefined' : '';
+    return `get ${property.propertyName}(): ${returnType}${optionalSuffix} { return this._${property.propertyName}; }`;
   },
   setter({ property }): string {
     // if const value exists we should not render a setter
@@ -90,10 +95,8 @@ ${renderer.indent(renderer.renderBlock(assignments))}
       return '';
     }
 
-    return `set ${property.propertyName}(${property.propertyName}: ${
-      property.property.type
-    }${property.required === false ? ' | undefined' : ''}) { this._${
-      property.propertyName
-    } = ${property.propertyName}; }`;
+    return `set ${property.propertyName}(${property.propertyName}: ${property.property.type
+      }${property.required === false ? ' | undefined' : ''}) { this._${property.propertyName
+      } = ${property.propertyName}; }`;
   }
 };
