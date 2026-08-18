@@ -407,7 +407,9 @@ USAGE
     [--tsExportType default|named] [--tsJsonBinPack] [--tsMarshalling] [--tsExampleInstance] [--tsRawPropertyNames]
     [--csharpAutoImplement] [--csharpNewtonsoft] [--csharpArrayType Array|List] [--csharpHashcode] [--csharpEqual]
     [--csharpSystemJson] [--goIncludeComments] [--goIncludeTags] [--javaIncludeComments] [--javaJackson]
-    [--javaConstraints] [--javaArrayType Array|List] [--pyDantic]
+    [--javaConstraints] [--javaArrayType Array|List] [--kotlinAllowInheritance] [--kotlinJackson]
+    [--kotlinIgnoreAdditionalProperties] [--kotlinIncludeComponentSchemas]
+    [--kotlinRequiredPropertiesFirst] [--kotlinTypeMapping <value>...] [--pyDantic]
 
 ARGUMENTS
   LANGUAGE  (typescript|csharp|golang|java|javascript|dart|python|rust|kotlin|php|cplusplus|scala) The language you want
@@ -432,6 +434,15 @@ FLAGS
       --javaConstraints           Java specific, generate the models with constraints
       --javaIncludeComments       Java specific, if enabled add comments while generating models.
       --javaJackson               Java specific, generate the models with Jackson serialization support
+      --kotlinAllowInheritance          Kotlin specific, generate interfaces for inherited schemas
+      --kotlinIgnoreAdditionalProperties
+                                      Kotlin specific, omit additionalProperties from generated models
+      --kotlinIncludeComponentSchemas
+                                      Kotlin specific, generate every schema in components/schemas
+      --kotlinJackson                 Kotlin specific, generate the models with Jackson serialization support
+      --kotlinRequiredPropertiesFirst Kotlin specific, render required constructor properties before optional properties
+      --kotlinTypeMapping=<value>...  Kotlin specific, map a string format to a Kotlin type, for example
+                                      uuid=java.util.UUID
       --namespace=<value>         C#, C++ and PHP specific, define the namespace to use for the generated models. This
                                   is required when language is `csharp`,`c++` or `php`.
       --packageName=<value>       Go, Java and Kotlin specific, define the package to use for the generated models. This

@@ -14,6 +14,12 @@ implementation. The default one should suffice here.
 
 - [Include KDoc for properties](#include-kdoc-for-properties)
 - [Change the collection type for arrays](#change-the-collection-type-for-arrays)
+- [Generate all AsyncAPI component schemas](#generate-all-asyncapi-component-schemas)
+- [Map custom string formats](#map-custom-string-formats)
+- [Use explicit enum constant names](#use-explicit-enum-constant-names)
+- [Generate inherited and polymorphic models](#generate-inherited-and-polymorphic-models)
+- [Omit implicit additional properties](#omit-implicit-additional-properties)
+- [Render required properties first](#render-required-properties-first)
 - [Include Javax validation constraint annotations for properties](#include-javax-validation-constraint-annotations-for-properties)
 - [Generate serializer and deserializer functionality](#generate-serializer-and-deserializer-functionality)
   * [To and from JSON](#to-and-from-json)
@@ -31,6 +37,79 @@ Check out this [example for a live demonstration](../../examples/kotlin-generate
 Sometimes, we might want to render a different collection type, and instead of the default `Array` use it as a `List` type. To do so, provide the option `collectionType: 'List'`.
 
 Check out this [example for a live demonstration](../../examples/kotlin-change-collection-type).
+
+## Generate all AsyncAPI component schemas
+
+By default, Modelina generates schemas reachable from message payloads. To also generate standalone or currently unreferenced schemas from `components/schemas`, enable `includeComponentSchemas`:
+
+```ts
+const generator = new KotlinGenerator({
+  processorOptions: {
+    asyncapi: {
+      includeComponentSchemas: true
+    }
+  }
+});
+```
+
+Use `--kotlinIncludeComponentSchemas` to enable the same behavior from the Modelina or AsyncAPI CLI.
+
+## Map custom string formats
+
+The Kotlin generator API supports custom type mappings. The CLI exposes string format mappings through repeatable `--kotlinTypeMapping` options:
+
+```sh
+asyncapi generate models kotlin asyncapi.yaml \
+  --packageName com.example \
+  --kotlinTypeMapping uuid=java.util.UUID \
+  --kotlinTypeMapping instant=java.time.Instant \
+  --kotlinTypeMapping zoned-date-time=java.time.ZonedDateTime
+```
+
+Unconfigured formats continue to use the Kotlin generator's default mappings.
+
+## Use explicit enum constant names
+
+Use `x-enum-varnames` to provide one generated constant name for each enum value:
+
+```yaml
+type: string
+enum:
+  - New York
+  - California
+x-enum-varnames:
+  - NY
+  - GOLDEN_STATE
+```
+
+Modelina still applies Kotlin identifier safety rules to the supplied names. If the extension is missing or invalid, names continue to be derived from the enum values.
+
+## Generate inherited and polymorphic models
+
+Enable JSON Schema inheritance to render inherited object schemas as Kotlin interfaces and implementations:
+
+```ts
+const generator = new KotlinGenerator({
+  presets: [KOTLIN_JACKSON_PRESET],
+  processorOptions: {
+    jsonSchema: {
+      allowInheritance: true
+    }
+  }
+});
+```
+
+With the Jackson preset enabled, AsyncAPI discriminators generate `@JsonTypeInfo` and `@JsonSubTypes` metadata. `x-discriminator-mapping` is honored when it maps wire values to component schema references.
+
+Use `--kotlinAllowInheritance` with the Modelina or AsyncAPI CLI.
+
+## Omit implicit additional properties
+
+Use the existing JSON Schema processor option `ignoreAdditionalProperties` when generated Kotlin models should not contain an implicit `additionalProperties` map. The CLI exposes it as `--kotlinIgnoreAdditionalProperties`.
+
+## Render required properties first
+
+Set `requiredPropertiesFirst: true` to place required constructor properties before optional properties while preserving the original order within both groups. The CLI exposes this option as `--kotlinRequiredPropertiesFirst`.
 
 ## Include Javax validation constraint annotations for properties
 
