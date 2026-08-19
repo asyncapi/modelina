@@ -7,11 +7,36 @@ import {
   NO_RESERVED_KEYWORDS,
   FormatHelpers
 } from '../../../helpers';
+import { Logger } from '../../../utils';
 import { isInvalidKotlinEnumKey } from '../Constants';
 import {
   KotlinEnumKeyConstraint,
   KotlinEnumValueConstraint
 } from '../KotlinGenerator';
+
+/**
+ * Reads the `x-enum-varnames` extension from an enum schema.
+ *
+ * The extension is only honored when it provides exactly one string name for
+ * every enum value, otherwise the generated names are derived from the values.
+ */
+function getEnumVarNames(enumModel: EnumModel): string[] | undefined {
+  const enumVarNames = enumModel.originalInput?.['x-enum-varnames'];
+  if (enumVarNames === undefined) {
+    return undefined;
+  }
+  const isValid =
+    Array.isArray(enumVarNames) &&
+    enumVarNames.length === enumModel.values.length &&
+    enumVarNames.every((enumVarName) => typeof enumVarName === 'string');
+  if (!isValid) {
+    Logger.warn(
+      `Ignoring invalid x-enum-varnames for ${enumModel.name}; expected one string name for every enum value.`
+    );
+    return undefined;
+  }
+  return enumVarNames;
+}
 
 export type ModelEnumKeyConstraints = {
   NO_SPECIAL_CHAR: (value: string) => string;
@@ -50,13 +75,21 @@ export function defaultEnumKeyConstraints(
   const constraints = { ...DefaultEnumKeyConstraints, ...customConstraints };
 
   return ({ enumKey, enumModel, constrainedEnumModel }) => {
-    let constrainedEnumKey = enumKey;
+    const enumValueIndex = enumModel.values.findIndex(
+      (enumValue) => String(enumValue.key) === enumKey
+    );
+    const enumVarName = getEnumVarNames(enumModel)?.at(enumValueIndex);
+    const originalEnumKey =
+      enumValueIndex !== -1 && enumVarName !== undefined
+        ? enumVarName
+        : enumKey;
+    let constrainedEnumKey = originalEnumKey;
     constrainedEnumKey = constraints.NO_SPECIAL_CHAR(constrainedEnumKey);
     constrainedEnumKey = constraints.NO_NUMBER_START_CHAR(constrainedEnumKey);
     constrainedEnumKey = constraints.NO_EMPTY_VALUE(constrainedEnumKey);
     constrainedEnumKey = constraints.NO_RESERVED_KEYWORDS(constrainedEnumKey);
     //If the enum key has been manipulated, lets make sure it don't clash with existing keys
-    if (constrainedEnumKey !== enumKey) {
+    if (constrainedEnumKey !== originalEnumKey) {
       constrainedEnumKey = constraints.NO_DUPLICATE_KEYS(
         constrainedEnumModel,
         enumModel,

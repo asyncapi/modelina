@@ -19,12 +19,16 @@ import {
   ConstrainedUnionModel,
   InputMetaModel,
   MetaModel,
-  RenderOutput
+  ObjectModel,
+  ReferenceModel,
+  RenderOutput,
+  UnionModel
 } from '../../models';
 import { IndentationTypes, split, TypeMapping } from '../../helpers';
 import { KotlinPreset, KOTLIN_DEFAULT_PRESET } from './KotlinPreset';
 import { ClassRenderer } from './renderers/ClassRenderer';
 import { EnumRenderer } from './renderers/EnumRenderer';
+import { UnionRenderer } from './renderers/UnionRenderer';
 import { isReservedKotlinKeyword } from './Constants';
 import { Logger } from '../..';
 import {
@@ -38,7 +42,8 @@ import {
 } from '../../helpers/ConstrainHelpers';
 import {
   KotlinDefaultConstraints,
-  KotlinDefaultTypeMapping
+  KotlinDefaultTypeMapping,
+  kotlinUnionIncludesBuiltInTypes
 } from './KotlinConstrainer';
 import { DeepPartial, mergePartialAndDefault } from '../../utils/Partials';
 import { KotlinDependencyManager } from './KotlinDependencyManager';
@@ -47,6 +52,7 @@ export interface KotlinOptions extends CommonGeneratorOptions<KotlinPreset> {
   typeMapping: TypeMapping<KotlinOptions, KotlinDependencyManager>;
   constraints: Constraints<KotlinOptions>;
   collectionType: 'List' | 'Array';
+  requiredPropertiesFirst: boolean;
 }
 export type KotlinConstantConstraint = ConstantConstraint<KotlinOptions>;
 export type KotlinEnumKeyConstraint = EnumKeyConstraint<KotlinOptions>;
@@ -89,6 +95,7 @@ export class KotlinGenerator extends AbstractGenerator<
     },
     defaultPreset: KOTLIN_DEFAULT_PRESET,
     collectionType: 'List',
+    requiredPropertiesFirst: false,
     typeMapping: KotlinDefaultTypeMapping,
     constraints: KotlinDefaultConstraints
   };
@@ -130,9 +137,19 @@ export class KotlinGenerator extends AbstractGenerator<
   splitMetaModel(model: MetaModel): MetaModel[] {
     const metaModelsToSplit = {
       splitEnum: true,
-      splitObject: true
+      splitObject: true,
+      splitUnion: true
     };
-    return split(model, metaModelsToSplit);
+    return split(model, metaModelsToSplit).filter(
+      (splitModel) =>
+        !(splitModel instanceof UnionModel) ||
+        splitModel.union.every(
+          (unionModel) =>
+            unionModel instanceof ObjectModel ||
+            (unionModel instanceof ReferenceModel &&
+              unionModel.ref instanceof ObjectModel)
+        )
+    );
   }
 
   constrainToMetaModel(
@@ -178,6 +195,15 @@ export class KotlinGenerator extends AbstractGenerator<
       );
     } else if (args.constrainedModel instanceof ConstrainedEnumModel) {
       return this.renderEnum(
+        args.constrainedModel,
+        args.inputModel,
+        optionsToUse
+      );
+    } else if (
+      args.constrainedModel instanceof ConstrainedUnionModel &&
+      !kotlinUnionIncludesBuiltInTypes(args.constrainedModel)
+    ) {
+      return this.renderUnion(
         args.constrainedModel,
         args.inputModel,
         optionsToUse
@@ -255,6 +281,33 @@ ${outputModel.result}`;
     const dependencyManagerToUse = this.getDependencyManager(optionsToUse);
     const presets = this.getPresets('class');
     const renderer = new ClassRenderer(
+      this.options,
+      this,
+      presets,
+      model,
+      inputModel,
+      dependencyManagerToUse
+    );
+    const result = await renderer.runSelfPreset();
+    return RenderOutput.toRenderOutput({
+      result,
+      renderedName: model.name,
+      dependencies: dependencyManagerToUse.dependencies
+    });
+  }
+
+  async renderUnion(
+    model: ConstrainedUnionModel,
+    inputModel: InputMetaModel,
+    options?: DeepPartial<KotlinOptions>
+  ): Promise<RenderOutput> {
+    const optionsToUse = KotlinGenerator.getKotlinOptions({
+      ...this.options,
+      ...options
+    });
+    const dependencyManagerToUse = this.getDependencyManager(optionsToUse);
+    const presets = this.getPresets('union');
+    const renderer = new UnionRenderer(
       this.options,
       this,
       presets,

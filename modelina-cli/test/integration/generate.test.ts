@@ -335,6 +335,16 @@ describe('models', () => {
     test
       .stderr()
       .stdout()
+      .command([...generalOptions, 'kotlin', ASYNCAPI_V2_DOCUMENT, `-o=${ path.resolve(outputDir, './kotlin-jackson')}`, '--packageName', 'asyncapi.models', '--kotlinJackson'])
+      .it('works when kotlinJackson is set', (ctx, done) => {
+        expect(ctx.stdout).to.contain(
+          'Successfully generated the following models: '
+        );
+        done();
+      });
+    test
+      .stderr()
+      .stdout()
       .command([...generalOptions, 'kotlin', ASYNCAPI_V2_DOCUMENT, `-o=${ path.resolve(outputDir, './kotlin')}`])
       .it('fails when no package defined', (ctx, done) => {
         expect(ctx.stderr).to.contain('Error: In order to generate models to Kotlin, we need to know which package they are under. Add `--packageName=PACKAGENAME` to set the desired package name.\n');
