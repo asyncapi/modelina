@@ -1,4 +1,9 @@
-import { ConstrainedEnumValueModel } from '../../models';
+import {
+  ConstrainedEnumValueModel,
+  ConstrainedObjectModel,
+  ConstrainedReferenceModel,
+  ConstrainedUnionModel
+} from '../../models';
 import {
   defaultEnumKeyConstraints,
   defaultEnumValueConstraints
@@ -72,11 +77,28 @@ function interpretUnionValueType(types: string[]): string {
   return 'Any';
 }
 
+export function kotlinUnionIncludesBuiltInTypes(
+  model: ConstrainedUnionModel
+): boolean {
+  return !model.union.every(
+    (union) =>
+      union instanceof ConstrainedObjectModel ||
+      (union instanceof ConstrainedReferenceModel &&
+        union.ref instanceof ConstrainedObjectModel)
+  );
+}
+
 export const KotlinDefaultTypeMapping: KotlinTypeMapping = {
   Object({ constrainedModel }): string {
     return constrainedModel.name;
   },
   Reference({ constrainedModel }): string {
+    if (
+      constrainedModel.ref instanceof ConstrainedUnionModel &&
+      kotlinUnionIncludesBuiltInTypes(constrainedModel.ref)
+    ) {
+      return 'Any';
+    }
     return constrainedModel.name;
   },
   Any(): string {
@@ -137,9 +159,10 @@ export const KotlinDefaultTypeMapping: KotlinTypeMapping = {
       ? interpretUnionValueType(uniqueTypes)
       : uniqueTypes[0];
   },
-  Union(): string {
-    // No Unions in Kotlin, use Any for now.
-    return 'Any';
+  Union({ constrainedModel }): string {
+    return kotlinUnionIncludesBuiltInTypes(constrainedModel)
+      ? 'Any'
+      : constrainedModel.name;
   },
   Dictionary({ constrainedModel }): string {
     return `Map<${constrainedModel.key.type}, ${constrainedModel.value.type}>`;

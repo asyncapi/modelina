@@ -91,6 +91,22 @@ describe('Interpretation of allOf', () => {
     expect(interpreter.interpretAndCombineSchema).not.toHaveBeenCalled();
     expect(JSON.stringify(model)).toEqual(JSON.stringify(new CommonModel()));
   });
+  test('should ignore empty inline object schemas', () => {
+    const model = new CommonModel();
+    const schema = { allOf: [{ type: 'object' }] };
+    const interpreter = new Interpreter();
+
+    interpretAllOf(
+      schema,
+      model,
+      interpreter,
+      interpreterOptionsAllowInheritance
+    );
+
+    expect(interpreter.interpret).not.toHaveBeenCalled();
+    expect(interpreter.interpretAndCombineSchema).not.toHaveBeenCalled();
+  });
+
   test('should extend model', () => {
     const model = new CommonModel();
     const schema = { allOf: [{ type: 'object', $id: 'test' }] };

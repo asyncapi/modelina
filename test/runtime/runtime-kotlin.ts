@@ -5,6 +5,7 @@ import {
 } from '../../';
 import path from 'path';
 import input from './generic-input.json';
+import inheritanceInput from './runtime-kotlin-inheritance-input.json';
 
 const defaultGenerator = new KotlinFileGenerator({
   presets: [KOTLIN_DEFAULT_PRESET]
@@ -32,4 +33,26 @@ jacksonGenerator.generateToFiles(
     './runtime-kotlin/src/main/kotlin/com/mycompany/app/jackson'
   ),
   { packageName: 'com.mycompany.app.jackson' }
+);
+
+const inheritanceGenerator = new KotlinFileGenerator({
+  presets: [KOTLIN_JACKSON_PRESET],
+  processorOptions: {
+    asyncapi: {
+      includeComponentSchemas: true
+    },
+    jsonSchema: {
+      allowInheritance: true
+    }
+  }
+});
+
+inheritanceGenerator.generateToFiles(
+  inheritanceInput,
+  path.resolve(
+    // eslint-disable-next-line no-undef
+    __dirname,
+    './runtime-kotlin/src/main/kotlin/com/mycompany/app/polymorphism'
+  ),
+  { packageName: 'com.mycompany.app.polymorphism' }
 );
