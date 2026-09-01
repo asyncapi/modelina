@@ -6,8 +6,8 @@ import {
   JavaScriptGenerator
 } from '@/../../';
 import type { DeepPartial } from '@/../../lib/types/utils';
-
 import type { ModelinaJavaScriptOptions, ModelProps } from '@/types';
+
 import { applyGeneralOptions, convertModelsToProps } from './Helpers';
 
 /**

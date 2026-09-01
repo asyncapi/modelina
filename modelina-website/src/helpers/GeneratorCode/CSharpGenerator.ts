@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import type { ModelinaCSharpOptions } from '../../types';
 import { getGeneralGeneratorCode, renderGeneratorInstanceCode } from './GeneralGenerator';
 

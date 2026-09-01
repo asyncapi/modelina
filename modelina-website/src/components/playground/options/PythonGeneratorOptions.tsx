@@ -43,8 +43,8 @@ const PythonGeneratorOptions: React.FC<PythonGeneratorOptionsProps> = ({ setNewC
       <li className='flex items-center gap-1'>
         <InfoModal text='Package Name :'>
           <p>
-            In Python, a package name is used to organize code into logical groups or containers. It serves as a namespace
-            for the code elements within it and helps in avoiding naming conflicts.
+            In Python, a package name is used to organize code into logical groups or containers. It serves as a
+            namespace for the code elements within it and helps in avoiding naming conflicts.
           </p>
         </InfoModal>
         <label className='flex grow cursor-pointer items-center justify-between gap-1 py-2'>

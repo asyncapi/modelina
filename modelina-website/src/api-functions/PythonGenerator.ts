@@ -5,8 +5,8 @@ import {
   pythonDefaultPropertyKeyConstraints,
   PythonGenerator
 } from '@/../../';
-
 import type { ModelinaPythonOptions, ModelProps } from '@/types';
+
 import { applyGeneralOptions, convertModelsToProps } from './Helpers';
 
 /**

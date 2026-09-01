@@ -21,7 +21,7 @@ export default function GenericLayout({
     <div className={footerPadding}>
       <Head title={title} description={description} image={image} />
       <StickyNavbar>
-        <NavBar className='mx-auto block max-w-screen-xl px-4 sm:px-6 lg:px-8' />
+        <NavBar className='mx-auto block max-w-7xl px-4 sm:px-6 lg:px-8' />
       </StickyNavbar>
       <Container wide={wide} full={full} padding={padding}>
         {children}

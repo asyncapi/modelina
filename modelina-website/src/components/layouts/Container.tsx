@@ -10,15 +10,15 @@ export default function Container({
   as,
   full = false
 }: any) {
-  const commonClassNames = `${flex ? `${cssBreakingPoint === 'lg' ? 'lg:flex' : 'md:flex'}` : 'block'} ${
-    flexReverse ? `${cssBreakingPoint === 'lg' ? 'lg:flex-row-reverse' : 'md:flex-row-reverse'}` : ''
+  const commonClassNames = `${flex ? (cssBreakingPoint === 'lg' ? 'lg:flex' : 'md:flex') : 'block'} ${
+    flexReverse ? (cssBreakingPoint === 'lg' ? 'lg:flex-row-reverse' : 'md:flex-row-reverse') : ''
   } ${className} ${padding}`;
   const wideClassNames = `max-w-screen-xl ${commonClassNames}`;
   const fullClassNames = ` max-w-full ${commonClassNames}`;
   const regularClassNames = `max-w-4xl ${commonClassNames}`;
   // eslint-disable-next-line no-nested-ternary
   const normalClassNames = `${full ? fullClassNames : wide ? wideClassNames : regularClassNames} mx-auto w-full`;
-  const fluidClassNames = `${commonClassNames}`;
+  const fluidClassNames = commonClassNames;
 
   const Tag = as || 'div';
 

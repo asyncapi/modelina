@@ -2,8 +2,8 @@ import type { HandlerEvent } from '@netlify/functions';
 import { decode } from 'js-base64';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-import { getCSharpModels } from '@/api-functions/CSharpGenerator';
 import { getCplusplusModels } from '@/api-functions/CplusplusGenerator';
+import { getCSharpModels } from '@/api-functions/CSharpGenerator';
 import { getDartModels } from '@/api-functions/DartGenerator';
 import { getGoModels } from '@/api-functions/GoGenerator';
 import { getJavaModels } from '@/api-functions/JavaGenerator';
@@ -31,7 +31,7 @@ export async function generateNewCode(message: GenerateMessage): Promise<UpdateM
   const props: UpdateMessage = { models: [] };
   let response: any = '';
 
-  const modelGenerators: { [key: string]: Function } = {
+  const modelGenerators: Record<string, Function> = {
     typescript: getTypeScriptModels,
     javascript: getJavaScriptModels,
     java: getJavaModels,

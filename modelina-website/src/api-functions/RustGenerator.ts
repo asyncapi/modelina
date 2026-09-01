@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import type { RustOptions } from '@/../../';
 import {
   rustDefaultEnumKeyConstraints,
@@ -7,8 +6,8 @@ import {
   RustGenerator
 } from '@/../../';
 import type { DeepPartial } from '@/../../lib/types/utils';
-
 import type { ModelinaRustOptions, ModelProps } from '@/types';
+
 import { applyGeneralOptions, convertModelsToProps } from './Helpers';
 
 /**

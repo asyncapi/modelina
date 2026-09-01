@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import type { CSharpOptions } from '@/../../';
 import {
   CSHARP_COMMON_PRESET,
@@ -10,8 +9,8 @@ import {
   CSharpGenerator
 } from '@/../../';
 import type { DeepPartial } from '@/../../lib/types/utils';
-
 import type { ModelinaCSharpOptions, ModelProps } from '@/types';
+
 import { applyGeneralOptions, convertModelsToProps } from './Helpers';
 
 /**

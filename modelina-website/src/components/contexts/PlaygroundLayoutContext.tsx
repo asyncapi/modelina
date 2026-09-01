@@ -8,11 +8,11 @@ import { initialState, playgroundLayoutReducer } from '@/store/useLayoutStore';
 
 const LocalStorageKey = 'PlaygroundLayout';
 
-type PlaygroundtProviderProps = { children: React.ReactNode };
+interface PlaygroundtProviderProps {
+  children: React.ReactNode;
+}
 
-const PlaygroundtLayoutContext = createContext<
-  { state: State; dispatch: Dispatch } | undefined
->(undefined);
+const PlaygroundtLayoutContext = createContext<{ state: State; dispatch: Dispatch } | undefined>(undefined);
 
 const localStorageInitializer = (initialValue = initialState) => {
   if (typeof window !== 'undefined') {
@@ -64,7 +64,7 @@ function PlaygroundLayoutProvider({ children }: PlaygroundtProviderProps) {
   }, [state.editorSize]);
 
   useEffect(() => {
-    if (width  !== null) {
+    if (width !== null) {
       if (width < 768) {
         dispatch({ type: 'update-device', payload: 'mobile' });
       } else if (width <= 1024) {
@@ -78,12 +78,10 @@ function PlaygroundLayoutProvider({ children }: PlaygroundtProviderProps) {
   }, [width]);
 
   return (
-  <PlaygroundtLayoutContext.Provider value={value}>
-    <div ref={ref}>
-      {children}
-    </div>
-  </PlaygroundtLayoutContext.Provider>
-);
+    <PlaygroundtLayoutContext.Provider value={value}>
+      <div ref={ref}>{children}</div>
+    </PlaygroundtLayoutContext.Provider>
+  );
 }
 
 export { PlaygroundLayoutProvider, usePlaygroundLayout };

@@ -7,7 +7,7 @@ export default function Index() {
   const image = '/img/social/modelina-card.jpg';
 
   return (
-    <GenericLayout title='Modelina' description={description} image={image} full={true}>
+    <GenericLayout title='Modelina' description={description} image={image} full>
       <Examples />
     </GenericLayout>
   );

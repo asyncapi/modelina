@@ -3,7 +3,8 @@ import GithubButton from '@/components/buttons/GithubButton';
 import ModelinaLogo from '@/components/icons/ModelinaLogo';
 import IconRocket from '@/components/icons/Rocket';
 
-const Custom404 = () => (
+function Custom404() {
+  return (
     <div className='flex h-screen w-screen items-center justify-center'>
       <div className='flex flex-col items-center p-8'>
         <ModelinaLogo className='h-24 w-auto' />
@@ -25,5 +26,6 @@ const Custom404 = () => (
       </div>
     </div>
   );
+}
 
 export default Custom404;

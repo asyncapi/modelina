@@ -1,0 +1,9 @@
+@import url(https://cdn.jsdelivr.net/gh/tonsky/FiraCode@4/distr/fira_code.css);
+@import url(https://cdn.jsdelivr.net/npm/@docsearch/css@3);
+@import url(https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Work+Sans:wght@200;300;400;500;600;700;800;900&display=swap);
+
+@import "swiper/swiper.min.css";
+@import "swiper/modules/a11y/a11y.min.css";
+@import "swiper/modules/navigation/navigation.min.css";
+@import "swiper/modules/pagination/pagination.min.css";
+@import "swiper/modules/scrollbar/scrollbar.min.css";

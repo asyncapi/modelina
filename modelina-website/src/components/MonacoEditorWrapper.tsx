@@ -1,6 +1,5 @@
 import Editor, { useMonaco } from '@monaco-editor/react';
 import { debounce } from 'lodash';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import PropTypes from 'prop-types';
 import { useEffect, useRef } from 'react';
 
@@ -79,4 +78,3 @@ MonacoEditorWrapper.propTypes = {
   onChange: PropTypes.func,
   options: PropTypes.object
 };
-

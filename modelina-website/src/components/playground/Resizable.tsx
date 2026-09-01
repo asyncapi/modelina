@@ -1,4 +1,3 @@
-
 import { useMeasure } from '@uidotdev/usehooks';
 import { motion, useMotionValue, useTransform } from 'framer-motion';
 import { memo, type ReactNode, useEffect } from 'react';
@@ -40,35 +39,31 @@ function Resizable({ leftComponent, rightComponent }: ResizableComponentProps) {
   }, [containerWidth]);
 
   if (state.device === 'mobile') {
-    return <section className='grid size-full'>
-      {leftComponent}
-      {rightComponent}
-    </section>;
+    return (
+      <section className='grid size-full'>
+        {leftComponent}
+        {rightComponent}
+      </section>
+    );
   }
 
   return (
     <section ref={ref} className='grid size-full bg-code-editor-dark md:grid-cols-[auto_auto]'>
-      <motion.article
-        style={{ width }}
-      >
-        {leftComponent}
-      </motion.article>
+      <motion.article style={{ width }}>{leftComponent}</motion.article>
       <motion.aside
         role='separator'
         title='drag to resize'
         style={{ x: dragableX }}
-        className={'absolute z-10 hidden h-[90vh] w-4 cursor-col-resize hover:bg-gray-300/20 focus:cursor-col-resize active:bg-gray-300/25 md:block'}
+        className='absolute z-10 hidden h-[90vh] w-4 cursor-col-resize hover:bg-gray-300/20 focus:cursor-col-resize active:bg-gray-300/25 md:block'
         dragMomentum={false}
         drag='x'
         dragElastic={0}
         dragConstraints={{
-          left: containerWidth === null ? DefaultWidth * .3 : containerWidth * .3,
-          right: containerWidth === null ? DefaultWidth * .7 : containerWidth * .7
+          left: containerWidth === null ? DefaultWidth * 0.3 : containerWidth * 0.3,
+          right: containerWidth === null ? DefaultWidth * 0.7 : containerWidth * 0.7
         }}
       />
-       <motion.article className='h-full overflow-y-hidden'>
-        {rightComponent}
-       </motion.article>
+      <motion.article className='h-full overflow-y-hidden'>{rightComponent}</motion.article>
     </section>
   );
 }

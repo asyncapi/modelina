@@ -21,17 +21,8 @@ interface ContentProps {
 }
 
 export const Content: FunctionComponent<ContentProps> = ({ setNewConfig, setNewQuery, generateNewCode }) => {
-  const {
-    config,
-    input,
-    setInput,
-    models,
-    loaded,
-    setLoaded,
-    error,
-    statusCode,
-    errorMessage
-  } = usePlaygroundContext();
+  const { config, input, setInput, models, loaded, setLoaded, error, statusCode, errorMessage } =
+    usePlaygroundContext();
   const { state } = usePlaygroundLayout();
 
   const hasInputOptionsOpen = state.sidebarItems.get('general-options')?.isOpen;
@@ -48,10 +39,12 @@ export const Content: FunctionComponent<ContentProps> = ({ setNewConfig, setNewQ
   );
 
   return (
-    <div className={clsx('grid size-full', {
-      'grid-cols-[1fr_1fr]': hasOutputOptionsOpen,
-      'md:grid-cols-[minmax(200px,_25%)_1fr]': hasInputOptionsOpen || hasOutputOptionsOpen
-    })}>
+    <div
+      className={clsx('grid size-full', {
+        'grid-cols-[1fr_1fr]': hasOutputOptionsOpen,
+        'md:grid-cols-[minmax(200px,25%)_1fr]': hasInputOptionsOpen || hasOutputOptionsOpen
+      })}
+    >
       <div
         className={clsx('h-[90vh] w-full bg-[#1f2937] text-white', {
           hidden: !hasInputOptionsOpen
@@ -71,38 +64,42 @@ export const Content: FunctionComponent<ContentProps> = ({ setNewConfig, setNewQ
           'hidden md:block': hasInputOptionsOpen
         })}
       >
-          <Resizable
-            leftComponent={
-              <div className={clsx('size-full rounded-b bg-code-editor-dark font-bold text-white shadow-lg', {
+        <Resizable
+          leftComponent={
+            <div
+              className={clsx('size-full rounded-b bg-code-editor-dark font-bold text-white shadow-lg', {
                 'hidden md:block': !hasInputEditorOpen && !hasInputOptionsOpen
-              })}>
-                  <MonacoEditorWrapper
-                    value={input}
-                    onChange={(_: any, change: any) => {
-                      setInput(change);
-                      generateNewCode(change);
-                    }}
-                    editorDidMount={() => {
-                      setLoaded({ ...loaded, editorLoaded: true });
-                    }}
-                    language='json'
-                  />
-              </div>
-            }
-            rightComponent={
-              <div className={clsx('size-full', {
+              })}
+            >
+              <MonacoEditorWrapper
+                value={input}
+                onChange={(_: any, change: any) => {
+                  setInput(change);
+                  generateNewCode(change);
+                }}
+                editorDidMount={() => {
+                  setLoaded({ ...loaded, editorLoaded: true });
+                }}
+                language='json'
+              />
+            </div>
+          }
+          rightComponent={
+            <div
+              className={clsx('size-full', {
                 'hidden md:block': !hasOutputEditorOpen && !hasInputOptionsOpen
-              })}>
-                {error ? (
-                  <CustomError statusCode={statusCode} errorMessage={errorMessage} />
-                ) : (
-                  <PlaygroundGeneratedContext.Provider value={PlaygroundGeneratedContextValue}>
-                    <GeneratedModelsComponent setNewQuery={setNewQuery} />
-                  </PlaygroundGeneratedContext.Provider>
-                )}
-              </div>
-            } />
-
+              })}
+            >
+              {error ? (
+                <CustomError statusCode={statusCode} errorMessage={errorMessage} />
+              ) : (
+                <PlaygroundGeneratedContext.Provider value={PlaygroundGeneratedContextValue}>
+                  <GeneratedModelsComponent setNewQuery={setNewQuery} />
+                </PlaygroundGeneratedContext.Provider>
+              )}
+            </div>
+          }
+        />
       </div>
     </div>
   );

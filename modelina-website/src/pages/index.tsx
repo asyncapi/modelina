@@ -34,8 +34,8 @@ export default function Index() {
 
         <div className='md:grid md:grid-cols-2 md:items-start md:gap-8'>
           <div className='relative grid md:items-center md:gap-8'>
-            <div className='relative hidden h-[300px] md:mt-8 md:block'>
-              <Image src={'/img/card/cli-card.jpg'} fill sizes='100%' alt={'CLI card'} />
+            <div className='relative hidden h-75 md:mt-8 md:block'>
+              <Image src='/img/card/cli-card.jpg' fill sizes='100%' alt='CLI card' />
             </div>
             <div className='relative mb-8 overflow-x-auto'>
               <Heading level='h4' typeStyle='heading-md-semibold'>
@@ -64,8 +64,8 @@ export default function Index() {
           </div>
 
           <div className='relative grid md:items-center md:gap-8'>
-            <div className='relative hidden h-[300px] md:mt-8 md:block'>
-              <Image src={'/img/card/modelina-card.jpg'} fill sizes='100%' alt={'Modelina card'} />
+            <div className='relative hidden h-75 md:mt-8 md:block'>
+              <Image src='/img/card/modelina-card.jpg' fill sizes='100%' alt='Modelina card' />
             </div>
             <div className='relative mb-8'>
               <Heading level='h4' typeStyle='heading-md-semibold'>
@@ -78,7 +78,7 @@ export default function Index() {
                 </CodeBlock>
                 <div className='mt-8'>
                   <Button
-                    className='mt-2 hidden md:ml-2 md:mt-0 lg:inline-block'
+                    className='mt-2 hidden md:mt-0 md:ml-2 lg:inline-block'
                     text='Try The Playground'
                     href='/playground'
                     icon={<IconRocket className='-mt-1 inline-block size-6' />}
