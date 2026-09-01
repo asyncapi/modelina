@@ -11,6 +11,13 @@
     "react-scripts": "5.0.1",
     "web-vitals": "^2.1.4"
   },
+  "overrides": {
+    "nanoid": "3.3.18",
+    "brace-expansion": "1.1.18",
+    "filelist": {
+      "brace-expansion": "2.1.4"
+    }
+  },
   "scripts": {
     "preinstall": "cd ../.. && npm i && npm run build",
     "start": "react-scripts start",

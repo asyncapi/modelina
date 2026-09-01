@@ -28,5 +28,8 @@
     "babel-jest": "^29.4.2",
     "jest": "^28.1.0",
     "jest-environment-jsdom": "28.1.0"
+  },
+  "overrides": {
+    "nanoid": "3.3.18"
   }
 }
