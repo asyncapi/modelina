@@ -1,8 +1,16 @@
-FROM eclipse-temurin:21-jdk-bookworm
+FROM debian:bookworm
 
 # Install updates
 RUN apt-get update -yq \
-    && apt-get install -yq curl
+    && apt-get install -yq curl wget gnupg ca-certificates apt-transport-https
+
+# Install Eclipse Temurin JDK 21 (eclipse-temurin no longer ships Debian
+# Bookworm images, so install it via Adoptium's apt repo instead)
+RUN mkdir -p /etc/apt/keyrings \
+    && wget -O - https://packages.adoptium.net/artifactory/api/gpg/key/public | tee /etc/apt/keyrings/adoptium.asc \
+    && echo "deb [signed-by=/etc/apt/keyrings/adoptium.asc] https://packages.adoptium.net/artifactory/deb bookworm main" | tee /etc/apt/sources.list.d/adoptium.list \
+    && apt-get update -yq \
+    && apt-get install -yq temurin-21-jdk
 
 # Install C++ compiler
 RUN apt-get install -yq build-essential
@@ -16,12 +24,10 @@ ARG TARGETARCH
 RUN curl -fsSL "https://go.dev/dl/go1.22.4.linux-${TARGETARCH}.tar.gz" | tar -C /usr/local -xz
 ENV PATH="${PATH}:/usr/local/go/bin"
 
-# Install dotnet SDK
-RUN apt install apt-transport-https dirmngr gnupg ca-certificates -yq  \
-    && apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF \
-    && echo "deb https://download.mono-project.com/repo/debian stable-bookworm main" | tee /etc/apt/sources.list.d/mono-official-stable.list \
-    && apt update -yq  \
-    && apt install mono-devel -yq
+# Install dotnet SDK (mono-devel is available directly from Debian's own
+# repos; the third-party mono-project apt repo no longer publishes bookworm
+# packages)
+RUN apt-get install -yq mono-devel
 
 # Install rust
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
