@@ -79,6 +79,35 @@ describe('KotlinGenerator', () => {
     expect(models[0].dependencies).toEqual(expectedDependencies);
   });
 
+  test('should honor x-enum-varnames', async () => {
+    const doc = {
+      $id: 'States',
+      type: 'string',
+      enum: ['New York', 'California'],
+      'x-enum-varnames': ['NY', 'GOLDEN_STATE']
+    };
+
+    const models = await generator.generate(doc);
+
+    expect(models).toHaveLength(1);
+    expect(models[0].result).toContain('NY("New York")');
+    expect(models[0].result).toContain('GOLDEN_STATE("California")');
+  });
+
+  test('should ignore invalid x-enum-varnames', async () => {
+    const doc = {
+      $id: 'States',
+      type: 'string',
+      enum: ['New York', 'California'],
+      'x-enum-varnames': ['NY']
+    };
+
+    const models = await generator.generate(doc);
+
+    expect(models[0].result).toContain('NEW_YORK("New York")');
+    expect(models[0].result).toContain('CALIFORNIA("California")');
+  });
+
   test('should render `enum` type (integer type)', async () => {
     const doc = {
       $id: 'Numbers',
@@ -174,6 +203,36 @@ describe('KotlinGenerator', () => {
     expect(models[0].result).toMatchSnapshot();
     expect(models[1].result).toMatchSnapshot();
   });
+  test('should generate unreferenced AsyncAPI component schemas when enabled', async () => {
+    const doc = {
+      asyncapi: '3.0.0',
+      info: {
+        title: 'Shared models',
+        version: '1.0.0'
+      },
+      channels: {},
+      components: {
+        schemas: {
+          SharedStatus: {
+            type: 'string',
+            enum: ['active', 'inactive']
+          }
+        }
+      }
+    };
+    generator = new KotlinGenerator({
+      processorOptions: {
+        asyncapi: {
+          includeComponentSchemas: true
+        }
+      }
+    });
+
+    const models = await generator.generate(doc);
+
+    expect(models.map((model) => model.modelName)).toContain('SharedStatus');
+  });
+
   test('should escape reserved keywords in package name', async () => {
     const doc = {
       $id: 'Address',

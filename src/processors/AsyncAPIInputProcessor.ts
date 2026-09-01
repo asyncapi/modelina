@@ -32,6 +32,10 @@ export interface AsyncAPIInputProcessorOptions extends ParseOptions {
    * This option will include message headers in the list of models built whilst traversing the AsyncAPI spec.
    */
   includeMessageHeaders?: boolean;
+  /**
+   * This option will include every schema from components/schemas, even when it is not referenced by a message payload.
+   */
+  includeComponentSchemas?: boolean;
 }
 
 /**
@@ -163,7 +167,7 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
     // Build a mapping of schema IDs to component keys for better naming
     const componentSchemaKeys = new Map<string, string>();
     try {
-      const allSchemas = doc.schemas();
+      const allSchemas = doc.components().schemas();
       for (const schema of allSchemas) {
         const schemaId = schema.id();
         // Extract the component key from the schema ID
@@ -450,6 +454,12 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
             : undefined;
           addToInputModel(payload, messageName);
         }
+      }
+    }
+
+    if (options?.asyncapi?.includeComponentSchemas) {
+      for (const schema of doc.components().schemas()) {
+        addToInputModel(schema);
       }
     }
 

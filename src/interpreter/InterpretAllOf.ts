@@ -51,6 +51,9 @@ export default function interpretAllOf(
 
   // Interpret each sub-schema in allOf
   for (const subSchema of schema.allOf) {
+    if (isEmptyInlineObjectSchema(subSchema)) {
+      continue;
+    }
     const subModel = interpreter.interpret(subSchema, interpreterOptions);
     if (!subModel) {
       continue;
@@ -84,4 +87,29 @@ export default function interpretAllOf(
       interpreterOptions
     );
   }
+}
+
+function isEmptyInlineObjectSchema(schema: InterpreterSchemaType): boolean {
+  if (typeof schema === 'boolean' || schema.type !== 'object') {
+    return false;
+  }
+  return !(
+    hasMeaningfulSchemaId(schema) ||
+    schema.properties ||
+    schema.patternProperties ||
+    schema.additionalProperties !== undefined ||
+    schema.required?.length ||
+    schema.allOf?.length ||
+    schema.oneOf?.length ||
+    schema.anyOf?.length ||
+    schema.$ref
+  );
+}
+
+function hasMeaningfulSchemaId(
+  schema: Exclude<InterpreterSchemaType, boolean>
+): boolean {
+  const schemaId = Reflect.get(schema, '$id');
+  const syntheticAllOfPattern = /(?:AllOfOption|allOf)[_-]?\d+$/i;
+  return typeof schemaId === 'string' && !syntheticAllOfPattern.test(schemaId);
 }

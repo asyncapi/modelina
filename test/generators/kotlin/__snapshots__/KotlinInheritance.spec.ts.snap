@@ -1,0 +1,40 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Kotlin inheritance and discriminators should render inherited object unions with Jackson subtype metadata 1`] = `
+Array [
+  "sealed interface Animals : Pet {
+    override val kind: String
+}",
+  "@JsonTypeName(\\"dog\\")
+data class Dog(
+    @get:JsonProperty(\\"bark\\")
+    val bark: Boolean,
+    @get:JsonProperty(value=\\"kind\\", access=JsonProperty.Access.WRITE_ONLY)
+    override val kind: String,
+    @get:JsonAnyGetter
+    @field:JsonAnySetter
+    override val additionalProperties: MutableMap<String, Any> = mutableMapOf(),
+) : Animals",
+  "@JsonTypeInfo(use=JsonTypeInfo.Id.NAME, include=JsonTypeInfo.As.PROPERTY, property=\\"kind\\", visible=true)
+@JsonSubTypes(
+JsonSubTypes.Type(value = Dog::class, name = \\"dog\\"),
+JsonSubTypes.Type(value = Cat::class, name = \\"cat\\")
+)
+interface Pet {
+    @get:JsonProperty(value=\\"kind\\", access=JsonProperty.Access.WRITE_ONLY)
+    val kind: String
+    @get:JsonAnyGetter
+    val additionalProperties: Map<String, Any>?
+}",
+  "@JsonTypeName(\\"cat\\")
+data class Cat(
+    @get:JsonProperty(\\"lives\\")
+    val lives: Int,
+    @get:JsonProperty(value=\\"kind\\", access=JsonProperty.Access.WRITE_ONLY)
+    override val kind: String,
+    @get:JsonAnyGetter
+    @field:JsonAnySetter
+    override val additionalProperties: MutableMap<String, Any> = mutableMapOf(),
+) : Animals",
+]
+`;
