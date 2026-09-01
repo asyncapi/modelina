@@ -70,5 +70,8 @@
     "tailwindcss": "^4.3.3",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.69.0"
+  },
+  "overrides": {
+    "micromatch": "^4.0.8"
   }
 }
