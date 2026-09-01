@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-expressions */
 import React, { useContext } from 'react';
 
 import { PlaygroundTypeScriptConfigContext } from '@/components/contexts/PlaygroundConfigContext';
@@ -199,9 +198,9 @@ const TypeScriptGeneratorOptions: React.FC<TypeScriptGeneratorOptionsProps> = ({
         <li className='flex items-center gap-1'>
           <InfoModal text='TypeScript include JsonBinPack support: '>
             <p>
-              It indicates whether the <a href={'https://www.jsonbinpack.org/'}>JsonBinPack</a> support should be
-              included in the generated code. This allows you to convert models to a buffer, which is highly
-              space-efficient, instead of sending pure JSON data over the wire.
+              It indicates whether the <a href='https://www.jsonbinpack.org/'>JsonBinPack</a> support should be included
+              in the generated code. This allows you to convert models to a buffer, which is highly space-efficient,
+              instead of sending pure JSON data over the wire.
               <br /> <br />
               The default value is false.
               <br />
@@ -213,7 +212,7 @@ const TypeScriptGeneratorOptions: React.FC<TypeScriptGeneratorOptionsProps> = ({
                   This functionality has two requirements:
                   <ol className='list-inside list-decimal'>
                     <li>
-                      You MUST manually install the library <a href={'https://www.jsonbinpack.org/'}>JsonBinPack</a>.
+                      You MUST manually install the library <a href='https://www.jsonbinpack.org/'>JsonBinPack</a>.
                     </li>
                     <li>You MUST also use the Generate un/marshal functions for classes</li>
                   </ol>

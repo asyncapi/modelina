@@ -1,3 +1,4 @@
+import '../styles/vendor.css';
 import '../styles/globals.css';
 
 import Head from 'next/head';
@@ -12,7 +13,7 @@ export default function App({ Component, pageProps, router }: any) {
   return (
     <AppContext.Provider value={contextValue}>
       <Head>
-        <script async defer src='https://buttons.github.io/buttons.js'></script>
+        <script async defer src='https://buttons.github.io/buttons.js' />
       </Head>
       <div className='flex min-h-screen flex-col'>
         <Component {...pageProps} />

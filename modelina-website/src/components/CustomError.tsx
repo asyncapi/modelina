@@ -1,13 +1,7 @@
 import Exclamation from './icons/Exclamation';
 import Heading from './typography/Heading';
 
-function CustomError({
-  statusCode,
-  errorMessage
-}: {
-  statusCode: number;
-  errorMessage: string;
-}) {
+function CustomError({ statusCode, errorMessage }: { statusCode: number; errorMessage: string }) {
   return (
     <div className='flex h-full rounded-b bg-code-editor-dark text-center text-red-600 shadow-lg'>
       <div className='m-auto'>
@@ -15,9 +9,7 @@ function CustomError({
           <Exclamation />
         </div>
         <Heading> Error: {statusCode} </Heading>
-        <p className='mx-auto mt-4 text-lg font-semibold text-red-600'>
-          {errorMessage}
-        </p>
+        <p className='mx-auto mt-4 text-lg font-semibold text-red-600'>{errorMessage}</p>
       </div>
     </div>
   );

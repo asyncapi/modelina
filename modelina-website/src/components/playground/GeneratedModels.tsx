@@ -91,17 +91,17 @@ const GeneratedModelsComponent: React.FC<GeneratedModelsComponentProps> = ({ sho
   return (
     <div className='h-full'>
       <div className='col-span-2 h-full rounded-b bg-code-editor-dark font-bold text-white shadow-lg'>
-     {
-       outputLoading ?
-       <div className = 'loading-text'>
-        <div>Loading...</div>
-       </div> :
-       <MonacoEditorWrapper
-          options={{ readOnly: true }}
-          language={context?.language}
-          value={showGeneratorCode ? generatorCode : selectedCode}
-        />
-     }
+        {outputLoading ? (
+          <div className='loading-text'>
+            <div>Loading...</div>
+          </div>
+        ) : (
+          <MonacoEditorWrapper
+            options={{ readOnly: true }}
+            language={context?.language}
+            value={showGeneratorCode ? generatorCode : selectedCode}
+          />
+        )}
       </div>
     </div>
   );

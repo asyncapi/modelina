@@ -15,7 +15,7 @@ export default function NavItem({
         href={href}
         target={target}
         rel='noopener noreferrer'
-        className={`${className} font-body text-base font-semibold leading-6 text-gray-700 transition duration-150 ease-in-out hover:text-gray-900 focus:text-gray-900 focus:outline-none`}
+        className={`${className} font-body text-base leading-6 font-semibold text-gray-700 transition duration-150 ease-in-out hover:text-gray-900 focus:text-gray-900 focus:outline-none`}
       >
         {text}
       </Link>
@@ -27,14 +27,14 @@ export default function NavItem({
       type='button'
       onClick={href ? undefined : onClick}
       onMouseEnter={onMouseEnter}
-      className={`${className} group inline-flex items-center space-x-2 text-base font-semibold leading-6 tracking-heading text-gray-700 transition duration-150 ease-in-out hover:text-gray-900 focus:text-gray-900 focus:outline-none`}
+      className={`${className} group inline-flex items-center space-x-2 text-base leading-6 font-semibold tracking-heading text-gray-700 transition duration-150 ease-in-out hover:text-gray-900 focus:text-gray-900 focus:outline-none`}
     >
       {href ? (
         <Link
           href={href}
           target={target}
           rel='noopener noreferrer'
-          className={`${className} font-body text-base font-semibold leading-6 text-gray-700 transition duration-150 ease-in-out hover:text-gray-900 focus:text-gray-900 focus:outline-none`}
+          className={`${className} font-body text-base leading-6 font-semibold text-gray-700 transition duration-150 ease-in-out hover:text-gray-900 focus:text-gray-900 focus:outline-none`}
         >
           {text}
         </Link>

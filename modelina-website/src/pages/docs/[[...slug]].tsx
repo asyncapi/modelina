@@ -14,8 +14,8 @@ export default function DocsPage({ source, slug }: any) {
   const image = '/img/social/modelina-card.jpg';
 
   return (
-    <GenericLayout title='Docs' description={description} image={image} full={true}>
-      <Docs source={source} slug={slug}></Docs>
+    <GenericLayout title='Docs' description={description} image={image} full>
+      <Docs source={source} slug={slug} />
     </GenericLayout>
   );
 }
@@ -26,7 +26,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   if (params?.slug !== undefined) {
     const slugs = params?.slug as string[];
 
-    paramSlug = `${slugs.join('/')}`;
+    paramSlug = slugs.join('/');
   }
 
   const cachedEntry = (DocsList.unwrapped as any)[paramSlug];

@@ -19,7 +19,7 @@ const OutputNavigation: React.FunctionComponent<OutputProps> = () => {
         <InfoModal text='Generated Models: '>
           <p>This list contains all the generated models, select one to show their generated code.</p>
         </InfoModal>
-        <div className={'w-full border-b border-gray-700 p-2 text-left text-sm'}>Generated Models</div>
+        <div className='w-full border-b border-gray-700 p-2 text-left text-sm'>Generated Models</div>
       </div>
 
       {renderModels}

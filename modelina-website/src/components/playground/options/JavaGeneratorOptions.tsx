@@ -33,7 +33,7 @@ const JavaGeneratorOptions: React.FC<JavaGeneratorOptionsProps> = ({ setNewConfi
       const packageName = event.target.value;
 
       setState({ ...state, packageName });
-      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+
       setNewConfig && debouncedSetNewConfig('javaPackageName', packageName);
     },
     [setNewConfig, debouncedSetNewConfig, state]

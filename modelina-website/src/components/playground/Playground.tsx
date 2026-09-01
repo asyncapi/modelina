@@ -69,7 +69,7 @@ const Playground: React.FC<ModelinaPlaygroundProps> = (props) => {
         setErrorMessage('Input too large, use a smaller example');
         setStatusCode(400);
       } else {
-        const generators: { [key: string]: Function } = {
+        const generators: Record<string, Function> = {
           typescript: getTypeScriptGeneratorCode,
           javascript: getJavaScriptGeneratorCode,
           java: getJavaGeneratorCode,
@@ -324,7 +324,7 @@ const Playground: React.FC<ModelinaPlaygroundProps> = (props) => {
     if (query.scalaPackageName !== undefined) {
       setConfig({
         ...config,
-        scalaPackageName: query.scalaPackageName as any
+        scalaPackageName: query.scalaPackageName
       });
     }
 

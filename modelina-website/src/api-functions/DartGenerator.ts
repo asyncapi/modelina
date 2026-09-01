@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import type { DartOptions } from '@/../../';
 import {
   dartDefaultEnumKeyConstraints,
@@ -7,8 +6,8 @@ import {
   DartGenerator
 } from '@/../../';
 import type { DeepPartial } from '@/../../lib/types/utils';
-
 import type { ModelinaDartOptions, ModelProps } from '@/types';
+
 import { applyGeneralOptions, convertModelsToProps } from './Helpers';
 
 /**

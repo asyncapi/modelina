@@ -87,11 +87,11 @@ const Examples: React.FC<ModelinaExamplesProps> = ({ router }) => {
                   onClick={() => {
                     setShowMenu(false);
                   }}
-                ></div>
+                />
               </div>
 
               <div className='relative flex w-full max-w-xs flex-1 flex-col bg-white'>
-                <div className='absolute right-0 top-0 -mr-14 p-1'>
+                <div className='absolute top-0 right-0 -mr-14 p-1'>
                   <button
                     onClick={() => {
                       setShowMenu(false);
@@ -105,7 +105,7 @@ const Examples: React.FC<ModelinaExamplesProps> = ({ router }) => {
                   </button>
                 </div>
                 <div className='h-0 flex-1 overflow-y-auto pt-5'>
-                  <nav className='mb-4 mt-5 px-2'>
+                  <nav className='mt-5 mb-4 px-2'>
                     <p
                       className='cursor-pointer p-2 text-lg font-semibold'
                       onClick={() => {
@@ -114,12 +114,12 @@ const Examples: React.FC<ModelinaExamplesProps> = ({ router }) => {
                     >
                       Examples
                     </p>
-                    <ul className='ml-3 mt-1 border-l border-gray-200 pl-4'>
+                    <ul className='mt-1 ml-3 border-l border-gray-200 pl-4'>
                       {examplesIterator.map((value) => (
                         <li
                           key={value[0]}
-                          className={`cursor-pointer hover:bg-sky-500/[.3] ${
-                            value[0] === selectedExample && 'bg-sky-500/[.3]'
+                          className={`cursor-pointer hover:bg-sky-500/30 ${
+                            value[0] === selectedExample && 'bg-sky-500/30'
                           } p-2`}
                           onClick={() => {
                             setNewQuery('selectedExample', value[0]);
@@ -141,7 +141,7 @@ const Examples: React.FC<ModelinaExamplesProps> = ({ router }) => {
         <div className='flex flex-row' id='main-content'>
           <div className='hidden lg:flex lg:shrink-0'>
             <div className='flex w-64 flex-col border-r border-gray-200 bg-white py-2'>
-              <div className='flex flex-1 flex-col md:sticky md:top-20 md:max-h-(screen-14) md:overflow-y-auto'>
+              <div className='md:max-h-(screen-14) flex flex-1 flex-col md:sticky md:top-20 md:overflow-y-auto'>
                 <nav className='flex-1 bg-white'>
                   <p
                     className='cursor-pointer p-2 text-lg font-semibold'
@@ -151,12 +151,12 @@ const Examples: React.FC<ModelinaExamplesProps> = ({ router }) => {
                   >
                     Examples
                   </p>
-                  <ul className='ml-3 mt-1 border-l border-gray-200 pl-4'>
+                  <ul className='mt-1 ml-3 border-l border-gray-200 pl-4'>
                     {examplesIterator.map((value) => (
                       <li
                         key={value[0]}
-                        className={`cursor-pointer hover:bg-sky-500/[.3] ${
-                          value[0] === selectedExample && 'bg-sky-500/[.3]'
+                        className={`cursor-pointer hover:bg-sky-500/30 ${
+                          value[0] === selectedExample && 'bg-sky-500/30'
                         } p-2`}
                         onClick={() => {
                           setNewQuery('selectedExample', value[0]);
@@ -170,10 +170,10 @@ const Examples: React.FC<ModelinaExamplesProps> = ({ router }) => {
               </div>
             </div>
           </div>
-          <div className='ml-6 flex w-0 max-w-full flex-1 flex-col lg:max-w-(screen-16)'>
+          <div className='lg:max-w-(screen-16) ml-6 flex w-0 max-w-full flex-1 flex-col'>
             {example ? (
-              <div className={'mt-4 grid grid-cols-2 gap-4'}>
-                <div className={'col-span-2'}>
+              <div className='mt-4 grid grid-cols-2 gap-4'>
+                <div className='col-span-2'>
                   <GithubButton
                     text='See Example on GitHub'
                     href={`https://github.com/asyncapi/modelina/tree/master/examples/${selectedExample}`}
@@ -189,7 +189,7 @@ const Examples: React.FC<ModelinaExamplesProps> = ({ router }) => {
                     </a>
                   </div>
                 </div>
-                <div className={'col-span-1'}>
+                <div className='col-span-1'>
                   <div
                     className='h-full rounded-b bg-code-editor-dark font-bold text-white shadow-lg'
                     style={{ height: '750px' }}
@@ -200,11 +200,11 @@ const Examples: React.FC<ModelinaExamplesProps> = ({ router }) => {
                       }}
                       key={selectedExample}
                       value={example.code}
-                      language={'typescript'}
+                      language='typescript'
                     />
                   </div>
                 </div>
-                <div className={'col-span-1'}>
+                <div className='col-span-1'>
                   <div
                     className='h-full rounded-b bg-code-editor-dark font-bold text-white shadow-lg'
                     style={{ height: '750px' }}
@@ -222,10 +222,10 @@ const Examples: React.FC<ModelinaExamplesProps> = ({ router }) => {
               </div>
             ) : (
               <div className='prose' style={{ maxWidth: '100%' }}>
-                <div className={'my-4 flex md:my-0 md:justify-end'}>
+                <div className='my-4 flex md:my-0 md:justify-end'>
                   <GithubButton
                     text='Edit readme on GitHub'
-                    href={'https://github.com/asyncapi/modelina/edit/master/examples/README.md'}
+                    href='https://github.com/asyncapi/modelina/edit/master/examples/README.md'
                     inNav='true'
                   />
                 </div>

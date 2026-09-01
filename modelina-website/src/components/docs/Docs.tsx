@@ -27,7 +27,7 @@ const Docs: React.FC<ModelinaDocsProps> = ({ source, slug }) => {
    * Render the menu items dynamically in a depth first approach
    */
   const renderMenuTree = (value: any, isRoot: boolean) => {
-    const isSelected = value.slug === `${slug}`;
+    const isSelected = value.slug === slug;
 
     if (value.type === 'dir') {
       const hasRootReadme = value.content !== null;
@@ -37,7 +37,7 @@ const Docs: React.FC<ModelinaDocsProps> = ({ source, slug }) => {
         headerReadme = (
           <li
             key={value.slug}
-            className={`cursor-pointer hover:bg-sky-500/[.3] ${isSelected && 'bg-sky-500/[.3]'} p-2`}
+            className={`cursor-pointer hover:bg-sky-500/30 ${isSelected && 'bg-sky-500/30'} p-2`}
             onClick={() => {
               setShowMenu(false);
             }}
@@ -47,7 +47,7 @@ const Docs: React.FC<ModelinaDocsProps> = ({ source, slug }) => {
         );
       } else {
         headerReadme = (
-          <li key={value.slug} className={'p-2'}>
+          <li key={value.slug} className='p-2'>
             {value.title}
           </li>
         );
@@ -57,10 +57,10 @@ const Docs: React.FC<ModelinaDocsProps> = ({ source, slug }) => {
         <>
           {headerReadme}
           <li key={`${value.slug}-li`}>
-            <ul key={`${value.slug}-ul`} className='ml-3 mt-1 border-l border-gray-200 pl-4'>
+            <ul key={`${value.slug}-ul`} className='mt-1 ml-3 border-l border-gray-200 pl-4'>
               {isRoot && (
-                <li key={'apidocs'} className={'cursor-pointer p-2'}>
-                  <a href={'/apidocs'}>API Docs</a>
+                <li key='apidocs' className='cursor-pointer p-2'>
+                  <a href='/apidocs'>API Docs</a>
                 </li>
               )}
               {value.subPaths.map((subPath: any) => renderMenuTree(subPath, false))}
@@ -73,7 +73,7 @@ const Docs: React.FC<ModelinaDocsProps> = ({ source, slug }) => {
     return (
       <li
         key={value.slug}
-        className={`cursor-pointer hover:bg-sky-500/[.3] ${isSelected && 'bg-sky-500/[.3]'} p-2`}
+        className={`cursor-pointer hover:bg-sky-500/30 ${isSelected && 'bg-sky-500/30'} p-2`}
         onClick={() => {
           setShowMenu(false);
         }}
@@ -111,11 +111,11 @@ const Docs: React.FC<ModelinaDocsProps> = ({ source, slug }) => {
                   onClick={() => {
                     setShowMenu(false);
                   }}
-                ></div>
+                />
               </div>
 
               <div className='relative flex w-full max-w-xs flex-1 flex-col bg-white'>
-                <div className='absolute right-0 top-0 -mr-14 p-1'>
+                <div className='absolute top-0 right-0 -mr-14 p-1'>
                   <button
                     onClick={() => {
                       setShowMenu(false);
@@ -129,8 +129,8 @@ const Docs: React.FC<ModelinaDocsProps> = ({ source, slug }) => {
                   </button>
                 </div>
                 <div className='h-0 flex-1 overflow-y-auto pt-5'>
-                  <nav className='mb-4 mt-5 px-2'>
-                    <ul key='rootMenuList' className='ml-3 mt-1 border-l border-gray-200 pl-4'>
+                  <nav className='mt-5 mb-4 px-2'>
+                    <ul key='rootMenuList' className='mt-1 ml-3 border-l border-gray-200 pl-4'>
                       {menuItems}
                     </ul>
                   </nav>
@@ -143,13 +143,13 @@ const Docs: React.FC<ModelinaDocsProps> = ({ source, slug }) => {
         <div className='flex flex-row' id='main-content'>
           <div className='hidden lg:flex lg:shrink-0'>
             <div className='flex w-64 flex-col border-r border-gray-200 bg-white py-2'>
-              <div className='flex flex-1 flex-col md:sticky md:top-20 md:max-h-(screen-14) md:overflow-y-auto'>
+              <div className='md:max-h-(screen-14) flex flex-1 flex-col md:sticky md:top-20 md:overflow-y-auto'>
                 <nav className='flex-1 bg-white'>{menuItems}</nav>
               </div>
             </div>
           </div>
-          <div className='prose ml-6 flex w-0 max-w-full flex-1 flex-col lg:max-w-(screen-16)'>
-            <div className={'my-4 flex md:my-0 md:justify-end'}>
+          <div className='lg:max-w-(screen-16) prose ml-6 flex w-0 max-w-full flex-1 flex-col'>
+            <div className='my-4 flex md:my-0 md:justify-end'>
               <GithubButton
                 text='Edit on GitHub'
                 href={`https://github.com/asyncapi/modelina/edit/master${item.relativeRootPath}`}

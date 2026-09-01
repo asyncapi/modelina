@@ -209,8 +209,6 @@ module.exports = {
   plugins: [
     require('@tailwindcss/forms'),
     require('@tailwindcss/typography'),
-    require('@tailwindcss/aspect-ratio'),
-    require('@tailwindcss/line-clamp'),
     plugin(({ addUtilities }) => {
       addUtilities({
         '.hljs-asyncapi-file': {

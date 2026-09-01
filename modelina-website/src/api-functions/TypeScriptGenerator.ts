@@ -10,8 +10,8 @@ import {
   TypeScriptGenerator
 } from '@/../../';
 import type { DeepPartial } from '@/../../lib/types/utils';
-
 import type { ModelinaTypeScriptOptions, ModelProps } from '@/types';
+
 import { applyGeneralOptions, convertModelsToProps } from './Helpers';
 
 /**
@@ -34,7 +34,7 @@ export async function getTypeScriptModels(
   );
 
   if (generatorOptions.tsModelType) {
-    options.modelType = generatorOptions.tsModelType as any;
+    options.modelType = generatorOptions.tsModelType;
   }
 
   if (generatorOptions.tsMarshalling === true || generatorOptions.tsIncludeExampleFunction === true) {
@@ -66,15 +66,15 @@ export async function getTypeScriptModels(
   }
 
   if (generatorOptions.tsModuleSystem) {
-    options.moduleSystem = generatorOptions.tsModuleSystem as any;
+    options.moduleSystem = generatorOptions.tsModuleSystem;
   }
 
   if (generatorOptions.tsEnumType) {
-    options.enumType = generatorOptions.tsEnumType as any;
+    options.enumType = generatorOptions.tsEnumType;
   }
 
   if (generatorOptions.tsMapType) {
-    options.mapType = generatorOptions.tsMapType as any;
+    options.mapType = generatorOptions.tsMapType;
   }
 
   if (generatorOptions.showTypeMappingExample) {

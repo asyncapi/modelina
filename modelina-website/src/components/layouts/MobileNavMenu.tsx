@@ -6,8 +6,8 @@ export default function MobileNavMenu({ onClickClose = () => {} }) {
   return (
     <div className='fixed inset-x-0 top-0 max-h-full origin-top-right overflow-y-scroll py-2 transition lg:hidden'>
       <div className='rounded-lg shadow-lg'>
-        <div className='shadow-xs divide-y-2 divide-gray-50 rounded-lg bg-white'>
-          <div className='space-y-6 px-5 pb-6 pt-5'>
+        <div className='divide-y-2 divide-gray-50 rounded-lg bg-white shadow-xs'>
+          <div className='space-y-6 px-5 pt-5 pb-6'>
             <div className='flex items-center justify-between'>
               <Link href='/' className='flex'>
                 <ModelinaLogo className='h-8 w-auto' />

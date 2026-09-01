@@ -18,11 +18,12 @@ export default function InfoModal(props: InfoModalProps) {
     document.body.style.overflowY = 'scroll';
   };
 
-  const MyModal = () => (
+  function MyModal() {
+    return (
       <>
-        <div className='fixed inset-0 bg-black bg-opacity-10' onClick={onCloseModal} style={{ zIndex: 1000 }}></div>
+        <div className='bg-opacity-10 fixed inset-0 bg-black' onClick={onCloseModal} style={{ zIndex: 1000 }} />
         <div
-          className='fixed left-1/2 top-1/2 max-w-[45rem] -translate-x-1/2 -translate-y-1/2 rounded-md bg-white p-2 text-black'
+          className='fixed top-1/2 left-1/2 max-w-180 -translate-1/2 rounded-md bg-white p-2 text-black'
           style={{ zIndex: 1001 }}
         >
           <div className='px-3 py-2 font-mono text-sm'>
@@ -30,7 +31,7 @@ export default function InfoModal(props: InfoModalProps) {
               <h2>{props.text}</h2>
               <button
                 onClick={onCloseModal}
-                className='-mr-2 -mt-1 aspect-1 items-center justify-center rounded-full border-2 border-slate-200 p-1 px-2 text-xs'
+                className='aspect-1 -mt-1 -mr-2 items-center justify-center rounded-full border-2 border-slate-200 p-1 px-2 text-xs'
               >
                 <p>X</p>
               </button>
@@ -40,6 +41,7 @@ export default function InfoModal(props: InfoModalProps) {
         </div>
       </>
     );
+  }
 
   return (
     <>

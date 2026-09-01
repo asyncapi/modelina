@@ -7,9 +7,9 @@ import type { ModelinaGeneralOptions, ModelProps } from '@/types';
  */
 export function convertModelsToProps(generatedModels: OutputModel[]): ModelProps[] {
   return generatedModels.map((model) => ({
-      code: model.result,
-      name: model.modelName
-    }));
+    code: model.result,
+    name: model.modelName
+  }));
 }
 
 /**

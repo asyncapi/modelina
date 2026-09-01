@@ -12,7 +12,7 @@ import Heading from '../typography/Heading';
 export default function Footer() {
   return (
     <footer className='margin: 0 auto bg-dark'>
-      <div className='mx-auto max-w-screen-xl divide-y divide-cool-gray overflow-hidden px-3 py-4 sm:p-6 md:py-12 lg:px-8 xl:py-16'>
+      <div className='mx-auto max-w-7xl divide-y divide-cool-gray overflow-hidden px-3 py-4 sm:p-6 md:py-12 lg:px-8 xl:py-16'>
         <nav className='flex flex-wrap justify-between py-4 sm:py-10'>
           <div className='mr-14 w-full md:w-auto'>
             <div className=''>
@@ -21,7 +21,7 @@ export default function Footer() {
               </Link>
             </div>
             <div className=''>
-              <Heading className='mb-14 mt-12 text-white' typeStyle='heading-sm-semibold'>
+              <Heading className='mt-12 mb-14 text-white' typeStyle='heading-sm-semibold'>
                 Building the future of <br /> Event-Driven Architectures.
               </Heading>
             </div>
@@ -108,7 +108,7 @@ export default function Footer() {
                     <div className='flex items-center text-cool-gray transition duration-300 ease-in-out hover:text-white'>
                       <span className='sr-only'>Follow AsyncAPI on Twitter</span>
                       <IconTwitter className='size-8 sm:size-6' />
-                      <span className='absolute hidden pl-8 pr-5 sm:block'>Twitter</span>
+                      <span className='absolute hidden pr-5 pl-8 sm:block'>Twitter</span>
                     </div>
                   </a>
                 </li>
@@ -117,7 +117,7 @@ export default function Footer() {
                     <div className='flex items-center text-cool-gray transition duration-300 ease-in-out hover:text-white'>
                       <span className='sr-only'>AsyncAPI on GitHub</span>
                       <IconGithub className='size-8 sm:size-6' />
-                      <span className='absolute hidden pl-8 pr-5 sm:block'>GitHub</span>
+                      <span className='absolute hidden pr-5 pl-8 sm:block'>GitHub</span>
                     </div>
                   </a>
                 </li>
@@ -126,7 +126,7 @@ export default function Footer() {
                     <div className='flex items-center text-cool-gray transition duration-300 ease-in-out hover:text-white'>
                       <span className='sr-only'>Follow AsyncAPI on LinkedIn</span>
                       <IconLinkedIn className='ml-1 size-8 sm:size-5' />
-                      <span className='absolute hidden pl-8 pr-2 sm:block'>LinkedIn</span>
+                      <span className='absolute hidden pr-2 pl-8 sm:block'>LinkedIn</span>
                     </div>
                   </a>
                 </li>
@@ -135,7 +135,7 @@ export default function Footer() {
                     <div className='flex items-center text-cool-gray transition duration-300 ease-in-out hover:text-white'>
                       <span className='sr-only'>Subscribe AsyncAPI on YouTube</span>
                       <IconYoutubeGray className='size-8 sm:size-6' />
-                      <span className='absolute hidden pl-8 pr-2 sm:block'>YouTube</span>
+                      <span className='absolute hidden pr-2 pl-8 sm:block'>YouTube</span>
                     </div>
                   </a>
                 </li>
@@ -153,7 +153,7 @@ export default function Footer() {
                     <div className='flex items-center text-cool-gray transition duration-300 ease-in-out hover:text-white'>
                       <span className='sr-only'>Follow AsyncAPI on Twitch</span>
                       <IconTwitch className='size-8 sm:size-6' />
-                      <span className='absolute hidden pl-8 pr-6 sm:block'>Twitch</span>
+                      <span className='absolute hidden pr-6 pl-8 sm:block'>Twitch</span>
                     </div>
                   </a>
                 </li>

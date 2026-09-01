@@ -191,7 +191,7 @@ export default function CodeBlock({
     return (
       <div className='h-full max-h-screen'>
         {codeBlocks.length > 1 && (
-          <div className='pb-3 pl-1 pt-0 text-xs'>
+          <div className='pt-0 pb-3 pl-1 text-xs'>
             <nav>
               <ul>
                 {codeBlocks.map((block: any, index: any) => (
@@ -209,7 +209,7 @@ export default function CodeBlock({
         )}
         <div className={`relative overflow-y-auto pr-8 ${highlightClassName}`}>
           <Highlight
-            className={`pb-0 pt-px text-sm font-medium font-ligatures-contextual ${
+            className={`pt-px pb-0 text-sm font-medium font-ligatures-contextual ${
               showLineNumbers ? 'ml-0' : 'ml-3'
             } ${textSizeClassName}`}
             language={codeBlocks[activeBlock].language ? codeBlocks[activeBlock].language : language}
@@ -229,7 +229,7 @@ export default function CodeBlock({
                 } block pl-2 pr-2`
               };
             }}
-            wrapLines={true}
+            wrapLines
             lineProps={(lineNumber) => {
               const isHighlighted = highlightedLines?.includes(lineNumber) || false;
 
@@ -253,31 +253,31 @@ export default function CodeBlock({
       <div className={`relative z-10 max-w-full overflow-auto rounded bg-code-editor-dark py-2 ${className}`}>
         {hasWindow && (
           <div className='pb-2 pl-4'>
-            <span className='mr-2 inline-block size-2.5 rounded-full bg-mac-window-close'></span>
-            <span className='mr-2 inline-block size-2.5 rounded-full bg-mac-window-minimize'></span>
-            <span className='mr-2 inline-block size-2.5 rounded-full bg-mac-window-maximize'></span>
+            <span className='mr-2 inline-block size-2.5 rounded-full bg-mac-window-close' />
+            <span className='mr-2 inline-block size-2.5 rounded-full bg-mac-window-minimize' />
+            <span className='mr-2 inline-block size-2.5 rounded-full bg-mac-window-maximize' />
           </div>
         )}
         {showCopy && (
           <div
             className={`${
               !showLineNumbers && codeBlocks[activeBlock].code.split('/n').length < 2
-                ? 'absolute inset-y-0 right-0 bg-code-editor-dark pl-5 pr-2'
+                ? 'absolute inset-y-0 right-0 bg-code-editor-dark pr-2 pl-5'
                 : ''
             } z-10`}
           >
             <button
               onClick={onClickCopy}
-              className='absolute right-2 top-1 z-50 cursor-pointer bg-code-editor-dark text-xs text-gray-500 hover:text-gray-300 focus:outline-none'
+              className='absolute top-1 right-2 z-50 cursor-pointer bg-code-editor-dark text-xs text-gray-500 hover:text-gray-300 focus:outline-none'
               title='Copy to clipboard'
             >
               <span>
-             {showIsCopied ? (
-             <IconCheck className='mt-2 mr-1 inline-block size-4' />
-             ) : (
-             <IconClipboard className='mt-2  mr-1 inline-block size-4' />
-              )}
-            </span>
+                {showIsCopied ? (
+                  <IconCheck className='mt-2 mr-1 inline-block size-4' />
+                ) : (
+                  <IconClipboard className='mt-2  mr-1 inline-block size-4' />
+                )}
+              </span>
             </button>
           </div>
         )}
