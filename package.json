@@ -37,7 +37,7 @@
   "dependencies": {
     "@apidevtools/json-schema-ref-parser": "^11.1.0",
     "@apidevtools/swagger-parser": "^10.1.0",
-    "@asyncapi/multi-parser": "^2.3.0",
+    "@asyncapi/multi-parser": "2.3.0",
     "@asyncapi/parser": "^3.6.3",
     "change-case": "^4.1.2",
     "fast-xml-parser": "^5.11.1",
@@ -136,6 +136,8 @@
   "overrides": {
     "lodash": "^4.18.0",
     "lodash.template": "^4.18.1",
-    "jsonpath-plus": "^10.3.0"
+    "jsonpath-plus": "^10.3.0",
+    "@asyncapi/protobuf-schema-parser": "3.6.0",
+    "prettier": "3.4.2"
   }
 }
