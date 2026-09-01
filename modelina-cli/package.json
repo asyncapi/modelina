@@ -22,7 +22,17 @@
     "node-fetch": "^2.0.0"
   },
   "overrides": {
-    "fast-uri": "3.1.6"
+    "fast-uri": "3.1.6",
+    "jsonpath-plus": "10.4.0",
+    "serialize-javascript": "7.0.5",
+    "webapi-parser": {
+      "ajv": "6.15.0"
+    },
+    "ramldt2jsonschema": {
+      "json-schema-migrate": {
+        "ajv": "6.15.0"
+      }
+    }
   },
   "devDependencies": {
     "@oclif/prettier-config": "^0.2.1",
@@ -41,7 +51,7 @@
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-unicorn": "^51.0.1",
     "mocha": "^10",
-    "nyc": "^15.1.0",
+    "nyc": "^18.0.0",
     "oclif": "^4.12.3",
     "rimraf": "^5.0.5",
     "shx": "^0.3.4",
