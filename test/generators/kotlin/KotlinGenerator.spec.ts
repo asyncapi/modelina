@@ -79,6 +79,35 @@ describe('KotlinGenerator', () => {
     expect(models[0].dependencies).toEqual(expectedDependencies);
   });
 
+  test('should honor x-enum-varnames', async () => {
+    const doc = {
+      $id: 'States',
+      type: 'string',
+      enum: ['New York', 'California'],
+      'x-enum-varnames': ['NY', 'GOLDEN_STATE']
+    };
+
+    const models = await generator.generate(doc);
+
+    expect(models).toHaveLength(1);
+    expect(models[0].result).toContain('NY("New York")');
+    expect(models[0].result).toContain('GOLDEN_STATE("California")');
+  });
+
+  test('should ignore invalid x-enum-varnames', async () => {
+    const doc = {
+      $id: 'States',
+      type: 'string',
+      enum: ['New York', 'California'],
+      'x-enum-varnames': ['NY']
+    };
+
+    const models = await generator.generate(doc);
+
+    expect(models[0].result).toContain('NEW_YORK("New York")');
+    expect(models[0].result).toContain('CALIFORNIA("California")');
+  });
+
   test('should render `enum` type (integer type)', async () => {
     const doc = {
       $id: 'Numbers',
