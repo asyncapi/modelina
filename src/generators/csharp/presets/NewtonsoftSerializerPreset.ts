@@ -136,7 +136,7 @@ value.${propertyAccessor} = ${toValue};
   const additionalPropertiesCode =
     unwrapDictionaryProps.length !== 0
       ? `var additionalProperties = jo.Properties().Where((prop) => ${nonDictionaryPropCheck.join(
-          ' || '
+          ' && '
         )});
   ${dictionaryInitializers}
 
