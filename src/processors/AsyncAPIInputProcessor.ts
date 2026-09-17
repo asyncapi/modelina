@@ -11,6 +11,7 @@ import {
   createAsyncAPIDocument,
   MessagesInterface
 } from '@asyncapi/parser';
+import type { SchemaParser } from '@asyncapi/parser';
 import { AvroSchemaParser } from '@asyncapi/avro-schema-parser';
 import { OpenAPISchemaParser } from '@asyncapi/openapi-schema-parser';
 import { ProtoBuffSchemaParser } from '@asyncapi/protobuf-schema-parser';
@@ -454,7 +455,7 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
    * RAML Data Type support is opt-in because its upstream parser is archived
    * and currently brings vulnerable legacy dependencies into every install.
    */
-  private static getRamlSchemaParser(): any | undefined {
+  private static getRamlSchemaParser(): SchemaParser | undefined {
     try {
       return require('@asyncapi/raml-dt-schema-parser').RamlDTSchemaParser();
     } catch {
