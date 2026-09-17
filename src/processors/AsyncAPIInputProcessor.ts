@@ -6,10 +6,14 @@ import {
   AsyncAPIDocumentInterface,
   SchemaInterface as AsyncAPISchemaInterface,
   SchemaV2 as AsyncAPISchema,
+  Parser,
   fromFile,
   createAsyncAPIDocument,
   MessagesInterface
 } from '@asyncapi/parser';
+import { AvroSchemaParser } from '@asyncapi/avro-schema-parser';
+import { OpenAPISchemaParser } from '@asyncapi/openapi-schema-parser';
+import { ProtoBuffSchemaParser } from '@asyncapi/protobuf-schema-parser';
 import yaml from 'js-yaml';
 import { AbstractInputProcessor } from './AbstractInputProcessor';
 import { JsonSchemaInputProcessor } from './JsonSchemaInputProcessor';
@@ -18,10 +22,6 @@ import { Logger } from '../utils';
 import { AsyncapiV2Schema } from '../models/AsyncapiV2Schema';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
-import {
-  ConvertDocumentParserAPIVersion,
-  NewParser
-} from '@asyncapi/multi-parser';
 import { createDetailedAsyncAPI } from '@asyncapi/parser/cjs/utils';
 
 /**
@@ -66,12 +66,17 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
       const detailed = createDetailedAsyncAPI(parsedJSON, parsedJSON);
       doc = createAsyncAPIDocument(detailed);
     } else if (AsyncAPIInputProcessor.isFromNewParser(rawInput)) {
-      doc = ConvertDocumentParserAPIVersion(rawInput, 2) as any;
+      doc = rawInput;
     } else {
       const parserOptions = options?.asyncapi || {};
-      const parser = NewParser(3, {
-        parserOptions,
-        includeSchemaParsers: true
+      const ramlSchemaParser = AsyncAPIInputProcessor.getRamlSchemaParser();
+      const parser = new Parser({
+        schemaParsers: [
+          AvroSchemaParser(),
+          OpenAPISchemaParser(),
+          ProtoBuffSchemaParser(),
+          ...(ramlSchemaParser ? [ramlSchemaParser] : [])
+        ]
       });
 
       let parserResult;
@@ -443,6 +448,18 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
    */
   static isFromNewParser(input?: any): boolean {
     return isAsyncAPIDocument(input);
+  }
+
+  /**
+   * RAML Data Type support is opt-in because its upstream parser is archived
+   * and currently brings vulnerable legacy dependencies into every install.
+   */
+  private static getRamlSchemaParser(): any | undefined {
+    try {
+      return require('@asyncapi/raml-dt-schema-parser').RamlDTSchemaParser();
+    } catch {
+      return undefined;
+    }
   }
 
   isFileInput(input: any): boolean {
