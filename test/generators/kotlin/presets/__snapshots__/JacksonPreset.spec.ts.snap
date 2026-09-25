@@ -7,9 +7,6 @@ exports[`KOTLIN_JACKSON_PRESET should render Jackson annotations for class prope
     @get:JsonProperty(\\"description\\")
     @get:JsonInclude(JsonInclude.Include.NON_NULL)
     val description: String? = null,
-    @get:JsonAnyGetter
-    @field:JsonAnySetter
-    val additionalProperties: MutableMap<String, Any> = mutableMapOf(),
 )"
 `;
 
@@ -23,7 +20,7 @@ exports[`KOTLIN_JACKSON_PRESET should render Jackson serialization and deseriali
         @JsonCreator
         fun forValue(value: String): OrderStatus {
             return values().firstOrNull { it.value == value }
-                ?: throw IllegalArgumentException(\\"Unexpected value '$value'\\")
+                ?: throw IllegalArgumentException(\\"Unexpected value '$value' for enum 'OrderStatus'\\")
         }
     }
 }"

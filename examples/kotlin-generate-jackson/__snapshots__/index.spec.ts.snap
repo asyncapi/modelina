@@ -18,7 +18,7 @@ enum class OrderStatus(@get:JsonValue val value: String) {
         @JsonCreator
         fun forValue(value: String): OrderStatus {
             return values().firstOrNull { it.value == value }
-                ?: throw IllegalArgumentException(\\"Unexpected value '$value'\\")
+                ?: throw IllegalArgumentException(\\"Unexpected value '$value' for enum 'OrderStatus'\\")
         }
     }
 }",
