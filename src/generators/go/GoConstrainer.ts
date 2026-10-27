@@ -12,43 +12,65 @@ import {
 } from '../../models';
 
 export const GoDefaultTypeMapping: GoTypeMapping = {
-  Object({ constrainedModel }): string {
-    return constrainedModel.name;
+  Object({ constrainedModel, partOfProperty, options }): string {
+    return getOptionalNamedType(
+      constrainedModel.name,
+      partOfProperty,
+      options
+    );
   },
-  Reference({ constrainedModel }): string {
-    return `${constrainedModel.name}`;
+  Reference({ constrainedModel, partOfProperty, options }): string {
+    return getOptionalNamedType(
+      constrainedModel.name,
+      partOfProperty,
+      options
+    );
   },
   Any(): string {
     return 'interface{}';
   },
-  Float({ constrainedModel, partOfProperty }): string {
+  Float({ constrainedModel, partOfProperty, options }): string {
     return getType({
       constrainedModel,
       partOfProperty,
+      options,
       typeWhenNullableOrOptional: '*float64',
       type: 'float64'
     });
   },
-  Integer({ constrainedModel, partOfProperty }): string {
+  Integer({ constrainedModel, partOfProperty, options }): string {
     return getType({
       constrainedModel,
       partOfProperty,
+      options,
       typeWhenNullableOrOptional: '*int',
       type: 'int'
     });
   },
-  String({ constrainedModel, partOfProperty }): string {
+  String({
+    constrainedModel,
+    partOfProperty,
+    options,
+    dependencyManager
+  }): string {
+    const useTime =
+      options.useTimeForDateTime && isDateTime(constrainedModel.originalInput);
+    if (useTime) {
+      dependencyManager.addDependency('time');
+    }
     return getType({
       constrainedModel,
       partOfProperty,
-      typeWhenNullableOrOptional: '*string',
-      type: 'string'
+      options,
+      typeWhenNullableOrOptional: useTime ? '*time.Time' : '*string',
+      type: useTime ? 'time.Time' : 'string'
     });
   },
-  Boolean({ constrainedModel, partOfProperty }): string {
+  Boolean({ constrainedModel, partOfProperty, options }): string {
     return getType({
       constrainedModel,
       partOfProperty,
+      options,
       typeWhenNullableOrOptional: '*bool',
       type: 'bool'
     });
@@ -60,8 +82,12 @@ export const GoDefaultTypeMapping: GoTypeMapping = {
   Array({ constrainedModel }): string {
     return `[]${constrainedModel.valueModel.type}`;
   },
-  Enum({ constrainedModel }): string {
-    return constrainedModel.name;
+  Enum({ constrainedModel, partOfProperty, options }): string {
+    return getOptionalNamedType(
+      constrainedModel.name,
+      partOfProperty,
+      options
+    );
   },
   Union({ constrainedModel }): string {
     //Because Go have no notion of unions (and no custom implementation), we have to render it as any value.
@@ -75,19 +101,49 @@ export const GoDefaultTypeMapping: GoTypeMapping = {
 function getType({
   constrainedModel,
   partOfProperty,
+  options,
   typeWhenNullableOrOptional,
   type
 }: {
   constrainedModel: ConstrainedMetaModel;
   partOfProperty: ConstrainedObjectPropertyModel | undefined;
+  options: { usePointersForOptionalFields?: boolean };
   typeWhenNullableOrOptional: string;
   type: string;
 }) {
-  const required = partOfProperty ? partOfProperty.required : false;
-  if (constrainedModel.options.isNullable && !required) {
+  const required = partOfProperty?.required ?? false;
+  const optionalProperty = partOfProperty !== undefined && !required;
+  if (
+    (constrainedModel.options.isNullable && !required) ||
+    (optionalProperty && options.usePointersForOptionalFields)
+  ) {
     return typeWhenNullableOrOptional;
   }
   return type;
+}
+
+function getOptionalNamedType(
+  type: string,
+  partOfProperty: ConstrainedObjectPropertyModel | undefined,
+  options: { usePointersForOptionalFields?: boolean }
+): string {
+  const optionalProperty =
+    partOfProperty !== undefined && !partOfProperty.required;
+  if (
+    optionalProperty &&
+    options.usePointersForOptionalFields &&
+    !type.startsWith('*')
+  ) {
+    return `*${type}`;
+  }
+  return type;
+}
+
+function isDateTime(originalInput: unknown): boolean {
+  if (typeof originalInput !== 'object' || originalInput === null) {
+    return false;
+  }
+  return (originalInput as { format?: unknown }).format === 'date-time';
 }
 
 export const GoDefaultConstraints = {
