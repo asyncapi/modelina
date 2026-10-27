@@ -348,5 +348,25 @@ describe('CSharpGenerator', () => {
         'using System.Collections.Generic;'
       ]);
     });
+
+    test('should generate a const string with autoImplementedProperties', async () => {
+      const doc = {
+        $id: 'CustomClass',
+        type: 'object',
+        properties: {
+          property: { type: 'string', const: 'test' }
+        },
+        additionalProperties: {
+          type: 'string'
+        },
+        required: ['property']
+      };
+
+      generator = new CSharpGenerator({ autoImplementedProperties: true });
+
+      const models = await generator.generate(doc);
+      expect(models).toHaveLength(1);
+      expect(models[0].result).toMatchSnapshot();
+    });
   });
 });
