@@ -18,6 +18,11 @@ export const JavaOclifFlags = {
     required: false,
     default: false
   }),
+  javaJakarta: Flags.boolean({
+    description: 'Java specific, use the jakarta.validation namespace instead of javax.validation for constraints. Only has an effect together with --javaConstraints.',
+    required: false,
+    default: false
+  }),
   javaArrayType: Flags.string({
     type: 'option',
     description: 'Java specific, define which type of array needs to be generated.',
@@ -34,7 +39,7 @@ export const JavaOclifFlags = {
  * @returns 
  */
 export function buildJavaGenerator(flags: any): BuilderReturnType {
-  const { packageName, javaIncludeComments, javaJackson, javaConstraints, javaArrayType } = flags;
+  const { packageName, javaIncludeComments, javaJackson, javaConstraints, javaArrayType, javaJakarta } = flags;
   const presets = []
   
   if (packageName === undefined) {
@@ -46,7 +51,13 @@ export function buildJavaGenerator(flags: any): BuilderReturnType {
   });
   if (javaIncludeComments) {presets.push(JAVA_DESCRIPTION_PRESET);}
   if (javaJackson) {presets.push(JAVA_JACKSON_PRESET);}
-  if (javaConstraints) {presets.push(JAVA_CONSTRAINTS_PRESET);}
+  if (javaConstraints) {
+    presets.push({
+      preset: JAVA_CONSTRAINTS_PRESET,
+      options: { useJakarta: javaJakarta }
+    });
+  }
+
   const fileGenerator = new JavaFileGenerator({
     presets,
     collectionType: javaArrayType as 'Array' | 'List'
