@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Marshalling preset should render un/marshal code 1`] = `
-"class Test {
+"export const CONST_TEST = 'TEST';
+
+class Test {
   private _stringProp: string;
   private _enumProp?: EnumTest;
   private _numberProp?: number;

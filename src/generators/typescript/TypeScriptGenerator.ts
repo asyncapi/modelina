@@ -36,6 +36,7 @@ import { ClassRenderer } from './renderers/ClassRenderer';
 import { InterfaceRenderer } from './renderers/InterfaceRenderer';
 import { EnumRenderer } from './renderers/EnumRenderer';
 import { TypeRenderer } from './renderers/TypeRenderer';
+import { ConstValueRenderer } from './renderers/ConstValueRenderer';
 import {
   TypeScriptDefaultConstraints,
   TypeScriptDefaultTypeMapping
@@ -301,6 +302,15 @@ ${modelCode}`;
       ...options
     });
     const dependencyManagerToUse = this.getDependencyManager(optionsToUse);
+
+    // Render const values first (if any exist)
+    const constValuesOutput = await this.renderConstValue(
+      model,
+      inputModel,
+      optionsToUse
+    );
+
+    // Render the class
     const presets = this.getPresets('class');
     const renderer = new ClassRenderer(
       optionsToUse,
@@ -310,10 +320,49 @@ ${modelCode}`;
       inputModel,
       dependencyManagerToUse
     );
-    const result = await renderer.runSelfPreset();
+    const classResult = await renderer.runSelfPreset();
+
+    // Combine const values and class
+    const result = constValuesOutput
+      ? `${constValuesOutput.result}\n\n${classResult}`
+      : classResult;
+
     return RenderOutput.toRenderOutput({
       result,
       renderedName: model.name,
+      dependencies: dependencyManagerToUse.dependencies
+    });
+  }
+
+  async renderConstValue(
+    model: ConstrainedObjectModel,
+    inputModel: InputMetaModel,
+    options?: DeepPartial<TypeScriptOptions>
+  ): Promise<RenderOutput | null> {
+    const optionsToUse = TypeScriptGenerator.getOptions({
+      ...this.options,
+      ...options
+    });
+    const dependencyManagerToUse = this.getDependencyManager(optionsToUse);
+    const presets = this.getPresets('constValue');
+    const renderer = new ConstValueRenderer(
+      optionsToUse,
+      this,
+      presets,
+      model,
+      inputModel,
+      dependencyManagerToUse
+    );
+
+    // Check if there are any const properties to render
+    if (renderer.getConstProperties().length === 0) {
+      return null;
+    }
+
+    const result = await renderer.runSelfPreset();
+    return RenderOutput.toRenderOutput({
+      result,
+      renderedName: `${model.name}Constants`,
       dependencies: dependencyManagerToUse.dependencies
     });
   }
