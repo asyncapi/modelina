@@ -1303,6 +1303,33 @@ describe('JavaGenerator', () => {
       const models = await generator.generate(asyncapiDoc);
       expect(models.map((model) => model.result)).toMatchSnapshot();
     });
+
+    test('should render long literals with L suffix for int64 fields with defaults', async () => {
+      const doc = {
+        $id: 'LongDefaults',
+        type: 'object',
+        required: ['requiredLong'],
+        properties: {
+          optionalLong: {
+            type: 'integer',
+            format: 'int64',
+            default: 2
+          },
+          requiredLong: {
+            type: 'integer',
+            format: 'int64',
+            default: 2147483648
+          }
+        }
+      };
+
+      const models = await generator.generate(doc);
+      expect(models).toHaveLength(1);
+      expect(models[0].result).toContain('private Long optionalLong = 2L;');
+      expect(models[0].result).toContain(
+        'private long requiredLong = 2147483648L;'
+      );
+    });
   });
 
   describe('when default with custom type mappings is used, render field with default', () => {

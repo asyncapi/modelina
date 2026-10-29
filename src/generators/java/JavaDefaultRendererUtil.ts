@@ -31,6 +31,12 @@ export class JavaDefaultRendererUtil {
       return `private ${property.property.type} ${property.propertyName} = new BigDecimal(${property.property.originalInput.default});`;
     }
     if (
+      property.property.type === 'Long' ||
+      property.property.type === 'long'
+    ) {
+      return `private ${property.property.type} ${property.propertyName} = ${property.property.originalInput.default}L;`;
+    }
+    if (
       property.property instanceof ConstrainedReferenceModel &&
       property.property.ref instanceof ConstrainedEnumModel
     ) {
