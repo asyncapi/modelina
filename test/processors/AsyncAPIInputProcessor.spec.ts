@@ -237,6 +237,115 @@ describe('AsyncAPIInputProcessor', () => {
       // Snapshot the model names
       expect(Object.keys(commonInputModel.models).sort()).toMatchSnapshot();
     });
+
+    test('should include message headers when includeHeaders option is true', async () => {
+      const docWithHeaders = {
+        asyncapi: '2.5.0',
+        info: {
+          title: 'Headers example',
+          version: '0.1.0'
+        },
+        channels: {
+          '/user/signedup': {
+            subscribe: {
+              message: {
+                headers: {
+                  $id: 'SignupHeaders',
+                  type: 'object',
+                  properties: {
+                    correlationId: {
+                      type: 'string'
+                    }
+                  }
+                },
+                payload: {
+                  $id: 'SignupPayload',
+                  type: 'object',
+                  properties: {
+                    email: {
+                      type: 'string'
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      };
+      const processor = new AsyncAPIInputProcessor();
+      const withoutHeaders = await processor.process(docWithHeaders);
+      expect(withoutHeaders.models['SignupPayload']).toBeDefined();
+      expect(withoutHeaders.models['SignupHeaders']).toBeUndefined();
+
+      const withHeaders = await processor.process(docWithHeaders, {
+        asyncapi: { includeHeaders: true }
+      });
+      expect(withHeaders.models['SignupPayload']).toBeDefined();
+      expect(withHeaders.models['SignupHeaders']).toBeDefined();
+    });
+
+    test('should include message headers for multiple messages when includeHeaders option is true', async () => {
+      const docWithMultipleMessageHeaders = {
+        asyncapi: '2.5.0',
+        info: {
+          title: 'Multi-message headers example',
+          version: '0.1.0'
+        },
+        channels: {
+          '/user/events': {
+            subscribe: {
+              message: {
+                oneOf: [
+                  {
+                    headers: {
+                      $id: 'CreatedHeaders',
+                      type: 'object',
+                      properties: {
+                        traceId: { type: 'string' }
+                      }
+                    },
+                    payload: {
+                      $id: 'CreatedPayload',
+                      type: 'object',
+                      properties: {
+                        id: { type: 'string' }
+                      }
+                    }
+                  },
+                  {
+                    headers: {
+                      $id: 'DeletedHeaders',
+                      type: 'object',
+                      properties: {
+                        reason: { type: 'string' }
+                      }
+                    },
+                    payload: {
+                      $id: 'DeletedPayload',
+                      type: 'object',
+                      properties: {
+                        id: { type: 'string' }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      };
+      const processor = new AsyncAPIInputProcessor();
+      const withHeaders = await processor.process(
+        docWithMultipleMessageHeaders,
+        {
+          asyncapi: { includeHeaders: true }
+        }
+      );
+      expect(withHeaders.models['CreatedHeaders']).toBeDefined();
+      expect(withHeaders.models['DeletedHeaders']).toBeDefined();
+      expect(withHeaders.models['CreatedPayload']).toBeDefined();
+      expect(withHeaders.models['DeletedPayload']).toBeDefined();
+    });
   });
 
   describe('convertToInternalSchema()', () => {
