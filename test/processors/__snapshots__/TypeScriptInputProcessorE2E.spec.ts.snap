@@ -1,0 +1,70 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TypeScriptInputProcessor end-to-end should generate models for a file containing enums and generics 1`] = `
+Array [
+  "class Box {
+  private _value: any;
+  private _additionalProperties?: Map<string, any>;
+
+  constructor(input: {
+    value: any,
+    additionalProperties?: Map<string, any>,
+  }) {
+    this._value = input.value;
+    this._additionalProperties = input.additionalProperties;
+  }
+
+  get value(): any { return this._value; }
+  set value(value: any) { this._value = value; }
+
+  get additionalProperties(): Map<string, any> | undefined { return this._additionalProperties; }
+  set additionalProperties(additionalProperties: Map<string, any> | undefined) { this._additionalProperties = additionalProperties; }
+}",
+  "class Shipment {
+  private _reservedStatus: any;
+  private _kind: AnonymSchema2;
+  private _numbers: any;
+  private _labels: any;
+  private _additionalProperties?: Map<string, any>;
+
+  constructor(input: {
+    reservedStatus: any,
+    kind: AnonymSchema2,
+    numbers: any,
+    labels: any,
+    additionalProperties?: Map<string, any>,
+  }) {
+    this._reservedStatus = input.reservedStatus;
+    this._kind = input.kind;
+    this._numbers = input.numbers;
+    this._labels = input.labels;
+    this._additionalProperties = input.additionalProperties;
+  }
+
+  get reservedStatus(): any { return this._reservedStatus; }
+  set reservedStatus(reservedStatus: any) { this._reservedStatus = reservedStatus; }
+
+  get kind(): AnonymSchema2 { return this._kind; }
+  set kind(kind: AnonymSchema2) { this._kind = kind; }
+
+  get numbers(): any { return this._numbers; }
+  set numbers(numbers: any) { this._numbers = numbers; }
+
+  get labels(): any { return this._labels; }
+  set labels(labels: any) { this._labels = labels; }
+
+  get additionalProperties(): Map<string, any> | undefined { return this._additionalProperties; }
+  set additionalProperties(additionalProperties: Map<string, any> | undefined) { this._additionalProperties = additionalProperties; }
+}",
+  "enum AnonymSchema2 {
+  NUMBER_42 = \\"42\\",
+  ALPHA = \\"alpha\\",
+  ZULU = \\"zulu\\",
+}",
+  "enum ReservedStatus {
+  X = \\"x\\",
+  Y = \\"y\\",
+  NUMBER_123 = \\"123\\",
+}",
+]
+`;
