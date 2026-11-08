@@ -237,6 +237,75 @@ describe('AsyncAPIInputProcessor', () => {
       // Snapshot the model names
       expect(Object.keys(commonInputModel.models).sort()).toMatchSnapshot();
     });
+
+    test('should generate separate union models for multiple operations sharing a channel (AsyncAPI v3)', async () => {
+      const doc = {
+        asyncapi: '3.0.0',
+        info: {
+          title: 'Chat',
+          version: '1.0.0'
+        },
+        channels: {
+          chat: {
+            address: '/',
+            messages: {
+              Ping: {
+                payload: {
+                  type: 'object',
+                  properties: { kind: { const: 'ping' } }
+                }
+              },
+              Say: {
+                payload: {
+                  type: 'object',
+                  properties: { kind: { const: 'say' } }
+                }
+              },
+              Pong: {
+                payload: {
+                  type: 'object',
+                  properties: { kind: { const: 'pong' } }
+                }
+              },
+              Said: {
+                payload: {
+                  type: 'object',
+                  properties: { kind: { const: 'said' } }
+                }
+              }
+            }
+          }
+        },
+        operations: {
+          receiveClientMessages: {
+            action: 'receive',
+            channel: {
+              $ref: '#/channels/chat'
+            },
+            messages: [
+              { $ref: '#/channels/chat/messages/Ping' },
+              { $ref: '#/channels/chat/messages/Say' }
+            ]
+          },
+          sendServerMessages: {
+            action: 'send',
+            channel: {
+              $ref: '#/channels/chat'
+            },
+            messages: [
+              { $ref: '#/channels/chat/messages/Pong' },
+              { $ref: '#/channels/chat/messages/Said' }
+            ]
+          }
+        }
+      };
+
+      const processor = new AsyncAPIInputProcessor();
+      const commonInputModel = await processor.process(doc);
+      expect(commonInputModel instanceof InputMetaModel).toBeTruthy();
+      expect(commonInputModel.models['receiveClientMessages']).toBeDefined();
+      expect(commonInputModel.models['sendServerMessages']).toBeDefined();
+    });
   });
 
   describe('convertToInternalSchema()', () => {

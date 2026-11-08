@@ -122,8 +122,12 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
 
     if (channels.length) {
       for (const channel of doc.channels()) {
-        for (const operation of channel.operations()) {
-          const handleMessages = (messages: MessagesInterface) => {
+        const operations = channel.operations();
+        for (const operation of operations) {
+          const handleMessages = (
+            messages: MessagesInterface,
+            fallbackId?: string
+          ) => {
             // treat multiple messages as oneOf
             if (messages.length > 1) {
               const oneOf: any[] = [];
@@ -140,9 +144,23 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
                 oneOf.push(payload.json());
               }
 
+              let unionId = fallbackId;
+              if (!unionId) {
+                if (operations.length > 1 && operation.id()) {
+                  unionId = operation.id();
+                } else if (
+                  inputModel.models[channel.id()] !== undefined &&
+                  operation.id()
+                ) {
+                  unionId = operation.id();
+                } else {
+                  unionId = channel.id();
+                }
+              }
+
               const payload = new AsyncAPISchema(
                 {
-                  $id: channel.id(),
+                  $id: unionId,
                   oneOf
                 },
                 channel.meta()
@@ -160,11 +178,22 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
           if (replyOperation !== undefined) {
             const replyMessages = replyOperation.messages();
             if (replyMessages.length > 0) {
-              handleMessages(replyMessages);
+              const replyId =
+                replyOperation.channel()?.id() ||
+                (operation.id()
+                  ? `${operation.id()}_reply`
+                  : `${channel.id()}_reply`);
+              handleMessages(replyMessages, replyId);
             } else {
-              const replyChannelMessages = replyOperation.channel()?.messages();
+              const replyChannel = replyOperation.channel();
+              const replyChannelMessages = replyChannel?.messages();
               if (replyChannelMessages) {
-                handleMessages(replyChannelMessages);
+                const replyId =
+                  replyChannel?.id() ||
+                  (operation.id()
+                    ? `${operation.id()}_reply`
+                    : `${channel.id()}_reply`);
+                handleMessages(replyChannelMessages, replyId);
               }
             }
           }
