@@ -152,8 +152,7 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
     const opId = operation.id();
     const channelId = channel.id();
     const hasCollisionRisk =
-      operationsCount > 1 ||
-      Object.prototype.hasOwnProperty.call(inputModel.models, channelId);
+      operationsCount > 1 || Object.hasOwn(inputModel.models, channelId);
     if (hasCollisionRisk && opId) {
       return opId;
     }
