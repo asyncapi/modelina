@@ -35,6 +35,9 @@ Map<String, dynamic> toJson() => _$${model.name}ToJson(this);`;
       );
       renderer.dependencyManager.addDependency('@JsonEnum(alwaysCreate:true)');
       return content;
+    },
+    item({ item, content }) {
+      return `@JsonValue(${item.value}) ${content}`;
     }
   }
 };

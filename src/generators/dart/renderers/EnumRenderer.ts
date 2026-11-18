@@ -37,6 +37,6 @@ export const DART_DEFAULT_ENUM_PRESET: EnumPresetType<DartOptions> = {
     return renderer.defaultSelf();
   },
   item({ item }) {
-    return `${item.value}`;
+    return `${item.key}`;
   }
 };

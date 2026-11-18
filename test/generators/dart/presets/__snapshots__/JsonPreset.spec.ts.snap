@@ -11,3 +11,9 @@ exports[`DART_JSON_PRESET should render json annotations 1`] = `
   Map<String, dynamic> toJson() => _$ClazzToJson(this);
 }"
 `;
+
+exports[`DART_JSON_PRESET should render json annotations for enum 1`] = `
+"enum CoachRole {
+  @JsonValue(\\"USER\\") USER, @JsonValue(\\"COACH\\") COACH
+}"
+`;
