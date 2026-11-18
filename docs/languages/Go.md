@@ -11,6 +11,7 @@ There are special use-cases that each language supports; this document pertains 
     - [To and from XML](#to-and-from-xml)
     - [To and from binary](#to-and-from-binary)
   - [Rendering comments from description and example fields](#rendering-comments-from-description-and-example-fields)
+  - [Optional pointers and date-time fields](#optional-pointers-and-date-time-fields)
 
 <!-- tocstop -->
 
@@ -42,3 +43,18 @@ Currently not supported, [let everyone know you need it](https://github.com/asyn
 You can use the `GO_DESCRIPTION_PRESET` to generate comments from description fields in your model.
 
 See [this example](../../examples/generate-go-asyncapi-comments) for how this can be used.
+
+## Optional pointers and date-time fields
+
+The Go generator keeps its existing output by default. You can opt in to pointer types for optional primitive, enum, object, and reference fields, and map JSON Schema `string` fields with `format: date-time` to Go's `time.Time` type:
+
+```ts
+const generator = new GoGenerator({
+  usePointersForOptionalFields: true,
+  useTimeForDateTime: true
+});
+```
+
+With both options enabled, an optional `date-time` property is rendered as `*time.Time`. The generated complete model automatically imports Go's `time` package. Required fields remain value types, and other string formats remain strings. Slices, maps, and interfaces remain unchanged because they are already nil-capable in Go.
+
+The same options are available in the Modelina CLI and AsyncAPI CLI through `--goUsePointersForOptionalFields` and `--goUseTimeForDateTime`.
