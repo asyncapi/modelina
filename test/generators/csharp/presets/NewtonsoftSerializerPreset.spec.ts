@@ -43,6 +43,16 @@ describe('Newtonsoft JSON serializer preset', () => {
 
     const outputModels = await generator.generate(doc);
     expect(outputModels).toHaveLength(3);
+    // Regression: the additional-properties filter must exclude ALL declared
+    // properties, so the checks are joined with `&&`. Joining with `||` is
+    // always true for 2+ properties and duplicates declared props into the dictionary.
+    const allResults = outputModels.map((model) => model.result).join('\n');
+    expect(allResults).toContain(
+      'prop.Name != "string prop" && prop.Name != "const string prop"'
+    );
+    expect(allResults).not.toContain(
+      'prop.Name != "string prop" || prop.Name != "const string prop"'
+    );
     expect(outputModels[0].result).toMatchSnapshot();
     expect(outputModels[1].result).toMatchSnapshot();
     expect(outputModels[2].result).toMatchSnapshot();
