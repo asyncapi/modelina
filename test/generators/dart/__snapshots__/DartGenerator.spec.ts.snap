@@ -17,20 +17,20 @@ exports[`DartGenerator should render \`class\` type 1`] = `
 
 exports[`DartGenerator should render \`enum\` type (integer type) 1`] = `
 "enum Numbers {
-  0, 1, 2, 3
+  NUMBER_0, NUMBER_1, NUMBER_2, NUMBER_3
 }"
 `;
 
 exports[`DartGenerator should render \`enum\` type (string type) 1`] = `
 "enum States {
-  \\"Texas\\", \\"Alabama\\", \\"California\\", \\"New York\\"
+  TEXAS, ALABAMA, CALIFORNIA, NEW_YORK
 }"
 `;
 
 exports[`DartGenerator should render custom preset for \`enum\` type 1`] = `
 "@EnumAnnotation
 enum CustomEnum {
-  \\"Texas\\", \\"Alabama\\", \\"California\\"
+  TEXAS, ALABAMA, CALIFORNIA
 }"
 `;
 

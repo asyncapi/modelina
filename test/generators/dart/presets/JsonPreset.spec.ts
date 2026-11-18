@@ -1,4 +1,6 @@
 import {
+  ConstrainedEnumModel,
+  ConstrainedEnumValueModel,
   ConstrainedFloatModel,
   ConstrainedObjectModel,
   ConstrainedObjectPropertyModel,
@@ -37,5 +39,28 @@ describe('DART_JSON_PRESET', () => {
     ];
     expect(classModel.result).toMatchSnapshot();
     expect(classModel.dependencies).toEqual(expectedDependencies);
+  });
+
+  test('should render json annotations for enum', async () => {
+    const model = new ConstrainedEnumModel(
+      'CoachRole',
+      undefined,
+      {},
+      'CoachRole',
+      [
+        new ConstrainedEnumValueModel('USER', '"USER"', 'USER'),
+        new ConstrainedEnumValueModel('COACH', '"COACH"', 'COACH')
+      ]
+    );
+    const inputModel = new InputMetaModel();
+
+    const enumModel = await generator.renderEnum(model, inputModel);
+    const expectedDependencies = [
+      `import 'package:json_annotation/json_annotation.dart';`,
+      `part 'coach_role.g.dart';`,
+      '@JsonEnum(alwaysCreate:true)'
+    ];
+    expect(enumModel.result).toMatchSnapshot();
+    expect(enumModel.dependencies).toEqual(expectedDependencies);
   });
 });
