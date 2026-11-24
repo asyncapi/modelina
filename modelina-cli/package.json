@@ -34,7 +34,7 @@
     "eslint-config-oclif-typescript": "^1.0.3",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-unicorn": "^51.0.1",
-    "mocha": "^10",
+    "mocha": "^12",
     "nyc": "^15.1.0",
     "oclif": "^4.12.3",
     "rimraf": "^5.0.5",
