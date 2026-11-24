@@ -8,7 +8,10 @@ import {
   SchemaV2 as AsyncAPISchema,
   fromFile,
   createAsyncAPIDocument,
-  MessagesInterface
+  MessagesInterface,
+  ChannelInterface,
+  OperationInterface,
+  OperationReplyInterface
 } from '@asyncapi/parser';
 import yaml from 'js-yaml';
 import { AbstractInputProcessor } from './AbstractInputProcessor';
@@ -102,85 +105,156 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
 
     inputModel.originalInput = doc;
 
-    const addToInputModel = (payload: AsyncAPISchemaInterface) => {
-      const schema = AsyncAPIInputProcessor.convertToInternalSchema(payload);
-      const newMetaModel = JsonSchemaInputProcessor.convertSchemaToMetaModel(
-        schema,
-        options
-      );
-      if (inputModel.models[newMetaModel.name] !== undefined) {
-        Logger.warn(
-          `Overwriting existing model with name ${newMetaModel.name}, are there two models with the same name present? Overwriting the old model.`,
-          newMetaModel.name
-        );
-      }
-      inputModel.models[newMetaModel.name] = newMetaModel;
-    };
-
     // Go over all the message payloads and convert them to models
     const channels = doc.channels();
 
     if (channels.length) {
-      for (const channel of doc.channels()) {
-        for (const operation of channel.operations()) {
-          const handleMessages = (messages: MessagesInterface) => {
-            // treat multiple messages as oneOf
-            if (messages.length > 1) {
-              const oneOf: any[] = [];
-
-              for (const message of messages) {
-                const payload = message.payload();
-
-                if (!payload) {
-                  continue;
-                }
-
-                // Add each individual message payload as a separate model
-                addToInputModel(payload);
-                oneOf.push(payload.json());
-              }
-
-              const payload = new AsyncAPISchema(
-                {
-                  $id: channel.id(),
-                  oneOf
-                },
-                channel.meta()
-              );
-
-              addToInputModel(payload);
-            } else if (messages.length === 1) {
-              const payload = messages[0].payload();
-              if (payload) {
-                addToInputModel(payload);
-              }
-            }
-          };
-          const replyOperation = operation.reply();
-          if (replyOperation !== undefined) {
-            const replyMessages = replyOperation.messages();
-            if (replyMessages.length > 0) {
-              handleMessages(replyMessages);
-            } else {
-              const replyChannelMessages = replyOperation.channel()?.messages();
-              if (replyChannelMessages) {
-                handleMessages(replyChannelMessages);
-              }
-            }
-          }
-          handleMessages(operation.messages());
-        }
+      for (const channel of channels) {
+        this.processChannel(channel, inputModel, options);
       }
     } else {
       for (const message of doc.allMessages()) {
         const payload = message.payload();
         if (payload) {
-          addToInputModel(payload);
+          this.addToInputModel(payload, inputModel, options);
         }
       }
     }
 
     return inputModel;
+  }
+
+  private addToInputModel(
+    payload: AsyncAPISchemaInterface,
+    inputModel: InputMetaModel,
+    options?: ProcessorOptions
+  ): void {
+    const schema = AsyncAPIInputProcessor.convertToInternalSchema(payload);
+    const newMetaModel = JsonSchemaInputProcessor.convertSchemaToMetaModel(
+      schema,
+      options
+    );
+    if (inputModel.models[newMetaModel.name] !== undefined) {
+      Logger.warn(
+        `Overwriting existing model with name ${newMetaModel.name}, are there two models with the same name present? Overwriting the old model.`,
+        newMetaModel.name
+      );
+    }
+    inputModel.models[newMetaModel.name] = newMetaModel;
+  }
+
+  private resolveOperationUnionId(
+    channel: ChannelInterface,
+    operation: OperationInterface,
+    operationsCount: number,
+    inputModel: InputMetaModel
+  ): string {
+    const opId = operation.id();
+    const channelId = channel.id();
+    const hasCollisionRisk =
+      operationsCount > 1 || Object.hasOwn(inputModel.models, channelId);
+    if (hasCollisionRisk && opId) {
+      return opId;
+    }
+    return channelId;
+  }
+
+  private resolveReplyUnionId(
+    channel: ChannelInterface,
+    operation: OperationInterface,
+    replyOperation: OperationReplyInterface
+  ): string {
+    return (
+      replyOperation.channel()?.id() ||
+      `${operation.id() || channel.id()}_reply`
+    );
+  }
+
+  private processMessages(
+    messages: MessagesInterface,
+    unionId: string,
+    channel: ChannelInterface,
+    inputModel: InputMetaModel,
+    options?: ProcessorOptions
+  ): void {
+    if (messages.length === 0) {
+      return;
+    }
+    if (messages.length === 1) {
+      const payload = messages[0].payload();
+      if (payload) {
+        this.addToInputModel(payload, inputModel, options);
+      }
+      return;
+    }
+
+    // treat multiple messages as oneOf
+    const oneOf: any[] = [];
+    for (const message of messages) {
+      const payload = message.payload();
+      if (!payload) {
+        continue;
+      }
+
+      // Add each individual message payload as a separate model
+      this.addToInputModel(payload, inputModel, options);
+      oneOf.push(payload.json());
+    }
+
+    const payload = new AsyncAPISchema(
+      {
+        $id: unionId,
+        oneOf
+      },
+      channel.meta()
+    );
+    this.addToInputModel(payload, inputModel, options);
+  }
+
+  private processChannel(
+    channel: ChannelInterface,
+    inputModel: InputMetaModel,
+    options?: ProcessorOptions
+  ): void {
+    const operations = channel.operations();
+    for (const operation of operations) {
+      const replyOperation = operation.reply();
+      if (replyOperation !== undefined) {
+        const replyMessages = replyOperation.messages();
+        const messagesToProcess =
+          replyMessages.length > 0
+            ? replyMessages
+            : replyOperation.channel()?.messages();
+        if (messagesToProcess) {
+          const replyId = this.resolveReplyUnionId(
+            channel,
+            operation,
+            replyOperation
+          );
+          this.processMessages(
+            messagesToProcess,
+            replyId,
+            channel,
+            inputModel,
+            options
+          );
+        }
+      }
+
+      const unionId = this.resolveOperationUnionId(
+        channel,
+        operation,
+        operations.length,
+        inputModel
+      );
+      this.processMessages(
+        operation.messages(),
+        unionId,
+        channel,
+        inputModel,
+        options
+      );
+    }
   }
 
   /**
