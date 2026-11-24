@@ -8,7 +8,8 @@ import {
   SchemaV2 as AsyncAPISchema,
   fromFile,
   createAsyncAPIDocument,
-  MessagesInterface
+  MessagesInterface,
+  ParseOptions
 } from '@asyncapi/parser';
 import yaml from 'js-yaml';
 import { AbstractInputProcessor } from './AbstractInputProcessor';
@@ -23,6 +24,10 @@ import {
   NewParser
 } from '@asyncapi/multi-parser';
 import { createDetailedAsyncAPI } from '@asyncapi/parser/cjs/utils';
+
+export interface AsyncAPIInputProcessorOptions extends ParseOptions {
+  includeHeaders?: boolean;
+}
 
 /**
  * Class for processing AsyncAPI inputs
@@ -68,7 +73,8 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
     } else if (AsyncAPIInputProcessor.isFromNewParser(rawInput)) {
       doc = ConvertDocumentParserAPIVersion(rawInput, 2) as any;
     } else {
-      const parserOptions = options?.asyncapi || {};
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { includeHeaders, ...parserOptions } = options?.asyncapi || {};
       const parser = NewParser(3, {
         parserOptions,
         includeSchemaParsers: true
@@ -129,6 +135,12 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
               const oneOf: any[] = [];
 
               for (const message of messages) {
+                if (options?.asyncapi?.includeHeaders) {
+                  const headers = message.headers();
+                  if (headers) {
+                    addToInputModel(headers);
+                  }
+                }
                 const payload = message.payload();
 
                 if (!payload) {
@@ -150,6 +162,12 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
 
               addToInputModel(payload);
             } else if (messages.length === 1) {
+              if (options?.asyncapi?.includeHeaders) {
+                const headers = messages[0].headers();
+                if (headers) {
+                  addToInputModel(headers);
+                }
+              }
               const payload = messages[0].payload();
               if (payload) {
                 addToInputModel(payload);
@@ -173,6 +191,12 @@ export class AsyncAPIInputProcessor extends AbstractInputProcessor {
       }
     } else {
       for (const message of doc.allMessages()) {
+        if (options?.asyncapi?.includeHeaders) {
+          const headers = message.headers();
+          if (headers) {
+            addToInputModel(headers);
+          }
+        }
         const payload = message.payload();
         if (payload) {
           addToInputModel(payload);
