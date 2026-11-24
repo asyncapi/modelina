@@ -286,7 +286,7 @@ function addDiscriminatorTypeToUnionModel(
     return;
   }
 
-  const propertyTypes = new Set();
+  const propertyTypes = new Set<string>();
 
   for (const union of constrainedModel.union) {
     if (union instanceof ConstrainedReferenceModel) {
