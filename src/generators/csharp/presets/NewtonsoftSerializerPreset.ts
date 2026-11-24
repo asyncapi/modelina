@@ -90,6 +90,19 @@ function renderDeserialize({
 
   const corePropsRead = coreProps
     .map((prop) => {
+      if (prop.property.options.const) {
+        if (
+          options?.enforceRequired !== undefined &&
+          options?.enforceRequired &&
+          prop.required
+        ) {
+          return `if(jo["${prop.unconstrainedPropertyName}"] is null){
+  throw new JsonSerializationException("Required property '${prop.unconstrainedPropertyName}' is missing");
+}`;
+        }
+        return undefined;
+      }
+
       const propertyAccessor = pascalCase(prop.propertyName);
       let toValue = `jo["${prop.unconstrainedPropertyName}"].ToObject<${prop.property.type}>(serializer)`;
       if (

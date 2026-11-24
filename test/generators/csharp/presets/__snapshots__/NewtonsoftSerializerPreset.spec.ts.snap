@@ -75,9 +75,6 @@ public class TestConverter : JsonConverter<Test>
 }
 value.StringProp = jo[\\"string prop\\"].ToObject<string>(serializer);
 
-if(jo[\\"const string prop\\"] != null) {
-  value.ConstStringProp = jo[\\"const string prop\\"].ToObject<string?>(serializer);
-}
 if(jo[\\"notRequiredStringProp\\"] != null) {
   value.NotRequiredStringProp = jo[\\"notRequiredStringProp\\"].ToObject<string?>(serializer);
 }
