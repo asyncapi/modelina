@@ -246,4 +246,135 @@ describe('PYTHON_PYDANTIC_PRESET', () => {
     const models = await generator.generate(doc);
     expect(models.map((model) => model.result)).toMatchSnapshot();
   });
+
+  test('should escape control characters, mixed quotes, and trailing backslashes in const string values', async () => {
+    const doc = {
+      title: 'ConstStringEdgeTest',
+      type: 'object',
+      properties: {
+        alreadyQuoted: {
+          type: 'string',
+          const: "'xxx'"
+        },
+        bothQuotesAndBackslash: {
+          type: 'string',
+          const: 'a\'b"c\\d'
+        },
+        trailingBackslash: {
+          type: 'string',
+          const: 'C:\\Users\\test\\'
+        },
+        multiline: {
+          type: 'string',
+          const: 'line1\nline2\r\n\tindented\0end'
+        }
+      }
+    };
+
+    const models = await generator.generate(doc);
+    expect(models).toHaveLength(1);
+    const result = models[0].result;
+    expect(result).toContain(
+      `already_quoted: Literal["'xxx'"] = Field(default="'xxx'", frozen=True, alias='''alreadyQuoted''')`
+    );
+    expect(result).toContain(
+      `both_quotes_and_backslash: Literal["a'b\\"c\\\\d"] = Field(default="a'b\\"c\\\\d", frozen=True, alias='''bothQuotesAndBackslash''')`
+    );
+    expect(result).toContain(
+      `trailing_backslash: Literal['C:\\\\Users\\\\test\\\\'] = Field(default='C:\\\\Users\\\\test\\\\', frozen=True, alias='''trailingBackslash''')`
+    );
+    expect(result).toContain(
+      `multiline: Literal['line1\\nline2\\r\\n\\tindented\\x00end'] = Field(default='line1\\nline2\\r\\n\\tindented\\x00end', frozen=True)`
+    );
+  });
+
+  test('should format falsy, null, float, composite, and triple-quote edge cases into valid Python', async () => {
+    const doc = {
+      title: 'ConstEdgeTypesTest',
+      type: 'object',
+      properties: {
+        constFalse: {
+          type: 'boolean',
+          const: false
+        },
+        constZero: {
+          type: 'integer',
+          const: 0
+        },
+        constEmpty: {
+          type: 'string',
+          const: ''
+        },
+        constNull: {
+          type: 'null',
+          const: null
+        },
+        constFloat: {
+          type: 'number',
+          const: 3.14
+        },
+        constArray: {
+          type: 'array',
+          const: [1, "it's", true, null]
+        },
+        trailingQuoteDesc: {
+          type: 'string',
+          description: "has ''' inside and ends with '"
+        },
+        onlyTripleQuotesDesc: {
+          type: 'string',
+          description: "'''"
+        },
+        trailingTripleQuotesDesc: {
+          type: 'string',
+          description: "abc'''"
+        },
+        quadQuotesDesc: {
+          type: 'string',
+          description: "''''"
+        },
+        carriageReturnDesc: {
+          type: 'string',
+          description: 'a\rb'
+        }
+      }
+    };
+
+    const models = await generator.generate(doc);
+    expect(models).toHaveLength(1);
+    const result = models[0].result;
+    expect(result).toContain(
+      `const_false: Literal[False] = Field(default=False, frozen=True, alias='''constFalse''')`
+    );
+    expect(result).toContain(
+      `const_zero: Literal[0] = Field(default=0, frozen=True, alias='''constZero''')`
+    );
+    expect(result).toContain(
+      `const_empty: Literal[''] = Field(default='', frozen=True, alias='''constEmpty''')`
+    );
+    expect(result).toContain(
+      `const_null: Literal[None] = Field(default=None, frozen=True, alias='''constNull''')`
+    );
+    expect(result).toContain(
+      `const_float: Optional[float] = Field(default=3.14, frozen=True, alias='''constFloat''')`
+    );
+    expect(result).toContain(
+      `const_array: Optional[List[Any]] = Field(default=[1, "it's", True, None], frozen=True, alias='''constArray''')`
+    );
+    expect(result).toContain(
+      `trailing_quote_desc: Optional[str] = Field(description='''has \\'\\'\\' inside and ends with \\'''', default=None, alias='''trailingQuoteDesc''')`
+    );
+    expect(result).toContain(
+      `only_triple_quotes_desc: Optional[str] = Field(description='''\\'\\'\\'''', default=None, alias='''onlyTripleQuotesDesc''')`
+    );
+    expect(result).toContain(
+      `trailing_triple_quotes_desc: Optional[str] = Field(description='''abc\\'\\'\\'''', default=None, alias='''trailingTripleQuotesDesc''')`
+    );
+    expect(result).toContain(
+      `quad_quotes_desc: Optional[str] = Field(description='''\\'\\'\\'\\'''', default=None, alias='''quadQuotesDesc''')`
+    );
+    expect(result).toContain(
+      `carriage_return_desc: Optional[str] = Field(description='''a\\rb''', default=None, alias='''carriageReturnDesc''')`
+    );
+  });
 });

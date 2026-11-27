@@ -26,7 +26,7 @@ function getMetaModelOptions(
 ): MetaModelOptions {
   const options: MetaModelOptions = {};
 
-  if (commonModel.const) {
+  if (commonModel.const !== undefined) {
     options.const = {
       originalInput: commonModel.const
     };

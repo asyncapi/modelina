@@ -5,18 +5,56 @@ import {
 import { PythonOptions } from '../PythonGenerator';
 import { ClassPresetType, PythonPreset } from '../PythonPreset';
 
+function formatPythonStringLiteral(value: string): string {
+  const escaped = value
+    .replaceAll('\\', String.raw`\\`)
+    .replaceAll('\r', String.raw`\r`)
+    .replaceAll('\n', String.raw`\n`)
+    .replaceAll('\t', String.raw`\t`)
+    .replaceAll('\0', String.raw`\x00`);
+  // Use a double-quoted Python string if the value contains single quotes
+  if (value.includes("'")) {
+    const quoteEscaped = escaped.replaceAll('"', String.raw`\"`);
+    return `"${quoteEscaped}"`;
+  }
+  return `'${escaped}'`;
+}
+
+function formatPythonTripleQuotedString(value: string): string {
+  return value
+    .replaceAll('\\', String.raw`\\`)
+    .replaceAll('\r', String.raw`\r`)
+    .replace(/'{3,}|'+$/g, (quotes) => quotes.replaceAll("'", String.raw`\'`));
+}
+
+function isPythonLiteralTypeValue(constValue: unknown): boolean {
+  return (
+    constValue === null ||
+    typeof constValue === 'string' ||
+    typeof constValue === 'boolean' ||
+    (typeof constValue === 'number' && Number.isInteger(constValue))
+  );
+}
+
 function formatPythonConstValue(constValue: unknown): string {
   if (typeof constValue === 'string') {
-    const backslashEscaped = constValue.replaceAll('\\', String.raw`\\`);
-    // Use a double-quoted Python string if the value contains single quotes
-    if (constValue.includes("'")) {
-      const quoteEscaped = backslashEscaped.replaceAll('"', String.raw`\"`);
-      return `"${quoteEscaped}"`;
-    }
-    return `'${backslashEscaped}'`;
+    return formatPythonStringLiteral(constValue);
   }
   if (typeof constValue === 'boolean') {
     return constValue ? 'True' : 'False';
+  }
+  if (constValue === null) {
+    return 'None';
+  }
+  if (Array.isArray(constValue)) {
+    return `[${constValue.map((item) => formatPythonConstValue(item)).join(', ')}]`;
+  }
+  if (typeof constValue === 'object') {
+    const entries = Object.entries(constValue as Record<string, unknown>).map(
+      ([key, value]) =>
+        `${formatPythonStringLiteral(key)}: ${formatPythonConstValue(value)}`
+    );
+    return `{${entries.join(', ')}}`;
   }
   return String(constValue);
 }
@@ -33,8 +71,9 @@ function buildFieldArgs(
   const decoratorArgs: string[] = [];
 
   if (property.property.originalInput['description']) {
+    const description = String(property.property.originalInput['description']);
     decoratorArgs.push(
-      `description='''${property.property.originalInput['description']}'''`
+      `description='''${formatPythonTripleQuotedString(description)}'''`
     );
   }
 
@@ -59,7 +98,9 @@ function buildFieldArgs(
     property.propertyName !== property.unconstrainedPropertyName &&
     !isUnwrappedDict
   ) {
-    decoratorArgs.push(`alias='''${property.unconstrainedPropertyName}'''`);
+    decoratorArgs.push(
+      `alias='''${formatPythonTripleQuotedString(property.unconstrainedPropertyName)}'''`
+    );
   }
 
   return decoratorArgs;
@@ -91,7 +132,7 @@ const PYTHON_PYDANTIC_CLASS_PRESET: ClassPresetType<PythonOptions> = {
     if (isOptional) {
       type = `Optional[${type}]`;
     }
-    if (constOptions) {
+    if (constOptions && isPythonLiteralTypeValue(constOptions.originalInput)) {
       renderer.dependencyManager.addDependency('from typing import Literal');
       type = formatLiteralType(constOptions.originalInput);
     }
