@@ -29,7 +29,9 @@ export abstract class TypeScriptRenderer<
 
   renderComments(lines: string | string[]): string {
     lines = FormatHelpers.breakLines(lines);
-    const renderedLines = lines.map((line) => ` * ${line}`).join('\n');
+    const renderedLines = lines
+      .map((line) => ` * ${line.replace(/\*\//g, '*\\/')}`)
+      .join('\n');
     return `/**
 ${renderedLines}
  */`;

@@ -45,7 +45,13 @@ export function defaultConstantConstraints(): TypeScriptConstantConstraint {
         constOptions
       });
     } else if (constrainedMetaModel instanceof ConstrainedStringModel) {
-      return `'${constOptions.originalInput}'`;
+      const escaped = String(constOptions.originalInput)
+        .replace(/\\/g, '\\\\')
+        .replace(/'/g, "\\'")
+        .replace(/\n/g, '\\n')
+        .replace(/\r/g, '\\r')
+        .replace(/\t/g, '\\t');
+      return `'${escaped}'`;
     }
 
     return undefined;

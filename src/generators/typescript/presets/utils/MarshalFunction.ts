@@ -20,6 +20,13 @@ function realizePropertyFactory(prop: string) {
   return `$\{typeof ${prop} === 'number' || typeof ${prop} === 'boolean' ? ${prop} : JSON.stringify(${prop})}`;
 }
 
+function escapeJsonKeyForTemplateLiteral(key: string): string {
+  return JSON.stringify(key)
+    .replace(/\\/g, '\\\\')
+    .replace(/`/g, '\\`')
+    .replace(/\$\{/g, '\\${');
+}
+
 function renderMarshalProperty(
   modelInstanceVariable: string,
   model: ConstrainedMetaModel
@@ -55,7 +62,9 @@ function renderTupleSerialization(
   });
   return `const serializedTuple: any[] = [];
 ${t.join('\n')}
-json += \`"${unconstrainedProperty}": [\${serializedTuple.join(',')}],\`;`;
+json += \`${escapeJsonKeyForTemplateLiteral(
+    unconstrainedProperty
+  )}: [\${serializedTuple.join(',')}],\`;`;
 }
 
 /**
@@ -92,7 +101,9 @@ function renderUnionSerializationArray(
   for (const unionItem of ${modelInstanceVariable}) {
     ${unionSerialization}
   }
-  json += \`"${unconstrainedProperty}": [\${${propName}.join(',')}],\`;`;
+  json += \`${escapeJsonKeyForTemplateLiteral(
+    unconstrainedProperty
+  )}: [\${${propName}.join(',')}],\`;`;
 }
 
 /**
@@ -112,7 +123,9 @@ function renderArraySerialization(
       arrayModel.valueModel
     )}\`);
   }
-  json += \`"${unconstrainedProperty}": [\${${propName}.join(',')}],\`;`;
+  json += \`${escapeJsonKeyForTemplateLiteral(
+    unconstrainedProperty
+  )}: [\${${propName}.join(',')}],\`;`;
 }
 
 /**
@@ -121,8 +134,12 @@ function renderArraySerialization(
 function renderUnionSerialization(
   modelInstanceVariable: string,
   unconstrainedProperty: string,
-  unionModel: ConstrainedUnionModel
+  unionModel: ConstrainedUnionModel,
+  isRuntimeKeyExpression = false
 ) {
+  const serializedKey = isRuntimeKeyExpression
+    ? unconstrainedProperty
+    : escapeJsonKeyForTemplateLiteral(unconstrainedProperty);
   const allUnionReferences = unionModel.union
     .filter((model) => {
       return (
@@ -137,14 +154,14 @@ function renderUnionSerialization(
   const hasUnionReference = allUnionReferences.length > 0;
   if (hasUnionReference) {
     return `if(${allUnionReferencesCondition}) {
-      json += \`"${unconstrainedProperty}": $\{${modelInstanceVariable}.marshal()},\`;
+      json += \`${serializedKey}: $\{${modelInstanceVariable}.marshal()},\`;
     } else {
-      json += \`"${unconstrainedProperty}": ${realizePropertyFactory(
+      json += \`${serializedKey}: ${realizePropertyFactory(
         modelInstanceVariable
       )},\`;
     }`;
   }
-  return `json += \`"${unconstrainedProperty}": ${realizePropertyFactory(
+  return `json += \`${serializedKey}: ${realizePropertyFactory(
     modelInstanceVariable
   )},\`;`;
 }
@@ -165,19 +182,20 @@ function renderDictionarySerialization(
     ) {
       dictionaryValueType = renderUnionSerialization(
         'value',
-        '${key}',
+        '${JSON.stringify(String(key))}',
         (propModel.property as ConstrainedDictionaryModel)
-          .value as ConstrainedUnionModel
+          .value as ConstrainedUnionModel,
+        true
       );
     } else {
       const type = renderMarshalProperty('value', propModel.property);
-      dictionaryValueType = `json += \`"$\{key}": ${type},\`;`;
+      dictionaryValueType = `json += \`$\{JSON.stringify(String(key))}: ${type},\`;`;
     }
     return `if(this.${prop} !== undefined) { 
   for (const [key, value] of this.${prop}.entries()) {
     //Only unwrap those that are not already a property in the JSON object
     if([${originalPropertyNames
-      .map((value) => `"${value}"`)
+      .map((value) => JSON.stringify(value))
       .join(',')}].includes(String(key))) continue;
     ${dictionaryValueType}
   }
@@ -230,7 +248,9 @@ function renderNormalProperties(
         modelInstanceVariable,
         propModel.property
       );
-      marshalCode = `json += \`"${propModel.unconstrainedPropertyName}": ${propMarshalCode},\`;`;
+      marshalCode = `json += \`${escapeJsonKeyForTemplateLiteral(
+        propModel.unconstrainedPropertyName
+      )}: ${propMarshalCode},\`;`;
     }
     return `if(${modelInstanceVariable} !== undefined) {
   ${marshalCode}

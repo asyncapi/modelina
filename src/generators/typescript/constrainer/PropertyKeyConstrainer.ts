@@ -72,8 +72,15 @@ export function defaultPropertyKeyConstraints(
       constrainedPropertyKey,
       options
     );
-    //If the property name has been manipulated, lets make sure it don't clash with existing properties
-    if (constrainedPropertyKey !== objectPropertyModel.propertyName) {
+    //If the property name has been manipulated or formats to an already constrained key, make sure it doesn't clash
+    const formattedKey = constraints.NAMING_FORMATTER(constrainedPropertyKey);
+    if (
+      constrainedPropertyKey !== objectPropertyModel.propertyName ||
+      Object.prototype.hasOwnProperty.call(
+        constrainedObjectModel.properties,
+        formattedKey
+      )
+    ) {
       constrainedPropertyKey = constraints.NO_DUPLICATE_PROPERTIES(
         constrainedObjectModel,
         objectModel,

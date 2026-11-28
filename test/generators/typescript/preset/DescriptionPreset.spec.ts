@@ -42,4 +42,18 @@ describe('Description generation', () => {
     expect(models[0].result).toMatchSnapshot();
     expect(models[1].result).toMatchSnapshot();
   });
+
+  test('should escape closing JSDoc comment sequences in descriptions', async () => {
+    const models = await generator.generate({
+      $schema: 'http://json-schema.org/draft-07/schema#',
+      $id: 'CommentEscapeTest',
+      type: 'object',
+      description: 'Model */ description',
+      properties: {
+        prop: { type: 'string', description: 'Field */ description' }
+      }
+    });
+    expect(models[0].result).toContain('Model *\\/ description');
+    expect(models[0].result).toContain('Field *\\/ description');
+  });
 });
