@@ -531,7 +531,7 @@ export class CommonModel {
           options
         );
 
-        if (propValue.const) {
+        if (propValue.const !== undefined) {
           mergeTo.properties[String(propName)] =
             CommonModel.toCommonModel(mergedModel);
           mergeTo.properties[String(propName)].const = propValue.const;
@@ -833,7 +833,8 @@ export class CommonModel {
       mergeTo.enum = [...new Set([...(mergeTo.enum || []), ...mergeFrom.enum])];
     }
 
-    mergeTo.const = mergeTo.const || mergeFrom.const;
+    mergeTo.const =
+      mergeTo.const !== undefined ? mergeTo.const : mergeFrom.const;
 
     if (mergeFrom.required !== undefined && options.constrictModels === true) {
       mergeTo.required = [
