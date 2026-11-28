@@ -100,4 +100,33 @@ describe('Marshalling preset', () => {
     expect(models[1].result).toMatchSnapshot();
     expect(models[2].result).toMatchSnapshot();
   });
+
+  test('should escape special property keys and additionalProperties keys in marshal/unmarshal', async () => {
+    const generator = new TypeScriptGenerator({
+      presets: [
+        {
+          preset: TS_COMMON_PRESET,
+          options: {
+            marshalling: true
+          }
+        }
+      ]
+    });
+    const models = await generator.generate({
+      $schema: 'http://json-schema.org/draft-07/schema#',
+      $id: 'SpecialKeys',
+      type: 'object',
+      properties: {
+        'a"b': { type: 'string' },
+        '${key}': { type: 'string' }
+      },
+      additionalProperties: { oneOf: [{ type: 'string' }, { type: 'number' }] }
+    });
+    const result = models[0].result;
+    expect(result).toContain('json += `"a\\\\"b":');
+    expect(result).toContain('json += `"\\${key}":');
+    expect(result).toContain('json += `${JSON.stringify(String(key))}:');
+    expect(result).toContain('obj["a\\"b"]');
+    expect(result).toContain('obj["${key}"]');
+  });
 });

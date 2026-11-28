@@ -138,9 +138,9 @@ exports[`Marshalling preset should render un/marshal code 1`] = `
         //Only unwrap those that are not already a property in the JSON object
         if([\\"string prop\\",\\"enumProp\\",\\"numberProp\\",\\"nestedObject\\",\\"unionTest\\",\\"unionArrayTest\\",\\"arrayTest\\",\\"primitiveArrayTest\\",\\"tupleTest\\",\\"constTest\\",\\"additionalProperties\\"].includes(String(key))) continue;
         if(value instanceof NestedTest) {
-          json += \`\\"\${key}\\": \${value.marshal()},\`;
+          json += \`\${JSON.stringify(String(key))}: \${value.marshal()},\`;
         } else {
-          json += \`\\"\${key}\\": \${typeof value === 'number' || typeof value === 'boolean' ? value : JSON.stringify(value)},\`;
+          json += \`\${JSON.stringify(String(key))}: \${typeof value === 'number' || typeof value === 'boolean' ? value : JSON.stringify(value)},\`;
         }
       }
     }
@@ -230,7 +230,7 @@ exports[`Marshalling preset should render un/marshal code 3`] = `
       for (const [key, value] of this.additionalProperties.entries()) {
         //Only unwrap those that are not already a property in the JSON object
         if([\\"stringProp\\",\\"additionalProperties\\"].includes(String(key))) continue;
-        json += \`\\"\${key}\\": \${typeof value === 'number' || typeof value === 'boolean' ? value : JSON.stringify(value)},\`;
+        json += \`\${JSON.stringify(String(key))}: \${typeof value === 'number' || typeof value === 'boolean' ? value : JSON.stringify(value)},\`;
       }
     }
     //Remove potential last comma 

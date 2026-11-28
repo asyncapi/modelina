@@ -987,5 +987,34 @@ ${content}`;
       });
       expect(models.map((model) => model.result)).toMatchSnapshot();
     });
+
+    test('should escape const and enum string values and disambiguate colliding property names', async () => {
+      const models = await generator.generate({
+        $schema: 'http://json-schema.org/draft-07/schema#',
+        $id: 'Message',
+        type: 'object',
+        additionalProperties: false,
+        properties: {
+          kind: { const: "can't" },
+          status: {
+            $id: 'Status',
+            type: 'string',
+            enum: ['ok', 'say "hi"', 'C:\\temp']
+          },
+          a_b: { type: 'number' },
+          aB: { type: 'boolean' },
+          'a b': { type: 'string' }
+        }
+      });
+      const output = models.map((model) => model.result).join('\n');
+      expect(output).toContain("private _kind?: 'can\\'t' = 'can\\'t';");
+      expect(output).toContain(
+        'SAY_SPACE_QUOTATION_HI_QUOTATION = "say \\"hi\\""'
+      );
+      expect(output).toContain('C_COLON_BACKSLASH_TEMP = "C:\\\\temp"');
+      expect(output).toContain('private _aB?: number;');
+      expect(output).toContain('private _reservedAB?: boolean;');
+      expect(output).toContain('private _reservedReservedAB?: string;');
+    });
   });
 });

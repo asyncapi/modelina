@@ -47,7 +47,9 @@ function unmarshalRegularProperty(propModel: ConstrainedObjectPropertyModel) {
     return undefined;
   }
 
-  const modelInstanceVariable = `obj["${propModel.unconstrainedPropertyName}"]`;
+  const modelInstanceVariable = `obj[${JSON.stringify(
+    propModel.unconstrainedPropertyName
+  )}]`;
   const unmarshalCode = renderUnmarshalProperty(
     modelInstanceVariable,
     propModel.property
@@ -83,7 +85,7 @@ function unmarshalDictionary(model: ConstrainedObjectModel) {
   }
 
   const corePropertyKeys = originalPropertyNames
-    .map((propertyKey) => `"${propertyKey}"`)
+    .map((propertyKey) => JSON.stringify(propertyKey))
     .join(',');
   if (setDictionaryProperties.length > 0) {
     return `${setDictionaryProperties.join('\n')}

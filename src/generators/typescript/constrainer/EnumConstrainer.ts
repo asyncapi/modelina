@@ -79,6 +79,8 @@ export function defaultEnumValueConstraints(): TypeScriptEnumValueConstraint {
     let normalizedEnumValue;
     switch (typeof enumValue) {
       case 'string':
+        normalizedEnumValue = JSON.stringify(enumValue);
+        break;
       case 'boolean':
         normalizedEnumValue = `"${enumValue}"`;
         break;

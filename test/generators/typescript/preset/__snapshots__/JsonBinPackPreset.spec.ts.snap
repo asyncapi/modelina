@@ -28,7 +28,7 @@ exports[`JsonBinPack preset should work fine with AsyncAPI inputs 1`] = `
       for (const [key, value] of this.additionalProperties.entries()) {
         //Only unwrap those that are not already a property in the JSON object
         if([\\"email\\",\\"additionalProperties\\"].includes(String(key))) continue;
-        json += \`\\"\${key}\\": \${typeof value === 'number' || typeof value === 'boolean' ? value : JSON.stringify(value)},\`;
+        json += \`\${JSON.stringify(String(key))}: \${typeof value === 'number' || typeof value === 'boolean' ? value : JSON.stringify(value)},\`;
       }
     }
     //Remove potential last comma 
@@ -92,7 +92,7 @@ exports[`JsonBinPack preset should work fine with JSON Schema draft 4 1`] = `
       for (const [key, value] of this.additionalProperties.entries()) {
         //Only unwrap those that are not already a property in the JSON object
         if([\\"email\\",\\"additionalProperties\\"].includes(String(key))) continue;
-        json += \`\\"\${key}\\": \${typeof value === 'number' || typeof value === 'boolean' ? value : JSON.stringify(value)},\`;
+        json += \`\${JSON.stringify(String(key))}: \${typeof value === 'number' || typeof value === 'boolean' ? value : JSON.stringify(value)},\`;
       }
     }
     //Remove potential last comma 
@@ -156,7 +156,7 @@ exports[`JsonBinPack preset should work fine with JSON Schema draft 6 1`] = `
       for (const [key, value] of this.additionalProperties.entries()) {
         //Only unwrap those that are not already a property in the JSON object
         if([\\"email\\",\\"additionalProperties\\"].includes(String(key))) continue;
-        json += \`\\"\${key}\\": \${typeof value === 'number' || typeof value === 'boolean' ? value : JSON.stringify(value)},\`;
+        json += \`\${JSON.stringify(String(key))}: \${typeof value === 'number' || typeof value === 'boolean' ? value : JSON.stringify(value)},\`;
       }
     }
     //Remove potential last comma 

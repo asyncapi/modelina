@@ -76,5 +76,18 @@ describe('ConstantConstrainer', () => {
       });
       expect(constrainedConstant).toEqual("'testValue'");
     });
+
+    test('should escape quotes, backslashes, and control characters', () => {
+      const constrainedConstant = defaultConstantConstraints()({
+        constrainedMetaModel: new ConstrainedStringModel(
+          'testStringModel',
+          undefined,
+          { const: { originalInput: "can't\\C:\\temp\nline" } },
+          'String'
+        ),
+        options: TypeScriptGenerator.defaultOptions
+      });
+      expect(constrainedConstant).toEqual("'can\\'t\\\\C:\\\\temp\\nline'");
+    });
   });
 });

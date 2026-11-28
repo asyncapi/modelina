@@ -100,6 +100,15 @@ describe('EnumConstrainer', () => {
       });
       expect(constrainedValue).toEqual('"string value"');
     });
+    test('should escape quotes and backslashes in string values', () => {
+      const constrainedValue = TypeScriptDefaultConstraints.enumValue({
+        enumModel,
+        constrainedEnumModel,
+        enumValue: 'say "hi" C:\\temp',
+        options: TypeScriptGenerator.defaultOptions
+      });
+      expect(constrainedValue).toEqual('"say \\"hi\\" C:\\\\temp"');
+    });
     test('should render boolean values', () => {
       const constrainedValue = TypeScriptDefaultConstraints.enumValue({
         enumModel,
