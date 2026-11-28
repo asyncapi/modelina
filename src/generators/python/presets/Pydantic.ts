@@ -21,10 +21,14 @@ function formatPythonStringLiteral(value: string): string {
 }
 
 function formatPythonTripleQuotedString(value: string): string {
-  return value
+  const escaped = value
     .replaceAll('\\', String.raw`\\`)
-    .replaceAll('\r', String.raw`\r`)
-    .replace(/'{3,}|'+$/g, (quotes) => quotes.replaceAll("'", String.raw`\'`));
+    .replaceAll('\r', String.raw`\r`);
+  return escaped.replace(/'+/g, (quotes, offset: number) =>
+    quotes.length >= 3 || offset + quotes.length === escaped.length
+      ? quotes.replaceAll("'", String.raw`\'`)
+      : quotes
+  );
 }
 
 function isPythonLiteralTypeValue(constValue: unknown): boolean {
